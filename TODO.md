@@ -162,7 +162,7 @@
 
 ## 4.5 Minecraft Launch Validation
 
-* [x] Add a CI-compatible validation step where technically possible. (dedicated-server smoke-test job; non-blocking until gametests)
+* [ ] Add a CI-compatible validation step where technically possible. (game-launch validation intentionally excluded from CI by project owner decision; local dev-server launch verified instead)
 * [x] Verify the mod can initialize in the NeoForge environment. (verified locally on dev server)
 * [x] Verify dedicated-server initialization. (world loaded, `Done (3.5s)`, no crash reports)
 * [ ] Verify client initialization.
