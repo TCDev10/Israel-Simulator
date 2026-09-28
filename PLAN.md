@@ -154,6 +154,21 @@ Mod version
 Package namespace
 ```
 
+The mandatory primary target is:
+
+```text
+Minecraft version: 26.2
+Mod loader: NeoForge 26.2
+Java version: 25
+Build system: ModDevGradle
+```
+
+NeoForge 26.2, Minecraft 26.2, Java 25, and ModDevGradle must be treated as
+explicit project requirements rather than inferred defaults. Any compatibility
+with earlier NeoForge or Minecraft versions must be evaluated only after their
+APIs and toolchains have been verified. It must not be promised if it requires
+forking the codebase or compromises the project.
+
 Do not assume these values.
 
 Read them from the repository.
@@ -166,6 +181,9 @@ A verified understanding of the existing project.
 
 ```text
 [ ] Minecraft version identified
+[ ] NeoForge 26.2 selected as the mandatory primary target
+[ ] Java 25 and Minecraft 26.2 configured explicitly
+[ ] ModDevGradle configured explicitly
 [ ] Mod loader identified
 [ ] Java version identified
 [ ] Build system identified
@@ -183,6 +201,11 @@ A verified understanding of the existing project.
 ## Objective
 
 Create a stable technical foundation for the entire mod.
+
+The foundation must be created for NeoForge 26.2 with Minecraft 26.2, Java 25,
+and ModDevGradle. The first project skeleton must already include the build,
+test, and artifact-producing CI/CD pipeline described in Phase 54; CI/CD is a
+foundation requirement, not a final release task.
 
 ## Systems
 
@@ -1795,6 +1818,8 @@ Required:
 
 ```text
 [ ] Clean build
+[ ] CI/CD pipeline passes build and test validation
+[ ] Mod `.jar` is produced and published as a CI artifact
 [ ] Game launches
 [ ] Dedicated server launches
 [ ] World generation works
@@ -1816,7 +1841,63 @@ Required:
 
 ---
 
-# 59. Dependency Graph
+# 59. Phase 54 — CI/CD and Build Pipeline
+
+CI/CD is mandatory from the first foundation commit onward.
+
+## Required Primary Target
+
+Every pipeline run must use and validate:
+
+```text
+NeoForge 26.2
+Minecraft 26.2
+Java 25
+ModDevGradle
+```
+
+## Required Pipeline Behavior
+
+For every build, the pipeline must:
+
+```text
+compile
+        ↓
+run automated tests
+        ↓
+produce the mod `.jar`
+        ↓
+publish the `.jar` as a CI artifact
+```
+
+A successful pipeline must not be reported when compilation, tests, or artifact
+production fails. The artifact must be traceable to the exact commit and build.
+
+## Earlier-Version Matrix
+
+Testing NeoForge and Minecraft versions earlier than 26.2 is optional and
+conditional. Add a compatibility matrix only after each candidate version's
+API and toolchain have been verified and the additional maintenance is
+technically sustainable. Earlier-version support must not be promised if it
+requires a code fork or compromises the primary project.
+
+## Completion Criteria
+
+```text
+[ ] CI/CD runs from the initial foundation stages
+[ ] NeoForge 26.2 / Minecraft 26.2 is the mandatory pipeline target
+[ ] Java 25 is configured explicitly
+[ ] ModDevGradle is used explicitly
+[ ] Every build compiles
+[ ] Automated tests run on every build
+[ ] The mod `.jar` is produced on every successful build
+[ ] The `.jar` is uploaded as a CI artifact
+[ ] Any earlier-version matrix is justified by verified compatibility
+```
+
+---
+
+# 60. Dependency Graph
 
 The following dependencies should be respected:
 
@@ -1876,7 +1957,7 @@ Some systems can be developed in parallel after their dependencies are stable.
 
 ---
 
-# 60. Parallel Development Opportunities
+# 61. Parallel Development Opportunities
 
 Once the foundation is stable, independent systems may be developed concurrently.
 
@@ -1920,7 +2001,7 @@ Parallel development must not create competing implementations of the same under
 
 ---
 
-# 61. Feature Completion Checklist
+# 62. Feature Completion Checklist
 
 Every feature should follow this checklist.
 
@@ -1977,7 +2058,7 @@ Only include applicable content.
 
 ---
 
-# 62. Definition of Complete Feature
+# 63. Definition of Complete Feature
 
 A feature is considered complete only when:
 
@@ -2003,12 +2084,20 @@ A feature that compiles but does not function in-game is not complete.
 
 ---
 
-# 63. Definition of Done — Project
+# 64. Definition of Done — Project
 
 Israel-Simulator is ready for release when:
 
 ```text
 BUILD SUCCESS
+        +
+NEOFORGE 26.2 TARGET VERIFIED
+        +
+JAVA 25 AND MODDEVGRADLE VERIFIED
+        +
+CI/CD BUILD AND TEST PASS
+        +
+MOD JAR PUBLISHED AS CI ARTIFACT
         +
 GAME LAUNCHES
         +
@@ -2053,7 +2142,7 @@ DOCUMENTATION ACCURATE
 
 ---
 
-# 64. Recommended Implementation Order
+# 65. Recommended Implementation Order
 
 The practical implementation sequence is:
 
@@ -2118,7 +2207,7 @@ The practical implementation sequence is:
 
 ---
 
-# 65. Agent Execution Rules
+# 66. Agent Execution Rules
 
 When a coding agent is asked to implement a phase:
 
@@ -2138,7 +2227,7 @@ The agent must not mark a phase complete merely because source files were create
 
 ---
 
-# 66. Phase Status Tracking
+# 67. Phase Status Tracking
 
 Use the following status model:
 
@@ -2161,7 +2250,7 @@ after its completion criteria and required testing have passed.
 
 ---
 
-# 67. Current Project Status
+# 68. Current Project Status
 
 At the beginning of development:
 
@@ -2226,7 +2315,7 @@ This status section must be updated as development progresses.
 
 ---
 
-# 68. Final Principle
+# 69. Final Principle
 
 Do not optimize for the number of implemented files.
 
