@@ -1,0 +1,1744 @@
+# Israel-Simulator — TODO
+
+> Operative implementation checklist for the Israel-Simulator Minecraft mod.
+>
+> **Primary target:** NeoForge 26.2
+> **Secondary compatibility:** Previous NeoForge/Minecraft versions only where technically feasible without destabilizing or duplicating the project unnecessarily.
+> **Mandatory build requirement:** CI/CD must compile, test, package, and publish the mod `.jar` as a downloadable artifact.
+
+---
+
+## 0. Project Rules
+
+* [ ] Confirm the repository is the Israel-Simulator project.
+* [ ] Read `GAME_DESIGN.md`.
+* [ ] Read `AGENTS.md`.
+* [ ] Read `PLAN.md`.
+* [ ] Inspect the complete existing repository before modifying code.
+* [ ] Identify the current NeoForge/Minecraft version configuration.
+* [ ] Do not assume Fabric, Forge, or another loader.
+* [ ] Do not introduce compatibility abstractions before they are actually needed.
+* [ ] Do not create fake implementations or placeholder systems presented as finished.
+* [ ] Do not mark an item complete until its implementation and integration are verified.
+* [ ] Keep gameplay authoritative on the server.
+* [ ] Keep client-only rendering/code separated from common/server code.
+* [ ] Avoid unrelated refactors.
+* [ ] Avoid unnecessary dependencies.
+* [ ] Preserve existing working functionality when extending the project.
+
+---
+
+# 1. NeoForge / Minecraft Baseline
+
+## 1.1 Primary Version
+
+* [ ] Configure the project for **NeoForge 26.2**.
+* [ ] Verify the exact Minecraft version required by NeoForge 26.2.
+* [ ] Verify the required Java version.
+* [ ] Configure Gradle accordingly.
+* [ ] Verify the NeoForge ModDevGradle setup.
+* [ ] Verify the official NeoForge mappings/toolchain expected by the selected version.
+* [ ] Verify the mod loader actually launches.
+* [ ] Verify the development client launches.
+* [ ] Verify the development server launches.
+* [ ] Verify a minimal mod `.jar` can be produced.
+
+## 1.2 Version Compatibility
+
+* [ ] Determine whether previous NeoForge/Minecraft versions can share the same implementation.
+* [ ] Identify API differences between 26.2 and candidate previous versions.
+* [ ] Determine whether compatibility can be achieved through configuration/build variants rather than duplicated source.
+* [ ] Do not claim compatibility until a real build has succeeded.
+* [ ] If previous versions are supported, create explicit CI matrix entries.
+* [ ] If previous versions are not economically/technically viable, document them as unsupported.
+* [ ] Keep NeoForge 26.2 as the authoritative target.
+
+---
+
+# 2. Repository Audit
+
+* [ ] Inspect `build.gradle` / `build.gradle.kts`.
+* [ ] Inspect `gradle.properties`.
+* [ ] Inspect `settings.gradle` / `settings.gradle.kts`.
+* [ ] Inspect `gradle/`.
+* [ ] Inspect source directories.
+* [ ] Inspect resource directories.
+* [ ] Inspect existing registries.
+* [ ] Inspect existing data generation.
+* [ ] Inspect existing configuration.
+* [ ] Inspect existing networking.
+* [ ] Inspect existing client initialization.
+* [ ] Inspect existing server initialization.
+* [ ] Inspect existing tests.
+* [ ] Inspect Git configuration.
+* [ ] Inspect existing CI/CD configuration.
+* [ ] Identify missing CI/CD components.
+* [ ] Identify existing assets and their licenses.
+* [ ] Identify incomplete or broken systems.
+* [ ] Create a technical baseline before implementation.
+
+---
+
+# 3. Project Architecture
+
+* [ ] Establish package structure appropriate for NeoForge 26.2.
+* [ ] Separate common/server/client responsibilities.
+* [ ] Create central mod initialization.
+* [ ] Create registration infrastructure.
+* [ ] Create item registration.
+* [ ] Create block registration.
+* [ ] Create entity registration.
+* [ ] Create effect registration.
+* [ ] Create sound registration.
+* [ ] Create structure/worldgen registration.
+* [ ] Create event registration.
+* [ ] Create networking infrastructure.
+* [ ] Create configuration infrastructure.
+* [ ] Create data-generation infrastructure where useful.
+* [ ] Ensure registries initialize deterministically.
+* [ ] Avoid global mutable state where possible.
+* [ ] Avoid client classes being loaded by dedicated server code.
+
+---
+
+# 4. CI/CD — MANDATORY
+
+> CI/CD is a required part of the project. The project is not considered complete without a working automated build pipeline.
+
+## 4.1 CI Platform
+
+* [ ] Configure CI using the repository's supported CI platform.
+* [ ] Prefer GitHub Actions if the repository is hosted on GitHub.
+* [ ] Trigger CI on pushes.
+* [ ] Trigger CI on pull requests.
+* [ ] Optionally trigger CI manually.
+* [ ] Ensure CI runs on a clean environment.
+
+## 4.2 Build Environment
+
+* [ ] Install/use the correct Java version for NeoForge 26.2.
+* [ ] Configure Gradle caching.
+* [ ] Use the Gradle wrapper.
+* [ ] Do not depend on locally installed Gradle.
+* [ ] Make CI reproducible.
+* [ ] Ensure dependencies are downloaded automatically.
+
+## 4.3 Compilation
+
+* [ ] Run the project compilation task.
+* [ ] Fail CI on compilation errors.
+* [ ] Fail CI on Gradle errors.
+* [ ] Fail CI on resource-generation errors.
+* [ ] Verify generated resources are included correctly.
+
+## 4.4 Automated Tests
+
+* [ ] Run all available unit tests.
+* [ ] Run all available integration tests.
+* [ ] Run relevant data-generation validation.
+* [ ] Validate registries.
+* [ ] Validate recipes.
+* [ ] Validate loot tables.
+* [ ] Validate tags.
+* [ ] Validate configuration loading.
+* [ ] Validate networking code where automated testing is possible.
+* [ ] Add regression tests for critical gameplay systems.
+* [ ] Fail CI when required tests fail.
+
+## 4.5 Minecraft Launch Validation
+
+* [ ] Add a CI-compatible validation step where technically possible.
+* [ ] Verify the mod can initialize in the NeoForge environment.
+* [ ] Verify dedicated-server initialization.
+* [ ] Verify client initialization.
+* [ ] Detect startup crashes.
+* [ ] Detect missing classes/resources.
+* [ ] Detect invalid registry entries.
+* [ ] Detect invalid JSON/data files.
+
+## 4.6 JAR Packaging
+
+* [ ] Produce the final mod `.jar`.
+* [ ] Verify the `.jar` exists after a successful build.
+* [ ] Verify the `.jar` contains the expected mod metadata.
+* [ ] Verify resources are packaged.
+* [ ] Verify required classes are packaged.
+* [ ] Verify no accidental development-only files are included.
+* [ ] Verify dependency handling.
+* [ ] Verify the output is suitable for installation into a NeoForge instance.
+
+## 4.7 CI Artifact
+
+* [ ] Upload the generated `.jar` as a CI artifact.
+* [ ] Make the artifact downloadable from the CI run.
+* [ ] Use a deterministic artifact name.
+* [ ] Include version information in the artifact name where appropriate.
+* [ ] Upload logs when builds fail.
+* [ ] Preserve crash logs for failed game-launch validation where possible.
+
+## 4.8 Release Pipeline
+
+* [ ] Define a release build workflow.
+* [ ] Build only from a clean repository state.
+* [ ] Run the complete validation suite before release packaging.
+* [ ] Generate the release `.jar`.
+* [ ] Verify the release `.jar`.
+* [ ] Attach the `.jar` to the appropriate release artifact.
+* [ ] Never publish a release artifact if mandatory validation fails.
+
+## 4.9 CI Compatibility Matrix
+
+If previous versions are supported:
+
+* [ ] Define supported Minecraft/NeoForge versions.
+* [ ] Define the Java version for each version.
+* [ ] Build each supported version.
+* [ ] Run the relevant tests for each version.
+* [ ] Produce version-specific artifacts.
+* [ ] Ensure a failure in one supported version is visible.
+* [ ] Do not silently ignore unsupported API differences.
+
+---
+
+# 5. Versioning and Build Metadata
+
+* [ ] Define mod ID.
+* [ ] Define mod name.
+* [ ] Define semantic/project version.
+* [ ] Define Minecraft version metadata.
+* [ ] Define NeoForge version metadata.
+* [ ] Define Java requirement.
+* [ ] Define dependency versions.
+* [ ] Ensure version metadata is consistent.
+* [ ] Ensure the displayed mod version matches the packaged artifact.
+* [ ] Avoid manually duplicating version numbers unnecessarily.
+
+---
+
+# 6. Core Data Architecture
+
+* [ ] Define common identifiers.
+* [ ] Define rarity identifiers.
+* [ ] Define item categories.
+* [ ] Define event identifiers.
+* [ ] Define region identifiers.
+* [ ] Define city identifiers.
+* [ ] Define NPC profession identifiers.
+* [ ] Define reputation categories.
+* [ ] Define festival identifiers.
+* [ ] Define configuration keys.
+* [ ] Use data-driven systems where appropriate.
+* [ ] Avoid hardcoding values that belong in configuration/data.
+
+---
+
+# 7. Basic Items
+
+Implement real registered items:
+
+* [ ] Kippah.
+* [ ] Talit.
+* [ ] Tefillin.
+* [ ] Rabbi's Crown.
+* [ ] Prayer Note.
+* [ ] First Amendment.
+* [ ] Hava Nagila music disc.
+* [ ] Cultural collectibles.
+* [ ] Currency/economic items where required.
+* [ ] Food ingredients.
+* [ ] Food items.
+* [ ] Festival-related items.
+* [ ] Technology-related items.
+* [ ] Rare collectible items.
+
+For every item where applicable:
+
+* [ ] Registry entry.
+* [ ] Item properties.
+* [ ] Translation.
+* [ ] Model.
+* [ ] Texture.
+* [ ] Creative-tab/category placement.
+* [ ] Recipe if craftable.
+* [ ] Loot source if obtainable through loot.
+* [ ] Rarity.
+* [ ] Tooltip.
+* [ ] Server-side behavior.
+* [ ] Client rendering.
+* [ ] Multiplayer synchronization.
+* [ ] Persistence.
+* [ ] Tests.
+
+---
+
+# 8. Effects
+
+* [ ] Implement Blessed Effect.
+* [ ] Implement Freedom effect if retained.
+* [ ] Implement food effects.
+* [ ] Implement spiritual/contextual effects.
+* [ ] Implement temporary event effects.
+* [ ] Implement rare-item effects.
+* [ ] Ensure effects are server-authoritative.
+* [ ] Prevent unintended stacking.
+* [ ] Define duration.
+* [ ] Define amplifier.
+* [ ] Define removal conditions.
+* [ ] Test relogging.
+* [ ] Test death.
+* [ ] Test multiplayer synchronization.
+
+---
+
+# 9. Food System
+
+## Ingredients
+
+* [ ] Falafel ingredients.
+* [ ] Hummus ingredients.
+* [ ] Shakshuka ingredients.
+* [ ] Sabich ingredients.
+* [ ] Tahini.
+* [ ] Challah.
+* [ ] Rugelach.
+* [ ] Dates.
+* [ ] Olives.
+* [ ] Citrus.
+* [ ] Other agricultural ingredients required by recipes.
+
+## Foods
+
+* [ ] Falafel.
+* [ ] Hummus.
+* [ ] Shakshuka.
+* [ ] Sabich.
+* [ ] Other planned foods.
+
+For every food:
+
+* [ ] Recipe.
+* [ ] Nutrition.
+* [ ] Saturation.
+* [ ] Optional effect.
+* [ ] Model/texture.
+* [ ] Tags.
+* [ ] Localization.
+* [ ] Test.
+
+## Kosher System
+
+* [ ] Define the simplified system.
+* [ ] Define ingredient tags.
+* [ ] Define compatible recipes.
+* [ ] Define incompatible combinations only where gameplay requires them.
+* [ ] Avoid unnecessary simulation complexity.
+* [ ] Ensure the system does not interfere with normal Minecraft cooking.
+
+---
+
+# 10. World Generation Foundation
+
+* [ ] Define world-generation architecture.
+* [ ] Register custom biomes.
+* [ ] Register configured features.
+* [ ] Register placed features.
+* [ ] Register structures.
+* [ ] Register structure sets.
+* [ ] Register processor lists where needed.
+* [ ] Configure generation order.
+* [ ] Ensure deterministic generation.
+* [ ] Test new worlds.
+* [ ] Test multiple seeds.
+* [ ] Test chunk borders.
+* [ ] Test exploration far from spawn.
+* [ ] Test server generation.
+* [ ] Test multiplayer world generation.
+
+---
+
+# 11. Biomes
+
+* [ ] Mediterranean Coast.
+* [ ] Israeli agricultural areas.
+* [ ] Desert.
+* [ ] Dead Sea environment.
+* [ ] Urban environments where technically appropriate.
+* [ ] Define terrain characteristics.
+* [ ] Define vegetation.
+* [ ] Define structures.
+* [ ] Define mobs/entities.
+* [ ] Define atmosphere.
+* [ ] Define generation frequency.
+* [ ] Verify transitions between regions.
+
+---
+
+# 12. Vegetation
+
+* [ ] Olive trees.
+* [ ] Date palms.
+* [ ] Citrus trees.
+* [ ] Wheat/agricultural crops.
+* [ ] Vegetables.
+* [ ] Vineyards.
+* [ ] Regional vegetation.
+* [ ] Custom blocks where needed.
+* [ ] Sapling/growth behavior where needed.
+* [ ] Drops.
+* [ ] Worldgen.
+* [ ] Farming compatibility.
+
+---
+
+# 13. Agriculture
+
+* [ ] Farm structures.
+* [ ] Agricultural villages.
+* [ ] Crop generation.
+* [ ] Harvesting.
+* [ ] Farmer NPC interaction.
+* [ ] Agricultural economy.
+* [ ] Olive production.
+* [ ] Date production.
+* [ ] Citrus production.
+* [ ] Wheat production.
+* [ ] Vegetable production.
+* [ ] Vineyard production.
+* [ ] Farming-related trades.
+
+---
+
+# 14. Dead Sea
+
+* [ ] Dead Sea biome/environment.
+* [ ] High-buoyancy water behavior.
+* [ ] Distinct water behavior.
+* [ ] Salt resources.
+* [ ] Mineral resources.
+* [ ] Unique landscape.
+* [ ] Tourist NPCs.
+* [ ] Resort structures.
+* [ ] Dead Sea landmarks.
+* [ ] Specialized loot.
+* [ ] Tourism interactions.
+* [ ] Achievements.
+* [ ] Performance test.
+
+---
+
+# 15. Desert
+
+* [ ] Desert terrain.
+* [ ] Canyons.
+* [ ] Rocks.
+* [ ] Limited vegetation.
+* [ ] Desert structures.
+* [ ] Rare structures.
+* [ ] Environmental hazards.
+* [ ] Desert-specific mobs.
+* [ ] Desert resources.
+* [ ] Desert NPCs.
+* [ ] Loot.
+* [ ] Exploration rewards.
+
+---
+
+# 16. Structure Framework
+
+* [ ] Create reusable structure registration.
+* [ ] Create structure placement rules.
+* [ ] Create rarity/frequency controls.
+* [ ] Create biome restrictions.
+* [ ] Create region restrictions.
+* [ ] Create loot integration.
+* [ ] Create NPC spawning integration.
+* [ ] Create event integration.
+* [ ] Ensure structures generate without excessive overlap.
+* [ ] Test structure spacing.
+* [ ] Test chunk-boundary behavior.
+
+---
+
+# 17. Rural Structures
+
+* [ ] Agricultural farms.
+* [ ] Villages.
+* [ ] Synagogues.
+* [ ] Historical houses.
+* [ ] Markets.
+* [ ] Desert ruins.
+* [ ] Dead Sea resorts.
+* [ ] Rare religious structures.
+* [ ] Secret/easter-egg structures.
+
+---
+
+# 18. Tel Aviv
+
+* [ ] Define Tel Aviv region generation.
+* [ ] Skyscrapers.
+* [ ] Streets.
+* [ ] Hotels.
+* [ ] Restaurants.
+* [ ] Bars.
+* [ ] Cafes.
+* [ ] Shops.
+* [ ] Beaches.
+* [ ] Rothschild Boulevard-inspired area.
+* [ ] Florentin-inspired area.
+* [ ] Sarona-inspired area.
+* [ ] White City/Bauhaus-inspired architecture.
+* [ ] Startup district.
+* [ ] Offices.
+* [ ] Nightlife.
+* [ ] Transit.
+* [ ] Urban NPC density.
+* [ ] Urban economy.
+* [ ] Dynamic city behavior.
+* [ ] Performance limits.
+
+---
+
+# 19. Jaffa
+
+* [ ] Port.
+* [ ] Old city.
+* [ ] Alleys.
+* [ ] Market.
+* [ ] Historical buildings.
+* [ ] Restaurants.
+* [ ] Shops.
+* [ ] Clock tower.
+* [ ] Flea market.
+* [ ] Coast.
+* [ ] Jaffa NPC population.
+* [ ] Jaffa-specific trades.
+* [ ] Jaffa-specific events.
+* [ ] Landmark discovery.
+* [ ] Performance test.
+
+---
+
+# 20. Jerusalem
+
+* [ ] Define Jerusalem region.
+* [ ] Old City.
+* [ ] Streets.
+* [ ] Markets.
+* [ ] Neighborhoods.
+* [ ] Historical buildings.
+* [ ] Religious sites.
+* [ ] Synagogues.
+* [ ] Modern areas.
+* [ ] Rare structures.
+* [ ] Jerusalem NPC population.
+* [ ] Jerusalem economy.
+* [ ] Jerusalem events.
+* [ ] Landmark discovery.
+* [ ] Performance test.
+
+---
+
+# 21. Western Wall
+
+* [ ] Generate landmark.
+* [ ] Create visual environment.
+* [ ] Create collision.
+* [ ] Create NPCs.
+* [ ] Add lighting.
+* [ ] Add decorations.
+* [ ] Add interaction point.
+* [ ] Add Prayer Note interaction.
+* [ ] Require Kippah.
+* [ ] Validate interaction server-side.
+* [ ] Play interaction sequence.
+* [ ] Add animation.
+* [ ] Add particles.
+* [ ] Award reward.
+* [ ] Award 5 Diamonds.
+* [ ] Apply Blessed Effect.
+* [ ] Add cooldown.
+* [ ] Prevent repeated reward exploitation.
+* [ ] Add achievement.
+* [ ] Multiplayer test.
+* [ ] Dedicated-server test.
+
+---
+
+# 22. Kippah
+
+* [ ] Register item.
+* [ ] Head-slot equipment.
+* [ ] Create 3D model.
+* [ ] Create texture.
+* [ ] Implement first-person rendering.
+* [ ] Implement third-person rendering.
+* [ ] Multiplayer synchronization.
+* [ ] Equip/unequip.
+* [ ] Durability behavior if applicable.
+* [ ] Cultural interaction requirement.
+* [ ] Test with armor.
+* [ ] Test death/relog.
+
+---
+
+# 23. Talit
+
+* [ ] Register item.
+* [ ] Equipment behavior.
+* [ ] Rendering.
+* [ ] Texture/model.
+* [ ] Spiritual bonus.
+* [ ] Resistance/luck behavior where defined.
+* [ ] Server validation.
+* [ ] Multiplayer synchronization.
+* [ ] Test interactions.
+
+---
+
+# 24. Tefillin
+
+* [ ] Register item.
+* [ ] Define contextual interaction.
+* [ ] Define required conditions.
+* [ ] Create animation.
+* [ ] Create temporary bonus.
+* [ ] Create cooldown.
+* [ ] Prevent spam.
+* [ ] Multiplayer synchronization.
+* [ ] Achievement.
+* [ ] Test relog/death.
+
+---
+
+# 25. Synagogues
+
+* [ ] Generate synagogue structures.
+* [ ] Prayer area.
+* [ ] Seats.
+* [ ] Decoration.
+* [ ] Lighting.
+* [ ] Library.
+* [ ] Ritual objects.
+* [ ] NPC spawning.
+* [ ] Interaction points.
+* [ ] Rare large synagogue variant.
+* [ ] Loot where appropriate.
+* [ ] Discovery achievement.
+* [ ] Test generation.
+
+---
+
+# 26. NPC Framework
+
+Create functional NPC entities rather than decorative placeholders.
+
+* [ ] Merchant.
+* [ ] Rabbi.
+* [ ] Farmer.
+* [ ] Fisherman.
+* [ ] Chef.
+* [ ] Artisan.
+* [ ] Developer.
+* [ ] Taxi Driver.
+* [ ] Tourist.
+* [ ] Musician.
+* [ ] Historian.
+* [ ] Shopkeeper.
+* [ ] Founder.
+* [ ] Investor.
+* [ ] Engineer.
+
+For NPCs:
+
+* [ ] Profession.
+* [ ] AI.
+* [ ] Navigation.
+* [ ] Schedule.
+* [ ] Dialogue.
+* [ ] Trades.
+* [ ] Preferred locations.
+* [ ] Event participation.
+* [ ] Persistence.
+* [ ] Spawn rules.
+* [ ] Despawn rules.
+* [ ] Rendering.
+* [ ] Multiplayer synchronization.
+
+---
+
+# 27. NPC Schedules
+
+* [ ] Implement daily schedule framework.
+* [ ] Wake state.
+* [ ] Work state.
+* [ ] Lunch state.
+* [ ] Social state.
+* [ ] Home state.
+* [ ] Sleep/idle state.
+* [ ] Location assignment.
+* [ ] Pathfinding limits.
+* [ ] Event schedule overrides.
+* [ ] Festival schedule overrides.
+* [ ] Shabbat behavior.
+* [ ] Persistence across chunk unload/load.
+
+Example baseline:
+
+* [ ] 06:00 — wake.
+* [ ] 08:00 — work.
+* [ ] 12:00 — lunch.
+* [ ] 14:00 — work.
+* [ ] 18:00 — social.
+* [ ] 22:00 — home.
+
+---
+
+# 28. Dynamic City Life
+
+* [ ] NPCs walk through cities.
+* [ ] NPCs enter buildings.
+* [ ] NPCs work.
+* [ ] NPCs eat.
+* [ ] NPCs trade.
+* [ ] NPCs socialize.
+* [ ] NPCs use transport.
+* [ ] NPCs attend events.
+* [ ] NPCs respond to festivals.
+* [ ] NPCs respond to player interactions.
+* [ ] Prevent excessive pathfinding.
+* [ ] Prevent entity explosions in large cities.
+* [ ] Add configurable population limits.
+
+---
+
+# 29. Economy
+
+* [ ] Define currency.
+* [ ] Define product categories.
+* [ ] Define shop system.
+* [ ] Define market system.
+* [ ] Define restaurant economy.
+* [ ] Define agricultural economy.
+* [ ] Define technology economy.
+* [ ] Define city-specific economy.
+* [ ] Define rural economy.
+* [ ] Define pricing rules.
+* [ ] Define reputation modifiers.
+* [ ] Prevent economy duplication exploits.
+
+---
+
+# 30. Villager Trading
+
+* [ ] Integrate compatible villager trades.
+* [ ] Implement special trades.
+* [ ] Implement reputation modifiers.
+* [ ] Implement rare trades.
+* [ ] Implement Blessed Trader interaction.
+* [ ] Prevent trade duplication.
+* [ ] Prevent infinite reward generation.
+* [ ] Validate trades server-side.
+* [ ] Test multiplayer.
+* [ ] Test reload/restart.
+* [ ] Test trade persistence.
+
+---
+
+# 31. Reputation
+
+Implement:
+
+* [ ] Merchant reputation.
+* [ ] City reputation.
+* [ ] Village reputation.
+* [ ] Religious NPC reputation.
+* [ ] Technology District reputation.
+* [ ] Special faction reputation.
+
+Reputation must affect only defined gameplay systems:
+
+* [ ] Prices.
+* [ ] Dialogue.
+* [ ] Access.
+* [ ] Events.
+* [ ] Rare trades.
+* [ ] NPC reactions.
+* [ ] Persistence.
+* [ ] Multiplayer synchronization.
+
+---
+
+# 32. Festivals Framework
+
+* [ ] Create festival framework.
+* [ ] Start condition.
+* [ ] End condition.
+* [ ] Duration.
+* [ ] NPC behavior.
+* [ ] Decorations.
+* [ ] Food.
+* [ ] Structures.
+* [ ] Audio.
+* [ ] Rewards.
+* [ ] Achievements.
+* [ ] Cooldown.
+* [ ] Configuration.
+* [ ] Server authority.
+* [ ] Cleanup after event.
+
+Festivals:
+
+* [ ] Shabbat.
+* [ ] Rosh Hashanah.
+* [ ] Yom Kippur.
+* [ ] Sukkot.
+* [ ] Hanukkah.
+* [ ] Purim.
+* [ ] Pesach.
+
+---
+
+# 33. Shabbat
+
+* [ ] Calendar/schedule logic.
+* [ ] NPC routine changes.
+* [ ] Structure activities.
+* [ ] Event atmosphere.
+* [ ] Optional/configurable behavior.
+* [ ] Food behavior.
+* [ ] NPC social behavior.
+* [ ] Avoid forcing player religious behavior.
+* [ ] Test transitions into/out of Shabbat.
+
+---
+
+# 34. Hanukkah
+
+* [ ] Menorah integration.
+* [ ] Candle progression 1–8.
+* [ ] Lighting effects.
+* [ ] Decorations.
+* [ ] Food.
+* [ ] NPC behavior.
+* [ ] Event state.
+* [ ] Rewards.
+* [ ] Achievement.
+* [ ] Multiplayer synchronization.
+* [ ] Reset/cleanup.
+
+---
+
+# 35. Other Festivals
+
+For each festival:
+
+* [ ] Event registration.
+* [ ] Schedule.
+* [ ] Decorations.
+* [ ] NPC behavior.
+* [ ] Food/content.
+* [ ] Rewards.
+* [ ] Achievement.
+* [ ] Multiplayer behavior.
+* [ ] Configuration.
+* [ ] Cleanup.
+
+---
+
+# 36. Menorah
+
+* [ ] Register block/item.
+* [ ] Create model.
+* [ ] Create texture.
+* [ ] Implement interaction.
+* [ ] Implement lighting.
+* [ ] Implement festival integration.
+* [ ] Implement candle progression.
+* [ ] Implement particles.
+* [ ] Implement achievements.
+* [ ] Multiplayer synchronization.
+* [ ] Prevent excessive particle/light updates.
+
+---
+
+# 37. Generic World Events
+
+Implement event lifecycle:
+
+* [ ] Event definition.
+* [ ] Conditions.
+* [ ] Start.
+* [ ] Active state.
+* [ ] Participation.
+* [ ] Completion.
+* [ ] Failure/timeout.
+* [ ] Rewards.
+* [ ] Cooldown.
+* [ ] Cleanup.
+* [ ] Persistence.
+* [ ] Multiplayer synchronization.
+
+Events:
+
+* [ ] Public Speech.
+* [ ] Market Day.
+* [ ] Festival.
+* [ ] Concert.
+* [ ] Beach Event.
+* [ ] Religious Event.
+* [ ] Food Festival.
+* [ ] Technology Conference.
+* [ ] Rare NPC Spawn.
+* [ ] Boss Event.
+
+---
+
+# 38. Public Speech Event
+
+* [ ] Gazebo.
+* [ ] Stage.
+* [ ] Microphone.
+* [ ] Speakers.
+* [ ] Speaker NPC.
+* [ ] Crowd NPCs.
+* [ ] Signs.
+* [ ] Chairs.
+* [ ] Event area.
+* [ ] Crowd AI.
+* [ ] Applause behavior.
+* [ ] Booing behavior.
+* [ ] Movement behavior.
+* [ ] Dialogue behavior.
+* [ ] Idle behavior.
+* [ ] Participation timer.
+* [ ] Minimum participation duration: 60 seconds.
+* [ ] Server-side participation tracking.
+* [ ] Prevent AFK/exploit reward abuse.
+* [ ] Award First Amendment.
+* [ ] Optional Freedom effect.
+* [ ] Event cooldown.
+* [ ] Cleanup.
+
+The event must remain clearly fictional/satirical and must not be presented as a simulation of an actual political event.
+
+---
+
+# 39. First Amendment
+
+* [ ] Register item.
+* [ ] Define LEGENDARY rarity.
+* [ ] Define acquisition source.
+* [ ] Define reward conditions.
+* [ ] Define tooltip.
+* [ ] Define visual identity.
+* [ ] Define optional Freedom effect.
+* [ ] Prevent duplication.
+* [ ] Prevent repeated event farming.
+* [ ] Multiplayer synchronization.
+* [ ] Achievement integration.
+
+---
+
+# 40. Rabbi's Crown
+
+> Target rarity: **MYTHIC**.
+
+* [ ] Register item.
+* [ ] Define MYTHIC rarity.
+* [ ] Create hat model.
+* [ ] Create long beard.
+* [ ] Create payot.
+* [ ] Create decorative/ornamental details.
+* [ ] Create texture.
+* [ ] Implement head equipment.
+* [ ] Implement third-person rendering.
+* [ ] Implement multiplayer synchronization.
+* [ ] Set armor value to 20.
+* [ ] Implement permanent Blessed Trader effect.
+* [ ] Define compatible villager trade behavior.
+* [ ] Allow configured minimum trades such as 1 Emerald where appropriate.
+* [ ] Prevent trade duplication.
+* [ ] Prevent infinite economic generation.
+* [ ] Prevent normal crafting.
+* [ ] Exclude from ordinary common loot.
+* [ ] Define extremely low acquisition probability.
+* [ ] Define rare structure sources.
+* [ ] Define endgame event sources.
+* [ ] Define boss/event interaction if applicable.
+* [ ] Test actual rarity.
+* [ ] Verify it cannot become common through gameplay loops.
+
+---
+
+# 41. Blessed Trader
+
+* [ ] Define effect.
+* [ ] Detect valid equipped Crown.
+* [ ] Apply effect server-side.
+* [ ] Modify only intended villager trades.
+* [ ] Prevent invalid negative prices.
+* [ ] Prevent item duplication.
+* [ ] Prevent infinite emerald/item loops.
+* [ ] Preserve villager trade persistence.
+* [ ] Synchronize trade data.
+* [ ] Test relog.
+* [ ] Test multiplayer.
+* [ ] Test multiple players.
+* [ ] Test multiple villagers.
+* [ ] Test exploit scenarios.
+
+---
+
+# 42. Rare Structures
+
+Implement:
+
+* [ ] Large synagogue.
+* [ ] Historical house.
+* [ ] Market.
+* [ ] Desert ruins.
+* [ ] Dead Sea resort.
+* [ ] Startup office.
+* [ ] Government building.
+* [ ] Rare religious structure.
+* [ ] Secret easter-egg structure.
+
+For every rare structure:
+
+* [ ] Placement rules.
+* [ ] Rarity.
+* [ ] Loot.
+* [ ] NPCs.
+* [ ] Interactions.
+* [ ] Event integration where applicable.
+* [ ] Generation test.
+* [ ] Multiplayer test.
+
+---
+
+# 43. Bibi Boss
+
+> This is a fictional/satirical game boss inspired by a real-world public figure. It must not be presented as a factual depiction of real events.
+
+* [ ] Create boss entity.
+* [ ] Define configurable HP.
+* [ ] Default HP: 10,000+.
+* [ ] Boss bar.
+* [ ] AI.
+* [ ] Target selection.
+* [ ] Ranged attack.
+* [ ] Defensive behavior.
+* [ ] Special attacks.
+* [ ] Guards.
+* [ ] Escape behavior.
+* [ ] State machine.
+* [ ] Animation.
+* [ ] Sound.
+* [ ] Combat effects.
+* [ ] Spawn conditions.
+* [ ] Government-building/event/rare-structure spawn integration.
+* [ ] Multiplayer synchronization.
+
+States:
+
+* [ ] IDLE.
+* [ ] ALERT.
+* [ ] COMBAT.
+* [ ] ENRAGED.
+* [ ] DEFEATED.
+
+---
+
+# 44. Boss Combat
+
+* [ ] Define damage model.
+* [ ] Define attack cooldowns.
+* [ ] Define ranged behavior.
+* [ ] Define defense behavior.
+* [ ] Define special attacks.
+* [ ] Define guard behavior.
+* [ ] Define enrage threshold.
+* [ ] Define escape conditions.
+* [ ] Define boss arena/area rules.
+* [ ] Prevent boss duplication.
+* [ ] Prevent reward duplication.
+* [ ] Server-authoritative combat.
+* [ ] Multiplayer synchronization.
+* [ ] Test multiple players.
+* [ ] Test reconnects.
+* [ ] Test chunk unload/reload.
+* [ ] Test server restart.
+
+---
+
+# 45. Boss Rewards
+
+* [ ] Define Hava Nagila music disc.
+* [ ] Define LEGENDARY rarity.
+* [ ] Define drop conditions.
+* [ ] Prevent duplicate farming.
+* [ ] Define loot table.
+* [ ] Validate licensing of audio.
+* [ ] Add achievement.
+* [ ] Test drop.
+* [ ] Test multiplayer ownership/reward handling.
+
+---
+
+# 46. Music and Audio
+
+* [ ] Define music registry.
+* [ ] Define ambient sounds.
+* [ ] City ambience.
+* [ ] Event ambience.
+* [ ] Festival audio.
+* [ ] Boss audio.
+* [ ] Cultural/inspired music.
+* [ ] Verify commercial-use compatibility.
+* [ ] Track source/license for every external asset.
+* [ ] Do not include unauthorized commercial recordings.
+* [ ] Document attribution requirements.
+* [ ] Test volume levels.
+* [ ] Test client/server separation.
+
+---
+
+# 47. Transportation
+
+* [ ] Walking support.
+* [ ] Bicycle.
+* [ ] Bus.
+* [ ] Train.
+* [ ] Taxi.
+* [ ] Boat.
+* [ ] Transport stops.
+* [ ] Transport routes.
+* [ ] NPC transport usage.
+* [ ] City connections.
+* [ ] Player transport interaction.
+* [ ] Server synchronization.
+* [ ] Performance testing.
+
+---
+
+# 48. Map and Exploration
+
+* [ ] Define major regions.
+* [ ] Connect cities.
+* [ ] Connect rural areas.
+* [ ] Connect Dead Sea.
+* [ ] Connect desert.
+* [ ] Connect Mediterranean coast.
+* [ ] Connect agricultural regions.
+* [ ] Add villages.
+* [ ] Add discovered landmarks.
+* [ ] Add landmark discovery system.
+* [ ] Add exploration achievements.
+* [ ] Ensure terrain remains navigable.
+* [ ] Verify transportation connectivity.
+
+---
+
+# 49. Achievements
+
+Implement:
+
+* [ ] Welcome to Israel.
+* [ ] Shalom.
+* [ ] Visit Jerusalem.
+* [ ] Tel Aviv Nights.
+* [ ] Jaffa.
+* [ ] Dead Sea Tourist.
+* [ ] Five Diamonds.
+* [ ] Blessed Trader.
+* [ ] Hava Nagila.
+* [ ] Freedom of Speech.
+* [ ] Startup Founder.
+* [ ] Master Explorer.
+
+For each:
+
+* [ ] Trigger.
+* [ ] Server-side validation.
+* [ ] Description.
+* [ ] Icon.
+* [ ] Localization.
+* [ ] Multiplayer behavior.
+* [ ] Test.
+
+---
+
+# 50. Easter Eggs
+
+* [ ] Random NPC dialogue.
+* [ ] Absurd events.
+* [ ] Hidden structures.
+* [ ] Meme objects.
+* [ ] Secret achievements.
+* [ ] Ultra-rare events.
+* [ ] Procedural dialogue.
+* [ ] Hidden interactions.
+* [ ] Ensure easter eggs do not break progression.
+* [ ] Ensure rare rewards cannot be accidentally generated frequently.
+* [ ] Test discoverability and rarity.
+
+---
+
+# 51. Rarity System
+
+Define:
+
+* [ ] COMMON.
+* [ ] UNCOMMON.
+* [ ] RARE.
+* [ ] EPIC.
+* [ ] LEGENDARY.
+* [ ] MYTHIC.
+
+Verify:
+
+* [ ] Rabbi's Crown = MYTHIC.
+* [ ] First Amendment = LEGENDARY.
+* [ ] Hava Nagila = LEGENDARY.
+* [ ] Rare content actually has corresponding acquisition rates.
+* [ ] Loot tables respect rarity.
+* [ ] Trading respects rarity.
+* [ ] Event rewards respect rarity.
+* [ ] Creative/testing access does not affect normal survival acquisition.
+* [ ] No unintended duplication routes exist.
+
+---
+
+# 52. Quest / Discovery System
+
+* [ ] Define optional quest framework.
+* [ ] Define discovery framework.
+* [ ] Define collection objectives.
+* [ ] Define event objectives.
+* [ ] Avoid mandatory linear campaign.
+* [ ] Integrate achievements.
+* [ ] Integrate reputation.
+* [ ] Integrate exploration.
+* [ ] Integrate rare structures.
+* [ ] Integrate events.
+
+---
+
+# 53. Multiplayer Authority
+
+All important gameplay state must be validated server-side.
+
+* [ ] Item rewards.
+* [ ] Trades.
+* [ ] Currency.
+* [ ] Reputation.
+* [ ] Events.
+* [ ] Boss state.
+* [ ] Boss rewards.
+* [ ] Cooldowns.
+* [ ] Achievements.
+* [ ] Rare-item acquisition.
+* [ ] Prayer rewards.
+* [ ] Festival state.
+* [ ] Player progression.
+* [ ] Transport state where relevant.
+
+---
+
+# 54. Exploit Audit
+
+Explicitly test:
+
+* [ ] Item duplication.
+* [ ] Reward duplication.
+* [ ] Trade duplication.
+* [ ] Event reward farming.
+* [ ] Boss reward farming.
+* [ ] Prayer reward farming.
+* [ ] Crown trade exploitation.
+* [ ] Client-side packet manipulation.
+* [ ] Invalid interaction packets.
+* [ ] Cooldown bypass.
+* [ ] Reconnect exploits.
+* [ ] Death/reward exploits.
+* [ ] Chunk unload exploits.
+* [ ] Server restart exploits.
+* [ ] Multiple-player race conditions.
+* [ ] Negative/overflow values.
+* [ ] Invalid item stacks.
+* [ ] Invalid entity state.
+
+---
+
+# 55. Performance
+
+* [ ] Profile world generation.
+* [ ] Profile city generation.
+* [ ] Profile NPC AI.
+* [ ] Profile pathfinding.
+* [ ] Profile events.
+* [ ] Profile particles.
+* [ ] Profile boss AI.
+* [ ] Profile transport.
+* [ ] Profile networking.
+* [ ] Profile memory usage.
+* [ ] Avoid global expensive tick handlers.
+* [ ] Avoid unnecessary pathfinding.
+* [ ] Avoid excessive NPC counts.
+* [ ] Avoid excessive particles.
+* [ ] Avoid expensive chunk-generation operations.
+* [ ] Avoid memory leaks.
+* [ ] Add configurable population limits.
+* [ ] Add configurable event frequency.
+* [ ] Add configurable city frequency/size where appropriate.
+* [ ] Test large cities.
+* [ ] Test multiple players.
+* [ ] Test long-running servers.
+
+---
+
+# 56. Configuration
+
+Expose appropriate configuration for:
+
+* [ ] World generation.
+* [ ] City frequency.
+* [ ] City size.
+* [ ] Structure frequency.
+* [ ] NPC spawn rates.
+* [ ] NPC population limits.
+* [ ] Event frequency.
+* [ ] Event duration.
+* [ ] Event rewards.
+* [ ] Boss HP.
+* [ ] Boss damage.
+* [ ] Boss spawn frequency.
+* [ ] Item rarity.
+* [ ] Rare loot probability.
+* [ ] Cooldowns.
+* [ ] Festival calendar.
+* [ ] Music.
+* [ ] Particles.
+* [ ] Performance limits.
+* [ ] Transportation.
+* [ ] Debug/testing options where appropriate.
+
+---
+
+# 57. Data and Resource Validation
+
+* [ ] Validate all JSON files.
+* [ ] Validate recipes.
+* [ ] Validate loot tables.
+* [ ] Validate tags.
+* [ ] Validate models.
+* [ ] Validate blockstates.
+* [ ] Validate language files.
+* [ ] Validate structure data.
+* [ ] Validate worldgen data.
+* [ ] Validate sounds.
+* [ ] Validate advancement data.
+* [ ] Validate configuration.
+* [ ] Ensure no missing resources.
+* [ ] Ensure no invalid resource paths.
+* [ ] Ensure resource names follow Minecraft conventions.
+
+---
+
+# 58. Asset and Licensing Audit
+
+* [ ] Inventory every external asset.
+* [ ] Record source.
+* [ ] Record license.
+* [ ] Record attribution requirements.
+* [ ] Verify commercial-use permission.
+* [ ] Verify redistribution permission.
+* [ ] Verify modification permission where applicable.
+* [ ] Do not use unauthorized copyrighted assets.
+* [ ] Do not use AI-generated game assets.
+* [ ] Prefer original, procedural, or compatible free assets.
+* [ ] Create/update `CREDITS.md`.
+* [ ] Create/update `ASSET_LICENSES.md`.
+* [ ] Include audio licensing.
+* [ ] Include texture licensing.
+* [ ] Include model licensing.
+* [ ] Include font licensing if applicable.
+
+---
+
+# 59. Client Rendering
+
+* [ ] Items render correctly.
+* [ ] Kippah renders correctly.
+* [ ] Talit renders correctly.
+* [ ] Tefillin renders correctly.
+* [ ] Rabbi's Crown renders correctly.
+* [ ] Payot/beard render correctly.
+* [ ] NPCs render correctly.
+* [ ] Boss renders correctly.
+* [ ] Structures render correctly.
+* [ ] Custom blocks render correctly.
+* [ ] Menorah renders correctly.
+* [ ] Transport renders correctly.
+* [ ] Particles render correctly.
+* [ ] Music/sounds load correctly.
+* [ ] Verify third-person rendering.
+* [ ] Verify multiplayer rendering.
+
+---
+
+# 60. Localization
+
+* [ ] English localization.
+* [ ] Italian localization if included.
+* [ ] Item names.
+* [ ] Block names.
+* [ ] Entity names.
+* [ ] Effect names.
+* [ ] Achievement names.
+* [ ] Achievement descriptions.
+* [ ] UI text.
+* [ ] Dialogue.
+* [ ] Event messages.
+* [ ] Configuration descriptions.
+* [ ] Error messages where applicable.
+
+---
+
+# 61. Testing Matrix
+
+## Build
+
+* [ ] Clean build.
+* [ ] Incremental build.
+* [ ] CI build.
+* [ ] Release build.
+* [ ] JAR verification.
+
+## Client
+
+* [ ] Launch.
+* [ ] New world.
+* [ ] Existing world.
+* [ ] Singleplayer.
+* [ ] Resource loading.
+* [ ] Rendering.
+* [ ] Audio.
+
+## Server
+
+* [ ] Dedicated server startup.
+* [ ] Dedicated server shutdown.
+* [ ] World creation.
+* [ ] World loading.
+* [ ] Player join.
+* [ ] Player disconnect.
+* [ ] Server restart.
+
+## Multiplayer
+
+* [ ] Two players.
+* [ ] Multiple players.
+* [ ] Trading.
+* [ ] Events.
+* [ ] Boss.
+* [ ] Rare items.
+* [ ] Reputation.
+* [ ] Achievements.
+* [ ] Transport.
+* [ ] Chunk loading/unloading.
+
+---
+
+# 62. Regression Testing
+
+After every major subsystem:
+
+* [ ] Run compilation.
+* [ ] Run automated tests.
+* [ ] Launch client.
+* [ ] Launch dedicated server.
+* [ ] Test affected feature.
+* [ ] Test one previously completed feature.
+* [ ] Check logs for errors/warnings.
+* [ ] Verify no registry regressions.
+* [ ] Verify no resource regressions.
+* [ ] Verify multiplayer behavior where relevant.
+
+---
+
+# 63. Crash Investigation
+
+For every crash:
+
+* [ ] Capture complete crash log.
+* [ ] Identify first meaningful exception.
+* [ ] Identify responsible subsystem.
+* [ ] Identify whether failure is client/server/common.
+* [ ] Reproduce.
+* [ ] Fix root cause.
+* [ ] Add regression test where possible.
+* [ ] Rebuild.
+* [ ] Re-run affected scenario.
+* [ ] Verify no broad exception suppression was introduced.
+
+---
+
+# 64. Documentation
+
+* [ ] `README.md` describes the project.
+* [ ] `GAME_DESIGN.md` remains the gameplay/design source of truth.
+* [ ] `AGENTS.md` remains the coding-agent instruction source.
+* [ ] `PLAN.md` remains the implementation roadmap.
+* [ ] `TODO.md` tracks executable work.
+* [ ] `CREDITS.md` lists credits.
+* [ ] `ASSET_LICENSES.md` lists licenses.
+* [ ] Document supported NeoForge/Minecraft versions.
+* [ ] Document Java requirement.
+* [ ] Document build instructions.
+* [ ] Document CI/CD.
+* [ ] Document where CI artifacts are obtained.
+* [ ] Document installation.
+* [ ] Document multiplayer requirements.
+* [ ] Document configuration.
+* [ ] Document known limitations.
+
+---
+
+# 65. Release Candidate
+
+* [ ] All mandatory systems implemented.
+* [ ] All mandatory registries valid.
+* [ ] All mandatory resources valid.
+* [ ] World generation tested.
+* [ ] Cities tested.
+* [ ] NPCs tested.
+* [ ] Economy tested.
+* [ ] Events tested.
+* [ ] Festivals tested.
+* [ ] Rare items tested.
+* [ ] Boss tested.
+* [ ] Multiplayer tested.
+* [ ] Exploit audit completed.
+* [ ] Performance audit completed.
+* [ ] Asset/license audit completed.
+* [ ] Documentation completed.
+* [ ] CI passes.
+* [ ] Release JAR produced.
+* [ ] Release JAR manually verified.
+
+---
+
+# 66. Final Definition of Done
+
+The project is **NOT DONE** merely because the source code compiles.
+
+The project is complete only when:
+
+* [ ] NeoForge 26.2 build succeeds.
+* [ ] The project launches successfully.
+* [ ] Dedicated server launches successfully.
+* [ ] Required automated tests pass.
+* [ ] CI/CD succeeds from a clean environment.
+* [ ] CI/CD produces a downloadable `.jar`.
+* [ ] The produced `.jar` is a valid installable mod artifact.
+* [ ] Core world generation works.
+* [ ] Major regions work.
+* [ ] Major cities work.
+* [ ] NPC systems work.
+* [ ] Economy works.
+* [ ] Trading works.
+* [ ] Cultural interactions work.
+* [ ] Festivals/events work.
+* [ ] Rare items work.
+* [ ] Rabbi's Crown works.
+* [ ] Blessed Trader works.
+* [ ] Public Speech works.
+* [ ] First Amendment works.
+* [ ] Bibi boss works.
+* [ ] Boss rewards work.
+* [ ] Multiplayer works.
+* [ ] Server authority is enforced.
+* [ ] Major duplication exploits are addressed.
+* [ ] Major crashes are resolved.
+* [ ] Performance is acceptable.
+* [ ] External assets are properly licensed.
+* [ ] Documentation is consistent.
+* [ ] No feature is falsely documented as implemented when it is not.
+
+---
+
+# 67. Final Release Verification
+
+Before declaring a release:
+
+* [ ] Delete build outputs.
+* [ ] Run a clean build.
+* [ ] Run CI.
+* [ ] Download the CI-generated JAR.
+* [ ] Install the JAR into a clean NeoForge 26.2 instance.
+* [ ] Start the game.
+* [ ] Create a new world.
+* [ ] Verify mod loading.
+* [ ] Verify world generation.
+* [ ] Verify major landmarks.
+* [ ] Verify at least one NPC.
+* [ ] Verify at least one trade.
+* [ ] Verify at least one event.
+* [ ] Verify at least one rare item.
+* [ ] Verify multiplayer connection.
+* [ ] Verify dedicated server.
+* [ ] Verify no critical errors.
+* [ ] Verify artifact filename/version.
+* [ ] Verify release documentation.
+* [ ] Verify license documentation.
+* [ ] Only then mark the release as complete.
+
+---
+
+# 68. TODO Status Convention
+
+Use only these states:
+
+* `[ ]` Not started.
+* `[-]` In progress.
+* `[x]` Completed and verified.
+* `[!]` Blocked.
+* `[?]` Requires a technical/design decision.
+
+A task must not be marked `[x]` merely because code was written.
+
+A task is `[x]` only after the relevant implementation has been built and verified.
+
+For important gameplay systems, verification should include both:
+
+1. **Technical verification** — build/tests/logs.
+2. **In-game verification** — actual Minecraft behavior.
+
+---
+
+# 69. Agent Execution Rules
+
+When an AI coding agent works through this TODO:
+
+1. Read `AGENTS.md`.
+2. Read the relevant section of `GAME_DESIGN.md`.
+3. Read the relevant section of `PLAN.md`.
+4. Inspect the existing implementation.
+5. Identify the smallest coherent group of TODO items that can be implemented safely.
+6. Implement them.
+7. Build.
+8. Run relevant tests.
+9. Run relevant Minecraft validation.
+10. Fix regressions.
+11. Update this `TODO.md`.
+12. Mark only genuinely verified tasks as `[x]`.
+13. Do not mark dependent tasks complete prematurely.
+14. Do not rewrite unrelated systems.
+15. Do not silently remove requirements because implementation is difficult.
+16. If a requirement is technically impossible under NeoForge 26.2, document the limitation and mark it `[!]` or `[?]` rather than pretending it works.
+
+---
+
+# 70. Dependency Principle
+
+Do not implement systems in an arbitrary order.
+
+The preferred dependency flow is:
+
+```text
+NeoForge 26.2
+    ↓
+Build System
+    ↓
+CI/CD
+    ↓
+Registries
+    ↓
+Core Data
+    ↓
+Items / Blocks / Effects
+    ↓
+Worldgen
+    ↓
+Structures
+    ↓
+NPC Framework
+    ↓
+Economy / Trading
+    ↓
+Cities
+    ↓
+Culture / Interactions
+    ↓
+Events / Festivals
+    ↓
+Rare Items
+    ↓
+Boss / Endgame
+    ↓
+Multiplayer Hardening
+    ↓
+Performance
+    ↓
+QA
+    ↓
+Release JAR
+```
+
+The order can be changed only when a concrete dependency or technical reason requires it.
+
+---
+
+# 71. Absolute Build Requirement
+
+This requirement is intentionally repeated because it is mandatory:
+
+> **The project must have working CI/CD capable of building, testing, and packaging Israel-Simulator into a downloadable NeoForge `.jar`.**
+
+A project state where:
+
+* the source code exists,
+* the mod works locally,
+* but CI does not build it,
+
+is **not considered complete**.
+
+A project state where:
+
+* CI compiles the code,
+* but does not produce the `.jar`,
+
+is **not considered complete**.
+
+A project state where:
+
+* CI produces a `.jar`,
+* but the `.jar` cannot be installed/launched,
+
+is **not considered complete**.
+
+The final development pipeline must therefore prove:
+
+```text
+Source
+  ↓
+Clean CI environment
+  ↓
+NeoForge 26.2 build
+  ↓
+Automated tests
+  ↓
+Game/server validation
+  ↓
+Packaging
+  ↓
+Mod JAR
+  ↓
+Downloadable CI artifact
+  ↓
+Clean installation test
+```
+
+Only the final successful chain counts as a verified build.
