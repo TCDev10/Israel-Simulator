@@ -3,9 +3,9 @@
 # Mandatory chain validated by this workflow:
 #   compile -> automated build -> mod .jar produced -> .jar published as a CI artifact
 #
-# The `server-smoke` job is a best-effort dedicated-server initialization check
-# (TODO 4.5). It is non-blocking until the project registers gametests; once
-# gametests exist, switch the gate to the gameTestServer run instead.
+# The `server-smoke` job launches the dedicated server and fails unless the game
+# reaches "Done (...)!" without an unexpected exception (TODO 4.5). Once the
+# project registers gametests, switch this job to the gameTestServer run.
 
 name: build
 
@@ -92,11 +92,9 @@ jobs:
           retention-days: 7
 
   server-smoke:
-    name: Dedicated server smoke test (non-blocking)
+    name: Dedicated server smoke test
     runs-on: ubuntu-latest
     needs: build
-    # Non-blocking until gametest-based validation replaces this job.
-    continue-on-error: true
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
@@ -116,11 +114,29 @@ jobs:
           mkdir -p run
           echo "eula=true" > run/eula.txt
 
-      - name: Launch dedicated server, then stop it
+      - name: Launch dedicated server and verify it loads
         shell: bash
         run: |
-          # Let the server finish loading, then send `stop` over stdin.
-          (sleep 210; echo stop) | timeout 360 ./gradlew runServer --console=plain
+          set +e
+          # gradlew does not forward stdin to the game, so the server is stopped by
+          # the timeout after it has fully loaded; the validation below decides
+          # whether the run was healthy.
+          timeout 300 ./gradlew runServer --console=plain --no-daemon > server-run.log 2>&1
+          code=$?
+          set -e
+          echo "gradle exit code: $code (124 = killed by timeout after load)"
+          if grep -q 'Done ([0-9.]*s)!' server-run.log; then
+            echo '::notice::Dedicated server reached "Done" — mod initialized without crash.'
+          else
+            echo '::error::Server did not reach "Done" before stopping:'
+            tail -60 server-run.log
+            exit 1
+          fi
+          if grep -q 'Encountered an unexpected exception' server-run.log; then
+            echo '::error::Server thread hit an unexpected exception:'
+            grep -B2 -A20 'Encountered an unexpected exception' server-run.log
+            exit 1
+          fi
 
       - name: Upload server logs
         if: always()
@@ -128,6 +144,7 @@ jobs:
         with:
           name: server-smoke-logs-${{ github.sha }}
           path: |
+            server-run.log
             run/logs/latest.log
             run/crash-reports/
           if-no-files-found: ignore

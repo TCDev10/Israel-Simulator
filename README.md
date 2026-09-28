@@ -1175,7 +1175,7 @@ GitHub Actions (`.github/workflows/build.yml`) runs on every push and pull reque
 1. Compiles the mod with the Gradle wrapper on JDK 25 (Temurin).
 2. Verifies the produced `.jar` contains the expanded `neoforge.mods.toml` and the mod classes.
 3. Publishes the `.jar` as a downloadable artifact named `israel-simulator-<version>-<commit>`.
-4. Runs a non-blocking dedicated-server smoke test and uploads logs on failure.
+4. Runs a dedicated-server smoke test that must reach `Done (...)!` without crashing, uploading logs on failure.
 
 A build is not considered complete if compilation, verification, or artifact publication fails.
 
