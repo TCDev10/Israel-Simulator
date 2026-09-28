@@ -1146,3 +1146,48 @@ MORE EXPLORATION
 ```
 
 The objective is to create a world where a player can start by simply exploring a Mediterranean coastline and, hours later, discover a rare structure, obtain an extremely uncommon item, participate in a dynamic public event, encounter an absurd boss, or uncover a secret that they had no reason to expect.
+
+---
+
+## 🔧 Build, CI/CD & Installation
+
+### Build Requirements
+
+```text
+Java:       25 (toolchain provisioned automatically via Foojay resolver)
+Minecraft:  26.2
+Mod loader: NeoForge 26.2 (26.2.0.88)
+Build:      ModDevGradle 2.0.147, Gradle wrapper 9.2.1 (committed)
+```
+
+### Build Instructions
+
+```bash
+./gradlew build
+```
+
+The mod `.jar` is produced at `build/libs/israel_simulator-<version>.jar`.
+
+### CI/CD
+
+GitHub Actions (`.github/workflows/build.yml`) runs on every push and pull request and:
+
+1. Compiles the mod with the Gradle wrapper on JDK 25 (Temurin).
+2. Verifies the produced `.jar` contains the expanded `neoforge.mods.toml` and the mod classes.
+3. Publishes the `.jar` as a downloadable artifact named `israel-simulator-<version>-<commit>`.
+4. Runs a non-blocking dedicated-server smoke test and uploads logs on failure.
+
+A build is not considered complete if compilation, verification, or artifact publication fails.
+
+### Installation
+
+Install [NeoForge 26.2](https://neoforged.net/) and drop the downloaded mod `.jar` into the
+instance's `mods` folder. A prebuilt `.jar` can be downloaded from any successful CI run
+(GitHub → Actions → latest `build` run → Artifacts).
+
+### Currently Implemented vs. Planned
+
+This repository is at the **foundation milestone**: build system, mod metadata, mod
+entrypoints, configuration infrastructure, and the CI/CD pipeline. Gameplay content
+(items, biomes, cities, NPCs, events, bosses, ...) is **not yet implemented**; the
+roadmap lives in [`TODO.md`](TODO.md) and [`PLAN.md`](PLAN.md).
