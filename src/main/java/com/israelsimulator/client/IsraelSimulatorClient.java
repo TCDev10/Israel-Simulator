@@ -1,8 +1,11 @@
-package com.israelsimulator;
+package com.israelsimulator.client;
 
+import com.israelsimulator.IsraelSimulator;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
@@ -13,10 +16,9 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
  * safe to reference client-side code here.
  */
 @Mod(value = IsraelSimulator.MOD_ID, dist = Dist.CLIENT)
+@EventBusSubscriber(modid = IsraelSimulator.MOD_ID, value = Dist.CLIENT)
 public class IsraelSimulatorClient {
-    public IsraelSimulatorClient(ModContainer container) {
-        // Allows NeoForge to create a config screen for this mod's configs.
-        // The config screen is accessed by going to the Mods screen > clicking on the mod > clicking on config.
+    public IsraelSimulatorClient(IEventBus modEventBus, ModContainer container) {
         container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
     }
 

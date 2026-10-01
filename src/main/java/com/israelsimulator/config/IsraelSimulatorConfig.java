@@ -1,4 +1,4 @@
-package com.israelsimulator;
+package com.israelsimulator.config;
 
 import net.neoforged.neoforge.common.ModConfigSpec;
 
@@ -9,8 +9,8 @@ import net.neoforged.neoforge.common.ModConfigSpec;
  * safe defaults and is validated, without declaring gameplay values for systems that do
  * not exist yet. Entries are added together with the systems they configure.</p>
  */
-public class IsraelSimulatorConfig {
-    static final ModConfigSpec SPEC;
+public final class IsraelSimulatorConfig {
+    public static final ModConfigSpec SPEC;
 
     private IsraelSimulatorConfig() {}
 
