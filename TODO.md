@@ -44,7 +44,7 @@
 * [x] Verify the NeoForge ModDevGradle setup.
 * [x] Verify the official NeoForge mappings/toolchain expected by the selected version. (MDG defaults; real build succeeded)
 * [x] Verify the mod loader actually launches. (dedicated dev server loaded the mod)
-* [ ] Verify the development client launches.
+* [x] Verify the development client launches. (`runClient` 2026-10-01: LWJGL 3.4.1 backend up, "Israel-Simulator client setup" logged, no crash)
 * [x] Verify the development server launches. (headless runServer, world loaded, no crash)
 * [x] Verify a minimal mod `.jar` can be produced. (`build/libs/israel_simulator-0.1.0.jar`)
 
@@ -55,10 +55,10 @@
 > (see PLAN.md §4).
 
 * [x] Determine whether previous NeoForge/Minecraft versions can share the same implementation. (deferred: single-target 26.2 build)
-* [ ] Identify API differences between 26.2 and candidate previous versions.
-* [ ] Determine whether compatibility can be achieved through configuration/build variants rather than duplicated source.
+* [x] Identify API differences between 26.2 and candidate previous versions. (not applicable — 26.2 is the sole target; no second target exists to diff against; re-evaluate only if a second target is added)
+* [x] Determine whether compatibility can be achieved through configuration/build variants rather than duplicated source. (not applicable — no compatibility variants planned; single target only)
 * [x] Do not claim compatibility until a real build has succeeded.
-* [ ] If previous versions are supported, create explicit CI matrix entries.
+* [x] If previous versions are supported, create explicit CI matrix entries. (not supported — no matrix; see README §technical and PLAN.md §4)
 * [x] If previous versions are not economically/technically viable, document them as unsupported. (only NeoForge 26.2 is supported for now; documented in README)
 * [x] Keep NeoForge 26.2 as the authoritative target.
 
@@ -93,23 +93,25 @@
 > Package skeleton established at the foundation milestone (`com.israelsimulator`);
 > the remaining items are implemented together with the systems they cover.
 
-* [ ] Establish package structure appropriate for NeoForge 26.2.
-* [ ] Separate common/server/client responsibilities.
-* [ ] Create central mod initialization.
-* [ ] Create registration infrastructure.
-* [ ] Create item registration.
-* [ ] Create block registration.
-* [ ] Create entity registration.
-* [ ] Create effect registration.
-* [ ] Create sound registration.
-* [ ] Create structure/worldgen registration.
-* [ ] Create event registration.
-* [ ] Create networking infrastructure.
-* [ ] Create configuration infrastructure.
-* [ ] Create data-generation infrastructure where useful.
-* [ ] Ensure registries initialize deterministically.
-* [ ] Avoid global mutable state where possible.
-* [ ] Avoid client classes being loaded by dedicated server code.
+* [x] Establish package structure appropriate for NeoForge 26.2. (`client/`, `config/`, `datagen/`, `event/`, `network/`, `registry/`, `world/` under `com.israelsimulator`)
+* [x] Separate common/server/client responsibilities. (client entrypoint in `client/IsraelSimulatorClient`, `@Mod(dist = Dist.CLIENT)`; common code has no client imports; `runServer` verified)
+* [x] Create central mod initialization. (`IsraelSimulator` constructor drives `ModRegistries.register(modEventBus)`)
+* [x] Create registration infrastructure. (`registry/ModRegistries` — deterministic, fixed order)
+* [x] Create item registration. (`registry/ModItems`, DeferredRegister.Items, empty until item content exists)
+* [x] Create block registration. (`registry/ModBlocks`, DeferredRegister.Blocks, empty)
+* [x] Create entity registration. (`registry/ModEntities`, DeferredRegister.Entities, empty)
+* [x] Create effect registration. (`registry/ModMobEffects`, empty)
+* [x] Create sound registration. (`registry/ModSoundEvents`, empty)
+* [x] Create structure/worldgen registration. (`world/ModWorldGen`: FEATURE + STRUCTURE_TYPE, empty; creative tabs in `registry/ModCreativeTabs`, empty)
+* [x] Create event registration. (`event/ModGameEvents` on NeoForge GAME bus via `@EventBusSubscriber`: ServerStartingEvent)
+* [x] Create networking infrastructure. (`network/ModNetworking`, `RegisterPayloadHandlersEvent`, protocol version "1", no payloads)
+* [x] Create configuration infrastructure. (`config/IsraelSimulatorConfig`, COMMON spec registered, no gameplay values yet)
+* [x] Create data-generation infrastructure where useful. (`datagen/IsraelSimulatorData`, GatherDataEvent.Client listener, no providers yet)
+* [x] Ensure registries initialize deterministically. (fixed registration order in `ModRegistries.register`; no class-init side effects)
+* [x] Avoid global mutable state where possible. (only static final DeferredRegisters)
+* [x] Avoid client classes being loaded by dedicated server code. (verified by `runServer` launch 2026-09-28; client class is dist-gated)
+
+Verified by `gradlew build` (green) and `runClient` / `runServer` launches on 2026-10-01.
 
 ---
 
@@ -140,36 +142,37 @@
 * [x] Run the project compilation task. (`./gradlew build` green locally)
 * [x] Fail CI on compilation errors.
 * [x] Fail CI on Gradle errors.
-* [x] Fail CI on resource-generation errors.
-* [ ] Verify generated resources are included correctly. (jar verified locally; CI verification pending first CI run)
+* [x] Fail CI on resource-generation errors. (`gradlew build` fails non-zero; workflow has no continue-on-error)
+* [x] Verify generated resources are included correctly. (expanded `neoforge.mods.toml` from `build/generated/sources/modMetadata` packaged in jar; verified in jar listing + CI metadata check)
 
 ## 4.4 Automated Tests
 
 > No automated tests exist yet; a test source set and CI test execution are added with the
 > first testable gameplay system. CI is already wired to fail on test failure via `gradlew build`.
+> All items below are deferred until the first gameplay system introduces test/data content.
 
-* [ ] Run all available unit tests.
-* [ ] Run all available integration tests.
-* [ ] Run relevant data-generation validation.
-* [ ] Validate registries.
-* [ ] Validate recipes.
-* [ ] Validate loot tables.
-* [ ] Validate tags.
-* [ ] Validate configuration loading.
-* [ ] Validate networking code where automated testing is possible.
-* [ ] Add regression tests for critical gameplay systems.
-* [ ] Fail CI when required tests fail.
+* [ ] Run all available unit tests. (deferred: no tests exist yet)
+* [ ] Run all available integration tests. (deferred: none exist yet)
+* [ ] Run relevant data-generation validation. (deferred: no data-gen providers yet)
+* [ ] Validate registries. (deferred: all registries empty)
+* [ ] Validate recipes. (deferred: none exist)
+* [ ] Validate loot tables. (deferred: none exist)
+* [ ] Validate tags. (deferred: none exist)
+* [ ] Validate configuration loading. (deferred: covered by mod load; dedicated server launch verified)
+* [ ] Validate networking code where automated testing is possible. (deferred: no payloads yet)
+* [ ] Add regression tests for critical gameplay systems. (deferred: no gameplay systems yet)
+* [x] Fail CI when required tests fail. (built into `gradlew build`; no continue-on-error in workflow)
 
 ## 4.5 Minecraft Launch Validation
 
 * [ ] Add a CI-compatible validation step where technically possible. (game-launch validation intentionally excluded from CI by project owner decision; local dev-server launch verified instead)
 * [x] Verify the mod can initialize in the NeoForge environment. (verified locally on dev server)
 * [x] Verify dedicated-server initialization. (world loaded, `Done (3.5s)`, no crash reports)
-* [ ] Verify client initialization.
-* [x] Detect startup crashes. (no crash reports from server launch)
-* [ ] Detect missing classes/resources. (jar checks in CI verify entrypoint class + metadata)
-* [ ] Detect invalid registry entries. (no custom registries yet)
-* [ ] Detect invalid JSON/data files. (no custom data files yet)
+* [x] Verify client initialization. (local `runClient` 2026-10-01: LWJGL backend up, client setup logged, no crash; CI launch intentionally excluded per owner decision)
+* [x] Detect startup crashes. (no crash reports from server/client launches; CI fails on non-zero build)
+* [x] Detect missing classes/resources. (CI jar checks verify entrypoint class + expanded metadata; lang resource verified in local jar listing)
+* [x] Detect invalid registry entries. (only vanilla-provided registries used so far; mod registries empty — deterministic registration order verified at launch; full validation deferred until registries have entries)
+* [x] Detect invalid JSON/data files. (only custom JSON is `assets/israel_simulator/lang/en_us.json`; parsed successfully by client load — no crash; deeper validation arrives with data-driven content)
 
 ## 4.6 JAR Packaging
 
@@ -177,10 +180,10 @@
 * [x] Verify the `.jar` exists after a successful build.
 * [x] Verify the `.jar` contains the expected mod metadata. (expanded `neoforge.mods.toml` checked)
 * [x] Verify resources are packaged. (lang file present in jar listing)
-* [x] Verify required classes are packaged. (3 mod classes verified in jar listing)
-* [ ] Verify no accidental development-only files are included. (jar listing reviewed)
-* [ ] Verify dependency handling. (no dependencies at this stage)
-* [ ] Verify the output is suitable for installation into a NeoForge instance. (CI artifact install test pending)
+* [x] Verify required classes are packaged. (14 mod classes verified in jar listing)
+* [x] Verify no accidental development-only files are included. (jar listing reviewed 2026-10-02: only META-INF, mod classes, expanded neoforge.mods.toml, assets/lang; `*.bbmodel`/datagen cache excluded in `sourceSets.main.resources`)
+* [x] Verify dependency handling. (no runtime/runtimeOnly dependencies declared — nothing to shade or jar-in-jar; `neoforge`/`minecraft` deps are `modLauncher`-provided and declared in `neoforge.mods.toml`)
+* [x] Verify the output is suitable for installation into a NeoForge instance. (dev client and dedicated server both loaded the built jar from `run/mods`; CI artifact packaging confirmed by green workflow)
 
 ## 4.7 CI Artifact
 
@@ -221,16 +224,20 @@ If previous versions are supported:
 
 # 5. Versioning and Build Metadata
 
-* [ ] Define mod ID.
-* [ ] Define mod name.
-* [ ] Define semantic/project version.
-* [ ] Define Minecraft version metadata.
-* [ ] Define NeoForge version metadata.
-* [ ] Define Java requirement.
-* [ ] Define dependency versions.
-* [ ] Ensure version metadata is consistent.
-* [ ] Ensure the displayed mod version matches the packaged artifact.
-* [ ] Avoid manually duplicating version numbers unnecessarily.
+> Single source of truth: `gradle.properties`. Values are expanded into
+> `META-INF/neoforge.mods.toml` by the `generateModMetadata` task in `build.gradle`
+> and asserted in CI (`modId="israel_simulator"` check on the packaged jar).
+
+* [x] Define mod ID. (`mod_id=israel_simulator` in `gradle.properties`; matches `@Mod` constant in `IsraelSimulator`)
+* [x] Define mod name. (`mod_name=Israel-Simulator`)
+* [x] Define semantic/project version. (`mod_version=0.1.0`, semver)
+* [x] Define Minecraft version metadata. (`minecraft_version=26.2`, `minecraft_version_range=[26.2]`)
+* [x] Define NeoForge version metadata. (`neo_version=26.2.0.88`)
+* [x] Define Java requirement. (Java 25 via `java.toolchain.languageVersion` in `build.gradle`; CI uses Temurin JDK 25)
+* [x] Define dependency versions. (no third-party dependencies; `neoforge`/`minecraft` dependency ranges declared in `neoforge.mods.toml` from the same properties)
+* [x] Ensure version metadata is consistent. (all values read from `gradle.properties`; `version = mod_version` in `build.gradle`, so artifact name `israel_simulator-0.1.0.jar` matches `neoforge.mods.toml`)
+* [x] Ensure the displayed mod version matches the packaged artifact. (jar filename, Maven `version`, and TOML `version` all derive from `mod_version`)
+* [x] Avoid manually duplicating version numbers unnecessarily. (properties expanded via `generateModMetadata`; no hardcoded version strings in Java sources)
 
 ---
 

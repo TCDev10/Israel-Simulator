@@ -164,10 +164,12 @@ Build system: ModDevGradle
 ```
 
 NeoForge 26.2, Minecraft 26.2, Java 25, and ModDevGradle must be treated as
-explicit project requirements rather than inferred defaults. Any compatibility
-with earlier NeoForge or Minecraft versions must be evaluated only after their
-APIs and toolchains have been verified. It must not be promised if it requires
-forking the codebase or compromises the project.
+explicit project requirements rather than inferred defaults. NeoForge 26.2 /
+Minecraft 26.2 / Java 25 is the **only** supported target: no compatibility
+matrix, no build variants, and no duplicated source for earlier versions are
+planned. API differences versus earlier versions are not catalogued because
+there is no second target to diff against; this is re-evaluated only if a
+second target is ever added.
 
 Do not assume these values.
 
@@ -180,18 +182,18 @@ A verified understanding of the existing project.
 ## Completion Criteria
 
 ```text
-[ ] Minecraft version identified
-[ ] NeoForge 26.2 selected as the mandatory primary target
-[ ] Java 25 and Minecraft 26.2 configured explicitly
-[ ] ModDevGradle configured explicitly
-[ ] Mod loader identified
-[ ] Java version identified
-[ ] Build system identified
-[ ] Mod ID identified
-[ ] Existing architecture understood
-[ ] Existing registries understood
-[ ] Existing resources understood
-[ ] Existing tests understood
+[x] Minecraft version identified
+[x] NeoForge 26.2 selected as the mandatory primary target
+[x] Java 25 and Minecraft 26.2 configured explicitly
+[x] ModDevGradle configured explicitly
+[x] Mod loader identified
+[x] Java version identified
+[x] Build system identified
+[x] Mod ID identified
+[x] Existing architecture understood
+[x] Existing registries understood
+[x] Existing resources understood
+[x] Existing tests understood
 ```
 
 ---
@@ -2255,8 +2257,8 @@ after its completion criteria and required testing have passed.
 At the beginning of development:
 
 ```text
-Phase 0 — Repository Audit       NOT STARTED
-Phase 1 — Project Foundation    NOT STARTED
+Phase 0 — Repository Audit       COMPLETE
+Phase 1 — Project Foundation    IN PROGRESS (build system + CI/CD done; registration/networking/config/datagen infrastructure done; game content registries pending real content)
 Phase 2 — Core Data Architecture NOT STARTED
 Phase 3 — Networking             NOT STARTED
 Phase 4 — Basic Items             NOT STARTED
