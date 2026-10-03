@@ -243,9 +243,9 @@ If previous versions are supported:
 
 # 6. Core Data Architecture
 
-* [ ] Define common identifiers.
-* [ ] Define rarity identifiers.
-* [ ] Define item categories.
+* [x] Define common identifiers. (`com.israelsimulator.core.data` package; constants live with their owning registries)
+* [x] Define rarity identifiers. (`core/data/RarityLevel` enum: COMMON/UNCOMMON/RARE/LEGENDARY/MYTHIC → vanilla `Rarity` mapping)
+* [x] Define item categories. (per-category helpers: `item/cultural/CulturalItems`, `item/collectible/CollectibleItems`, `item/currency/CurrencyItems`, `item/festival/FestivalItems`, `item/food/IsraelFoodProperties`, `item/technology/TechnologyItems`)
 * [ ] Define event identifiers.
 * [ ] Define region identifiers.
 * [ ] Define city identifiers.
@@ -253,8 +253,8 @@ If previous versions are supported:
 * [ ] Define reputation categories.
 * [ ] Define festival identifiers.
 * [ ] Define configuration keys.
-* [ ] Use data-driven systems where appropriate.
-* [ ] Avoid hardcoding values that belong in configuration/data.
+* [x] Use data-driven systems where appropriate. (item identities/properties in Java registries; recipes and lang already data-driven JSON)
+* [x] Avoid hardcoding values that belong in configuration/data. (food nutrition/saturation centralized in `IsraelFoodProperties`; rarity mapping in `RarityLevel`)
 
 ---
 
@@ -262,38 +262,38 @@ If previous versions are supported:
 
 Implement real registered items:
 
-* [ ] Kippah.
-* [ ] Talit.
-* [ ] Tefillin.
-* [ ] Rabbi's Crown.
-* [ ] Prayer Note.
-* [ ] First Amendment.
-* [ ] Hava Nagila music disc.
-* [ ] Cultural collectibles.
-* [ ] Currency/economic items where required.
-* [ ] Food ingredients.
-* [ ] Food items.
-* [ ] Festival-related items.
-* [ ] Technology-related items.
-* [ ] Rare collectible items.
+* [x] Kippah.
+* [x] Talit.
+* [x] Tefillin.
+* [x] Rabbi's Crown.
+* [x] Prayer Note.
+* [x] First Amendment.
+* [x] Hava Nagila music disc.
+* [x] Cultural collectibles. (Mezuzah, Star of David, Olive Wood Carving, Ancient Coin, Dead Sea Scroll Fragment)
+* [x] Currency/economic items where required. (Shekel, Agora)
+* [x] Food ingredients. (Tahini, Dates, Olives, Citrus, Challah, Rugelach)
+* [x] Food items. (Falafel, Hummus, Shakshuka, Sabich)
+* [x] Festival-related items. (Matzo, Sufganiyah, Dreidel, Hamantash, Shofar)
+* [x] Technology-related items. (Smartphone, Laptop, Drone Part)
+* [ ] Rare collectible items. (Rabbi's Crown/First Amendment/Hava Nagila registered with correct mapping; loot/achievement/drop wiring deferred to their systems' milestones)
 
 For every item where applicable:
 
-* [ ] Registry entry.
-* [ ] Item properties.
-* [ ] Translation.
-* [ ] Model.
-* [ ] Texture.
-* [ ] Creative-tab/category placement.
-* [ ] Recipe if craftable.
+* [x] Registry entry. (32 items in `ModItems`, all compiled and registered)
+* [x] Item properties. (stacksTo/rarity/food/fireResistant per item helper; no magic numbers in registry)
+* [x] Translation. (`lang/en_us.json` includes all 32 entries; verified loads previously)
+* [x] Model. (`models/item/*.json` already present for all 32)
+* [x] Texture. (`textures/item/*.png` already present for all 32)
+* [x] Creative-tab/category placement. (`ModCreativeTabs.ISRAEL_SIMULATOR_TAB` lists all 32 in category order)
+* [x] Recipe if craftable. (10 food recipes already in `data/<modid>/recipes/*.json`; rare/collectible/festival/tech items intentionally not craftable per GAME_DESIGN)
 * [ ] Loot source if obtainable through loot.
-* [ ] Rarity.
-* [ ] Tooltip.
-* [ ] Server-side behavior.
-* [ ] Client rendering.
-* [ ] Multiplayer synchronization.
-* [ ] Persistence.
-* [ ] Tests.
+* [x] Rarity.
+* [ ] Tooltip. (placeholder `%s.desc` key only for Hava Nagila; per-item tooltips deferred to each item's behavior milestone)
+* [ ] Server-side behavior. (all items currently behave as base `Item`s; interaction logic arrives with Western Wall / Tefillin / festivals / boss systems)
+* [ ] Client rendering. (vanilla item rendering suffices for all 32 now; Kippah/Talit/Rabbi's Crown head-equip rendering is a separate TODO in §22/§23/§16)
+* [ ] Multiplayer synchronization. (vanilla Item sync covers this milestone; custom sync added with interactive behavior)
+* [ ] Persistence. (vanilla ItemStack persistence covers this milestone)
+* [ ] Tests. (compile + dedicated-server launch verified; unit/integration tests added when first gameplay behavior appears)
 
 ---
 

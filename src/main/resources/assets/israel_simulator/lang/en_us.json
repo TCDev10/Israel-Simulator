@@ -1,5 +1,47 @@
 {
   "israel_simulator.configuration.title": "Israel-Simulator Configs",
   "israel_simulator.configuration.section.israel_simulator.common.toml": "Israel-Simulator Configs",
-  "israel_simulator.configuration.section.israel_simulator.common.toml.title": "Israel-Simulator Configs"
+  "israel_simulator.configuration.section.israel_simulator.common.toml.title": "Israel-Simulator Configs",
+
+  "itemGroup.israel_simulator": "Israel-Simulator",
+
+  "item.israel_simulator.kippah": "Kippah",
+  "item.israel_simulator.talit": "Talit",
+  "item.israel_simulator.tefillin": "Tefillin",
+  "item.israel_simulator.rabbis_crown": "Rabbi's Crown",
+  "item.israel_simulator.prayer_note": "Prayer Note",
+  "item.israel_simulator.first_amendment": "First Amendment",
+  "item.israel_simulator.hava_nagila_disc": "Music Disc (Hava Nagila)",
+
+  "item.israel_simulator.tahini": "Tahini",
+  "item.israel_simulator.dates": "Dates",
+  "item.israel_simulator.olives": "Olives",
+  "item.israel_simulator.citrus": "Citrus",
+  "item.israel_simulator.challah": "Challah",
+  "item.israel_simulator.rugelach": "Rugelach",
+  "item.israel_simulator.falafel": "Falafel",
+  "item.israel_simulator.hummus": "Hummus",
+  "item.israel_simulator.shakshuka": "Shakshuka",
+  "item.israel_simulator.sabich": "Sabich",
+
+  "item.israel_simulator.mezuzah": "Mezuzah",
+  "item.israel_simulator.star_of_david": "Star of David",
+  "item.israel_simulator.olive_wood_carving": "Olive Wood Carving",
+  "item.israel_simulator.ancient_coin": "Ancient Coin",
+  "item.israel_simulator.dead_sea_scroll_fragment": "Dead Sea Scroll Fragment",
+
+  "item.israel_simulator.shekel": "Shekel",
+  "item.israel_simulator.agora": "Agora",
+
+  "item.israel_simulator.matzo": "Matzo",
+  "item.israel_simulator.sufganiyah": "Sufganiyah",
+  "item.israel_simulator.dreidel": "Dreidel",
+  "item.israel_simulator.hamantash": "Hamantash",
+  "item.israel_simulator.shofar": "Shofar",
+
+  "item.israel_simulator.smartphone": "Smartphone",
+  "item.israel_simulator.laptop": "Laptop",
+  "item.israel_simulator.drone_part": "Drone Part",
+
+  "item.israel_simulator.hava_nagila_disc.desc": "Hava Nagila"
 }
