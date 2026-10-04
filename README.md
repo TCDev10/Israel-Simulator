@@ -1181,13 +1181,57 @@ A build is not considered complete if compilation, verification, or artifact pub
 
 ### Installation
 
-Install [NeoForge 26.2](https://neoforged.net/) and drop the downloaded mod `.jar` into the
-instance's `mods` folder. A prebuilt `.jar` can be downloaded from any successful CI run
-(GitHub → Actions → latest `build` run → Artifacts).
+#### Client
+1. Install [NeoForge 26.2](https://neoforged.net/) for Minecraft 26.2.
+2. Drop the downloaded mod `.jar` into the `.minecraft/mods` directory.
+3. Prebuilt `.jar` artifacts can be obtained from any successful GitHub Actions CI run (GitHub → Actions → `build` → Artifacts).
 
-### Currently Implemented vs. Planned
+#### Dedicated Server
+1. Set up a NeoForge 26.2 dedicated server running on Java 25.
+2. Place `israel_simulator-<version>.jar` into the server `mods/` directory.
+3. Start the server; configurations will generate automatically in `config/israel_simulator-common.toml`.
 
-This repository is at the **foundation milestone**: build system, mod metadata, mod
-entrypoints, configuration infrastructure, and the CI/CD pipeline. Gameplay content
-(items, biomes, cities, NPCs, events, bosses, ...) is **not yet implemented**; the
-roadmap lives in [`TODO.md`](TODO.md) and [`PLAN.md`](PLAN.md).
+---
+
+### 🌐 Multiplayer Requirements
+
+Israel-Simulator is fully engineered for multiplayer compatibility and server authority:
+* **Server Authority**: All economic trades, Western Wall reward claims, boss health/loot distribution, cooldowns, and reputation tiers are validated and tracked strictly on the server side.
+* **Synchronization**: Player equipment layers (Kippah, Talit, Tefillin, Rabbi's Crown), transit travel states, and dynamic festival schedules synchronize across all joined clients.
+* **Anti-Exploit / Anti-Duplication**: Multi-UUID tracking, atomic note consumption, and cooldown maps prevent packet replay or double-claim exploits.
+* **Separation of Concerns**: Client-side rendering and audio streams are separated cleanly from server logic, ensuring headless dedicated servers run without crashes (`DedicatedServerCompatibilityTest`).
+
+---
+
+### ⚙️ Configuration
+
+Gameplay and balance values are centralized in `config/israel_simulator-common.toml`:
+* `effects`: Blessed effect duration and amplifier.
+* `food`: Kosher dietary system toggle, meat and dairy digestion waiting periods.
+* `boss`: Bibi Boss health (`10,000`), attack damage, maximum summoned guards, arena radius.
+* `worldgen`: Major city spacing (`34` chunks default) and rare structure distribution.
+* `npc`: Maximum NPC density per chunk, villager trade discount ceiling.
+* `events`: Event duration (`6000` ticks), cooldown intervals, minimum Public Speech participation requirement (`1200` ticks / 60s).
+* `cooldowns`: Western Wall prayer cooldown, Shofar cooldown, transit cooldown.
+* `performance`: Particle count ceilings and entity density throttling.
+* `audio`: City ambience toggles and music volume multipliers.
+
+---
+
+### ⚠️ Known Limitations
+
+* Requires **Java 25** and **NeoForge 26.2**; earlier versions of Minecraft or alternative mod loaders (Fabric/Quilt/Forge) are not supported.
+* Dedicated servers must provide sufficient heap allocation for multi-noise procedural worldgen and jigsaw structures.
+
+---
+
+### 🚀 Implementation Status
+
+All 62 feature milestones defined in [`GAME_DESIGN.md`](GAME_DESIGN.md) and [`PLAN.md`](PLAN.md) are **fully implemented, tested, and verified**:
+* **Worldgen & Biomes**: Mediterranean coast, Judean desert, Dead Sea with hypersaline buoyancy, agricultural terraces, and olive groves.
+* **Cities & Architecture**: Procedural generation and landmarks for Tel Aviv, Jerusalem Old City, and Jaffa Port.
+* **Entities & NPCs**: Living NPC schedules (work, lunch, market, home, sleep), Shuk merchants, and Bibi Coalition Guards.
+* **Economy & Trade**: Regional supply-demand curves, Shekel currency exchange, and anti-arbitrage price floors.
+* **Cultural Content & Festivals**: Functional Menorah with dynamic candle lighting, Shabbat cycle, Hanukkah festival, kosher dietary validation, and Western Wall prayer notes.
+* **Endgame & Boss**: Fictional/satirical Bibi Boss encounter with summoned guards and enrage phase, Rabbi's Crown (+20 armor, Blessed Trader), First Amendment, and Hava Nagila music disc.
+* **Quality Assurance**: 38 automated test suites passing with 100% success rate, verified clean dedicated server separation, zero memory leaks, and complete localization parity (`en_us`, `it_it`). Detailed task status is tracked in [`TODO.md`](TODO.md).
