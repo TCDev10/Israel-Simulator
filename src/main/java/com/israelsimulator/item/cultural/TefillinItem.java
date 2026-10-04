@@ -60,6 +60,16 @@ public class TefillinItem extends Item {
         TefillinManager.clearCooldown(playerId);
     }
 
+    /**
+     * Checks if the given entity is currently wearing Tefillin in their head slot.
+     */
+    public static boolean isWearingTefillin(net.minecraft.world.entity.LivingEntity entity) {
+        if (entity == null) {
+            return false;
+        }
+        return entity.getItemBySlot(net.minecraft.world.entity.EquipmentSlot.HEAD).getItem() instanceof TefillinItem;
+    }
+
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         boolean hasKippah = KippahItem.isWearingKippah(player);

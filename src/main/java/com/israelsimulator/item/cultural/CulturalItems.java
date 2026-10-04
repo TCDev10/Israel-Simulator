@@ -30,6 +30,9 @@ public final class CulturalItems {
     public static final ResourceKey<EquipmentAsset> TALIT_ASSET =
             ResourceKey.create(EquipmentAssets.ROOT_ID, Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "talit"));
 
+    public static final ResourceKey<EquipmentAsset> TEFILLIN_ASSET =
+            ResourceKey.create(EquipmentAssets.ROOT_ID, Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "tefillin"));
+
     public static final ResourceKey<EquipmentAsset> RABBIS_CROWN_ASSET =
             ResourceKey.create(EquipmentAssets.ROOT_ID, Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "rabbis_crown"));
 
@@ -66,9 +69,18 @@ public final class CulturalItems {
                 .component(DataComponents.EQUIPPABLE, equippable);
     }
 
-    /** Tefillin — contextual interaction item, RARE, unstackable. */
+    /** Tefillin — contextual interaction and wearable head item, RARE, unstackable, swappable. */
     public static Item.Properties tefillin(Item.Properties p) {
-        return p.stacksTo(1).rarity(RarityLevel.RARE.vanilla());
+        Equippable equippable = Equippable.builder(EquipmentSlot.HEAD)
+                .setEquipSound(SoundEvents.ARMOR_EQUIP_LEATHER)
+                .setAsset(TEFILLIN_ASSET)
+                .setSwappable(true)
+                .setDamageOnHurt(false)
+                .build();
+
+        return p.stacksTo(1)
+                .rarity(RarityLevel.RARE.vanilla())
+                .component(DataComponents.EQUIPPABLE, equippable);
     }
 
     /** Rabbi's Crown — MYTHIC head item, +20 Armor, unstackable, fire-resistant, swappable. */
