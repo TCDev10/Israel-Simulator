@@ -17,7 +17,7 @@ class StructureFrameworkTest {
     void testStructureKeys() {
         List<ResourceKey<Structure>> structures = ModStructures.allStructures();
         assertNotNull(structures);
-        assertEquals(10, structures.size(), "Should register 10 structures in framework");
+        assertEquals(11, structures.size(), "Should register 11 structures in framework");
 
         for (ResourceKey<Structure> structure : structures) {
             assertEquals("israel_simulator", structure.identifier().getNamespace());
@@ -34,6 +34,7 @@ class StructureFrameworkTest {
                 "dead_sea_resort",
                 "desert_ruins",
                 "synagogue",
+                "synagogue_ark",
                 "tel_aviv_tech_office",
                 "tel_aviv_apartment",
                 "ein_gedi_oasis",

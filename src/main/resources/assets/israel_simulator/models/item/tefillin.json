@@ -1,1 +1,89 @@
-{"textures":{"layer0":"israel_simulator:item/tefillin"},"parent":"minecraft:item/generated"}
+{
+  "credit": "Israel Simulator - Tefillin 3D Model",
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "israel_simulator:item/tefillin",
+    "particle": "israel_simulator:item/tefillin"
+  },
+  "elements": [
+    {
+      "name": "bayit_base",
+      "from": [5, 0, 5],
+      "to": [11, 2, 11],
+      "faces": {
+        "north": {"uv": [5, 4, 11, 6], "texture": "#layer0"},
+        "east": {"uv": [5, 4, 11, 6], "texture": "#layer0"},
+        "south": {"uv": [5, 10, 11, 12], "texture": "#layer0"},
+        "west": {"uv": [5, 4, 11, 6], "texture": "#layer0"},
+        "up": {"uv": [5, 5, 11, 11], "texture": "#layer0"},
+        "down": {"uv": [5, 5, 11, 11], "texture": "#layer0"}
+      }
+    },
+    {
+      "name": "bayit_box",
+      "from": [6, 2, 6],
+      "to": [10, 6, 10],
+      "faces": {
+        "north": {"uv": [6, 6, 10, 10], "texture": "#layer0"},
+        "east": {"uv": [6, 6, 10, 10], "texture": "#layer0"},
+        "south": {"uv": [6, 6, 10, 10], "texture": "#layer0"},
+        "west": {"uv": [6, 6, 10, 10], "texture": "#layer0"},
+        "up": {"uv": [6, 6, 10, 10], "texture": "#layer0"},
+        "down": {"uv": [6, 6, 10, 10], "texture": "#layer0"}
+      }
+    },
+    {
+      "name": "strap_loop",
+      "from": [4, 0, 7],
+      "to": [12, 1, 9],
+      "faces": {
+        "north": {"uv": [4, 7, 12, 8], "texture": "#layer0"},
+        "east": {"uv": [7, 7, 9, 8], "texture": "#layer0"},
+        "south": {"uv": [4, 7, 12, 8], "texture": "#layer0"},
+        "west": {"uv": [7, 7, 9, 8], "texture": "#layer0"},
+        "up": {"uv": [4, 7, 12, 9], "texture": "#layer0"},
+        "down": {"uv": [4, 7, 12, 9], "texture": "#layer0"}
+      }
+    }
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [60, 45, 0],
+      "translation": [0, 2, 0],
+      "scale": [0.65, 0.65, 0.65]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [60, 45, 0],
+      "translation": [0, 2, 0],
+      "scale": [0.65, 0.65, 0.65]
+    },
+    "firstperson_righthand": {
+      "rotation": [0, 45, 0],
+      "translation": [0, 2, 0],
+      "scale": [0.75, 0.75, 0.75]
+    },
+    "firstperson_lefthand": {
+      "rotation": [0, 225, 0],
+      "translation": [0, 2, 0],
+      "scale": [0.75, 0.75, 0.75]
+    },
+    "ground": {
+      "translation": [0, 2, 0],
+      "scale": [0.7, 0.7, 0.7]
+    },
+    "gui": {
+      "rotation": [30, 225, 0],
+      "translation": [0, 2, 0],
+      "scale": [1.1, 1.1, 1.1]
+    },
+    "head": {
+      "translation": [0, 13, -7.5],
+      "scale": [0.85, 0.85, 0.85]
+    },
+    "fixed": {
+      "rotation": [-90, 0, 0],
+      "translation": [0, 0, -2],
+      "scale": [0.9, 0.9, 0.9]
+    }
+  }
+}

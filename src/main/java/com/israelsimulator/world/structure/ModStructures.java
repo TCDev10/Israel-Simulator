@@ -23,6 +23,8 @@ public final class ModStructures {
             structureKey("desert_ruins");
     public static final ResourceKey<Structure> SYNAGOGUE =
             structureKey("synagogue");
+    public static final ResourceKey<Structure> GREAT_SYNAGOGUE =
+            structureKey("great_synagogue");
     public static final ResourceKey<Structure> TEL_AVIV_CITY =
             structureKey("tel_aviv_city");
     public static final ResourceKey<Structure> EIN_GEDI_OASIS =
@@ -45,6 +47,8 @@ public final class ModStructures {
             structureSetKey("desert_ruins");
     public static final ResourceKey<StructureSet> SYNAGOGUES =
             structureSetKey("synagogues");
+    public static final ResourceKey<StructureSet> GREAT_SYNAGOGUES =
+            structureSetKey("great_synagogues");
     public static final ResourceKey<StructureSet> TEL_AVIV_CITIES =
             structureSetKey("tel_aviv_cities");
     public static final ResourceKey<StructureSet> EIN_GEDI_OASES =
@@ -66,6 +70,7 @@ public final class ModStructures {
             DEAD_SEA_RESORT,
             DESERT_RUINS,
             SYNAGOGUE,
+            GREAT_SYNAGOGUE,
             TEL_AVIV_CITY,
             EIN_GEDI_OASIS,
             JAFFA_PORT,

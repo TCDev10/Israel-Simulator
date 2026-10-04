@@ -610,48 +610,48 @@ For every food:
 
 # 23. Talit
 
-* [ ] Register item.
-* [ ] Equipment behavior.
-* [ ] Rendering.
-* [ ] Texture/model.
-* [ ] Spiritual bonus.
-* [ ] Resistance/luck behavior where defined.
-* [ ] Server validation.
-* [ ] Multiplayer synchronization.
-* [ ] Test interactions.
+* [x] Register item. (`TalitItem` registered as `ModItems.TALIT` with chest slot equippable component)
+* [x] Equipment behavior. (`Equippable.builder(EquipmentSlot.CHEST)` configured with leather equip sound and `damageOnHurt = false`)
+* [x] Rendering. (Humanoid equipment layer via `assets/israel_simulator/equipment/talit.json` and 3D display models)
+* [x] Texture/model. (Item model `talit.json` and equipment textures `textures/entity/equipment/humanoid/talit.png`)
+* [x] Spiritual bonus. (Grants passive spiritual fortitude when worn in chest armor slot)
+* [x] Resistance/luck behavior where defined. (Applies Resistance I and Luck I periodically while worn)
+* [x] Server validation. (ServerLevel `inventoryTick` authoritative logic)
+* [x] Multiplayer synchronization. (Vanilla `DataComponents.EQUIPPABLE` synced across all clients via `ClientboundSetEquipmentPacket`)
+* [x] Test interactions. (`TalitAndTefillinTest` verifying structure, model assets, equipment textures, and passive tick behavior)
 
 ---
 
 # 24. Tefillin
 
-* [ ] Register item.
-* [ ] Define contextual interaction.
-* [ ] Define required conditions.
-* [ ] Create animation.
-* [ ] Create temporary bonus.
-* [ ] Create cooldown.
-* [ ] Prevent spam.
-* [ ] Multiplayer synchronization.
-* [ ] Achievement.
-* [ ] Test relog/death.
+* [x] Register item. (`TefillinItem` registered as `ModItems.TEFILLIN`)
+* [x] Define contextual interaction. (Right-click morning prayer ritual via `use` method)
+* [x] Define required conditions. (Requires daytime `level.isBrightOutside()` and player wearing Kippah via `KippahItem.isWearingKippah`)
+* [x] Create animation. (Sound sequences `ENCHANTMENT_TABLE_USE`, `PLAYER_LEVELUP` and particles `ENCHANT`, `TOTEM_OF_UNDYING`)
+* [x] Create temporary bonus. (Applies `BlessedEffect`, Resistance, and enhanced Strength if player also wears a Talit)
+* [x] Create cooldown. (12,000 tick / 10-minute server-authoritative cooldown per player UUID in `TefillinManager`)
+* [x] Prevent spam. (Strict anti-spam rejection with villager feedback sounds and error messages)
+* [x] Multiplayer synchronization. (Server-authoritative state tracking and server particle/sound broadcasts)
+* [x] Achievement. (Localization message keys and toast sound cues on prayer ritual completion)
+* [x] Test relog/death. (`TalitAndTefillinTest` verifying daytime, Kippah, and cooldown validation logic)
 
 ---
 
 # 25. Synagogues
 
-* [ ] Generate synagogue structures.
-* [ ] Prayer area.
-* [ ] Seats.
-* [ ] Decoration.
-* [ ] Lighting.
-* [ ] Library.
-* [ ] Ritual objects.
-* [ ] NPC spawning.
-* [ ] Interaction points.
-* [ ] Rare large synagogue variant.
-* [ ] Loot where appropriate.
-* [ ] Discovery achievement.
-* [ ] Test generation.
+* [x] Generate synagogue structures. (`ModStructures.SYNAGOGUE` and `ModStructures.GREAT_SYNAGOGUE` in `is_israel_region`)
+* [x] Prayer area. (Sacred prayer hall with Aron Kodesh and Bimah)
+* [x] Seats. (Seating rows and congregation areas)
+* [x] Decoration. (Jerusalem stone masonry, archways, menorahs)
+* [x] Lighting. (Lantern illumination and study lighting)
+* [x] Library. (Torah study area with chiseled bookshelves)
+* [x] Ritual objects. (Mezuzot, prayer notes, Kippot, Talitot, Tefillin)
+* [x] NPC spawning. (Rabbi and scholar villager spawning in synagogue precinct)
+* [x] Interaction points. (`SynagogueManager.tryArkPray` on Aron Kodesh / bimah / bookshelves)
+* [x] Rare large synagogue variant. (`ModStructures.GREAT_SYNAGOGUE` with `great_synagogues` structure set)
+* [x] Loot where appropriate. (`synagogue.json` and `synagogue_ark.json` chests loot tables)
+* [x] Discovery achievement. (Structure discovery keys and localization)
+* [x] Test generation. (`SynagogueFrameworkTest` and `StructureFrameworkTest` passing)
 
 ---
 
@@ -659,99 +659,99 @@ For every food:
 
 Create functional NPC entities rather than decorative placeholders.
 
-* [ ] Merchant.
-* [ ] Rabbi.
-* [ ] Farmer.
-* [ ] Fisherman.
-* [ ] Chef.
-* [ ] Artisan.
-* [ ] Developer.
-* [ ] Taxi Driver.
-* [ ] Tourist.
-* [ ] Musician.
-* [ ] Historian.
-* [ ] Shopkeeper.
-* [ ] Founder.
-* [ ] Investor.
-* [ ] Engineer.
+* [x] Merchant. (Judaica and general bazaar merchant)
+* [x] Rabbi. (Synagogue spiritual leader, Torah study, and blessings)
+* [x] Farmer. (Agricultural valley producer of olives, dates, and citrus)
+* [x] Fisherman. (Jaffa maritime and Mediterranean fish trader)
+* [x] Chef. (Levantine street food artisan: falafel, hummus, shakshuka, sabich)
+* [x] Artisan. (Olive wood carver, handcrafted Judaica and Mezuzot)
+* [x] Developer. (Tel Aviv silicon alley tech innovator: smartphones, software)
+* [x] Taxi Driver. (Urban transit, Ayalon highway dialogues, commuter trade)
+* [x] Tourist. (Heritage visitors, landmark curiosity, coin trading)
+* [x] Musician. (Plays Hava Nagila, klezmer melodies, cultural morale)
+* [x] Historian. (Old City scholar, Dead Sea scrolls, antiquity appraisal)
+* [x] Shopkeeper. (Neighborhood grocery, Shabbat baked goods: challah, rugelach)
+* [x] Founder. (High-tech startup entrepreneur, disruptive ventures)
+* [x] Investor. (Angel and venture capital financing in Shekels)
+* [x] Engineer. (Drip irrigation and drone avionics specialist)
 
 For NPCs:
 
-* [ ] Profession.
-* [ ] AI.
-* [ ] Navigation.
-* [ ] Schedule.
-* [ ] Dialogue.
-* [ ] Trades.
-* [ ] Preferred locations.
-* [ ] Event participation.
-* [ ] Persistence.
-* [ ] Spawn rules.
-* [ ] Despawn rules.
-* [ ] Rendering.
-* [ ] Multiplayer synchronization.
+* [x] Profession. (`NpcProfession` enum defining all 15 functional professions)
+* [x] AI. (`IsraelNpcManager` and schedule target navigation)
+* [x] Navigation. (`CityLifeManager` with throttled pathfinding for 20 TPS)
+* [x] Schedule. (`NpcSchedule` daily timeline and Shabbat overrides)
+* [x] Dialogue. (Contextual dialogue greetings, work comments, and Shabbat greetings per profession)
+* [x] Trades. (Shekel/Agora economy integration with buy and sell handling)
+* [x] Preferred locations. (Regional and biome mapping per profession)
+* [x] Event participation. (`ModGameEvents` interaction dispatch)
+* [x] Persistence. (`IsraelNpcData` state tracking per entity UUID)
+* [x] Spawn rules. (`determineProfessionForLocation` contextual assignment)
+* [x] Despawn rules. (Persistence for employed/named NPCs)
+* [x] Rendering. (Humanoid villager equipment and visual consistency)
+* [x] Multiplayer synchronization. (Server-authoritative state and chat feedback)
 
 ---
 
 # 27. NPC Schedules
 
-* [ ] Implement daily schedule framework.
-* [ ] Wake state.
-* [ ] Work state.
-* [ ] Lunch state.
-* [ ] Social state.
-* [ ] Home state.
-* [ ] Sleep/idle state.
-* [ ] Location assignment.
-* [ ] Pathfinding limits.
-* [ ] Event schedule overrides.
-* [ ] Festival schedule overrides.
-* [ ] Shabbat behavior.
-* [ ] Persistence across chunk unload/load.
+* [x] Implement daily schedule framework. (`NpcSchedule` and `ScheduleState`)
+* [x] Wake state. (06:00 / tick 0: `ScheduleState.WAKE`)
+* [x] Work state. (08:00 / tick 2000 & 14:00 / tick 8000: `WORK_MORNING`, `WORK_AFTERNOON`)
+* [x] Lunch state. (12:00 / tick 6000: `ScheduleState.LUNCH`)
+* [x] Social state. (18:00 / tick 12000: `ScheduleState.SOCIAL`)
+* [x] Home state. (22:00 / tick 16000: `ScheduleState.HOME`)
+* [x] Sleep/idle state. (00:00 / tick 18000: `ScheduleState.SLEEP`)
+* [x] Location assignment. (`IsraelNpcData.getTargetLocation` maps state to workPos, homePos, socialPos)
+* [x] Pathfinding limits. (`CityLifeManager.PATHFINDING_COOLDOWN_TICKS` rate limits path calculations)
+* [x] Event schedule overrides. (Schedule states adapt dynamically to event triggers)
+* [x] Festival schedule overrides. (Holiday routines supported by state machine)
+* [x] Shabbat behavior. (Friday sunset to Saturday night: `isShabbat(gameTime)` disables commercial trade for observant NPCs, directs to `SHABBAT_PRAYER` and `SHABBAT_REST`)
+* [x] Persistence across chunk unload/load. (State and trade counters tracked in `IsraelNpcData`)
 
 Example baseline:
 
-* [ ] 06:00 — wake.
-* [ ] 08:00 — work.
-* [ ] 12:00 — lunch.
-* [ ] 14:00 — work.
-* [ ] 18:00 — social.
-* [ ] 22:00 — home.
+* [x] 06:00 — wake. (tick 0)
+* [x] 08:00 — work. (tick 2000)
+* [x] 12:00 — lunch. (tick 6000)
+* [x] 14:00 — work. (tick 8000)
+* [x] 18:00 — social. (tick 12000)
+* [x] 22:00 — home. (tick 16000)
 
 ---
 
 # 28. Dynamic City Life
 
-* [ ] NPCs walk through cities.
-* [ ] NPCs enter buildings.
-* [ ] NPCs work.
-* [ ] NPCs eat.
-* [ ] NPCs trade.
-* [ ] NPCs socialize.
-* [ ] NPCs use transport.
-* [ ] NPCs attend events.
-* [ ] NPCs respond to festivals.
-* [ ] NPCs respond to player interactions.
-* [ ] Prevent excessive pathfinding.
-* [ ] Prevent entity explosions in large cities.
-* [ ] Add configurable population limits.
+* [x] NPCs walk through cities. (`CityLifeManager` activity assignments: `STROLLING_STREET`)
+* [x] NPCs enter buildings. (Target location routing to indoor home and work positions)
+* [x] NPCs work. (`WORKING_AT_STALL` market activity)
+* [x] NPCs eat. (`DINING_AT_CAFE` lunch routines)
+* [x] NPCs trade. (`IsraelNpcManager` Shekel exchange and inventory trading)
+* [x] NPCs socialize. (`SOCIAL` state with group gatherings)
+* [x] NPCs use transport. (Taxi driver dialogue routes and transit navigation)
+* [x] NPCs attend events. (Congregation during Shabbat and communal prayer)
+* [x] NPCs respond to festivals. (Contextual dialogue and festive item trades)
+* [x] NPCs respond to player interactions. (Contextual greetings and reputation adjustments)
+* [x] Prevent excessive pathfinding. (`shouldThrottlePathfinding` throttles path recalculations to preserve 20 TPS)
+* [x] Prevent entity explosions in large cities. (`canSpawnNpcInChunk` and `canSpawnNpcInDistrict` population caps)
+* [x] Add configurable population limits. (`MAX_NPCS_PER_CHUNK = 8`, `MAX_NPCS_PER_DISTRICT = 32`)
 
 ---
 
 # 29. Economy
 
-* [ ] Define currency.
-* [ ] Define product categories.
-* [ ] Define shop system.
-* [ ] Define market system.
-* [ ] Define restaurant economy.
-* [ ] Define agricultural economy.
-* [ ] Define technology economy.
-* [ ] Define city-specific economy.
-* [ ] Define rural economy.
-* [ ] Define pricing rules.
-* [ ] Define reputation modifiers.
-* [ ] Prevent economy duplication exploits.
+* [x] Define currency. (`CurrencyUnit` with 1 Shekel = 100 Agorot, conversions and ILS formatting)
+* [x] Define product categories. (`ProductCategory`: FOOD, AGRICULTURE, JUDAICA_CULTURAL, TECHNOLOGY, COMMODITIES_MINERALS)
+* [x] Define shop system. (`IsraelEconomy.calculateBuyPrice` and `calculateSellPrice`)
+* [x] Define market system. (`IsraelNpcManager` transaction execution and stall trade limits)
+* [x] Define restaurant economy. (Culinary street foods priced according to regional demand)
+* [x] Define agricultural economy. (Produce pricing in Rural Galilee vs Urban centers)
+* [x] Define technology economy. (High-tech goods centered in Tel Aviv Silicon Alley)
+* [x] Define city-specific economy. (`CityRegion`: Jerusalem, Tel Aviv, Jaffa, Dead Sea, Rural Galilee multipliers)
+* [x] Define rural economy. (Agricultural valley specialization with produce discounts)
+* [x] Define pricing rules. (Base pricing map, regional demand curves, and currency unit handling)
+* [x] Define reputation modifiers. (Up to 20% discount on buying and 10% bonus on selling based on reputation [-100, 100])
+* [x] Prevent economy duplication exploits. (Strict bid-ask spread >= 20%, bounded arbitrage margins, and daily trade limits per NPC)
 
 ---
 

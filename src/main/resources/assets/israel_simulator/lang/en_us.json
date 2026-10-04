@@ -9,7 +9,11 @@
   "item.israel_simulator.kippah.desc": "Traditional cultural head covering.",
   "item.israel_simulator.kippah.requirement": "Required for prayer at the Western Wall.",
   "item.israel_simulator.talit": "Talit",
+  "item.israel_simulator.talit.desc": "Traditional Jewish prayer shawl with tzitzit fringes.",
+  "item.israel_simulator.talit.bonus": "Provides spiritual resistance and luck when worn.",
   "item.israel_simulator.tefillin": "Tefillin",
+  "item.israel_simulator.tefillin.desc": "Traditional black leather prayer phylacteries.",
+  "item.israel_simulator.tefillin.requirement": "Bound during daylight while wearing a Kippah.",
   "item.israel_simulator.rabbis_crown": "Rabbi's Crown",
   "item.israel_simulator.prayer_note": "Prayer Note",
   "item.israel_simulator.first_amendment": "First Amendment",
@@ -76,6 +80,7 @@
   "structure.israel_simulator.dead_sea_resort": "Dead Sea Resort",
   "structure.israel_simulator.desert_ruins": "Desert Ruins",
   "structure.israel_simulator.synagogue": "Synagogue",
+  "structure.israel_simulator.great_synagogue": "Great Synagogue",
   "structure.israel_simulator.tel_aviv_city": "Tel Aviv City",
   "structure.israel_simulator.ein_gedi_oasis": "Ein Gedi Oasis",
   "structure.israel_simulator.jaffa_port": "Ancient Port of Jaffa",
@@ -85,5 +90,16 @@
   "message.israel_simulator.western_wall_need_kippah": "You must cover your head (wear a Kippah) before approaching the Western Wall.",
   "message.israel_simulator.western_wall_need_prayer_note": "Hold a Prayer Note in your hand to place a prayer into the Western Wall.",
   "message.israel_simulator.western_wall_cooldown": "You have already placed a prayer note recently. Please return later.",
-  "message.israel_simulator.western_wall_blessed": "Your prayer has been placed into the sacred stones. You have been blessed!"
+  "message.israel_simulator.western_wall_blessed": "Your prayer has been placed into the sacred stones. You have been blessed!",
+
+  "message.israel_simulator.tefillin_need_kippah": "You must wear a Kippah on your head to bind Tefillin.",
+  "message.israel_simulator.tefillin_not_daytime": "Tefillin is traditionally bound during morning and daytime hours.",
+  "message.israel_simulator.tefillin_cooldown": "You have recently concluded Tefillin prayer. Allow time before binding again.",
+  "message.israel_simulator.tefillin_blessed": "You bind the Tefillin for morning prayer, receiving spiritual fortitude.",
+  "message.israel_simulator.tefillin_talit_complete": "With Kippah, Talit, and Tefillin united, you receive a full morning prayer blessing!",
+
+  "message.israel_simulator.ark_need_kippah": "Cover your head with a Kippah before prayer at the Aron Kodesh.",
+  "message.israel_simulator.ark_cooldown": "You have reflected at the holy ark recently. Take time for contemplation.",
+  "message.israel_simulator.ark_prayer_complete": "You pray before the Aron Kodesh, feeling peace and clarity.",
+  "message.israel_simulator.ark_offering_complete": "You placed an offering before the Aron Kodesh. A rich blessing is bestowed upon you!"
 }

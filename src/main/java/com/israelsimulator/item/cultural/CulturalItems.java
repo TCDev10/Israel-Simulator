@@ -23,6 +23,9 @@ public final class CulturalItems {
     public static final ResourceKey<EquipmentAsset> KIPPAH_ASSET =
             ResourceKey.create(EquipmentAssets.ROOT_ID, Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "kippah"));
 
+    public static final ResourceKey<EquipmentAsset> TALIT_ASSET =
+            ResourceKey.create(EquipmentAssets.ROOT_ID, Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "talit"));
+
     private CulturalItems() {}
 
     /** Kippah — wearable head item, UNCOMMON, unstackable, swappable, no damage on hurt. */
@@ -39,9 +42,18 @@ public final class CulturalItems {
                 .component(DataComponents.EQUIPPABLE, equippable);
     }
 
-    /** Talit — wearable cultural item, RARE, unstackable. */
+    /** Talit — wearable cultural chest item, RARE, unstackable, swappable, no damage on hurt. */
     public static Item.Properties talit(Item.Properties p) {
-        return p.stacksTo(1).rarity(RarityLevel.RARE.vanilla());
+        Equippable equippable = Equippable.builder(EquipmentSlot.CHEST)
+                .setEquipSound(SoundEvents.ARMOR_EQUIP_LEATHER)
+                .setAsset(TALIT_ASSET)
+                .setSwappable(true)
+                .setDamageOnHurt(false)
+                .build();
+
+        return p.stacksTo(1)
+                .rarity(RarityLevel.RARE.vanilla())
+                .component(DataComponents.EQUIPPABLE, equippable);
     }
 
     /** Tefillin — contextual interaction item, RARE, unstackable. */

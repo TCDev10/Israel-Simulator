@@ -48,7 +48,8 @@ public final class ModGameEvents {
                     || com.israelsimulator.city.telaviv.TelAvivTrades.tryTrade(player, hand, villager)
                     || com.israelsimulator.city.jaffa.JaffaTrades.tryTrade(player, hand, villager)
                     || com.israelsimulator.city.jerusalem.JerusalemTrades.tryTrade(player, hand, villager)
-                    || com.israelsimulator.religion.RuralSynagogueTrades.tryInteract(player, hand, villager)) {
+                    || com.israelsimulator.religion.RuralSynagogueTrades.tryInteract(player, hand, villager)
+                    || com.israelsimulator.npc.IsraelNpcManager.handleNpcInteraction(player, hand, villager)) {
                 event.setCanceled(true);
             }
         }
@@ -60,7 +61,13 @@ public final class ModGameEvents {
             if (com.israelsimulator.westernwall.WesternWallManager.tryPray(event.getEntity(), event.getHand(), event.getPos())) {
                 event.setCanceled(true);
                 event.setCancellationResult(net.minecraft.world.InteractionResult.SUCCESS);
+                return;
             }
+        }
+
+        if (com.israelsimulator.synagogue.SynagogueManager.tryArkPray(event.getEntity(), event.getHand(), event.getPos())) {
+            event.setCanceled(true);
+            event.setCancellationResult(net.minecraft.world.InteractionResult.SUCCESS);
         }
     }
 }

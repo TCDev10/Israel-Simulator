@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "israel_simulator:talit"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "israel_simulator:talit"
+      }
+    ]
+  }
+}
