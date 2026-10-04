@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:wheat",
+    "minecraft:sugar",
+    "israel_simulator:dates"
+  ],
+  "result": {
+    "id": "israel_simulator:hamantash"
+  }
+}

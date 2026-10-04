@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:wheat_seeds",
+    "minecraft:wheat_seeds",
+    "minecraft:bowl"
+  ],
+  "result": {
+    "id": "israel_simulator:tahini"
+  }
+}

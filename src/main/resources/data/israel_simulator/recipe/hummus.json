@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "israel_simulator:tahini",
+    "minecraft:beetroot",
+    "minecraft:bowl"
+  ],
+  "result": {
+    "id": "israel_simulator:hummus"
+  }
+}

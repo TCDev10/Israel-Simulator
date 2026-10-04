@@ -1,25 +1,26 @@
 package com.israelsimulator.item.festival;
 
 import com.israelsimulator.core.data.RarityLevel;
+import com.israelsimulator.item.food.IsraelFoodProperties;
 import net.minecraft.world.item.Item;
 
 /**
  * Festival-themed items (GAME_DESIGN.md §36–40).
  *
- * <p>Edible entries (Matzo, Sufganiyah, Hamantash) are plain collectibles here;
- * nutrition is provided only for items also listed in the food system to keep the
- * two databases in sync. Interactive items (Dreidel spin, Shofar sound) are wired
- * in the festival milestone.</p>
+ * <p>Matzo, Sufganiyah, and Hamantash use the nutrition already defined in
+ * {@link IsraelFoodProperties}. Dreidel and Shofar stay non-food.</p>
  */
 public final class FestivalItems {
     private FestivalItems() {}
 
     public static Item.Properties matzo(Item.Properties p) {
-        return p.stacksTo(16).rarity(RarityLevel.COMMON.vanilla());
+        return p.food(IsraelFoodProperties.MATZO, IsraelFoodProperties.MATZO_CONSUMABLE)
+                .rarity(RarityLevel.COMMON.vanilla());
     }
 
     public static Item.Properties sufganiyah(Item.Properties p) {
-        return p.stacksTo(16).rarity(RarityLevel.COMMON.vanilla());
+        return p.food(IsraelFoodProperties.SUFGANIYAH, IsraelFoodProperties.SUFGANIYAH_CONSUMABLE)
+                .rarity(RarityLevel.COMMON.vanilla());
     }
 
     public static Item.Properties dreidel(Item.Properties p) {
@@ -27,7 +28,8 @@ public final class FestivalItems {
     }
 
     public static Item.Properties hamantash(Item.Properties p) {
-        return p.stacksTo(16).rarity(RarityLevel.COMMON.vanilla());
+        return p.food(IsraelFoodProperties.HAMANTASH, IsraelFoodProperties.HAMANTASH_CONSUMABLE)
+                .rarity(RarityLevel.COMMON.vanilla());
     }
 
     public static Item.Properties shofar(Item.Properties p) {

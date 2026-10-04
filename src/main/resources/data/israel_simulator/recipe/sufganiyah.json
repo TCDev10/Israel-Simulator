@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:wheat",
+    "minecraft:sugar",
+    "minecraft:sweet_berries"
+  ],
+  "result": {
+    "id": "israel_simulator:sufganiyah"
+  }
+}
