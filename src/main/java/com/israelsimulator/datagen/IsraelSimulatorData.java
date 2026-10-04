@@ -11,6 +11,18 @@ public final class IsraelSimulatorData {
     private IsraelSimulatorData() {}
 
     public static void register(IEventBus modEventBus) {
-        // Safe: no listeners registered at runtime to prevent abstract GatherDataEvent crash
+        modEventBus.addListener(IsraelSimulatorData::gatherClientData);
+        modEventBus.addListener(IsraelSimulatorData::gatherServerData);
+    }
+
+    private static void gatherClientData(GatherDataEvent.Client event) {
+        event.createProvider(ModLangProvider::new);
+        IsraelSimulator.LOGGER.info("Israel-Simulator client data generation registered");
+    }
+
+    private static void gatherServerData(GatherDataEvent.Server event) {
+        event.createProvider(ModRecipeProvider.Runner::new);
+        event.createProvider((output, lookup) -> new ModItemTagsProvider(output, lookup));
+        IsraelSimulator.LOGGER.info("Israel-Simulator server data generation registered");
     }
 }
