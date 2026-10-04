@@ -1,6 +1,5 @@
 package com.israelsimulator.registry;
 
-import com.israelsimulator.datagen.IsraelSimulatorData;
 import com.israelsimulator.network.ModNetworking;
 import com.israelsimulator.world.ModWorldGen;
 import net.neoforged.bus.api.IEventBus;
@@ -22,6 +21,6 @@ public final class ModRegistries {
         ModSoundEvents.register(modEventBus);
         ModWorldGen.register(modEventBus);
         ModNetworking.register(modEventBus);
-        IsraelSimulatorData.register(modEventBus);
+        // Note: Data generators are run via runData, not during game runtime.
     }
 }
