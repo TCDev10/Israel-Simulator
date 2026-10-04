@@ -25,6 +25,7 @@ public final class ModCreativeTabEntries {
             event.accept(ModItems.RUGELACH.get());
             event.accept(ModItems.TAHINI.get());
             event.accept(ModItems.DATES.get());
+            event.accept(ModItems.GRAPES.get());
             event.accept(ModItems.OLIVES.get());
             event.accept(ModItems.CITRUS.get());
         }

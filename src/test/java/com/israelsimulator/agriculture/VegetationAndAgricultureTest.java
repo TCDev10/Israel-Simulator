@@ -147,6 +147,7 @@ class VegetationAndAgricultureTest {
         String[] items = {
                 "olives",
                 "dates",
+                "grapes",
                 "citrus",
                 "shekel",
                 "agora",

@@ -27,6 +27,7 @@ public final class ModItemTagsProvider extends ItemTagsProvider {
                 .add(ModItems.RUGELACH.getKey())
                 .add(ModItems.TAHINI.getKey())
                 .add(ModItems.DATES.getKey())
+                .add(ModItems.GRAPES.getKey())
                 .add(ModItems.OLIVES.getKey())
                 .add(ModItems.CITRUS.getKey());
         tag(ModItemTags.MEAT);
