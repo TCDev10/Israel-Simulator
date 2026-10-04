@@ -56,6 +56,7 @@
   "biome.israel_simulator.judean_desert": "Judean Desert",
   "biome.israel_simulator.dead_sea": "Dead Sea",
   "biome.israel_simulator.urban_area": "Mediterranean Urban District",
+  "biome.israel_simulator.jerusalem": "Jerusalem",
 
   "block.israel_simulator.olive_leaves": "Olive Leaves",
   "block.israel_simulator.date_palm_leaves": "Date Palm Leaves",
@@ -63,6 +64,8 @@
   "block.israel_simulator.grapevine": "Grapevine",
   "block.israel_simulator.mediterranean_herbs": "Mediterranean Herbs",
   "block.israel_simulator.salt_block": "Dead Sea Salt Block",
+  "block.israel_simulator.jerusalem_stone": "Jerusalem Stone",
+  "block.israel_simulator.western_wall_stone": "Western Wall Stone",
 
   "item.israel_simulator.dead_sea_mud": "Dead Sea Mineral Mud",
 
@@ -72,5 +75,13 @@
   "structure.israel_simulator.desert_ruins": "Desert Ruins",
   "structure.israel_simulator.synagogue": "Synagogue",
   "structure.israel_simulator.tel_aviv_city": "Tel Aviv City",
-  "structure.israel_simulator.ein_gedi_oasis": "Ein Gedi Oasis"
+  "structure.israel_simulator.ein_gedi_oasis": "Ein Gedi Oasis",
+  "structure.israel_simulator.jaffa_port": "Ancient Port of Jaffa",
+  "structure.israel_simulator.jerusalem_city": "Jerusalem Old City",
+  "structure.israel_simulator.western_wall": "Western Wall (Kotel)",
+
+  "message.israel_simulator.western_wall_need_kippah": "You must cover your head (wear a Kippah) before approaching the Western Wall.",
+  "message.israel_simulator.western_wall_need_prayer_note": "Hold a Prayer Note in your hand to place a prayer into the Western Wall.",
+  "message.israel_simulator.western_wall_cooldown": "You have already placed a prayer note recently. Please return later.",
+  "message.israel_simulator.western_wall_blessed": "Your prayer has been placed into the sacred stones. You have been blessed!"
 }

@@ -27,6 +27,12 @@ public final class ModStructures {
             structureKey("tel_aviv_city");
     public static final ResourceKey<Structure> EIN_GEDI_OASIS =
             structureKey("ein_gedi_oasis");
+    public static final ResourceKey<Structure> JAFFA_PORT =
+            structureKey("jaffa_port");
+    public static final ResourceKey<Structure> JERUSALEM_CITY =
+            structureKey("jerusalem_city");
+    public static final ResourceKey<Structure> WESTERN_WALL =
+            structureKey("western_wall");
 
     // Structure Sets
     public static final ResourceKey<StructureSet> MEDITERRANEAN_VILLAGES =
@@ -43,6 +49,12 @@ public final class ModStructures {
             structureSetKey("tel_aviv_cities");
     public static final ResourceKey<StructureSet> EIN_GEDI_OASES =
             structureSetKey("ein_gedi_oases");
+    public static final ResourceKey<StructureSet> JAFFA_PORTS =
+            structureSetKey("jaffa_ports");
+    public static final ResourceKey<StructureSet> JERUSALEM_CITIES =
+            structureSetKey("jerusalem_cities");
+    public static final ResourceKey<StructureSet> WESTERN_WALLS =
+            structureSetKey("western_walls");
 
     // Processor Lists
     public static final ResourceKey<net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList> ANCIENT_RUINS_WEATHERING =
@@ -55,7 +67,10 @@ public final class ModStructures {
             DESERT_RUINS,
             SYNAGOGUE,
             TEL_AVIV_CITY,
-            EIN_GEDI_OASIS
+            EIN_GEDI_OASIS,
+            JAFFA_PORT,
+            JERUSALEM_CITY,
+            WESTERN_WALL
     );
 
     private ModStructures() {}

@@ -56,6 +56,8 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.DEAD_SEA_SCROLL_FRAGMENT.get());
                         output.accept(ModItems.DEAD_SEA_MUD.get());
                         output.accept(ModBlocks.SALT_BLOCK_ITEM.get());
+                        output.accept(ModBlocks.JERUSALEM_STONE_ITEM.get());
+                        output.accept(ModBlocks.WESTERN_WALL_STONE_ITEM.get());
 
                         // Currency
                         output.accept(ModItems.SHEKEL.get());

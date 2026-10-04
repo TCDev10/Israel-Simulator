@@ -63,6 +63,21 @@ public final class ModBlocks {
     );
     public static final DeferredItem<BlockItem> SALT_BLOCK_ITEM = ModItems.ITEMS.registerSimpleBlockItem("salt_block", SALT_BLOCK);
 
+    // Jerusalem Architecture & Landmarks
+    public static final DeferredBlock<net.minecraft.world.level.block.Block> JERUSALEM_STONE = BLOCKS.registerBlock(
+            "jerusalem_stone",
+            net.minecraft.world.level.block.Block::new,
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE).sound(SoundType.STONE)
+    );
+    public static final DeferredItem<BlockItem> JERUSALEM_STONE_ITEM = ModItems.ITEMS.registerSimpleBlockItem("jerusalem_stone", JERUSALEM_STONE);
+
+    public static final DeferredBlock<net.minecraft.world.level.block.Block> WESTERN_WALL_STONE = BLOCKS.registerBlock(
+            "western_wall_stone",
+            net.minecraft.world.level.block.Block::new,
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.SMOOTH_SANDSTONE).sound(SoundType.STONE).strength(4.0F, 1200.0F)
+    );
+    public static final DeferredItem<BlockItem> WESTERN_WALL_STONE_ITEM = ModItems.ITEMS.registerSimpleBlockItem("western_wall_stone", WESTERN_WALL_STONE);
+
     private ModBlocks() {}
 
     public static void register(IEventBus modEventBus) {

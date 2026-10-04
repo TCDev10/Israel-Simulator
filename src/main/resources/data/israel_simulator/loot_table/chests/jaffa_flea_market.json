@@ -1,0 +1,49 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "min": 3,
+        "max": 6
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "israel_simulator:ancient_coin",
+          "weight": 20,
+          "functions": [{ "function": "minecraft:set_count", "count": { "min": 2, "max": 6 } }]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "israel_simulator:olive_wood_carving",
+          "weight": 15,
+          "functions": [{ "function": "minecraft:set_count", "count": { "min": 1, "max": 3 } }]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "israel_simulator:citrus",
+          "weight": 18,
+          "functions": [{ "function": "minecraft:set_count", "count": { "min": 4, "max": 12 } }]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "israel_simulator:shekel",
+          "weight": 15,
+          "functions": [{ "function": "minecraft:set_count", "count": { "min": 3, "max": 8 } }]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "israel_simulator:agora",
+          "weight": 20,
+          "functions": [{ "function": "minecraft:set_count", "count": { "min": 6, "max": 25 } }]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:compass",
+          "weight": 5,
+          "functions": [{ "function": "minecraft:set_count", "count": 1 }]
+        }
+      ]
+    }
+  ]
+}

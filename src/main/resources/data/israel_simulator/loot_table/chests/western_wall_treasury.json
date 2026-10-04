@@ -1,0 +1,49 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "min": 4,
+        "max": 7
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:diamond",
+          "weight": 10,
+          "functions": [{ "function": "minecraft:set_count", "count": { "min": 2, "max": 5 } }]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "israel_simulator:prayer_note",
+          "weight": 25,
+          "functions": [{ "function": "minecraft:set_count", "count": { "min": 3, "max": 7 } }]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "israel_simulator:ancient_coin",
+          "weight": 15,
+          "functions": [{ "function": "minecraft:set_count", "count": { "min": 2, "max": 5 } }]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "israel_simulator:shekel",
+          "weight": 20,
+          "functions": [{ "function": "minecraft:set_count", "count": { "min": 5, "max": 20 } }]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:gold_ingot",
+          "weight": 15,
+          "functions": [{ "function": "minecraft:set_count", "count": { "min": 2, "max": 6 } }]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:emerald",
+          "weight": 10,
+          "functions": [{ "function": "minecraft:set_count", "count": { "min": 2, "max": 6 } }]
+        }
+      ]
+    }
+  ]
+}

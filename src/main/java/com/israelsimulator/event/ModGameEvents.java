@@ -46,8 +46,20 @@ public final class ModGameEvents {
                     || com.israelsimulator.deadsea.DeadSeaTrades.tryTrade(player, hand, villager)
                     || com.israelsimulator.desert.DesertTrades.tryTrade(player, hand, villager)
                     || com.israelsimulator.city.telaviv.TelAvivTrades.tryTrade(player, hand, villager)
+                    || com.israelsimulator.city.jaffa.JaffaTrades.tryTrade(player, hand, villager)
+                    || com.israelsimulator.city.jerusalem.JerusalemTrades.tryTrade(player, hand, villager)
                     || com.israelsimulator.religion.RuralSynagogueTrades.tryInteract(player, hand, villager)) {
                 event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onRightClickBlock(net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock event) {
+        if (event.getLevel().getBlockState(event.getPos()).is(com.israelsimulator.registry.ModBlocks.WESTERN_WALL_STONE.get())) {
+            if (com.israelsimulator.westernwall.WesternWallManager.tryPray(event.getEntity(), event.getHand(), event.getPos())) {
+                event.setCanceled(true);
+                event.setCancellationResult(net.minecraft.world.InteractionResult.SUCCESS);
             }
         }
     }

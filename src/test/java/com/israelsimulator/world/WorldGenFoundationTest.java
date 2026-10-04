@@ -17,12 +17,13 @@ class WorldGenFoundationTest {
     @Test
     @DisplayName("Verify custom biome registry keys and count")
     void testCustomBiomes() {
-        assertEquals(5, ModBiomes.all().size());
+        assertEquals(6, ModBiomes.all().size());
         assertTrue(ModBiomes.all().contains(ModBiomes.MEDITERRANEAN_COAST));
         assertTrue(ModBiomes.all().contains(ModBiomes.ISRAELI_AGRICULTURE));
         assertTrue(ModBiomes.all().contains(ModBiomes.JUDEAN_DESERT));
         assertTrue(ModBiomes.all().contains(ModBiomes.DEAD_SEA));
         assertTrue(ModBiomes.all().contains(ModBiomes.URBAN_AREA));
+        assertTrue(ModBiomes.all().contains(ModBiomes.JERUSALEM));
 
         for (var key : ModBiomes.all()) {
             assertEquals(Registries.BIOME, key.registryKey());
@@ -54,7 +55,7 @@ class WorldGenFoundationTest {
     @Test
     @DisplayName("Verify structure and structure set keys")
     void testStructures() {
-        assertEquals(7, ModStructures.allStructures().size());
+        assertEquals(10, ModStructures.allStructures().size());
         for (var key : ModStructures.allStructures()) {
             assertEquals(Registries.STRUCTURE, key.registryKey());
             assertEquals("israel_simulator", key.identifier().getNamespace());
@@ -75,7 +76,8 @@ class WorldGenFoundationTest {
                 "israeli_agriculture",
                 "judean_desert",
                 "dead_sea",
-                "urban_area"
+                "urban_area",
+                "jerusalem"
         };
 
         for (String biome : biomes) {

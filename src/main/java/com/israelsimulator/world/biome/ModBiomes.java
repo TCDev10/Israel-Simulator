@@ -32,13 +32,16 @@ public final class ModBiomes {
             key("dead_sea");
     public static final ResourceKey<Biome> URBAN_AREA =
             key("urban_area");
+    public static final ResourceKey<Biome> JERUSALEM =
+            key("jerusalem");
 
     private static final List<ResourceKey<Biome>> ALL_BIOMES = List.of(
             MEDITERRANEAN_COAST,
             ISRAELI_AGRICULTURE,
             JUDEAN_DESERT,
             DEAD_SEA,
-            URBAN_AREA
+            URBAN_AREA,
+            JERUSALEM
     );
 
     private ModBiomes() {}

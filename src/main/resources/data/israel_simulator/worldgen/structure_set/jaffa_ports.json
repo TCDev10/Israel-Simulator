@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "israel_simulator:jaffa_port",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 30,
+    "separation": 10,
+    "salt": 38192019
+  }
+}
