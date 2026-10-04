@@ -1,6 +1,8 @@
 package com.israelsimulator.festival;
 
+import com.israelsimulator.config.IsraelSimulatorConfig;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
@@ -111,10 +113,10 @@ class FestivalsAndCalendarTest {
 
         ShofarManager.recordBlow(cooldowns, playerId, now);
         assertTrue(ShofarManager.isOnCooldown(cooldowns, playerId, now + 10L));
-        assertTrue(ShofarManager.isOnCooldown(cooldowns, playerId, now + ShofarManager.COOLDOWN_TICKS - 1L));
+        assertTrue(ShofarManager.isOnCooldown(cooldowns, playerId, now + ShofarManager.cooldownTicks() - 1L));
 
         // After cooldown expires
-        assertFalse(ShofarManager.isOnCooldown(cooldowns, playerId, now + ShofarManager.COOLDOWN_TICKS + 1L));
+        assertFalse(ShofarManager.isOnCooldown(cooldowns, playerId, now + ShofarManager.cooldownTicks() + 1L));
 
         ShofarManager.clearCooldown(cooldowns, playerId);
         assertFalse(ShofarManager.isOnCooldown(cooldowns, playerId, now));
@@ -152,9 +154,44 @@ class FestivalsAndCalendarTest {
 
         assertNotSame(live, restored);
         assertTrue(ShofarManager.isOnCooldown(restored, playerId, blownAt + 10L));
-        assertTrue(ShofarManager.isOnCooldown(restored, playerId, blownAt + ShofarManager.COOLDOWN_TICKS - 1L));
-        assertFalse(ShofarManager.isOnCooldown(restored, playerId, blownAt + ShofarManager.COOLDOWN_TICKS));
+        assertTrue(ShofarManager.isOnCooldown(restored, playerId, blownAt + ShofarManager.cooldownTicks() - 1L));
+        assertFalse(ShofarManager.isOnCooldown(restored, playerId, blownAt + ShofarManager.cooldownTicks()));
         assertEquals("israel_simulator:shofar_blasts", ShofarCooldowns.TYPE.id().toString());
+    }
+
+    @Test
+    @DisplayName("Shofar cooldown length is shofarCooldownTicks, not a hardcoded 100")
+    void testShofarCooldownReadsConfig() throws Exception {
+        assertEquals(600, IsraelSimulatorConfig.shofarCooldownTicks(),
+                "unloaded config must fall back to the shofarCooldownTicks default");
+        assertEquals(600L, ShofarManager.cooldownTicks());
+
+        Field specValue = IsraelSimulatorConfig.class.getDeclaredField("SHOFAR_COOLDOWN_TICKS");
+        specValue.setAccessible(true);
+        Object configValue = specValue.get(null);
+        Field cached = configValue.getClass().getSuperclass().getDeclaredField("cachedValue");
+        cached.setAccessible(true);
+        cached.set(configValue, 250);
+        try {
+            assertEquals(250, IsraelSimulatorConfig.shofarCooldownTicks());
+            assertEquals(250L, ShofarManager.cooldownTicks());
+
+            UUID playerId = UUID.randomUUID();
+            long blownAt = 1000L;
+            ShofarCooldowns cooldowns = new ShofarCooldowns();
+            ShofarManager.recordBlow(cooldowns, playerId, blownAt);
+
+            // The old hardcoded interval was 100. A non-default config must win over both 100 and 600.
+            assertTrue(ShofarManager.isOnCooldown(cooldowns, playerId, blownAt + 100L));
+            assertTrue(ShofarManager.isOnCooldown(cooldowns, playerId, blownAt + 249L));
+            assertFalse(ShofarManager.isOnCooldown(cooldowns, playerId, blownAt + 250L));
+            assertFalse(ShofarManager.isOnCooldown(cooldowns, playerId, blownAt + 599L));
+        } finally {
+            cached.set(configValue, null);
+        }
+
+        assertEquals(600, IsraelSimulatorConfig.shofarCooldownTicks());
+        assertEquals(600L, ShofarManager.cooldownTicks());
     }
 
     @Test
