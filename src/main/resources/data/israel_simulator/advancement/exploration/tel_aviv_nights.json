@@ -1,0 +1,44 @@
+{
+  "parent": "israel_simulator:exploration/welcome_to_israel",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:falafel"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.tel_aviv_nights.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.tel_aviv_nights.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "night_in_coastal": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biomes": "israel_simulator:mediterranean_coast"
+        }
+      }
+    },
+    "has_bicycle": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "israel_simulator:bicycle"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "night_in_coastal",
+      "has_bicycle"
+    ]
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "parent": "israel_simulator:exploration/welcome_to_israel",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:shekel"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.shalom.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.shalom.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_shekel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "israel_simulator:shekel"
+          }
+        ]
+      }
+    },
+    "has_cultural_food": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "israel_simulator:falafel"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_shekel",
+      "has_cultural_food"
+    ]
+  ]
+}

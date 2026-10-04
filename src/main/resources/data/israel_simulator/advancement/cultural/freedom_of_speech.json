@@ -1,0 +1,35 @@
+{
+  "parent": "israel_simulator:exploration/welcome_to_israel",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:first_amendment"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.freedom_of_speech.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.freedom_of_speech.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_first_amendment": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "israel_simulator:first_amendment"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_first_amendment"
+    ]
+  ]
+}

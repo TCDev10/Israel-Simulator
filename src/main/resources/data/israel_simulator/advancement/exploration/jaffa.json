@@ -1,0 +1,46 @@
+{
+  "parent": "israel_simulator:exploration/welcome_to_israel",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:citrus"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.jaffa.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.jaffa.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_citrus": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "israel_simulator:citrus"
+          }
+        ]
+      }
+    },
+    "has_ancient_coin": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "israel_simulator:ancient_coin"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_citrus",
+      "has_ancient_coin"
+    ]
+  ]
+}

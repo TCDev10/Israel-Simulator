@@ -44,9 +44,22 @@ public final class ModGameEvents {
 
     @SubscribeEvent
     public static void onEntityInteract(net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.EntityInteract event) {
+        if (event.getEntity() instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+            if (event.getTarget() instanceof net.minecraft.world.entity.animal.feline.Cat cat) {
+                if (com.israelsimulator.easteregg.EasterEggManager.interactWithCat(serverPlayer, cat, event.getItemStack())) {
+                    event.setCanceled(true);
+                    return;
+                }
+            }
+        }
+
         if (event.getTarget() instanceof net.minecraft.world.entity.npc.villager.AbstractVillager villager) {
             net.minecraft.world.entity.player.Player player = event.getEntity();
             net.minecraft.world.InteractionHand hand = event.getHand();
+
+            if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer && villager instanceof net.minecraft.world.entity.npc.villager.Villager regularVillager) {
+                com.israelsimulator.easteregg.EasterEggManager.triggerVillagerEasterEgg(serverPlayer, regularVillager);
+            }
 
             // Try regional trades in priority order
             if (com.israelsimulator.agriculture.AgriculturalTrades.tryTrade(player, hand, villager)

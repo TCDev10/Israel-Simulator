@@ -1,0 +1,57 @@
+{
+  "parent": "israel_simulator:exploration/welcome_to_israel",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:laptop"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.startup_founder.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.startup_founder.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_laptop": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "israel_simulator:laptop"
+          }
+        ]
+      }
+    },
+    "has_smartphone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "israel_simulator:smartphone"
+          }
+        ]
+      }
+    },
+    "has_drone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "israel_simulator:drone"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_laptop",
+      "has_smartphone",
+      "has_drone"
+    ]
+  ]
+}

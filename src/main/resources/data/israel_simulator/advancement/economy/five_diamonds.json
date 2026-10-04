@@ -1,0 +1,38 @@
+{
+  "parent": "israel_simulator:exploration/welcome_to_israel",
+  "display": {
+    "icon": {
+      "id": "minecraft:diamond"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.five_diamonds.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.five_diamonds.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_five_diamonds": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:diamond",
+            "count": {
+              "min": 5
+            }
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_five_diamonds"
+    ]
+  ]
+}

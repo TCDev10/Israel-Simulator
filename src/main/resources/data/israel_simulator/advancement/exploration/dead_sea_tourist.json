@@ -1,0 +1,46 @@
+{
+  "parent": "israel_simulator:exploration/welcome_to_israel",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:dead_sea_mud"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.dead_sea_tourist.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.dead_sea_tourist.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_dead_sea_mud": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "israel_simulator:dead_sea_mud"
+          }
+        ]
+      }
+    },
+    "has_dead_sea_salt": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "israel_simulator:dead_sea_salt"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_dead_sea_mud",
+      "has_dead_sea_salt"
+    ]
+  ]
+}
