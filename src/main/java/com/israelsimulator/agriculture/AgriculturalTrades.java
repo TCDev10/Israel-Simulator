@@ -1,7 +1,10 @@
 package com.israelsimulator.agriculture;
 
+import com.israelsimulator.world.biome.ModBiomes;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -19,12 +22,28 @@ public final class AgriculturalTrades {
     private AgriculturalTrades() {}
 
     /**
+     * Rural economy only. GAME_DESIGN.md §29 ties agricultural trading to agricultural
+     * regions, which this mod represents with {@link ModBiomes#ISRAELI_AGRICULTURE}.
+     * Any other biome, including vanilla plains, must not buy crops.
+     */
+    public static boolean acceptsBiome(Identifier biomeId) {
+        return biomeId != null && ModBiomes.ISRAELI_AGRICULTURE.identifier().equals(biomeId);
+    }
+
+    /**
      * Attempts to execute an agricultural trade when a player interacts with a villager.
      *
      * @return true if an agricultural trade was successfully conducted
      */
     public static boolean tryTrade(Player player, InteractionHand hand, AbstractVillager villager) {
         if (player == null || villager == null || hand == null) return false;
+        if (player.level().isClientSide()) return false;
+
+        Identifier biomeId = player.level().getBiome(villager.blockPosition())
+                .unwrapKey()
+                .map(ResourceKey::identifier)
+                .orElse(null);
+        if (!acceptsBiome(biomeId)) return false;
 
         ItemStack held = player.getItemInHand(hand);
         var maybeResult = AgriculturalEconomy.calculateTrade(held);

@@ -61,15 +61,17 @@ public final class ModGameEvents {
                 com.israelsimulator.easteregg.EasterEggManager.triggerVillagerEasterEgg(serverPlayer, regularVillager);
             }
 
-            // Try regional trades in priority order
-            if (com.israelsimulator.agriculture.AgriculturalTrades.tryTrade(player, hand, villager)
+            // Regional trades already return false outside their biome.
+            // An unregistered villager must fall through so the vanilla GUI opens.
+            boolean regionalTradeHandled = com.israelsimulator.agriculture.AgriculturalTrades.tryTrade(player, hand, villager)
                     || com.israelsimulator.deadsea.DeadSeaTrades.tryTrade(player, hand, villager)
                     || com.israelsimulator.desert.DesertTrades.tryTrade(player, hand, villager)
                     || com.israelsimulator.city.telaviv.TelAvivTrades.tryTrade(player, hand, villager)
                     || com.israelsimulator.city.jaffa.JaffaTrades.tryTrade(player, hand, villager)
                     || com.israelsimulator.city.jerusalem.JerusalemTrades.tryTrade(player, hand, villager)
-                    || com.israelsimulator.religion.RuralSynagogueTrades.tryInteract(player, hand, villager)
-                    || com.israelsimulator.npc.IsraelNpcManager.handleNpcInteraction(player, hand, villager)) {
+                    || com.israelsimulator.religion.RuralSynagogueTrades.tryInteract(player, hand, villager);
+            boolean registeredModNpcHandled = com.israelsimulator.npc.IsraelNpcManager.handleNpcInteraction(player, hand, villager);
+            if (VillagerInteractGate.shouldCancelVanillaGui(regionalTradeHandled, registeredModNpcHandled)) {
                 event.setCanceled(true);
             }
         }

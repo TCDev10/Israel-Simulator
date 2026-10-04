@@ -2,7 +2,10 @@ package com.israelsimulator.religion;
 
 import com.israelsimulator.effect.BlessedEffect;
 import com.israelsimulator.registry.ModItems;
+import com.israelsimulator.world.biome.ModBiomes;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -19,8 +22,24 @@ import net.minecraft.world.item.ItemStack;
 public final class RuralSynagogueTrades {
     private RuralSynagogueTrades() {}
 
+    /**
+     * Rural synagogues belong to the agricultural countryside
+     * ({@link ModBiomes#ISRAELI_AGRICULTURE}), not to every villager.
+     */
+    public static boolean acceptsBiome(Identifier biomeId) {
+        return biomeId != null && ModBiomes.ISRAELI_AGRICULTURE.identifier().equals(biomeId);
+    }
+
     public static boolean tryInteract(Player player, InteractionHand hand, AbstractVillager villager) {
         if (player.level().isClientSide() || hand != InteractionHand.MAIN_HAND) {
+            return false;
+        }
+
+        Identifier biomeId = player.level().getBiome(villager.blockPosition())
+                .unwrapKey()
+                .map(ResourceKey::identifier)
+                .orElse(null);
+        if (!acceptsBiome(biomeId)) {
             return false;
         }
 
