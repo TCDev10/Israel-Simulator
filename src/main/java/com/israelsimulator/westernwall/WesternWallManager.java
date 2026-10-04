@@ -2,9 +2,7 @@ package com.israelsimulator.westernwall;
 
 import com.israelsimulator.effect.BlessedEffect;
 import com.israelsimulator.registry.ModItems;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -22,12 +20,14 @@ import net.minecraft.world.level.Level;
  * Server-authoritative logic for the Western Wall prayer interaction (GAME_DESIGN.md §10, §11).
  * Validates Kippah requirement, consumes Prayer Note, enforces anti-exploit cooldowns,
  * and awards 5 Diamonds and the Blessed Effect.
+ *
+ * <p>Cooldown state is not kept in a static map. The server world stores it in
+ * {@link WesternWallCooldowns}, so a restart cannot clear it and the client cannot
+ * keep a separate copy.</p>
  */
 public final class WesternWallManager {
     public static final long COOLDOWN_TICKS = 24000L; // 1 in-game day (20 minutes)
     public static final int REWARD_DIAMONDS = 5;
-
-    private static final Map<UUID, Long> LAST_PRAYER_TIMES = new ConcurrentHashMap<>();
 
     public enum PrayerStatus {
         SUCCESS,
@@ -37,6 +37,13 @@ public final class WesternWallManager {
     }
 
     private WesternWallManager() {}
+
+    /**
+     * Creative mode still receives the diamond reward, so it must not skip the cooldown.
+     */
+    public static boolean enforcesCooldown(boolean instabuild) {
+        return true;
+    }
 
     /**
      * Pure validation logic suitable for fast unit testing.
@@ -54,20 +61,15 @@ public final class WesternWallManager {
         return PrayerStatus.SUCCESS;
     }
 
-    public static boolean isOnCooldown(UUID playerId, long currentGameTime) {
-        Long lastTime = LAST_PRAYER_TIMES.get(playerId);
+    public static boolean isOnCooldown(WesternWallCooldowns cooldowns, UUID playerId, long currentGameTime) {
+        if (cooldowns == null || playerId == null) {
+            return false;
+        }
+        Long lastTime = cooldowns.getLastPrayerTime(playerId);
         if (lastTime == null) {
             return false;
         }
         return (currentGameTime - lastTime) < COOLDOWN_TICKS;
-    }
-
-    public static void setLastPrayerTime(UUID playerId, long time) {
-        LAST_PRAYER_TIMES.put(playerId, time);
-    }
-
-    public static void clearCooldown(UUID playerId) {
-        LAST_PRAYER_TIMES.remove(playerId);
     }
 
     /**
@@ -83,13 +85,21 @@ public final class WesternWallManager {
         boolean hasKippah = player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.KIPPAH.get())
                 || com.israelsimulator.item.cultural.KippahItem.isWearingKippah(player);
         boolean hasPrayerNote = held.is(ModItems.PRAYER_NOTE.get());
-        boolean onCooldown = !player.getAbilities().instabuild && isOnCooldown(player.getUUID(), level.getGameTime());
-
-        PrayerStatus status = validatePrayer(hasKippah, hasPrayerNote, onCooldown);
 
         if (level.isClientSide()) {
-            return status == PrayerStatus.SUCCESS || hasPrayerNote;
+            // The client has no cooldown store. Reward and cooldown are decided on the server.
+            return hasPrayerNote;
         }
+
+        if (!(level instanceof ServerLevel serverLevel)) {
+            return false;
+        }
+
+        WesternWallCooldowns cooldowns = WesternWallCooldowns.get(serverLevel);
+        boolean onCooldown = enforcesCooldown(player.getAbilities().instabuild)
+                && isOnCooldown(cooldowns, player.getUUID(), level.getGameTime());
+
+        PrayerStatus status = validatePrayer(hasKippah, hasPrayerNote, onCooldown);
 
         switch (status) {
             case MISSING_KIPPAH -> {
@@ -107,33 +117,26 @@ public final class WesternWallManager {
                 return true;
             }
             case SUCCESS -> {
-                // Consume prayer note
                 if (!player.getAbilities().instabuild) {
                     held.shrink(1);
                 }
 
-                // Record cooldown server-side
-                LAST_PRAYER_TIMES.put(player.getUUID(), level.getGameTime());
+                // Record before the reward so a later save still remembers the prayer.
+                cooldowns.setLastPrayerTime(player.getUUID(), level.getGameTime());
 
-                // Award 5 Diamonds
                 giveOrDrop(player, new ItemStack(Items.DIAMOND, REWARD_DIAMONDS));
 
-                // Apply Blessed effect
                 BlessedEffect.applyTo(player);
 
-                // Sound effects
                 level.playSound(null, pos, SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundSource.PLAYERS, 1.0F, 1.0F);
                 level.playSound(null, pos, SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.8F, 1.3F);
 
-                // Visual particles
-                if (level instanceof ServerLevel serverLevel) {
-                    serverLevel.sendParticles(ParticleTypes.TOTEM_OF_UNDYING,
-                            pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5,
-                            30, 0.5, 0.5, 0.5, 0.15);
-                    serverLevel.sendParticles(ParticleTypes.ENCHANT,
-                            pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5,
-                            40, 0.6, 0.6, 0.6, 0.2);
-                }
+                serverLevel.sendParticles(ParticleTypes.TOTEM_OF_UNDYING,
+                        pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5,
+                        30, 0.5, 0.5, 0.5, 0.15);
+                serverLevel.sendParticles(ParticleTypes.ENCHANT,
+                        pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5,
+                        40, 0.6, 0.6, 0.6, 0.2);
 
                 player.sendSystemMessage(Component.translatable("message.israel_simulator.western_wall_blessed"));
                 return true;
