@@ -5,6 +5,7 @@ import com.israelsimulator.registry.ModItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -16,9 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Interactive transport stop block (Bus Stop, Train Station, Taxi Stand, Boat Pier).
@@ -26,12 +25,37 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class TransportStopBlock extends Block {
 
-    private static final Map<UUID, Long> LAST_TRANSIT_TIME = new ConcurrentHashMap<>();
-    private static final long TRANSIT_COOLDOWN_TICKS = 60L; // 3 seconds cooldown to prevent spam
+    /** Three seconds between player transits, to stop spam and repeated fare charges. */
+    public static final long TRANSIT_COOLDOWN_TICKS = 60L;
+    /** Villagers only trigger the stop sound again after this interval. */
+    public static final long NPC_SOUND_INTERVAL_TICKS = 600L;
 
     public TransportStopBlock(Properties properties) {
         super(properties);
     }
+
+    public static boolean isPlayerOnCooldown(TransitCooldowns cooldowns, UUID entityId, long currentGameTime) {
+        if (cooldowns == null || entityId == null) {
+            return false;
+        }
+        Long last = cooldowns.getLastUseTime(entityId);
+        return last != null && (currentGameTime - last) < TRANSIT_COOLDOWN_TICKS;
+    }
+
+    public static boolean isNpcSoundOnInterval(TransitCooldowns cooldowns, UUID entityId, long currentGameTime) {
+        if (cooldowns == null || entityId == null) {
+            return false;
+        }
+        Long last = cooldowns.getLastUseTime(entityId);
+        return last != null && (currentGameTime - last) <= NPC_SOUND_INTERVAL_TICKS;
+    }
+
+    public static void recordTransit(TransitCooldowns cooldowns, UUID entityId, long time) {
+        if (cooldowns != null) {
+            cooldowns.setLastUseTime(entityId, time);
+        }
+    }
+
 
     @Override
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
@@ -54,9 +78,14 @@ public class TransportStopBlock extends Block {
             return InteractionResult.PASS;
         }
 
-        long now = level.getGameTime();
-        Long lastTransit = LAST_TRANSIT_TIME.get(player.getUUID());
-        if (lastTransit != null && now - lastTransit < TRANSIT_COOLDOWN_TICKS) {
+        if (!(level instanceof ServerLevel serverLevel)) {
+            return InteractionResult.PASS;
+        }
+
+        TransitCooldowns cooldowns = TransitCooldowns.get(serverLevel);
+        long now = serverLevel.getGameTime();
+        if (isPlayerOnCooldown(cooldowns, player.getUUID(), now)) {
+            Long lastTransit = cooldowns.getLastUseTime(player.getUUID());
             long remaining = (TRANSIT_COOLDOWN_TICKS - (now - lastTransit)) / 20L + 1;
             player.sendSystemMessage(
                     Component.translatable("message.israel_simulator.transit_cooldown", remaining)
@@ -112,7 +141,7 @@ public class TransportStopBlock extends Block {
             }
         }
 
-        LAST_TRANSIT_TIME.put(player.getUUID(), now);
+        recordTransit(cooldowns, player.getUUID(), now);
 
         // Sound effect
         ModAudioManager.playTransitSound(level, pos, nextStop.primaryType().name());
@@ -133,11 +162,11 @@ public class TransportStopBlock extends Block {
     @Override
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
         // NPC transport usage: nearby villagers can trigger route simulation
-        if (!level.isClientSide() && entity instanceof Villager villager) {
-            long now = level.getGameTime();
-            Long last = LAST_TRANSIT_TIME.get(villager.getUUID());
-            if (last == null || now - last > 600L) { // Every 30s
-                LAST_TRANSIT_TIME.put(villager.getUUID(), now);
+        if (!level.isClientSide() && entity instanceof Villager villager && level instanceof ServerLevel serverLevel) {
+            TransitCooldowns cooldowns = TransitCooldowns.get(serverLevel);
+            long now = serverLevel.getGameTime();
+            if (!isNpcSoundOnInterval(cooldowns, villager.getUUID(), now)) {
+                recordTransit(cooldowns, villager.getUUID(), now);
                 ModAudioManager.playTransitSound(level, pos, "BUS");
             }
         }
