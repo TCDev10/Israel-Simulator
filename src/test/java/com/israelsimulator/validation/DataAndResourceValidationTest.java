@@ -10,11 +10,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -80,24 +83,143 @@ public class DataAndResourceValidationTest {
     }
 
     @Test
-    @DisplayName("Validate recipes exist and reference valid namespaces")
-    void testRecipesValidation() {
-        Path recipeDir = RESOURCES_PATH.resolve(Paths.get("data", IsraelSimulator.MOD_ID, "recipes"));
-        assertTrue(Files.exists(recipeDir), "Recipe directory must exist");
+    @DisplayName("Validate recipes exist and are not a single vanilla ingredient")
+    void testRecipesValidation() throws IOException {
+        Path recipeDir = RESOURCES_PATH.resolve(Paths.get("data", IsraelSimulator.MOD_ID, "recipe"));
+        assertTrue(Files.exists(recipeDir), "Recipe directory must be data/israel_simulator/recipe");
+        assertFalse(Files.exists(RESOURCES_PATH.resolve(Paths.get("data", IsraelSimulator.MOD_ID, "recipes"))),
+                "Legacy recipes/ folder is not loaded on Minecraft 26.2");
 
         File[] recipes = recipeDir.toFile().listFiles((dir, name) -> name.endsWith(".json"));
         assertNotNull(recipes);
         assertTrue(recipes.length >= 10, "Should have at least 10 culinary and crafting recipes");
 
+        Map<String, List<String>> shapeless = Map.ofEntries(
+                Map.entry("tahini.json", List.of("minecraft:wheat_seeds", "minecraft:wheat_seeds", "minecraft:bowl")),
+                Map.entry("hummus.json", List.of("israel_simulator:tahini", "minecraft:beetroot", "minecraft:bowl")),
+                Map.entry("shakshuka.json", List.of("minecraft:egg", "minecraft:beetroot", "minecraft:bowl")),
+                Map.entry("sabich.json", List.of("minecraft:bread", "minecraft:egg", "minecraft:potato", "israel_simulator:tahini")),
+                Map.entry("challah.json", List.of("minecraft:wheat", "minecraft:wheat", "minecraft:wheat", "minecraft:egg", "minecraft:sugar")),
+                Map.entry("rugelach.json", List.of("minecraft:wheat", "minecraft:sugar", "minecraft:cocoa_beans")),
+                Map.entry("dates.json", List.of("minecraft:sweet_berries", "minecraft:sugar")),
+                Map.entry("olives.json", List.of("minecraft:kelp", "minecraft:wheat_seeds")),
+                Map.entry("citrus.json", List.of("minecraft:glow_berries", "minecraft:sugar")),
+                Map.entry("matzo.json", List.of("minecraft:wheat", "minecraft:wheat", "minecraft:water_bucket")),
+                Map.entry("sufganiyah.json", List.of("minecraft:wheat", "minecraft:sugar", "minecraft:sweet_berries")),
+                Map.entry("hamantash.json", List.of("minecraft:wheat", "minecraft:sugar", "israel_simulator:dates"))
+        );
+        Map<String, String> results = Map.ofEntries(
+                Map.entry("tahini.json", "israel_simulator:tahini"),
+                Map.entry("falafel.json", "israel_simulator:falafel"),
+                Map.entry("hummus.json", "israel_simulator:hummus"),
+                Map.entry("shakshuka.json", "israel_simulator:shakshuka"),
+                Map.entry("sabich.json", "israel_simulator:sabich"),
+                Map.entry("challah.json", "israel_simulator:challah"),
+                Map.entry("rugelach.json", "israel_simulator:rugelach"),
+                Map.entry("dates.json", "israel_simulator:dates"),
+                Map.entry("olives.json", "israel_simulator:olives"),
+                Map.entry("citrus.json", "israel_simulator:citrus"),
+                Map.entry("matzo.json", "israel_simulator:matzo"),
+                Map.entry("sufganiyah.json", "israel_simulator:sufganiyah"),
+                Map.entry("hamantash.json", "israel_simulator:hamantash")
+        );
+
         for (File recipeFile : recipes) {
             try (FileReader reader = new FileReader(recipeFile)) {
                 JsonObject json = GSON.fromJson(reader, JsonObject.class);
                 assertTrue(json.has("type"), "Recipe must have a type: " + recipeFile.getName());
-                assertTrue(json.has("result") || json.has("category"), "Recipe must define result or category: " + recipeFile.getName());
+                assertTrue(json.has("result"), "Recipe must define result: " + recipeFile.getName());
+                List<String> ingredients = ingredientIds(json);
+                long distinct = ingredients.stream().distinct().count();
+                assertTrue(ingredients.size() >= 2 && distinct >= 2,
+                        recipeFile.getName() + " is still a single ingredient: " + ingredients);
+                String resultId = json.getAsJsonObject("result").get("id").getAsString();
+                if (results.containsKey(recipeFile.getName())) {
+                    assertEquals(results.get(recipeFile.getName()), resultId, recipeFile.getName());
+                }
+            } catch (AssertionError e) {
+                throw e;
             } catch (Exception e) {
                 throw new AssertionError("Failed reading recipe: " + recipeFile.getName(), e);
             }
         }
+
+        for (Map.Entry<String, List<String>> expected : shapeless.entrySet()) {
+            Path path = recipeDir.resolve(expected.getKey());
+            assertTrue(Files.exists(path), "Missing recipe " + expected.getKey());
+            JsonObject json = GSON.fromJson(Files.readString(path), JsonObject.class);
+            assertEquals("minecraft:crafting_shapeless", json.get("type").getAsString(), expected.getKey());
+            assertEquals(expected.getValue(), ingredientIds(json), expected.getKey());
+        }
+
+        JsonObject falafel = GSON.fromJson(Files.readString(recipeDir.resolve("falafel.json")), JsonObject.class);
+        assertEquals("minecraft:crafting_shaped", falafel.get("type").getAsString());
+        assertEquals(3, falafel.getAsJsonObject("result").get("count").getAsInt());
+        JsonObject key = falafel.getAsJsonObject("key");
+        assertEquals("minecraft:beetroot", key.get("B").getAsString());
+        assertEquals("minecraft:wheat_seeds", key.get("S").getAsString());
+        assertEquals("minecraft:wheat", key.get("W").getAsString());
+        assertTrue(ingredientIds(falafel).contains("minecraft:beetroot"));
+        assertTrue(ingredientIds(falafel).contains("minecraft:wheat"));
+        assertTrue(ingredientIds(falafel).contains("minecraft:wheat_seeds"));
+
+        String provider = Files.readString(Path.of(
+                "src/main/java/com/israelsimulator/datagen/ModRecipeProvider.java"));
+        assertTrue(provider.contains("requires(Items.WHEAT_SEEDS, 2)"));
+        assertTrue(provider.contains("requires(Items.BOWL)"));
+        assertTrue(provider.contains("requires(ModItems.TAHINI.get())"));
+        assertTrue(provider.contains("requires(Items.POTATO)"));
+        assertTrue(provider.contains("requires(Items.WATER_BUCKET)"));
+        assertTrue(provider.contains("ModItems.MATZO.get()"));
+        assertTrue(provider.contains("ModItems.SUFGANIYAH.get()"));
+        assertTrue(provider.contains("ModItems.HAMANTASH.get()"));
+        assertTrue(provider.contains("requires(ModItems.DATES.get())"));
+        assertTrue(provider.contains("requires(Items.GLOW_BERRIES)"));
+        assertFalse(provider.contains("requires(Items.WHEAT_SEEDS, 3)"), "tahini must not be seeds alone");
+        assertFalse(provider.contains("Items.CARROT"), "sabich filling is potato, not carrot");
+    }
+
+    @Test
+    @DisplayName("Festival foods restore hunger and saturation")
+    void testFestivalFoodsHaveFoodComponent() throws IOException {
+        String festival = Files.readString(Path.of(
+                "src/main/java/com/israelsimulator/item/festival/FestivalItems.java"));
+        String items = Files.readString(Path.of(
+                "src/main/java/com/israelsimulator/registry/ModItems.java"));
+        String food = Files.readString(Path.of(
+                "src/main/java/com/israelsimulator/item/food/IsraelFoodProperties.java"));
+        String pareve = Files.readString(RESOURCES_PATH.resolve(Paths.get(
+                "data", IsraelSimulator.MOD_ID, "tags", "item", "pareve.json")));
+
+        assertTrue(items.contains("registerSimpleItem(\"matzo\", FestivalItems::matzo)"));
+        assertTrue(items.contains("registerSimpleItem(\"sufganiyah\", FestivalItems::sufganiyah)"));
+        assertTrue(items.contains("registerSimpleItem(\"hamantash\", FestivalItems::hamantash)"));
+        assertTrue(festival.contains(".food(IsraelFoodProperties.MATZO, IsraelFoodProperties.MATZO_CONSUMABLE)"));
+        assertTrue(festival.contains(".food(IsraelFoodProperties.SUFGANIYAH, IsraelFoodProperties.SUFGANIYAH_CONSUMABLE)"));
+        assertTrue(festival.contains(".food(IsraelFoodProperties.HAMANTASH, IsraelFoodProperties.HAMANTASH_CONSUMABLE)"));
+        assertTrue(food.contains("public static final FoodProperties MATZO"));
+        assertTrue(food.contains("nutrition(4).saturationModifier(0.5F)"));
+        assertTrue(food.contains("public static final FoodProperties SUFGANIYAH"));
+        assertTrue(food.contains("nutrition(5).saturationModifier(0.6F)"));
+        assertTrue(food.contains("public static final FoodProperties HAMANTASH"));
+        assertTrue(pareve.contains("israel_simulator:matzo"));
+        assertTrue(pareve.contains("israel_simulator:sufganiyah"));
+        assertTrue(pareve.contains("israel_simulator:hamantash"));
+    }
+
+    private static List<String> ingredientIds(JsonObject json) {
+        List<String> ingredients = new ArrayList<>();
+        if (json.has("ingredients")) {
+            for (JsonElement element : json.getAsJsonArray("ingredients")) {
+                ingredients.add(element.getAsString());
+            }
+        }
+        if (json.has("key")) {
+            for (Map.Entry<String, JsonElement> entry : json.getAsJsonObject("key").entrySet()) {
+                ingredients.add(entry.getValue().getAsString());
+            }
+        }
+        return ingredients;
     }
 
     @Test

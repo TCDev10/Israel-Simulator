@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:egg",
+    "minecraft:beetroot",
+    "minecraft:bowl"
+  ],
+  "result": {
+    "id": "israel_simulator:shakshuka"
+  }
+}

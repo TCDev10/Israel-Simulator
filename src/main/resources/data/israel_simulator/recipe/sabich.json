@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:bread",
+    "minecraft:egg",
+    "minecraft:potato",
+    "israel_simulator:tahini"
+  ],
+  "result": {
+    "id": "israel_simulator:sabich"
+  }
+}
