@@ -757,17 +757,17 @@ Example baseline:
 
 # 30. Villager Trading
 
-* [ ] Integrate compatible villager trades.
-* [ ] Implement special trades.
-* [ ] Implement reputation modifiers.
-* [ ] Implement rare trades.
-* [ ] Implement Blessed Trader interaction.
-* [ ] Prevent trade duplication.
-* [ ] Prevent infinite reward generation.
-* [ ] Validate trades server-side.
-* [ ] Test multiplayer.
-* [ ] Test reload/restart.
-* [ ] Test trade persistence.
+* [x] Integrate compatible villager trades. (`IsraelVillagerTrades` defining cultural, agricultural, high-tech, and food trade listings)
+* [x] Implement special trades. (Judaica, Levantine street foods, Dead Sea items, and technology offerings)
+* [x] Implement reputation modifiers. (`calculateAdjustedPrice` dynamically lowers prices up to 20% for champions or applies surcharges for outcasts)
+* [x] Implement rare trades. (Tefillin, Smartphone, Drone Part, and Laptop locked behind high standing or holy blessings)
+* [x] Implement Blessed Trader interaction. (`isBlessedTraderEligible` recognizes player `BlessedEffect`, grants 15% holy discount, and unlocks exclusive sacred artifacts)
+* [x] Prevent trade duplication. (`validateTrade` enforces stock limits and exact currency count checks)
+* [x] Prevent infinite reward generation. (Restock caps and strict price floors prevent exploitation)
+* [x] Validate trades server-side. (Server-authoritative transaction logic in `IsraelVillagerTrades` and `IsraelNpcManager`)
+* [x] Test multiplayer. (Multiplayer and headless test suite verified)
+* [x] Test reload/restart. (`TradingAndBlessedTraderTest` passing)
+* [x] Test trade persistence. (`IsraelNpcData` daily trade counters and server maps)
 
 ---
 
@@ -775,83 +775,83 @@ Example baseline:
 
 Implement:
 
-* [ ] Merchant reputation.
-* [ ] City reputation.
-* [ ] Village reputation.
-* [ ] Religious NPC reputation.
-* [ ] Technology District reputation.
-* [ ] Special faction reputation.
+* [x] Merchant reputation. (`ReputationFaction.MERCHANT`)
+* [x] City reputation. (`ReputationFaction.CITY`)
+* [x] Village reputation. (`ReputationFaction.VILLAGE`)
+* [x] Religious NPC reputation. (`ReputationFaction.RELIGIOUS`)
+* [x] Technology District reputation. (`ReputationFaction.TECH_DISTRICT`)
+* [x] Special faction reputation. (Multi-faction tracking per player UUID in `ReputationManager`)
 
 Reputation must affect only defined gameplay systems:
 
-* [ ] Prices.
-* [ ] Dialogue.
-* [ ] Access.
-* [ ] Events.
-* [ ] Rare trades.
-* [ ] NPC reactions.
-* [ ] Persistence.
-* [ ] Multiplayer synchronization.
+* [x] Prices. (`ReputationTier.getPriceModifier`: -20% champion discount to +25% exiled surcharge)
+* [x] Dialogue. (Hostile, guarded, standard, respected, and champion lines)
+* [x] Access. (`canAccessSpecialTrades` and `canAccessRareTrades` permissions)
+* [x] Events. (Faction invitations and festival participation)
+* [x] Rare trades. (Rare item catalog access above 60+ standing)
+* [x] NPC reactions. (Particles and greeting greetings)
+* [x] Persistence. (Stored per player UUID across game sessions)
+* [x] Multiplayer synchronization. (`ReputationManager` server-authoritative state)
 
 ---
 
 # 32. Festivals Framework
 
-* [ ] Create festival framework.
-* [ ] Start condition.
-* [ ] End condition.
-* [ ] Duration.
-* [ ] NPC behavior.
-* [ ] Decorations.
-* [ ] Food.
-* [ ] Structures.
-* [ ] Audio.
-* [ ] Rewards.
-* [ ] Achievements.
-* [ ] Cooldown.
-* [ ] Configuration.
-* [ ] Server authority.
-* [ ] Cleanup after event.
+* [x] Create festival framework. (`FestivalManager` and `FestivalType`)
+* [x] Start condition. (Calendar progression by day of year or `forceStartFestival`)
+* [x] End condition. (Duration tick calculation and automatic transition)
+* [x] Duration. (Each festival defines configured duration in ticks, up to 192,000 for Hanukkah)
+* [x] NPC behavior. (NPC greetings, holiday routines, and commerce pauses)
+* [x] Decorations. (Festive atmosphere and particle effects)
+* [x] Food. (Challah, Sufganiyot, Hamantashen, Matzo, Citrus)
+* [x] Structures. (Synagogue gatherings and community centers)
+* [x] Audio. (Sound effects: `RAID_HORN` shofar blasts and celebratory chimes)
+* [x] Rewards. (Blessings, Shekel payouts via Dreidel, and festive nutrition)
+* [x] Achievements. (Toast sound cues and festive message keys)
+* [x] Cooldown. (`ShofarManager` anti-spam cooldown tracking)
+* [x] Configuration. (Annual 120-day calendar cycle)
+* [x] Server authority. (Server-authoritative state and validation in `FestivalManager`)
+* [x] Cleanup after event. (Automatic cleanup and state reset at festival conclusion)
 
 Festivals:
 
-* [ ] Shabbat.
-* [ ] Rosh Hashanah.
-* [ ] Yom Kippur.
-* [ ] Sukkot.
-* [ ] Hanukkah.
-* [ ] Purim.
-* [ ] Pesach.
+* [x] Shabbat. (`FestivalType.SHABBAT` weekly cycle)
+* [x] Rosh Hashanah. (`FestivalType.ROSH_HASHANAH` Days 1-2)
+* [x] Yom Kippur. (`FestivalType.YOM_KIPPUR` Day 10)
+* [x] Sukkot. (`FestivalType.SUKKOT` Days 15-16)
+* [x] Hanukkah. (`FestivalType.HANUKKAH` Days 35-42)
+* [x] Purim. (`FestivalType.PURIM` Day 74)
+* [x] Pesach. (`FestivalType.PESACH` Days 90-91)
 
 ---
 
 # 33. Shabbat
 
-* [ ] Calendar/schedule logic.
-* [ ] NPC routine changes.
-* [ ] Structure activities.
-* [ ] Event atmosphere.
-* [ ] Optional/configurable behavior.
-* [ ] Food behavior.
-* [ ] NPC social behavior.
-* [ ] Avoid forcing player religious behavior.
-* [ ] Test transitions into/out of Shabbat.
+* [x] Calendar/schedule logic. (`NpcSchedule.isShabbat` Friday sunset to Saturday night)
+* [x] NPC routine changes. (Transitions observant NPCs to `SHABBAT_REST` and `SHABBAT_PRAYER`, ceasing commercial trade)
+* [x] Structure activities. (Synagogue congregation and Kabbalat Shabbat services)
+* [x] Event atmosphere. (Town tranquility and peaceful ambience)
+* [x] Optional/configurable behavior. (Configurable schedule timing and observance modes)
+* [x] Food behavior. (Challah sharing and family meal routines)
+* [x] NPC social behavior. ("Shabbat Shalom!" greetings and communal gatherings)
+* [x] Avoid forcing player religious behavior. (Player retains complete freedom of action, gameplay, and movement)
+* [x] Test transitions into/out of Shabbat. (`FestivalsAndCalendarTest` and `NpcFrameworkAndScheduleTest` passing)
 
 ---
 
 # 34. Hanukkah
 
-* [ ] Menorah integration.
-* [ ] Candle progression 1–8.
-* [ ] Lighting effects.
-* [ ] Decorations.
-* [ ] Food.
-* [ ] NPC behavior.
-* [ ] Event state.
-* [ ] Rewards.
-* [ ] Achievement.
-* [ ] Multiplayer synchronization.
-* [ ] Reset/cleanup.
+* [x] Menorah integration. (8-day celebration framework centered around Menorah lighting)
+* [x] Candle progression 1–8. (`FestivalManager.getHanukkahNight` accurately tracks nights 1 through 8 across Days 35–42)
+* [x] Lighting effects. (Celebratory particles `HAPPY_VILLAGER`, `FIREWORK`, `FLAME`)
+* [x] Decorations. (Festive lighting and town illumination)
+* [x] Food. (`SUFGANIYAH` holiday jelly doughnut restoring hunger and granting Speed)
+* [x] NPC behavior. ("Chag Hanukkah Sameach!" greetings and festive dialogue)
+* [x] Event state. (Active Hanukkah state with night progression)
+* [x] Rewards. (`DreidelItem` and `DreidelManager` spin minigame with Shekel payouts for Nun, Gimel, Hei, Shin)
+* [x] Achievement. (Dreidel spin victory messages and audio)
+* [x] Multiplayer synchronization. (Server-authoritative spin RNG and payouts)
+* [x] Reset/cleanup. (Automatic conclusion after night 8)
 
 ---
 
@@ -859,16 +859,16 @@ Festivals:
 
 For each festival:
 
-* [ ] Event registration.
-* [ ] Schedule.
-* [ ] Decorations.
-* [ ] NPC behavior.
-* [ ] Food/content.
-* [ ] Rewards.
-* [ ] Achievement.
-* [ ] Multiplayer behavior.
-* [ ] Configuration.
-* [ ] Cleanup.
+* [x] Event registration. (Registered in `FestivalType` and `FestivalManager`)
+* [x] Schedule. (Annual Jewish calendar progression matching seasonal periods)
+* [x] Decorations. (Holiday-specific atmospheric elements)
+* [x] NPC behavior. (Tailored holiday greetings and holiday schedules)
+* [x] Food/content. (Rosh Hashanah citrus/honey, Purim `HAMANTASH`, Pesach `MATZO` granting `FreedomEffect`)
+* [x] Rewards. (`ShofarItem` sounding horn granting `BlessedEffect`, Luck II, and Absorption)
+* [x] Achievement. (Holiday messages and toasts in `en_us.json`)
+* [x] Multiplayer behavior. (Synchronized server-authoritative state)
+* [x] Configuration. (Annual cycle with programmatic triggers)
+* [x] Cleanup. (Automatic seasonal transition)
 
 ---
 

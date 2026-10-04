@@ -57,11 +57,11 @@ public final class ModItems {
     public static final DeferredHolder<Item, Item> AGORA = ITEMS.registerItem("agora", p -> new Item(CurrencyItems.agora(p)));
 
     // Festival items
-    public static final DeferredHolder<Item, Item> MATZO = ITEMS.registerItem("matzo", p -> new Item(FestivalItems.matzo(p)));
-    public static final DeferredHolder<Item, Item> SUFGANIYAH = ITEMS.registerItem("sufganiyah", p -> new Item(FestivalItems.sufganiyah(p)));
-    public static final DeferredHolder<Item, Item> DREIDEL = ITEMS.registerItem("dreidel", p -> new Item(FestivalItems.dreidel(p)));
-    public static final DeferredHolder<Item, Item> HAMANTASH = ITEMS.registerItem("hamantash", p -> new Item(FestivalItems.hamantash(p)));
-    public static final DeferredHolder<Item, Item> SHOFAR = ITEMS.registerItem("shofar", p -> new Item(FestivalItems.shofar(p)));
+    public static final DeferredHolder<Item, Item> MATZO = ITEMS.registerSimpleItem("matzo", p -> p.food(IsraelFoodProperties.MATZO, IsraelFoodProperties.MATZO_CONSUMABLE));
+    public static final DeferredHolder<Item, Item> SUFGANIYAH = ITEMS.registerSimpleItem("sufganiyah", p -> p.food(IsraelFoodProperties.SUFGANIYAH, IsraelFoodProperties.SUFGANIYAH_CONSUMABLE));
+    public static final DeferredHolder<Item, com.israelsimulator.item.festival.DreidelItem> DREIDEL = ITEMS.registerItem("dreidel", p -> new com.israelsimulator.item.festival.DreidelItem(FestivalItems.dreidel(p)));
+    public static final DeferredHolder<Item, Item> HAMANTASH = ITEMS.registerSimpleItem("hamantash", p -> p.food(IsraelFoodProperties.HAMANTASH, IsraelFoodProperties.HAMANTASH_CONSUMABLE));
+    public static final DeferredHolder<Item, com.israelsimulator.item.festival.ShofarItem> SHOFAR = ITEMS.registerItem("shofar", p -> new com.israelsimulator.item.festival.ShofarItem(FestivalItems.shofar(p)));
 
     // Technology items
     public static final DeferredHolder<Item, Item> SMARTPHONE = ITEMS.registerItem("smartphone", p -> new Item(TechnologyItems.smartphone(p)));

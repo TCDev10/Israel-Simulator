@@ -68,4 +68,25 @@ public final class IsraelFoodProperties {
     public static final Consumable RUGELACH_CONSUMABLE = Consumables.defaultFood()
             .onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MobEffects.LUCK, 600, 0), 0.3F))
             .build();
+
+    // Matzo: unleavened bread for Passover granting Freedom
+    public static final FoodProperties MATZO = new FoodProperties.Builder()
+            .nutrition(4).saturationModifier(0.5F).build();
+    public static final Consumable MATZO_CONSUMABLE = Consumables.defaultFood()
+            .onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(com.israelsimulator.effect.ModEffects.FREEDOM, 600, 0), 1.0F))
+            .build();
+
+    // Sufganiyah: holiday jelly doughnut granting Speed
+    public static final FoodProperties SUFGANIYAH = new FoodProperties.Builder()
+            .nutrition(5).saturationModifier(0.6F).build();
+    public static final Consumable SUFGANIYAH_CONSUMABLE = Consumables.defaultFood()
+            .onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MobEffects.SPEED, 400, 0), 0.7F))
+            .build();
+
+    // Hamantash: sweet filled pastry for Purim granting Luck
+    public static final FoodProperties HAMANTASH = new FoodProperties.Builder()
+            .nutrition(4).saturationModifier(0.5F).build();
+    public static final Consumable HAMANTASH_CONSUMABLE = Consumables.defaultFood()
+            .onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MobEffects.LUCK, 600, 0), 0.6F))
+            .build();
 }

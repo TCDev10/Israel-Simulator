@@ -93,6 +93,7 @@ public final class IsraelNpcManager {
 
         // Check if trading is allowed by schedule
         boolean canTrade = NpcSchedule.canNpcTrade(dayTime, isShabbat, profession);
+        com.israelsimulator.festival.FestivalType activeFestival = com.israelsimulator.festival.FestivalManager.getCurrentFestival(level.getGameTime());
 
         // 1. If it's Shabbat or NPC cannot trade, display dialogue only
         if (isShabbat && profession.isObservantShabbat()) {
@@ -100,6 +101,11 @@ public final class IsraelNpcManager {
             level.playSound(null, villager.getX(), villager.getY(), villager.getZ(),
                     SoundEvents.VILLAGER_AMBIENT, SoundSource.NEUTRAL, 1.0F, 1.0F);
             return true;
+        }
+
+        if (activeFestival != null && !activeFestival.equals(com.israelsimulator.festival.FestivalType.SHABBAT)) {
+            // Holiday greeting
+            player.sendSystemMessage(Component.literal("[" + profession.getDisplayName() + "] " + activeFestival.getGreeting()));
         }
 
         if (!canTrade) {
@@ -112,6 +118,19 @@ public final class IsraelNpcManager {
         // 2. Try trade execution if player is holding Shekel or tradeable goods
         ItemStack held = player.getItemInHand(hand);
         CityRegion region = profession.getPreferredRegion();
+        boolean isBlessed = com.israelsimulator.trading.IsraelVillagerTrades.isBlessedTraderEligible(player);
+
+        // Map profession to faction for global reputation tracking
+        com.israelsimulator.reputation.ReputationFaction faction = switch (profession.getPrimaryCategory()) {
+            case JUDAICA_CULTURAL -> com.israelsimulator.reputation.ReputationFaction.RELIGIOUS;
+            case TECHNOLOGY -> com.israelsimulator.reputation.ReputationFaction.TECH_DISTRICT;
+            case AGRICULTURE -> com.israelsimulator.reputation.ReputationFaction.VILLAGE;
+            case FOOD -> com.israelsimulator.reputation.ReputationFaction.CITY;
+            case COMMODITIES_MINERALS -> com.israelsimulator.reputation.ReputationFaction.MERCHANT;
+        };
+
+        int playerRep = Math.max(npcData.getReputation(),
+                com.israelsimulator.reputation.ReputationManager.getReputation(player.getUUID(), faction));
 
         // Player wants to BUY a primary item from this NPC using Shekels
         if (held.is(ModItems.SHEKEL.get()) && !profession.getTradedItems().isEmpty()) {
@@ -120,9 +139,16 @@ public final class IsraelNpcManager {
                 return true;
             }
 
+            if (isBlessed) {
+                player.sendSystemMessage(Component.translatable("message.israel_simulator.blessed_trader_greeting"));
+            }
+
             // Pick an item sold by this profession
             String soldItemId = profession.getTradedItems().getFirst();
-            long buyPriceAgorot = IsraelEconomy.calculateBuyPrice(soldItemId, region, npcData.getReputation());
+            long buyPriceAgorot = IsraelEconomy.calculateBuyPrice(soldItemId, region, playerRep);
+            if (isBlessed) {
+                buyPriceAgorot = (long) (buyPriceAgorot * 0.85); // 15% holy discount
+            }
             long costInShekels = Math.max(1L, (buyPriceAgorot + 99L) / 100L); // Ceiling to Shekels
 
             if (held.getCount() >= costInShekels) {
@@ -131,7 +157,8 @@ public final class IsraelNpcManager {
                     held.shrink((int) costInShekels);
                     player.addItem(new ItemStack(itemToGive, 1));
                     npcData.recordTrade(level.getGameTime());
-                    npcData.adjustReputation(2); // +2 reputation per fair trade
+                    npcData.adjustReputation(2);
+                    com.israelsimulator.reputation.ReputationManager.adjustReputation(player.getUUID(), faction, 2);
 
                     player.sendSystemMessage(Component.literal("[" + profession.getDisplayName() + "] Pleasure doing business! "
                             + costInShekels + " Shekels for " + soldItemId + "."));
