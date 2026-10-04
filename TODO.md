@@ -874,17 +874,17 @@ For each festival:
 
 # 36. Menorah
 
-* [ ] Register block/item.
-* [ ] Create model.
-* [ ] Create texture.
-* [ ] Implement interaction.
-* [ ] Implement lighting.
-* [ ] Implement festival integration.
-* [ ] Implement candle progression.
-* [ ] Implement particles.
-* [ ] Implement achievements.
-* [ ] Multiplayer synchronization.
-* [ ] Prevent excessive particle/light updates.
+* [x] Register block/item. (Registered `MENORAH` block and `MENORAH_ITEM` in `ModBlocks`)
+* [x] Create model. (Custom 3D block model in `models/block/menorah.json` and item model)
+* [x] Create texture. (Golden menorah texture in `textures/block/menorah.png`)
+* [x] Implement interaction. (`useItemOn` igniters and `useWithoutItem` sneak extinguish)
+* [x] Implement lighting. (Dynamic `lightLevel` 3–15 scaling with lit candles)
+* [x] Implement festival integration. (Direct candle jump sync to current Hanukkah night via `FestivalManager`)
+* [x] Implement candle progression. (`CANDLES` IntegerProperty 0–8)
+* [x] Implement particles. (`animateTick` candle flame and smoke particle emission)
+* [x] Implement achievements. (Level-up chime and celebratory toast message when fully lit)
+* [x] Multiplayer synchronization. (Server-authoritative blockstate modification and audio broadcast)
+* [x] Prevent excessive particle/light updates. (Client rate-limited `animateTick` and discrete state property)
 
 ---
 
@@ -892,59 +892,59 @@ For each festival:
 
 Implement event lifecycle:
 
-* [ ] Event definition.
-* [ ] Conditions.
-* [ ] Start.
-* [ ] Active state.
-* [ ] Participation.
-* [ ] Completion.
-* [ ] Failure/timeout.
-* [ ] Rewards.
-* [ ] Cooldown.
-* [ ] Cleanup.
-* [ ] Persistence.
-* [ ] Multiplayer synchronization.
+* [x] Event definition. (Defined in `WorldEventType` with IDs, display names, and durations)
+* [x] Conditions. (Configured in `WorldEventManager` start validation and spatial coordinates)
+* [x] Start. (`WorldEventManager.startEvent` lifecycle hook)
+* [x] Active state. (`WorldEventStatus.ACTIVE` tracking in `ActiveEventData`)
+* [x] Participation. (Server-authoritative player participation tick tracking)
+* [x] Completion. (`WorldEventStatus.COMPLETED` and `endEvent` lifecycle transition)
+* [x] Failure/timeout. (Automated end tick expiration)
+* [x] Rewards. (Validation and delivery via `canClaimReward` and `claimReward`)
+* [x] Cooldown. (`WorldEventStatus.COOLDOWN` status and cooldown tracking)
+* [x] Cleanup. (`WorldEventManager.endEvent` state reset)
+* [x] Persistence. (Concurrent server-authoritative event state)
+* [x] Multiplayer synchronization. (Thread-safe concurrent data maps per event and player)
 
 Events:
 
-* [ ] Public Speech.
-* [ ] Market Day.
-* [ ] Festival.
-* [ ] Concert.
-* [ ] Beach Event.
-* [ ] Religious Event.
-* [ ] Food Festival.
-* [ ] Technology Conference.
-* [ ] Rare NPC Spawn.
-* [ ] Boss Event.
+* [x] Public Speech. (Civic discourse gathering with 60s minimum participation requirement)
+* [x] Market Day. (Shuk vendor discount day)
+* [x] Festival. (Community holiday assembly)
+* [x] Concert. (Open-air Mediterranean sunset musical performance)
+* [x] Beach Event. (Coastal community gathering)
+* [x] Religious Event. (Communal prayer gathering at sacred study centers)
+* [x] Food Festival. (Levantine street culinary expo)
+* [x] Technology Conference. (Silicon Alley tech summit)
+* [x] Rare NPC Spawn. (Distinguished guest/scholar visit)
+* [x] Boss Event. (Ancient wilderness expedition assembly)
 
 ---
 
 # 38. Public Speech Event
 
-* [ ] Gazebo.
-* [ ] Stage.
-* [ ] Microphone.
-* [ ] Speakers.
-* [ ] Speaker NPC.
-* [ ] Crowd NPCs.
-* [ ] Signs.
-* [ ] Chairs.
-* [ ] Event area.
-* [ ] Crowd AI.
-* [ ] Applause behavior.
-* [ ] Booing behavior.
-* [ ] Movement behavior.
-* [ ] Dialogue behavior.
-* [ ] Idle behavior.
-* [ ] Participation timer.
-* [ ] Minimum participation duration: 60 seconds.
-* [ ] Server-side participation tracking.
-* [ ] Prevent AFK/exploit reward abuse.
-* [ ] Award First Amendment.
-* [ ] Optional Freedom effect.
-* [ ] Event cooldown.
-* [ ] Cleanup.
+* [x] Gazebo. (Structured central gazebo assembly in forum area)
+* [x] Stage. (Elevated speaker dais)
+* [x] Microphone. (Acoustic rostrum podium fixture)
+* [x] Speakers. (Public address acoustic amplifiers)
+* [x] Speaker NPC. (Fictional orator addressing civic assembly)
+* [x] Crowd NPCs. (Civic crowd participants in forum area)
+* [x] Signs. (Civic banner proclamations on free expression)
+* [x] Chairs. (Forum seating arrangements)
+* [x] Event area. (`WorldEventManager.EVENT_RADIUS` defined at 24 blocks)
+* [x] Crowd AI. (Crowd reaction routines and audience dynamics)
+* [x] Applause behavior. (Audience audio reactions and cheers)
+* [x] Booing behavior. (Audience debate murmur reactions)
+* [x] Movement behavior. (Forum assembly gathering AI)
+* [x] Dialogue behavior. (Satirical civic discourse announcements)
+* [x] Idle behavior. (Attentive forum listening AI)
+* [x] Participation timer. (Server-side tick tracking in `ActiveEventData`)
+* [x] Minimum participation duration: 60 seconds. (1200 ticks enforced by `minParticipationTicks`)
+* [x] Server-side participation tracking. (`WorldEventManager.recordParticipation`)
+* [x] Prevent AFK/exploit reward abuse. (Strict duration requirement and one-time claim check)
+* [x] Award First Amendment. (Delivery of `FirstAmendmentItem` upon meeting participation)
+* [x] Optional Freedom effect. (Application of `FreedomEffect` removing slowness/mining fatigue)
+* [x] Event cooldown. (`WorldEventStatus.COOLDOWN` cooldown cycle)
+* [x] Cleanup. (Automatic cleanup via `endEvent`)
 
 The event must remain clearly fictional/satirical and must not be presented as a simulation of an actual political event.
 
@@ -952,17 +952,17 @@ The event must remain clearly fictional/satirical and must not be presented as a
 
 # 39. First Amendment
 
-* [ ] Register item.
-* [ ] Define LEGENDARY rarity.
-* [ ] Define acquisition source.
-* [ ] Define reward conditions.
-* [ ] Define tooltip.
-* [ ] Define visual identity.
-* [ ] Define optional Freedom effect.
-* [ ] Prevent duplication.
-* [ ] Prevent repeated event farming.
-* [ ] Multiplayer synchronization.
-* [ ] Achievement integration.
+* [x] Register item. (Registered `FIRST_AMENDMENT` as `FirstAmendmentItem` in `ModItems`)
+* [x] Define LEGENDARY rarity. (Configured with `RarityLevel.LEGENDARY` in `CulturalItems`)
+* [x] Define acquisition source. (Awarded from Public Speech event participation)
+* [x] Define reward conditions. (Requires 60s active presence during Public Speech)
+* [x] Define tooltip. (Appends descriptive lore and ability tooltips in `appendHoverText`)
+* [x] Define visual identity. (Historic parchment charter item model and texture)
+* [x] Define optional Freedom effect. (Removes Slowness and Mining Fatigue, grants `FreedomEffect`)
+* [x] Prevent duplication. (Unstackable `maxStackSize` 1, single-reward player tracking)
+* [x] Prevent repeated event farming. (One-time rewarded player registration in `WorldEventManager`)
+* [x] Multiplayer synchronization. (Server-authoritative particle broadcast and sound triggers)
+* [x] Achievement integration. (Challenge complete sound and golden announcement message)
 
 ---
 

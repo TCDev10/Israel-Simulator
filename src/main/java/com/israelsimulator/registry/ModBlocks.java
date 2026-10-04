@@ -78,6 +78,19 @@ public final class ModBlocks {
     );
     public static final DeferredItem<BlockItem> WESTERN_WALL_STONE_ITEM = ModItems.ITEMS.registerSimpleBlockItem("western_wall_stone", WESTERN_WALL_STONE);
 
+    // Ceremonial & Festival Blocks
+    public static final DeferredBlock<com.israelsimulator.block.MenorahBlock> MENORAH = BLOCKS.registerBlock(
+            "menorah",
+            com.israelsimulator.block.MenorahBlock::new,
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS)
+                    .sound(SoundType.METAL)
+                    .noOcclusion()
+                    .lightLevel(state -> state.getValue(com.israelsimulator.block.MenorahBlock.CANDLES) > 0
+                            ? Math.min(15, 3 + state.getValue(com.israelsimulator.block.MenorahBlock.CANDLES))
+                            : 0)
+    );
+    public static final DeferredItem<BlockItem> MENORAH_ITEM = ModItems.ITEMS.registerSimpleBlockItem("menorah", MENORAH);
+
     private ModBlocks() {}
 
     public static void register(IEventBus modEventBus) {

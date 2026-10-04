@@ -72,6 +72,7 @@
   "block.israel_simulator.salt_block": "Dead Sea Salt Block",
   "block.israel_simulator.jerusalem_stone": "Jerusalem Stone",
   "block.israel_simulator.western_wall_stone": "Western Wall Stone",
+  "block.israel_simulator.menorah": "Menorah",
 
   "item.israel_simulator.dead_sea_mud": "Dead Sea Mineral Mud",
 
@@ -123,5 +124,16 @@
   "festival.israel_simulator.sukkot": "Sukkot",
   "festival.israel_simulator.hanukkah": "Hanukkah",
   "festival.israel_simulator.purim": "Purim",
-  "festival.israel_simulator.pesach": "Pesach"
+  "festival.israel_simulator.pesach": "Pesach",
+
+  "message.israel_simulator.menorah_lit": "You lit candle #%d on the Menorah.",
+  "message.israel_simulator.menorah_fully_lit": "All eight lights are glowing with miraculous radiance! Chag Hanukkah Sameach!",
+  "message.israel_simulator.menorah_extinguished": "The Menorah candles have been gently extinguished.",
+  "message.israel_simulator.menorah_status": "Menorah: %d of 8 candles currently burning.",
+
+  "item.israel_simulator.first_amendment.desc": "Historic charter of free speech, assembly, and open debate.",
+  "item.israel_simulator.first_amendment.effect": "Right-click to claim the Freedom effect, breaking free of slowness and restraint.",
+  "message.israel_simulator.first_amendment_used": "You proclaim freedom of thought and assembly! You feel completely unburdened and free!",
+  "message.israel_simulator.public_speech_reward": "You actively participated in the Civic Speech and stood for free expression! You received the First Amendment!",
+  "message.israel_simulator.public_speech_start": "[Public Forum] A civic speech on democracy and liberty is now commencing at the forum!"
 }
