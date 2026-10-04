@@ -17,4 +17,13 @@ public final class ModGameEvents {
     public static void onServerStarting(ServerStartingEvent event) {
         IsraelSimulator.LOGGER.info("Israel-Simulator server starting");
     }
+
+    @SubscribeEvent
+    public static void onEntityInteract(net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.EntityInteract event) {
+        if (event.getTarget() instanceof net.minecraft.world.entity.npc.villager.AbstractVillager villager) {
+            if (com.israelsimulator.agriculture.AgriculturalTrades.tryTrade(event.getEntity(), event.getHand(), villager)) {
+                event.setCanceled(true);
+            }
+        }
+    }
 }

@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#israel_simulator:has_date_palms",
+  "features": "israel_simulator:date_palm_placed",
+  "step": "vegetal_decoration"
+}

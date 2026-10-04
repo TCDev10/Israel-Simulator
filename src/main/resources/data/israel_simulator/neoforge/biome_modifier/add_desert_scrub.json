@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "israel_simulator:judean_desert",
+  "features": "israel_simulator:desert_scrub_placed",
+  "step": "vegetal_decoration"
+}

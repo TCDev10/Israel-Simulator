@@ -1,0 +1,7 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#israel_simulator:has_olive_groves",
+  "features": "israel_simulator:mediterranean_herbs_placed",
+  "step": "vegetal_decoration"
+}
+

@@ -49,5 +49,17 @@
   "effect.israel_simulator.freedom": "Freedom",
   "effect.israel_simulator.meat_digestion": "Waiting (Meat)",
   "effect.israel_simulator.dairy_digestion": "Waiting (Dairy)",
-  "message.israel_simulator.kosher_violation": "You feel unwell from mixing meat and dairy."
+  "message.israel_simulator.kosher_violation": "You feel unwell from mixing meat and dairy.",
+
+  "biome.israel_simulator.mediterranean_coast": "Mediterranean Coast",
+  "biome.israel_simulator.israeli_agriculture": "Israeli Agricultural Valley",
+  "biome.israel_simulator.judean_desert": "Judean Desert",
+  "biome.israel_simulator.dead_sea": "Dead Sea",
+  "biome.israel_simulator.urban_area": "Mediterranean Urban District",
+
+  "block.israel_simulator.olive_leaves": "Olive Leaves",
+  "block.israel_simulator.date_palm_leaves": "Date Palm Leaves",
+  "block.israel_simulator.citrus_leaves": "Citrus Leaves",
+  "block.israel_simulator.grapevine": "Grapevine",
+  "block.israel_simulator.mediterranean_herbs": "Mediterranean Herbs"
 }

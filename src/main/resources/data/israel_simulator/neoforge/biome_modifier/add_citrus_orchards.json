@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "israel_simulator:israeli_agriculture",
+  "features": "israel_simulator:citrus_orchard_placed",
+  "step": "vegetal_decoration"
+}

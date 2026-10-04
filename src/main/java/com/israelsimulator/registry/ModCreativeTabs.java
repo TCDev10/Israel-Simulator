@@ -42,6 +42,12 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.SHAKSHUKA.get());
                         output.accept(ModItems.SABICH.get());
 
+                        // Agriculture & Vegetation
+                        output.accept(ModBlocks.OLIVE_LEAVES_ITEM.get());
+                        output.accept(ModBlocks.DATE_PALM_LEAVES_ITEM.get());
+                        output.accept(ModBlocks.CITRUS_LEAVES_ITEM.get());
+                        output.accept(ModBlocks.MEDITERRANEAN_HERBS_ITEM.get());
+
                         // Collectibles
                         output.accept(ModItems.MEZUZAH.get());
                         output.accept(ModItems.STAR_OF_DAVID.get());

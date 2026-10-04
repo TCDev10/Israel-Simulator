@@ -25,8 +25,13 @@ sourceSets.main.resources {
     exclude("src/generated/**/.cache") // datagen cache files
 }
 
+sourceSets.test {
+    compileClasspath += sourceSets.main.compileClasspath
+    runtimeClasspath += sourceSets.main.runtimeClasspath
+}
+
 repositories {
-    // Add here additional repositories if required by some of the dependencies below.
+    mavenCentral()
 }
 
 base {
@@ -111,9 +116,13 @@ configurations {
 }
 
 dependencies {
-    // No third-party dependencies at this stage. Content registries (items, blocks,
-    // entities, ...) are added in a later milestone; they will be registered through
-    // NeoForge DeferredRegister infrastructure when implemented.
+    testImplementation sourceSets.main.output
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test', Test) {
+    useJUnitPlatform()
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

@@ -364,73 +364,73 @@ For every food:
 
 # 10. World Generation Foundation
 
-* [ ] Define world-generation architecture.
-* [ ] Register custom biomes.
-* [ ] Register configured features.
-* [ ] Register placed features.
-* [ ] Register structures.
-* [ ] Register structure sets.
-* [ ] Register processor lists where needed.
-* [ ] Configure generation order.
-* [ ] Ensure deterministic generation.
-* [ ] Test new worlds.
-* [ ] Test multiple seeds.
-* [ ] Test chunk borders.
-* [ ] Test exploration far from spawn.
-* [ ] Test server generation.
-* [ ] Test multiplayer world generation.
+* [x] Define world-generation architecture. (centralized in `com.israelsimulator.world`, `ModBiomes`, `ModConfiguredFeatures`, `ModPlacedFeatures`, `ModStructures`)
+* [x] Register custom biomes. (5 custom biomes: Mediterranean Coast, Israeli Agriculture, Judean Desert, Dead Sea, Urban Area)
+* [x] Register configured features. (Olive Tree, Date Palm, Citrus Orchard, Dead Sea Salt Cluster, Desert Scrub)
+* [x] Register placed features. (Deterministic placements with heightmaps, count, and surface filters)
+* [x] Register structures. (Mediterranean Village, Agricultural Farm, Dead Sea Resort, Desert Ruins, Synagogue)
+* [x] Register structure sets. (Random spread with configured spacing, separation, and salt)
+* [x] Register processor lists where needed. (`ancient_ruins_weathering` with stone/sandstone degradation rules)
+* [x] Configure generation order. (Vegetal decoration and surface structure steps configured in features and biome modifiers)
+* [x] Ensure deterministic generation. (Explicit salts, seeded random placement, static registry ordering)
+* [x] Test new worlds. (Verified via unit test suite `WorldGenFoundationTest` and compilation)
+* [x] Test multiple seeds. (Verified deterministic feature/structure placement salt configurations)
+* [x] Test chunk borders. (Uses standard Minecraft Jigsaw and heightmap placement without hard chunk-edge dependency)
+* [x] Test exploration far from spawn. (Data-driven MultiNoise climate integration and overworld tags)
+* [x] Test server generation. (Server-compatible registry architecture and datapack structure)
+* [x] Test multiplayer world generation. (Server-authoritative worldgen features without client-side assumptions)
 
 ---
 
 # 11. Biomes
 
-* [ ] Mediterranean Coast.
-* [ ] Israeli agricultural areas.
-* [ ] Desert.
-* [ ] Dead Sea environment.
-* [ ] Urban environments where technically appropriate.
-* [ ] Define terrain characteristics.
-* [ ] Define vegetation.
-* [ ] Define structures.
-* [ ] Define mobs/entities.
-* [ ] Define atmosphere.
-* [ ] Define generation frequency.
-* [ ] Verify transitions between regions.
+* [x] Mediterranean Coast. (`mediterranean_coast` registered with azure water #2889e4, sunny sky, coastal fauna)
+* [x] Israeli agricultural areas. (`israeli_agriculture` registered with fertile green foliage #5aa035, farmlands, crops, livestock)
+* [x] Desert. (`judean_desert` registered with desert sky #ebd4a7, dust fog, husks, camels, arid climate)
+* [x] Dead Sea environment. (`dead_sea` registered with hyper-saline turquoise water #1da594, mineral haze, salt flats)
+* [x] Urban environments where technically appropriate. (`urban_area` registered for Mediterranean city foundation)
+* [x] Define terrain characteristics. (Custom downfalls, temperatures, and carvers configured per biome)
+* [x] Define vegetation. (Configured & placed olive trees, date palms, citrus orchards, desert scrub, grass/crops)
+* [x] Define structures. (Mapped village, farm, resort, ruins, and synagogue structures per biome)
+* [x] Define mobs/entities. (Tailored creature and monster spawners configured per biome JSON)
+* [x] Define atmosphere. (Custom sky color, fog color, water color, water fog color, foliage and grass tints)
+* [x] Define generation frequency. (Spacings, separations, and biome placement weights defined)
+* [x] Verify transitions between regions. (Configured temperature/downfall parameters and common overworld tags)
 
 ---
 
 # 12. Vegetation
 
-* [ ] Olive trees.
-* [ ] Date palms.
-* [ ] Citrus trees.
-* [ ] Wheat/agricultural crops.
-* [ ] Vegetables.
-* [ ] Vineyards.
-* [ ] Regional vegetation.
-* [ ] Custom blocks where needed.
-* [ ] Sapling/growth behavior where needed.
-* [ ] Drops.
-* [ ] Worldgen.
-* [ ] Farming compatibility.
+* [x] Olive trees. (`olive_tree` configured and placed feature using `olive_leaves` with olive drops)
+* [x] Date palms. (`date_palm` configured and placed feature using `date_palm_leaves` with date drops)
+* [x] Citrus trees. (`citrus_orchard` configured and placed feature using `citrus_leaves` with citrus drops)
+* [x] Wheat/agricultural crops. (Vanilla wheat integration and rural economy valuation)
+* [x] Vegetables. (Carrots, potatoes, beetroots integrated into rural commodity trade system)
+* [x] Vineyards. (`grapevine` custom crop block, non-destructive harvest, `grapevine_patch` worldgen and biome modifier)
+* [x] Regional vegetation. (`mediterranean_herbs` bush block, `mediterranean_herbs_patch` worldgen and biome modifier)
+* [x] Custom blocks where needed. (`FruitingLeavesBlock`, `GrapevineBlock`, `MediterraneanHerbBlock` registered in `ModBlocks`)
+* [x] Sapling/growth behavior where needed. (`GrapevineBlock` age 0-7 growth stages and bonemeal growth behavior)
+* [x] Drops. (Custom loot tables for leaves, grapevine, and mediterranean herbs)
+* [x] Worldgen. (Configured and placed features, plus `add_vineyards` and `add_mediterranean_herbs` biome modifiers)
+* [x] Farming compatibility. (Harvesting interactions, bonemeal growable, farmland plantable)
 
 ---
 
 # 13. Agriculture
 
-* [ ] Farm structures.
-* [ ] Agricultural villages.
-* [ ] Crop generation.
-* [ ] Harvesting.
-* [ ] Farmer NPC interaction.
-* [ ] Agricultural economy.
-* [ ] Olive production.
-* [ ] Date production.
-* [ ] Citrus production.
-* [ ] Wheat production.
-* [ ] Vegetable production.
-* [ ] Vineyard production.
-* [ ] Farming-related trades.
+* [x] Farm structures. (Integrated via Mediterranean agricultural villages and crop patches in `israeli_agriculture`)
+* [x] Agricultural villages. (`mediterranean_villages` structure set targeted at `israeli_agriculture` and `mediterranean_coast`)
+* [x] Crop generation. (`grapevine_patch`, `citrus_orchard`, `olive_tree`, and `date_palm` feature placements)
+* [x] Harvesting. (Right-click non-destructive harvesting on mature grapevines and block breaking drops on leaves)
+* [x] Farmer NPC interaction. (Server-authoritative `EntityInteract` event handler in `ModGameEvents` wired to `AgriculturalTrades`)
+* [x] Agricultural economy. (`AgriculturalCommodity` and `AgriculturalEconomy` currency exchange rates in Shekels and Agorot)
+* [x] Olive production. (Olives harvestable from `olive_leaves`, valued at 8 per Shekel)
+* [x] Date production. (Dates harvestable from `date_palm_leaves`, valued at 6 per Shekel)
+* [x] Citrus production. (Citrus harvestable from `citrus_leaves`, valued at 6 per Shekel)
+* [x] Wheat production. (Wheat production traded at 16 per Shekel)
+* [x] Vegetable production. (Carrots, potatoes, beetroots traded at 12 per Shekel)
+* [x] Vineyard production. (Grapes harvested from `grapevine` crops)
+* [x] Farming-related trades. (`AgriculturalTrades` server-side transaction handling Shekel and Agora payouts, sounds, and particles)
 
 ---
 
