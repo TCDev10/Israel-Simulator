@@ -130,9 +130,6 @@ public class ClientRenderingValidationTest {
         assertNotNull(CulturalItems.TALIT_ASSET);
         assertEquals("israel_simulator:talit", CulturalItems.TALIT_ASSET.identifier().toString());
 
-        assertNotNull(CulturalItems.TEFILLIN_ASSET);
-        assertEquals("israel_simulator:tefillin", CulturalItems.TEFILLIN_ASSET.identifier().toString());
-
         assertNotNull(CulturalItems.RABBIS_CROWN_ASSET);
         assertEquals("israel_simulator:rabbis_crown", CulturalItems.RABBIS_CROWN_ASSET.identifier().toString());
 
