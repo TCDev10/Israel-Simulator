@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "israel_simulator:kippah"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "israel_simulator:kippah"
+      }
+    ]
+  }
+}

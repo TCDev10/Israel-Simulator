@@ -593,18 +593,18 @@ For every food:
 
 # 22. Kippah
 
-* [ ] Register item.
-* [ ] Head-slot equipment.
-* [ ] Create 3D model.
-* [ ] Create texture.
-* [ ] Implement first-person rendering.
-* [ ] Implement third-person rendering.
-* [ ] Multiplayer synchronization.
-* [ ] Equip/unequip.
-* [ ] Durability behavior if applicable.
-* [ ] Cultural interaction requirement.
-* [ ] Test with armor.
-* [ ] Test death/relog.
+* [x] Register item. (`KippahItem` registered as `ModItems.KIPPAH` with properties from `CulturalItems.kippah`)
+* [x] Head-slot equipment. (`Equippable.builder(EquipmentSlot.HEAD)` component configured with leather equip sound)
+* [x] Create 3D model. (Custom 3D blockbench element model in `assets/israel_simulator/models/item/kippah.json`)
+* [x] Create texture. (Item texture `textures/item/kippah.png` and humanoid equipment layer in `textures/entity/equipment/humanoid/kippah.png`)
+* [x] Implement first-person rendering. (First-person display transformations in `kippah.json` 3D model)
+* [x] Implement third-person rendering. (Humanoid equipment layer via `assets/israel_simulator/equipment/kippah.json` rendering on player head in 3rd person)
+* [x] Multiplayer synchronization. (Vanilla `DataComponents.EQUIPPABLE` synced across all clients via `ClientboundSetEquipmentPacket`)
+* [x] Equip/unequip. (Direct right-click equip/swap and head armor slot placement)
+* [x] Durability behavior if applicable. (`damageOnHurt = false` ensures cultural wearability without combat durability loss)
+* [x] Cultural interaction requirement. (Required for sacred prayer at the Western Wall in `WesternWallManager.tryPray`, with in-game tooltip description)
+* [x] Test with armor. (Swapping with helmet armor verified and tested in `KippahItemTest`)
+* [x] Test death/relog. (Vanilla inventory and data component persistence tested in test suite)
 
 ---
 

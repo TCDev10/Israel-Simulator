@@ -80,7 +80,8 @@ public final class WesternWallManager {
         }
 
         ItemStack held = player.getItemInHand(hand);
-        boolean hasKippah = player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.KIPPAH.get());
+        boolean hasKippah = player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.KIPPAH.get())
+                || com.israelsimulator.item.cultural.KippahItem.isWearingKippah(player);
         boolean hasPrayerNote = held.is(ModItems.PRAYER_NOTE.get());
         boolean onCooldown = !player.getAbilities().instabuild && isOnCooldown(player.getUUID(), level.getGameTime());
 

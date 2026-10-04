@@ -3,6 +3,7 @@ package com.israelsimulator.registry;
 import com.israelsimulator.IsraelSimulator;
 import com.israelsimulator.item.collectible.CollectibleItems;
 import com.israelsimulator.item.cultural.CulturalItems;
+import com.israelsimulator.item.cultural.KippahItem;
 import com.israelsimulator.item.currency.CurrencyItems;
 import com.israelsimulator.item.festival.FestivalItems;
 import com.israelsimulator.item.food.IsraelFoodProperties;
@@ -19,7 +20,7 @@ public final class ModItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(IsraelSimulator.MOD_ID);
 
     // Cultural items
-    public static final DeferredHolder<Item, Item> KIPPAH = ITEMS.registerItem("kippah", p -> new Item(CulturalItems.kippah(p)));
+    public static final DeferredHolder<Item, KippahItem> KIPPAH = ITEMS.registerItem("kippah", p -> new KippahItem(CulturalItems.kippah(p)));
     public static final DeferredHolder<Item, Item> TALIT = ITEMS.registerItem("talit", p -> new Item(CulturalItems.talit(p)));
     public static final DeferredHolder<Item, Item> TEFILLIN = ITEMS.registerItem("tefillin", p -> new Item(CulturalItems.tefillin(p)));
     public static final DeferredHolder<Item, Item> RABBIS_CROWN = ITEMS.registerItem("rabbis_crown", p -> new Item(CulturalItems.rabbisCrown(p)));

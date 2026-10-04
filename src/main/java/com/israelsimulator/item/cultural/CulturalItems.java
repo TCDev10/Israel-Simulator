@@ -1,7 +1,16 @@
 package com.israelsimulator.item.cultural;
 
+import com.israelsimulator.IsraelSimulator;
 import com.israelsimulator.core.data.RarityLevel;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.equipment.EquipmentAsset;
+import net.minecraft.world.item.equipment.EquipmentAssets;
+import net.minecraft.world.item.equipment.Equippable;
 
 /**
  * Property builders for cultural/religious items (GAME_DESIGN.md §12–16, §34–35).
@@ -11,11 +20,23 @@ import net.minecraft.world.item.Item;
  * systems, boss drops, etc.).</p>
  */
 public final class CulturalItems {
+    public static final ResourceKey<EquipmentAsset> KIPPAH_ASSET =
+            ResourceKey.create(EquipmentAssets.ROOT_ID, Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "kippah"));
+
     private CulturalItems() {}
 
-    /** Kippah — wearable head item, UNCOMMON, unstackable. (Armor/equip behavior added later.) */
+    /** Kippah — wearable head item, UNCOMMON, unstackable, swappable, no damage on hurt. */
     public static Item.Properties kippah(Item.Properties p) {
-        return p.stacksTo(1).rarity(RarityLevel.UNCOMMON.vanilla());
+        Equippable equippable = Equippable.builder(EquipmentSlot.HEAD)
+                .setEquipSound(SoundEvents.ARMOR_EQUIP_LEATHER)
+                .setAsset(KIPPAH_ASSET)
+                .setSwappable(true)
+                .setDamageOnHurt(false)
+                .build();
+
+        return p.stacksTo(1)
+                .rarity(RarityLevel.UNCOMMON.vanilla())
+                .component(DataComponents.EQUIPPABLE, equippable);
     }
 
     /** Talit — wearable cultural item, RARE, unstackable. */

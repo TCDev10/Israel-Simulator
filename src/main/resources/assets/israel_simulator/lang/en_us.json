@@ -6,6 +6,8 @@
   "itemGroup.israel_simulator": "Israel-Simulator",
 
   "item.israel_simulator.kippah": "Kippah",
+  "item.israel_simulator.kippah.desc": "Traditional cultural head covering.",
+  "item.israel_simulator.kippah.requirement": "Required for prayer at the Western Wall.",
   "item.israel_simulator.talit": "Talit",
   "item.israel_simulator.tefillin": "Tefillin",
   "item.israel_simulator.rabbis_crown": "Rabbi's Crown",

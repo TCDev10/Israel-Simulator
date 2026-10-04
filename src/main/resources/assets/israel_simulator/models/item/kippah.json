@@ -1,1 +1,76 @@
-{"textures":{"layer0":"israel_simulator:item/kippah"},"parent":"minecraft:item/generated"}
+{
+  "credit": "Israel Simulator - Kippah 3D Model",
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "israel_simulator:item/kippah",
+    "particle": "israel_simulator:item/kippah"
+  },
+  "elements": [
+    {
+      "name": "base",
+      "from": [4, 0, 4],
+      "to": [12, 1, 12],
+      "faces": {
+        "north": {"uv": [4, 7, 12, 8], "texture": "#layer0"},
+        "east": {"uv": [4, 7, 12, 8], "texture": "#layer0"},
+        "south": {"uv": [4, 7, 12, 8], "texture": "#layer0"},
+        "west": {"uv": [4, 7, 12, 8], "texture": "#layer0"},
+        "up": {"uv": [4, 4, 12, 12], "texture": "#layer0"},
+        "down": {"uv": [4, 4, 12, 12], "texture": "#layer0"}
+      }
+    },
+    {
+      "name": "crown",
+      "from": [5, 1, 5],
+      "to": [11, 2, 11],
+      "faces": {
+        "north": {"uv": [5, 7, 11, 8], "texture": "#layer0"},
+        "east": {"uv": [5, 7, 11, 8], "texture": "#layer0"},
+        "south": {"uv": [5, 7, 11, 8], "texture": "#layer0"},
+        "west": {"uv": [5, 7, 11, 8], "texture": "#layer0"},
+        "up": {"uv": [5, 5, 11, 11], "texture": "#layer0"},
+        "down": {"uv": [5, 5, 11, 11], "texture": "#layer0"}
+      }
+    }
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [75, 45, 0],
+      "translation": [0, 2.5, 0],
+      "scale": [0.65, 0.65, 0.65]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [75, 45, 0],
+      "translation": [0, 2.5, 0],
+      "scale": [0.65, 0.65, 0.65]
+    },
+    "firstperson_righthand": {
+      "rotation": [0, 45, 0],
+      "translation": [0, 3, 0],
+      "scale": [0.75, 0.75, 0.75]
+    },
+    "firstperson_lefthand": {
+      "rotation": [0, 225, 0],
+      "translation": [0, 3, 0],
+      "scale": [0.75, 0.75, 0.75]
+    },
+    "ground": {
+      "translation": [0, 2, 0],
+      "scale": [0.7, 0.7, 0.7]
+    },
+    "gui": {
+      "rotation": [30, 225, 0],
+      "translation": [0, 3.5, 0],
+      "scale": [1.1, 1.1, 1.1]
+    },
+    "head": {
+      "translation": [0, 14.5, 0],
+      "scale": [1, 1, 1]
+    },
+    "fixed": {
+      "rotation": [-90, 0, 0],
+      "translation": [0, 0, -4],
+      "scale": [0.9, 0.9, 0.9]
+    }
+  }
+}
