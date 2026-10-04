@@ -1,5 +1,6 @@
 package com.israelsimulator.westernwall;
 
+import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,16 +42,66 @@ class WesternWallInteractionTest {
     void testCooldownTracking() {
         UUID playerId = UUID.randomUUID();
         long initialTime = 1000L;
+        WesternWallCooldowns cooldowns = new WesternWallCooldowns();
 
-        assertFalse(WesternWallManager.isOnCooldown(playerId, initialTime));
+        assertFalse(WesternWallManager.isOnCooldown(cooldowns, playerId, initialTime));
 
-        WesternWallManager.setLastPrayerTime(playerId, initialTime);
-        assertTrue(WesternWallManager.isOnCooldown(playerId, initialTime + 100L));
-        assertTrue(WesternWallManager.isOnCooldown(playerId, initialTime + WesternWallManager.COOLDOWN_TICKS - 1L));
-        assertFalse(WesternWallManager.isOnCooldown(playerId, initialTime + WesternWallManager.COOLDOWN_TICKS + 1L));
+        cooldowns.setLastPrayerTime(playerId, initialTime);
+        assertTrue(WesternWallManager.isOnCooldown(cooldowns, playerId, initialTime + 100L));
+        assertTrue(WesternWallManager.isOnCooldown(cooldowns, playerId, initialTime + WesternWallManager.COOLDOWN_TICKS - 1L));
+        assertFalse(WesternWallManager.isOnCooldown(cooldowns, playerId, initialTime + WesternWallManager.COOLDOWN_TICKS + 1L));
 
-        WesternWallManager.clearCooldown(playerId);
-        assertFalse(WesternWallManager.isOnCooldown(playerId, initialTime));
+        cooldowns.clearCooldown(playerId);
+        assertFalse(WesternWallManager.isOnCooldown(cooldowns, playerId, initialTime));
+    }
+
+    @Test
+    @DisplayName("Cooldown is not a static map: two stores do not share prayer times")
+    void testCooldownIsNotStatic() throws Exception {
+        for (Class<?> type : List.of(WesternWallManager.class, WesternWallCooldowns.class)) {
+            for (java.lang.reflect.Field field : type.getDeclaredFields()) {
+                if (java.lang.reflect.Modifier.isStatic(field.getModifiers())
+                        && java.util.Map.class.isAssignableFrom(field.getType())) {
+                    fail(type.getSimpleName() + " must not keep cooldown in a static map: " + field.getName());
+                }
+            }
+        }
+
+        UUID playerId = UUID.randomUUID();
+        WesternWallCooldowns first = new WesternWallCooldowns();
+        WesternWallCooldowns second = new WesternWallCooldowns();
+        first.setLastPrayerTime(playerId, 1000L);
+        assertTrue(WesternWallManager.isOnCooldown(first, playerId, 1000L));
+        assertFalse(WesternWallManager.isOnCooldown(second, playerId, 1000L));
+    }
+
+    @Test
+    @DisplayName("Cooldown round-trips through the saved-data codec, as after a server restart")
+    void testCooldownSurvivesSaveLoad() {
+        UUID playerId = UUID.randomUUID();
+        long prayedAt = 5000L;
+        WesternWallCooldowns live = new WesternWallCooldowns();
+        live.setLastPrayerTime(playerId, prayedAt);
+
+        net.minecraft.nbt.Tag encoded = WesternWallCooldowns.CODEC
+                .encodeStart(net.minecraft.nbt.NbtOps.INSTANCE, live)
+                .getOrThrow();
+        WesternWallCooldowns restored = WesternWallCooldowns.CODEC
+                .parse(net.minecraft.nbt.NbtOps.INSTANCE, encoded)
+                .getOrThrow();
+
+        assertNotSame(live, restored);
+        assertTrue(WesternWallManager.isOnCooldown(restored, playerId, prayedAt + 100L));
+        assertTrue(WesternWallManager.isOnCooldown(restored, playerId, prayedAt + WesternWallManager.COOLDOWN_TICKS - 1L));
+        assertFalse(WesternWallManager.isOnCooldown(restored, playerId, prayedAt + WesternWallManager.COOLDOWN_TICKS));
+        assertEquals(WesternWallCooldowns.TYPE.id().toString(), "israel_simulator:western_wall_prayers");
+    }
+
+    @Test
+    @DisplayName("Instabuild does not bypass the prayer cooldown")
+    void testInstabuildDoesNotBypassCooldown() {
+        assertTrue(WesternWallManager.enforcesCooldown(true));
+        assertTrue(WesternWallManager.enforcesCooldown(false));
     }
 
     @Test
