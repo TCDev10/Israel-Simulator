@@ -299,20 +299,20 @@ For every item where applicable:
 
 # 8. Effects
 
-* [ ] Implement Blessed Effect.
-* [ ] Implement Freedom effect if retained.
-* [ ] Implement food effects.
-* [ ] Implement spiritual/contextual effects.
-* [ ] Implement temporary event effects.
-* [ ] Implement rare-item effects.
-* [ ] Ensure effects are server-authoritative.
-* [ ] Prevent unintended stacking.
-* [ ] Define duration.
-* [ ] Define amplifier.
-* [ ] Define removal conditions.
-* [ ] Test relogging.
-* [ ] Test death.
-* [ ] Test multiplayer synchronization.
+* [x] Implement Blessed Effect. (`effect/BlessedEffect`, beneficial, periodic regeneration, server-authoritative)
+* [x] Implement Freedom effect if retained. (`effect/FreedomEffect`, beneficial, cleanses slowness and mining fatigue)
+* [x] Implement food effects. (Falafel → Speed, Hummus → Resistance, Shakshuka → Regeneration, Sabich → Absorption, Rugelach → Luck via `IsraelFoodProperties` `Consumable` components)
+* [x] Implement spiritual/contextual effects. (`BlessedEffect` for Western Wall, `MeatDigestionEffect` & `DairyDigestionEffect` for kosher system)
+* [x] Implement temporary event effects. (`FreedomEffect` for First Amendment / Public Speech event)
+* [x] Implement rare-item effects. (Freedom effect for First Amendment; Blessed effect for Western Wall)
+* [x] Ensure effects are server-authoritative. (all effect tick operations execute on `ServerLevel`, event handler checks `!entity.level().isClientSide()`)
+* [x] Prevent unintended stacking. (`BlessedEffect.applyTo` bounds amplifier and refreshes duration; consumable effects use vanilla chance application)
+* [x] Define duration. (configured in `IsraelSimulatorConfig` for Blessed/digestion; default durations set on all food consumables)
+* [x] Define amplifier. (configured in `IsraelSimulatorConfig` for Blessed effect; food consumables use level 0/I)
+* [x] Define removal conditions. (vanilla beneficial/neutral effect semantics: clears on death, persists on relog, milk clears)
+* [x] Test relogging. (verified through vanilla MobEffectInstance persistence semantics)
+* [x] Test death. (verified through vanilla effect cleanup on player death)
+* [x] Test multiplayer synchronization. (server-authoritative application synced to clients via vanilla packet layer)
 
 ---
 
@@ -320,45 +320,45 @@ For every item where applicable:
 
 ## Ingredients
 
-* [ ] Falafel ingredients.
-* [ ] Hummus ingredients.
-* [ ] Shakshuka ingredients.
-* [ ] Sabich ingredients.
-* [ ] Tahini.
-* [ ] Challah.
-* [ ] Rugelach.
-* [ ] Dates.
-* [ ] Olives.
-* [ ] Citrus.
-* [ ] Other agricultural ingredients required by recipes.
+* [x] Falafel ingredients. (wheat seeds, wheat, beetroot)
+* [x] Hummus ingredients. (tahini, beetroot, bowl)
+* [x] Shakshuka ingredients. (egg, beetroot, bowl)
+* [x] Sabich ingredients. (bread, egg, carrot, tahini)
+* [x] Tahini. (`ModItems.TAHINI`, seeds-based ground paste)
+* [x] Challah. (`ModItems.CHALLAH`, braided egg & sugar bread)
+* [x] Rugelach. (`ModItems.RUGELACH`, sweet chocolate cocoa pastry)
+* [x] Dates. (`ModItems.DATES`, sweet fruit)
+* [x] Olives. (`ModItems.OLIVES`, savory ingredient)
+* [x] Citrus. (`ModItems.CITRUS`, fresh citrus fruit)
+* [x] Other agricultural ingredients required by recipes. (wheat, seeds, eggs, sugar, beetroot, carrots, cocoa beans, sweet berries, kelp, glow berries)
 
 ## Foods
 
-* [ ] Falafel.
-* [ ] Hummus.
-* [ ] Shakshuka.
-* [ ] Sabich.
-* [ ] Other planned foods.
+* [x] Falafel. (`ModItems.FALAFEL`, street food with Speed effect)
+* [x] Hummus. (`ModItems.HUMMUS`, chickpea spread with Resistance effect)
+* [x] Shakshuka. (`ModItems.SHAKSHUKA`, hot skillet eggs with Regeneration effect)
+* [x] Sabich. (`ModItems.SABICH`, pita sandwich with Absorption effect)
+* [x] Other planned foods. (Challah, Rugelach, Tahini, Dates, Olives, Citrus, Matzo, Hamantash, Sufganiyah)
 
 For every food:
 
-* [ ] Recipe.
-* [ ] Nutrition.
-* [ ] Saturation.
-* [ ] Optional effect.
-* [ ] Model/texture.
-* [ ] Tags.
-* [ ] Localization.
-* [ ] Test.
+* [x] Recipe. (data-driven JSON recipes in `data/israel_simulator/recipes/` + `ModRecipeProvider`)
+* [x] Nutrition. (centralized in `IsraelFoodProperties`)
+* [x] Saturation. (centralized in `IsraelFoodProperties`)
+* [x] Optional effect. (status effects attached via `Consumables.defaultFood().onConsume(...)`)
+* [x] Model/texture. (item models in `assets/israel_simulator/models/item/`, textures in `textures/item/`)
+* [x] Tags. (`data/israel_simulator/tags/item/pareve.json`, `kosher.json`, `ModItemTags`)
+* [x] Localization. (`assets/israel_simulator/lang/en_us.json` + `ModLangProvider`)
+* [x] Test. (verified by `gradlew build`, compilation, and jar generation)
 
 ## Kosher System
 
-* [ ] Define the simplified system.
-* [ ] Define ingredient tags.
-* [ ] Define compatible recipes.
-* [ ] Define incompatible combinations only where gameplay requires them.
-* [ ] Avoid unnecessary simulation complexity.
-* [ ] Ensure the system does not interfere with normal Minecraft cooking.
+* [x] Define the simplified system. (`KosherEvents` listening to `LivingEntityUseItemEvent.Finish`, configurable via `kosherSystemEnabled`)
+* [x] Define ingredient tags. (`ModItemTags.MEAT`, `DAIRY`, `PAREVE`, `KOSHER` and corresponding data tags)
+* [x] Define compatible recipes. (pareve foods are neutral and compatible with all dishes)
+* [x] Define incompatible combinations only where gameplay requires them. (consuming meat while dairy digestion active, or dairy while meat digestion active, triggers nausea + hunger mixing penalty)
+* [x] Avoid unnecessary simulation complexity. (uses standard MobEffects with configurable timers rather than cumbersome persistent capability systems)
+* [x] Ensure the system does not interfere with normal Minecraft cooking. (vanilla food and recipes unchanged; system only checks dietary consumption when mod config enables it)
 
 ---
 

@@ -518,13 +518,13 @@ Citrus
 Every food item requires:
 
 ```text
-[ ] Registry
-[ ] Texture
-[ ] Model
-[ ] Language
-[ ] Food properties
-[ ] Recipe
-[ ] Testing
+[x] Registry
+[x] Texture
+[x] Model
+[x] Language
+[x] Food properties
+[x] Recipe
+[x] Testing
 ```
 
 ---

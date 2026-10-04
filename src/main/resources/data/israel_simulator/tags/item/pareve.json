@@ -1,0 +1,18 @@
+{
+  "replace": false,
+  "values": [
+    "israel_simulator:falafel",
+    "israel_simulator:hummus",
+    "israel_simulator:shakshuka",
+    "israel_simulator:sabich",
+    "israel_simulator:challah",
+    "israel_simulator:rugelach",
+    "israel_simulator:tahini",
+    "israel_simulator:dates",
+    "israel_simulator:olives",
+    "israel_simulator:citrus",
+    "israel_simulator:matzo",
+    "israel_simulator:hamantash",
+    "israel_simulator:sufganiyah"
+  ]
+}

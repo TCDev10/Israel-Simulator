@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#israel_simulator:pareve",
+    "minecraft:bread",
+    "minecraft:apple",
+    "minecraft:carrot",
+    "minecraft:baked_potato"
+  ]
+}

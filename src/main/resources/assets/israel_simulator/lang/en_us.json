@@ -43,5 +43,11 @@
   "item.israel_simulator.laptop": "Laptop",
   "item.israel_simulator.drone_part": "Drone Part",
 
-  "item.israel_simulator.hava_nagila_disc.desc": "Hava Nagila"
+  "item.israel_simulator.hava_nagila_disc.desc": "Hava Nagila",
+
+  "effect.israel_simulator.blessed": "Blessed",
+  "effect.israel_simulator.freedom": "Freedom",
+  "effect.israel_simulator.meat_digestion": "Waiting (Meat)",
+  "effect.israel_simulator.dairy_digestion": "Waiting (Dairy)",
+  "message.israel_simulator.kosher_violation": "You feel unwell from mixing meat and dairy."
 }
