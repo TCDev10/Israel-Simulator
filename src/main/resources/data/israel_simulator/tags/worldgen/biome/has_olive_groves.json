@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "israel_simulator:israeli_agriculture",
-    "israel_simulator:mediterranean_coast"
+    "israel_simulator:mediterranean_coast",
+    "israel_simulator:jerusalem"
   ]
 }
