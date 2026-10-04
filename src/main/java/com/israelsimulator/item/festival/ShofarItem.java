@@ -1,6 +1,7 @@
 package com.israelsimulator.item.festival;
 
 import com.israelsimulator.effect.BlessedEffect;
+import com.israelsimulator.festival.ShofarCooldowns;
 import com.israelsimulator.festival.ShofarManager;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
@@ -31,15 +32,17 @@ public class ShofarItem extends Item {
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
-        if (ShofarManager.isOnCooldown(player.getUUID(), level.getGameTime())) {
-            return InteractionResult.FAIL;
-        }
-
-        if (level.isClientSide()) {
+        if (!(level instanceof ServerLevel serverLevel)) {
+            // The client has no cooldown store. The blast is decided on the server.
             return InteractionResult.SUCCESS;
         }
 
-        ShofarManager.recordBlow(player.getUUID(), level.getGameTime());
+        ShofarCooldowns cooldowns = ShofarCooldowns.get(serverLevel);
+        if (ShofarManager.isOnCooldown(cooldowns, player.getUUID(), level.getGameTime())) {
+            return InteractionResult.FAIL;
+        }
+
+        ShofarManager.recordBlow(cooldowns, player.getUUID(), level.getGameTime());
 
         // Play authentic horn sound
         level.playSound(null, player.getX(), player.getY(), player.getZ(),
@@ -50,14 +53,12 @@ public class ShofarItem extends Item {
         player.addEffect(new MobEffectInstance(MobEffects.LUCK, 3600, 1));
         player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 2400, 0));
 
-        if (level instanceof ServerLevel serverLevel) {
-            serverLevel.sendParticles(ParticleTypes.TOTEM_OF_UNDYING,
-                    player.getX(), player.getY() + 1.2, player.getZ(),
-                    25, 0.5, 0.5, 0.5, 0.1);
-            serverLevel.sendParticles(ParticleTypes.ENCHANT,
-                    player.getX(), player.getY() + 1.0, player.getZ(),
-                    20, 0.4, 0.4, 0.4, 0.2);
-        }
+        serverLevel.sendParticles(ParticleTypes.TOTEM_OF_UNDYING,
+                player.getX(), player.getY() + 1.2, player.getZ(),
+                25, 0.5, 0.5, 0.5, 0.1);
+        serverLevel.sendParticles(ParticleTypes.ENCHANT,
+                player.getX(), player.getY() + 1.0, player.getZ(),
+                20, 0.4, 0.4, 0.4, 0.2);
 
         player.sendSystemMessage(Component.translatable("message.israel_simulator.shofar_blast")
                 .withStyle(ChatFormatting.GOLD));

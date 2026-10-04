@@ -1,17 +1,17 @@
 package com.israelsimulator.item.cultural;
 
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Cooldown tracker and prayer status validator for Tefillin morning prayer ritual (GAME_DESIGN.md §14, TODO §24).
  * Pure server-authoritative logic that can be tested without Minecraft item bootstrap.
+ *
+ * <p>Cooldown state is not kept in a static map. The server world stores it in
+ * {@link TefillinCooldowns}.</p>
  */
 public final class TefillinManager {
 
     public static final long COOLDOWN_TICKS = 12000L; // 10 real minutes (half Minecraft day)
-    private static final Map<UUID, Long> LAST_TEFILLIN_USE = new ConcurrentHashMap<>();
 
     public enum TefillinStatus {
         SUCCESS,
@@ -35,16 +35,23 @@ public final class TefillinManager {
         return TefillinStatus.SUCCESS;
     }
 
-    public static boolean isOnCooldown(UUID playerId, long currentGameTime) {
-        Long last = LAST_TEFILLIN_USE.get(playerId);
+    public static boolean isOnCooldown(TefillinCooldowns cooldowns, UUID playerId, long currentGameTime) {
+        if (cooldowns == null || playerId == null) {
+            return false;
+        }
+        Long last = cooldowns.getLastUseTime(playerId);
         return last != null && (currentGameTime - last) < COOLDOWN_TICKS;
     }
 
-    public static void setLastUseTime(UUID playerId, long time) {
-        LAST_TEFILLIN_USE.put(playerId, time);
+    public static void setLastUseTime(TefillinCooldowns cooldowns, UUID playerId, long time) {
+        if (cooldowns != null) {
+            cooldowns.setLastUseTime(playerId, time);
+        }
     }
 
-    public static void clearCooldown(UUID playerId) {
-        LAST_TEFILLIN_USE.remove(playerId);
+    public static void clearCooldown(TefillinCooldowns cooldowns, UUID playerId) {
+        if (cooldowns != null) {
+            cooldowns.clearCooldown(playerId);
+        }
     }
 }

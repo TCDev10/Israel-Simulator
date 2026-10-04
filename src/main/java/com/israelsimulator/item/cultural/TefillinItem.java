@@ -1,9 +1,7 @@
 package com.israelsimulator.item.cultural;
 
 import com.israelsimulator.effect.BlessedEffect;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
@@ -31,7 +29,6 @@ import net.minecraft.world.level.Level;
 public class TefillinItem extends Item {
 
     public static final long COOLDOWN_TICKS = 12000L; // 10 real minutes (half Minecraft day)
-    private static final Map<UUID, Long> LAST_TEFILLIN_USE = new ConcurrentHashMap<>();
 
     public enum TefillinStatus {
         SUCCESS,
@@ -48,29 +45,34 @@ public class TefillinItem extends Item {
         return TefillinManager.validatePrayer(hasKippah, isDaytime, onCooldown);
     }
 
-    public static boolean isOnCooldown(UUID playerId, long currentGameTime) {
-        return TefillinManager.isOnCooldown(playerId, currentGameTime);
+    public static boolean isOnCooldown(TefillinCooldowns cooldowns, UUID playerId, long currentGameTime) {
+        return TefillinManager.isOnCooldown(cooldowns, playerId, currentGameTime);
     }
 
-    public static void setLastUseTime(UUID playerId, long time) {
-        TefillinManager.setLastUseTime(playerId, time);
+    public static void setLastUseTime(TefillinCooldowns cooldowns, UUID playerId, long time) {
+        TefillinManager.setLastUseTime(cooldowns, playerId, time);
     }
 
-    public static void clearCooldown(UUID playerId) {
-        TefillinManager.clearCooldown(playerId);
+    public static void clearCooldown(TefillinCooldowns cooldowns, UUID playerId) {
+        TefillinManager.clearCooldown(cooldowns, playerId);
     }
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         boolean hasKippah = KippahItem.isWearingKippah(player);
         boolean isDaytime = level.isBrightOutside();
-        boolean onCooldown = !player.getAbilities().instabuild && isOnCooldown(player.getUUID(), level.getGameTime());
+
+        if (!(level instanceof ServerLevel serverLevel)) {
+            // The client has no cooldown store. Reward and cooldown are decided on the server.
+            TefillinManager.TefillinStatus preview = validatePrayer(hasKippah, isDaytime, false);
+            return preview == TefillinManager.TefillinStatus.SUCCESS ? InteractionResult.SUCCESS : InteractionResult.FAIL;
+        }
+
+        TefillinCooldowns cooldowns = TefillinCooldowns.get(serverLevel);
+        boolean onCooldown = !player.getAbilities().instabuild
+                && isOnCooldown(cooldowns, player.getUUID(), level.getGameTime());
 
         TefillinManager.TefillinStatus status = validatePrayer(hasKippah, isDaytime, onCooldown);
-
-        if (level.isClientSide()) {
-            return status == TefillinManager.TefillinStatus.SUCCESS ? InteractionResult.SUCCESS : InteractionResult.FAIL;
-        }
 
         switch (status) {
             case MISSING_KIPPAH -> {
@@ -93,7 +95,7 @@ public class TefillinItem extends Item {
             }
             case SUCCESS -> {
                 // Record cooldown
-                TefillinManager.setLastUseTime(player.getUUID(), level.getGameTime());
+                TefillinManager.setLastUseTime(cooldowns, player.getUUID(), level.getGameTime());
 
                 // Apply blessings: BlessedEffect + Resistance + Strength if also wearing Talit
                 BlessedEffect.applyTo(player);
@@ -114,14 +116,12 @@ public class TefillinItem extends Item {
                         SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.8F, 1.3F);
 
                 // Particles
-                if (level instanceof ServerLevel serverLevel) {
-                    serverLevel.sendParticles(ParticleTypes.ENCHANT,
-                            player.getX(), player.getY() + 1.2, player.getZ(),
-                            35, 0.5, 0.6, 0.5, 0.2);
-                    serverLevel.sendParticles(ParticleTypes.TOTEM_OF_UNDYING,
-                            player.getX(), player.getY() + 1.0, player.getZ(),
-                            20, 0.4, 0.5, 0.4, 0.1);
-                }
+                serverLevel.sendParticles(ParticleTypes.ENCHANT,
+                        player.getX(), player.getY() + 1.2, player.getZ(),
+                        35, 0.5, 0.6, 0.5, 0.2);
+                serverLevel.sendParticles(ParticleTypes.TOTEM_OF_UNDYING,
+                        player.getX(), player.getY() + 1.0, player.getZ(),
+                        20, 0.4, 0.5, 0.4, 0.1);
 
                 return InteractionResult.SUCCESS;
             }

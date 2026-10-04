@@ -106,17 +106,55 @@ class FestivalsAndCalendarTest {
         UUID playerId = UUID.randomUUID();
         long now = 5000L;
 
-        assertFalse(ShofarManager.isOnCooldown(playerId, now));
+        ShofarCooldowns cooldowns = new ShofarCooldowns();
+        assertFalse(ShofarManager.isOnCooldown(cooldowns, playerId, now));
 
-        ShofarManager.recordBlow(playerId, now);
-        assertTrue(ShofarManager.isOnCooldown(playerId, now + 10L));
-        assertTrue(ShofarManager.isOnCooldown(playerId, now + ShofarManager.COOLDOWN_TICKS - 1L));
+        ShofarManager.recordBlow(cooldowns, playerId, now);
+        assertTrue(ShofarManager.isOnCooldown(cooldowns, playerId, now + 10L));
+        assertTrue(ShofarManager.isOnCooldown(cooldowns, playerId, now + ShofarManager.COOLDOWN_TICKS - 1L));
 
         // After cooldown expires
-        assertFalse(ShofarManager.isOnCooldown(playerId, now + ShofarManager.COOLDOWN_TICKS + 1L));
+        assertFalse(ShofarManager.isOnCooldown(cooldowns, playerId, now + ShofarManager.COOLDOWN_TICKS + 1L));
 
-        ShofarManager.clearCooldown(playerId);
-        assertFalse(ShofarManager.isOnCooldown(playerId, now));
+        ShofarManager.clearCooldown(cooldowns, playerId);
+        assertFalse(ShofarManager.isOnCooldown(cooldowns, playerId, now));
+    }
+
+    @Test
+    @DisplayName("Shofar cooldown is saved data, not a static map, and survives a codec reload")
+    void testShofarCooldownPersists() throws Exception {
+        for (Class<?> type : java.util.List.of(
+                ShofarManager.class,
+                ShofarCooldowns.class,
+                com.israelsimulator.item.festival.ShofarItem.class)) {
+            for (java.lang.reflect.Field field : type.getDeclaredFields()) {
+                if (java.lang.reflect.Modifier.isStatic(field.getModifiers())
+                        && java.util.Map.class.isAssignableFrom(field.getType())) {
+                    fail(type.getSimpleName() + " must not keep cooldown in a static map: " + field.getName());
+                }
+            }
+        }
+
+        UUID playerId = UUID.randomUUID();
+        long blownAt = 5000L;
+        ShofarCooldowns live = new ShofarCooldowns();
+        ShofarCooldowns other = new ShofarCooldowns();
+        ShofarManager.recordBlow(live, playerId, blownAt);
+        assertTrue(ShofarManager.isOnCooldown(live, playerId, blownAt));
+        assertFalse(ShofarManager.isOnCooldown(other, playerId, blownAt));
+
+        net.minecraft.nbt.Tag encoded = ShofarCooldowns.CODEC
+                .encodeStart(net.minecraft.nbt.NbtOps.INSTANCE, live)
+                .getOrThrow();
+        ShofarCooldowns restored = ShofarCooldowns.CODEC
+                .parse(net.minecraft.nbt.NbtOps.INSTANCE, encoded)
+                .getOrThrow();
+
+        assertNotSame(live, restored);
+        assertTrue(ShofarManager.isOnCooldown(restored, playerId, blownAt + 10L));
+        assertTrue(ShofarManager.isOnCooldown(restored, playerId, blownAt + ShofarManager.COOLDOWN_TICKS - 1L));
+        assertFalse(ShofarManager.isOnCooldown(restored, playerId, blownAt + ShofarManager.COOLDOWN_TICKS));
+        assertEquals("israel_simulator:shofar_blasts", ShofarCooldowns.TYPE.id().toString());
     }
 
     @Test
