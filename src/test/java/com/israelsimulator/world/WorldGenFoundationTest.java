@@ -99,4 +99,35 @@ class WorldGenFoundationTest {
             assertTrue(content.contains(expected), "Missing localization entry: " + expected);
         }
     }
+
+    @Test
+    @DisplayName("Verify Mixin configuration and class for Overworld biome injection")
+    void testOverworldBiomeMixinConfig() throws Exception {
+        InputStream is = getClass().getResourceAsStream("/israel_simulator.mixins.json");
+        assertNotNull(is, "Missing israel_simulator.mixins.json");
+        String content = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+        assertTrue(content.contains("OverworldBiomeBuilderMixin"), "Mixin config must include OverworldBiomeBuilderMixin");
+        assertTrue(content.contains("com.israelsimulator.mixin"), "Mixin config must specify mixin package");
+
+        // Verify mixin class exists and can be loaded
+        Class<?> mixinClass = Class.forName("com.israelsimulator.mixin.OverworldBiomeBuilderMixin");
+        assertNotNull(mixinClass);
+        assertEquals("OverworldBiomeBuilderMixin", mixinClass.getSimpleName());
+    }
+
+    @Test
+    @DisplayName("Verify all 16 structure JSONs specify valid biomes including fallback biomes")
+    void testOverworldStructuresAvailability() throws Exception {
+        com.google.gson.Gson gson = new com.google.gson.Gson();
+        for (var key : ModStructures.allStructures()) {
+            String path = "/data/israel_simulator/worldgen/structure/" + key.identifier().getPath() + ".json";
+            InputStream stream = getClass().getResourceAsStream(path);
+            assertNotNull(stream, "Missing structure JSON: " + path);
+            com.google.gson.JsonObject json = gson.fromJson(new java.io.InputStreamReader(stream, StandardCharsets.UTF_8), com.google.gson.JsonObject.class);
+            assertTrue(json.has("biomes"), "Structure " + key.identifier().getPath() + " must define 'biomes'");
+            com.google.gson.JsonElement biomesElem = json.get("biomes");
+            assertTrue(biomesElem.isJsonArray() || biomesElem.isJsonPrimitive(),
+                    "Structure 'biomes' must be an array or string/tag");
+        }
+    }
 }

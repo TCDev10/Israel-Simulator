@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.israelsimulator.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "OverworldBiomeBuilderMixin"
+  ],
+  "client": [],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
