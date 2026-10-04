@@ -1,6 +1,8 @@
 package com.israelsimulator.easteregg;
 
 import com.israelsimulator.core.data.RarityLevel;
+import java.util.UUID;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,5 +46,43 @@ public class EasterEggAndRarityTest {
             assertNotNull(line);
             assertFalse(line.isBlank());
         }
+    }
+
+    @Test
+    @DisplayName("Easter egg cooldown is saved data, not a static map, and survives a codec reload")
+    void testEasterEggCooldownPersists() throws Exception {
+        for (Class<?> type : java.util.List.of(EasterEggManager.class, EasterEggCooldowns.class)) {
+            for (java.lang.reflect.Field field : type.getDeclaredFields()) {
+                if (java.lang.reflect.Modifier.isStatic(field.getModifiers())
+                        && java.util.Map.class.isAssignableFrom(field.getType())) {
+                    fail(type.getSimpleName() + " must not keep cooldown in a static map: " + field.getName());
+                }
+            }
+        }
+
+        UUID playerId = UUID.randomUUID();
+        long usedAt = 4000L;
+        EasterEggCooldowns live = new EasterEggCooldowns();
+        EasterEggCooldowns other = new EasterEggCooldowns();
+        EasterEggManager.recordInteraction(live, playerId, usedAt);
+        assertTrue(EasterEggManager.isOnCooldown(live, playerId, usedAt));
+        assertFalse(EasterEggManager.isOnCooldown(other, playerId, usedAt));
+
+        net.minecraft.nbt.Tag encoded = EasterEggCooldowns.CODEC
+                .encodeStart(net.minecraft.nbt.NbtOps.INSTANCE, live)
+                .getOrThrow();
+        EasterEggCooldowns restored = EasterEggCooldowns.CODEC
+                .parse(net.minecraft.nbt.NbtOps.INSTANCE, encoded)
+                .getOrThrow();
+
+        assertNotSame(live, restored);
+        assertTrue(EasterEggManager.isOnCooldown(restored, playerId, usedAt + 1L));
+        assertTrue(EasterEggManager.isOnCooldown(restored, playerId, usedAt + EasterEggManager.COOLDOWN_TICKS - 1L));
+        assertFalse(EasterEggManager.isOnCooldown(restored, playerId, usedAt + EasterEggManager.COOLDOWN_TICKS));
+        assertEquals(100L, EasterEggManager.COOLDOWN_TICKS);
+        assertEquals("israel_simulator:easter_egg_interactions", EasterEggCooldowns.TYPE.id().toString());
+
+        EasterEggManager.clearCooldown(restored, playerId);
+        assertFalse(EasterEggManager.isOnCooldown(restored, playerId, usedAt));
     }
 }

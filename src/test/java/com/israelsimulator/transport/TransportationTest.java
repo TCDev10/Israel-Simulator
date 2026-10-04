@@ -1,9 +1,9 @@
 package com.israelsimulator.transport;
 
+import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -64,5 +64,44 @@ class TransportationTest {
         assertNotNull(itemClass.getField("RAV_KAV"), "RAV_KAV item must be declared in ModItems");
         assertNotNull(itemClass.getField("WALKING_SHOES"), "WALKING_SHOES item must be declared in ModItems");
         assertNotNull(entityClass.getField("BICYCLE"), "BICYCLE entity type must be declared in ModEntities");
+    }
+
+    @Test
+    @DisplayName("Transit cooldown is saved data, not a static map, and survives a codec reload")
+    void testTransitCooldownPersists() throws Exception {
+        for (Class<?> type : List.of(TransportStopBlock.class, TransitCooldowns.class)) {
+            for (java.lang.reflect.Field field : type.getDeclaredFields()) {
+                if (java.lang.reflect.Modifier.isStatic(field.getModifiers())
+                        && java.util.Map.class.isAssignableFrom(field.getType())) {
+                    fail(type.getSimpleName() + " must not keep cooldown in a static map: " + field.getName());
+                }
+            }
+        }
+
+        UUID rider = UUID.randomUUID();
+        long usedAt = 8000L;
+        TransitCooldowns live = new TransitCooldowns();
+        TransitCooldowns other = new TransitCooldowns();
+        TransportStopBlock.recordTransit(live, rider, usedAt);
+        assertTrue(TransportStopBlock.isPlayerOnCooldown(live, rider, usedAt));
+        assertFalse(TransportStopBlock.isPlayerOnCooldown(other, rider, usedAt));
+        assertTrue(TransportStopBlock.isNpcSoundOnInterval(live, rider, usedAt));
+        assertFalse(TransportStopBlock.isNpcSoundOnInterval(other, rider, usedAt));
+
+        net.minecraft.nbt.Tag encoded = TransitCooldowns.CODEC
+                .encodeStart(net.minecraft.nbt.NbtOps.INSTANCE, live)
+                .getOrThrow();
+        TransitCooldowns restored = TransitCooldowns.CODEC
+                .parse(net.minecraft.nbt.NbtOps.INSTANCE, encoded)
+                .getOrThrow();
+
+        assertNotSame(live, restored);
+        assertTrue(TransportStopBlock.isPlayerOnCooldown(restored, rider, usedAt + TransportStopBlock.TRANSIT_COOLDOWN_TICKS - 1L));
+        assertFalse(TransportStopBlock.isPlayerOnCooldown(restored, rider, usedAt + TransportStopBlock.TRANSIT_COOLDOWN_TICKS));
+        assertTrue(TransportStopBlock.isNpcSoundOnInterval(restored, rider, usedAt + TransportStopBlock.NPC_SOUND_INTERVAL_TICKS));
+        assertFalse(TransportStopBlock.isNpcSoundOnInterval(restored, rider, usedAt + TransportStopBlock.NPC_SOUND_INTERVAL_TICKS + 1L));
+        assertEquals(60L, TransportStopBlock.TRANSIT_COOLDOWN_TICKS);
+        assertEquals(600L, TransportStopBlock.NPC_SOUND_INTERVAL_TICKS);
+        assertEquals("israel_simulator:transit_times", TransitCooldowns.TYPE.id().toString());
     }
 }
