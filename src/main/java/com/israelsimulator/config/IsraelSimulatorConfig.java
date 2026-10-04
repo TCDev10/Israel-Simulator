@@ -40,8 +40,28 @@ public final class IsraelSimulatorConfig {
                 .defineInRange("dairyDigestionTicks", 1200, 20, 72000);
         builder.pop();
 
+        builder.push("boss");
+        BIBI_BOSS_MAX_HEALTH = builder
+                .comment("Maximum health of Bibi Boss (GAME_DESIGN §41.1, default 10,000+).")
+                .defineInRange("bibiBossMaxHealth", 10000.0, 100.0, 100000.0);
+        BIBI_BOSS_BASE_DAMAGE = builder
+                .comment("Base attack damage of Bibi Boss.")
+                .defineInRange("bibiBossBaseDamage", 18.0, 1.0, 200.0);
+        BIBI_BOSS_MAX_GUARDS = builder
+                .comment("Maximum simultaneous guards summoned by Bibi Boss to avoid mob runaway.")
+                .defineInRange("bibiBossMaxGuards", 4, 0, 12);
+        BIBI_BOSS_ARENA_RADIUS = builder
+                .comment("Radius of the boss arena in blocks before leashing/resetting.")
+                .defineInRange("bibiBossArenaRadius", 48, 16, 128);
+        builder.pop();
+
         SPEC = builder.build();
     }
+
+    private static final ModConfigSpec.DoubleValue BIBI_BOSS_MAX_HEALTH;
+    private static final ModConfigSpec.DoubleValue BIBI_BOSS_BASE_DAMAGE;
+    private static final ModConfigSpec.IntValue BIBI_BOSS_MAX_GUARDS;
+    private static final ModConfigSpec.IntValue BIBI_BOSS_ARENA_RADIUS;
 
     public static int blessedDurationTicks() {
         return BLESSED_DURATION_TICKS.get();
@@ -61,5 +81,37 @@ public final class IsraelSimulatorConfig {
 
     public static int dairyDigestionTicks() {
         return DAIRY_DIGESTION_TICKS.get();
+    }
+
+    public static double bibiBossMaxHealth() {
+        try {
+            return BIBI_BOSS_MAX_HEALTH != null ? BIBI_BOSS_MAX_HEALTH.get() : 10000.0;
+        } catch (Exception ignored) {
+            return 10000.0;
+        }
+    }
+
+    public static double bibiBossBaseDamage() {
+        try {
+            return BIBI_BOSS_BASE_DAMAGE != null ? BIBI_BOSS_BASE_DAMAGE.get() : 18.0;
+        } catch (Exception ignored) {
+            return 18.0;
+        }
+    }
+
+    public static int bibiBossMaxGuards() {
+        try {
+            return BIBI_BOSS_MAX_GUARDS != null ? BIBI_BOSS_MAX_GUARDS.get() : 4;
+        } catch (Exception ignored) {
+            return 4;
+        }
+    }
+
+    public static int bibiBossArenaRadius() {
+        try {
+            return BIBI_BOSS_ARENA_RADIUS != null ? BIBI_BOSS_ARENA_RADIUS.get() : 48;
+        } catch (Exception ignored) {
+            return 48;
+        }
     }
 }

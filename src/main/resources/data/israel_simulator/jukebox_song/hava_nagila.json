@@ -1,0 +1,8 @@
+{
+  "comparator_output": 15,
+  "description": {
+    "translate": "jukebox_song.israel_simulator.hava_nagila"
+  },
+  "length_in_seconds": 150.0,
+  "sound_event": "israel_simulator:music_disc.hava_nagila"
+}

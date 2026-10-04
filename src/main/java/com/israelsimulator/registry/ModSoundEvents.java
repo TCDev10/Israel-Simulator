@@ -24,6 +24,36 @@ public final class ModSoundEvents {
                             net.minecraft.resources.Identifier.fromNamespaceAndPath(
                                     com.israelsimulator.IsraelSimulator.MOD_ID, "music_disc.hava_nagila")));
 
+    public static final net.neoforged.neoforge.registries.DeferredHolder<SoundEvent, SoundEvent> BIBI_AMBIENT =
+            SOUND_EVENTS.register("entity.bibi_boss.ambient",
+                    () -> SoundEvent.createVariableRangeEvent(
+                            net.minecraft.resources.Identifier.fromNamespaceAndPath(
+                                    com.israelsimulator.IsraelSimulator.MOD_ID, "entity.bibi_boss.ambient")));
+
+    public static final net.neoforged.neoforge.registries.DeferredHolder<SoundEvent, SoundEvent> BIBI_HURT =
+            SOUND_EVENTS.register("entity.bibi_boss.hurt",
+                    () -> SoundEvent.createVariableRangeEvent(
+                            net.minecraft.resources.Identifier.fromNamespaceAndPath(
+                                    com.israelsimulator.IsraelSimulator.MOD_ID, "entity.bibi_boss.hurt")));
+
+    public static final net.neoforged.neoforge.registries.DeferredHolder<SoundEvent, SoundEvent> BIBI_DEATH =
+            SOUND_EVENTS.register("entity.bibi_boss.death",
+                    () -> SoundEvent.createVariableRangeEvent(
+                            net.minecraft.resources.Identifier.fromNamespaceAndPath(
+                                    com.israelsimulator.IsraelSimulator.MOD_ID, "entity.bibi_boss.death")));
+
+    public static final net.neoforged.neoforge.registries.DeferredHolder<SoundEvent, SoundEvent> BIBI_SPEECH =
+            SOUND_EVENTS.register("entity.bibi_boss.speech",
+                    () -> SoundEvent.createVariableRangeEvent(
+                            net.minecraft.resources.Identifier.fromNamespaceAndPath(
+                                    com.israelsimulator.IsraelSimulator.MOD_ID, "entity.bibi_boss.speech")));
+
+    public static final net.neoforged.neoforge.registries.DeferredHolder<SoundEvent, SoundEvent> BIBI_ENRAGE =
+            SOUND_EVENTS.register("entity.bibi_boss.enrage",
+                    () -> SoundEvent.createVariableRangeEvent(
+                            net.minecraft.resources.Identifier.fromNamespaceAndPath(
+                                    com.israelsimulator.IsraelSimulator.MOD_ID, "entity.bibi_boss.enrage")));
+
     private ModSoundEvents() {}
 
     public static void register(IEventBus modEventBus) {

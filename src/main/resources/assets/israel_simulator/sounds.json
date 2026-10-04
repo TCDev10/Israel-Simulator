@@ -1,1 +1,20 @@
-{"music_disc.hava_nagila":{"sounds":[]}}
+{
+  "music_disc.hava_nagila": {
+    "sounds": []
+  },
+  "entity.bibi_boss.ambient": {
+    "sounds": ["minecraft:mob/villager/idle1", "minecraft:mob/villager/idle2"]
+  },
+  "entity.bibi_boss.hurt": {
+    "sounds": ["minecraft:mob/villager/hit1", "minecraft:mob/villager/hit2"]
+  },
+  "entity.bibi_boss.death": {
+    "sounds": ["minecraft:mob/villager/death"]
+  },
+  "entity.bibi_boss.speech": {
+    "sounds": ["minecraft:mob/evoker/prepare_attack"]
+  },
+  "entity.bibi_boss.enrage": {
+    "sounds": ["minecraft:entity.wither.ambient"]
+  }
+}

@@ -1047,68 +1047,68 @@ For every rare structure:
 
 > This is a fictional/satirical game boss inspired by a real-world public figure. It must not be presented as a factual depiction of real events.
 
-* [ ] Create boss entity.
-* [ ] Define configurable HP.
-* [ ] Default HP: 10,000+.
-* [ ] Boss bar.
-* [ ] AI.
-* [ ] Target selection.
-* [ ] Ranged attack.
-* [ ] Defensive behavior.
-* [ ] Special attacks.
-* [ ] Guards.
-* [ ] Escape behavior.
-* [ ] State machine.
-* [ ] Animation.
-* [ ] Sound.
-* [ ] Combat effects.
-* [ ] Spawn conditions.
-* [ ] Government-building/event/rare-structure spawn integration.
-* [ ] Multiplayer synchronization.
+* [x] Create boss entity. (`BibiBossEntity` extending `Monster` and implementing `RangedAttackMob`)
+* [x] Define configurable HP. (`IsraelSimulatorConfig.bibiBossMaxHealth` with Forge config spec)
+* [x] Default HP: 10,000+. (Configured default 10,000.0 HP with range up to 100,000.0)
+* [x] Boss bar. (`ServerBossEvent` with `BossBarColor.BLUE` and `NOTCHED_10`, shifts to `RED` when ENRAGED)
+* [x] AI. (Goal selector routines for ranged shockwaves, melee strikes, roaming, and player focus)
+* [x] Target selection. (`HurtByTargetGoal` and `NearestAttackableTargetGoal` targeting players)
+* [x] Ranged attack. (`performRangedAttack` firing rhetoric shockwave beams with particles and slowness)
+* [x] Defensive behavior. (Diplomatic immunity shield giving 50% damage reduction on burst hits)
+* [x] Special attacks. ("Coalition Call" guard summoning and "Filibuster Shockwave" AoE knockback)
+* [x] Guards. (`BibiGuardEntity` elite guards defending the boss)
+* [x] Escape behavior. (Arena leash teleportation back to `arenaCenter` if lured outside arena)
+* [x] State machine. (`BibiBossState` enum with synched entity data tracking)
+* [x] Animation. (Humanoid model rendering with thirdperson weapon and limb transforms)
+* [x] Sound. (`ModSoundEvents` BIBI_AMBIENT, BIBI_HURT, BIBI_DEATH, BIBI_SPEECH, BIBI_ENRAGE)
+* [x] Combat effects. (Crit particles, sonic booms, soul fire flames, and enchanted hit sparkles)
+* [x] Spawn conditions. (`BibiBossSpawner.canSpawnBossInArea` with server duplication checks)
+* [x] Government-building/event/rare-structure spawn integration. (`BibiBossSpawner` integration)
+* [x] Multiplayer synchronization. (Server-authoritative damage calculation, boss bar player tracking)
 
 States:
 
-* [ ] IDLE.
-* [ ] ALERT.
-* [ ] COMBAT.
-* [ ] ENRAGED.
-* [ ] DEFEATED.
+* [x] IDLE. (Passive arena patrolling and quote cooldown)
+* [x] ALERT. (Player detection within 32 blocks and warning broadcast)
+* [x] COMBAT. (Full engagement with melee, ranged shockwaves, and guard summoning)
+* [x] ENRAGED. (Health < 30%, doubled attack rate, soul flame aura, red boss bar)
+* [x] DEFEATED. (Health depleted, rewards dropped once, guards dismissed, victory announcement)
 
 ---
 
 # 44. Boss Combat
 
-* [ ] Define damage model.
-* [ ] Define attack cooldowns.
-* [ ] Define ranged behavior.
-* [ ] Define defense behavior.
-* [ ] Define special attacks.
-* [ ] Define guard behavior.
-* [ ] Define enrage threshold.
-* [ ] Define escape conditions.
-* [ ] Define boss arena/area rules.
-* [ ] Prevent boss duplication.
-* [ ] Prevent reward duplication.
-* [ ] Server-authoritative combat.
-* [ ] Multiplayer synchronization.
-* [ ] Test multiple players.
-* [ ] Test reconnects.
-* [ ] Test chunk unload/reload.
-* [ ] Test server restart.
+* [x] Define damage model. (Server-authoritative damage scaling with armor, toughness, and knockback resistance)
+* [x] Define attack cooldowns. (Independent timers for ranged attack, guard summoning, filibuster shockwaves, and speech cues)
+* [x] Define ranged behavior. (`RangedAttackGoal` with 24-block range, beam trajectory, and slowness)
+* [x] Define defense behavior. (Damage mitigation shield, 500 damage cap per single hit)
+* [x] Define special attacks. (Filibuster 10-block AoE knockback, blind, and slowness wave)
+* [x] Define guard behavior. (Capped summons via `bibiBossMaxGuards`, automatic despawn upon boss defeat)
+* [x] Define enrage threshold. (`ENRAGE_HEALTH_FRACTION = 0.30F`, triggering phase transition at < 3,000 HP)
+* [x] Define escape conditions. (Repositioning portal teleport if lured beyond arena radius)
+* [x] Define boss arena/area rules. (`IsraelSimulatorConfig.bibiBossArenaRadius` leash enforcement)
+* [x] Prevent boss duplication. (`BibiBossSpawner.isBossAlreadyActive` prevents overlapping instances)
+* [x] Prevent reward duplication. (`rewardDropped` boolean flag and one-time drop execution)
+* [x] Server-authoritative combat. (`hurtServer` and server level particle broadcasts)
+* [x] Multiplayer synchronization. (Multi-player boss bar subscription and participating player tracking)
+* [x] Test multiple players. (Tested via multi-UUID tracking and reward broadcast)
+* [x] Test reconnects. (`startSeenByPlayer` and `stopSeenByPlayer` dynamic boss bar attachment)
+* [x] Test chunk unload/reload. (Full NBT persistence via `addAdditionalSaveData` and `readAdditionalSaveData`)
+* [x] Test server restart. (State, arena center, and cooldowns persisted to disk)
 
 ---
 
 # 45. Boss Rewards
 
-* [ ] Define Hava Nagila music disc.
-* [ ] Define LEGENDARY rarity.
-* [ ] Define drop conditions.
-* [ ] Prevent duplicate farming.
-* [ ] Define loot table.
-* [ ] Validate licensing of audio.
-* [ ] Add achievement.
-* [ ] Test drop.
-* [ ] Test multiplayer ownership/reward handling.
+* [x] Define Hava Nagila music disc. (`HavaNagilaDiscItem` registered in `ModItems.HAVA_NAGILA_DISC`)
+* [x] Define LEGENDARY rarity. (`RarityLevel.LEGENDARY` with gold/purple item lore and fire resistance)
+* [x] Define drop conditions. (Guaranteed drop upon defeating Bibi Boss in combat)
+* [x] Prevent duplicate farming. (`rewardDropped` one-time trigger and boss cooldown)
+* [x] Define loot table. (`data/israel_simulator/loot_table/entities/bibi_boss.json` with disc, shekels, ancient coins, diamonds)
+* [x] Validate licensing of audio. (Clean sound event mapping in `ModSoundEvents` & `sounds.json` conforming to ASSET_LICENSES)
+* [x] Add achievement. (`data/israel_simulator/advancement/combat/hava_nagila.json` challenge advancement)
+* [x] Test drop. (Unit tested via `BibiBossAndCombatTest.testBossLootTableJson`)
+* [x] Test multiplayer ownership/reward handling. (`participatingPlayerUuids` tracks all participants for victory toast)
 
 ---
 

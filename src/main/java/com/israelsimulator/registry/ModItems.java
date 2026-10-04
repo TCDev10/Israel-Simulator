@@ -12,6 +12,7 @@ import com.israelsimulator.item.festival.FestivalItems;
 import com.israelsimulator.item.food.IsraelFoodProperties;
 import com.israelsimulator.item.technology.TechnologyItems;
 import com.israelsimulator.item.cultural.FirstAmendmentItem;
+import com.israelsimulator.item.cultural.HavaNagilaDiscItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -30,7 +31,7 @@ public final class ModItems {
     public static final DeferredHolder<Item, RabbisCrownItem> RABBIS_CROWN = ITEMS.registerItem("rabbis_crown", p -> new RabbisCrownItem(CulturalItems.rabbisCrown(p)));
     public static final DeferredHolder<Item, Item> PRAYER_NOTE = ITEMS.registerItem("prayer_note", p -> new Item(CulturalItems.prayerNote(p)));
     public static final DeferredHolder<Item, FirstAmendmentItem> FIRST_AMENDMENT = ITEMS.registerItem("first_amendment", p -> new FirstAmendmentItem(CulturalItems.firstAmendment(p)));
-    public static final DeferredHolder<Item, Item> HAVA_NAGILA_DISC = ITEMS.registerItem("hava_nagila_disc", p -> new Item(CulturalItems.havaNagilaDisc(p)));
+    public static final DeferredHolder<Item, HavaNagilaDiscItem> HAVA_NAGILA_DISC = ITEMS.registerItem("hava_nagila_disc", p -> new HavaNagilaDiscItem(CulturalItems.havaNagilaDisc(p)));
 
     // Food items - ingredients
     public static final DeferredHolder<Item, Item> TAHINI = ITEMS.registerSimpleItem("tahini", p -> p.food(IsraelFoodProperties.TAHINI));

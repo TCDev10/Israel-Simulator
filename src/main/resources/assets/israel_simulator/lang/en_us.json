@@ -146,5 +146,19 @@
   "structure.israel_simulator.grand_market": "Grand Mediterranean Bazaar",
   "structure.israel_simulator.startup_office": "High-Tech Startup Office",
   "structure.israel_simulator.government_building": "Civic Government Building",
-  "structure.israel_simulator.ancient_sanctuary": "Ancient Highland Sanctuary"
+  "structure.israel_simulator.ancient_sanctuary": "Ancient Highland Sanctuary",
+
+  "entity.israel_simulator.bibi_boss": "Bibi - The Longstanding Leader",
+  "entity.israel_simulator.bibi_boss.enraged": "Bibi (ENRAGED) - Coalition Powerhouse",
+  "entity.israel_simulator.bibi_guard": "Coalition Elite Guard",
+  "item.israel_simulator.hava_nagila_disc": "Music Disc - Hava Nagila",
+  "item.israel_simulator.hava_nagila_disc.desc": "Plays traditional folk song: Hava Nagila",
+  "item.israel_simulator.hava_nagila_disc.lore": "LEGENDARY Boss Reward — Let us rejoice and be glad!",
+  "jukebox_song.israel_simulator.hava_nagila": "Hava Nagila",
+  "message.israel_simulator.bibi_boss_defeated": "Bibi has been defeated! The legendary Hava Nagila music disc drops upon the floor!",
+  "speech.israel_simulator.bibi_boss.quote_0": "\"Together we will win! The coalition stands firm and unbroken!\"",
+  "speech.israel_simulator.bibi_boss.quote_1": "\"I have guided this land through storm and sun. You cannot unseat me!\"",
+  "speech.israel_simulator.bibi_boss.quote_2": "\"No weapon formed against our podium shall prosper! Filibuster!\"",
+  "advancements.israel_simulator.hava_nagila.title": "Hava Nagila",
+  "advancements.israel_simulator.hava_nagila.description": "Defeat the formidable Bibi Boss and claim the legendary Hava Nagila music disc!"
 }

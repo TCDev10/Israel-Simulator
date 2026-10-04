@@ -33,6 +33,9 @@ public final class CulturalItems {
     public static final ResourceKey<EquipmentAsset> RABBIS_CROWN_ASSET =
             ResourceKey.create(EquipmentAssets.ROOT_ID, Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "rabbis_crown"));
 
+    public static final ResourceKey<net.minecraft.world.item.JukeboxSong> HAVA_NAGILA_SONG =
+            ResourceKey.create(net.minecraft.core.registries.Registries.JUKEBOX_SONG, Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "hava_nagila"));
+
     private CulturalItems() {}
 
     /** Kippah — wearable head item, UNCOMMON, unstackable, swappable, no damage on hurt. */
@@ -108,6 +111,9 @@ public final class CulturalItems {
 
     /** Hava Nagila music disc — LEGENDARY boss drop. Unstackable. */
     public static Item.Properties havaNagilaDisc(Item.Properties p) {
-        return p.stacksTo(1).rarity(RarityLevel.LEGENDARY.vanilla()).fireResistant();
+        return p.stacksTo(1)
+                .rarity(RarityLevel.LEGENDARY.vanilla())
+                .fireResistant()
+                .jukeboxPlayable(HAVA_NAGILA_SONG);
     }
 }
