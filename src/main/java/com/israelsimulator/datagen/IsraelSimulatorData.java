@@ -27,3 +27,4 @@ public final class IsraelSimulatorData {
         IsraelSimulator.LOGGER.info("Israel-Simulator server data generation registered");
     }
 }
+
