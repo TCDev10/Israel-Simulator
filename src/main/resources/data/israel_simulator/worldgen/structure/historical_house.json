@@ -8,7 +8,7 @@
   "start_height": {
     "absolute": 0
   },
-  "start_pool": "minecraft:village/plains/houses",
+  "start_pool": "israel_simulator:historical_house",
   "step": "surface_structures",
   "terrain_adaptation": "beard_thin",
   "use_expansion_hack": true

@@ -57,28 +57,50 @@ class StructureFrameworkTest {
     }
 
     @Test
-    @DisplayName("City structures start from mod template pools, not vanilla villages")
-    void testCityStructuresDoNotUseVanillaVillagePools() throws Exception {
-        Map<String, String> markerBlocks = Map.of(
-                "tel_aviv_city", "minecraft:light_blue_stained_glass",
-                "jaffa_port", "minecraft:prismarine_bricks",
-                "jerusalem_city", "minecraft:yellow_terracotta",
-                "western_wall", "minecraft:calcite"
+    @DisplayName("No structure JSON uses a vanilla village start pool")
+    void testNoStructureUsesVanillaVillagePool() throws Exception {
+        Map<String, String> markerBlocks = Map.ofEntries(
+                Map.entry("tel_aviv_city", "minecraft:light_blue_stained_glass"),
+                Map.entry("jaffa_port", "minecraft:prismarine_bricks"),
+                Map.entry("jerusalem_city", "minecraft:yellow_terracotta"),
+                Map.entry("western_wall", "minecraft:calcite"),
+                Map.entry("synagogue", "minecraft:purple_stained_glass"),
+                Map.entry("government_building", "minecraft:polished_deepslate"),
+                Map.entry("ancient_sanctuary", "minecraft:chiseled_sandstone"),
+                Map.entry("grand_market", "minecraft:red_terracotta"),
+                Map.entry("startup_office", "minecraft:iron_block"),
+                Map.entry("agricultural_farm", "minecraft:hay_block"),
+                Map.entry("great_synagogue", "minecraft:blue_stained_glass"),
+                Map.entry("dead_sea_resort", "minecraft:packed_mud"),
+                Map.entry("desert_ruins", "minecraft:cracked_stone_bricks"),
+                Map.entry("historical_house", "minecraft:bricks"),
+                Map.entry("mediterranean_village", "minecraft:light_gray_terracotta"),
+                Map.entry("ein_gedi_oasis", "minecraft:moss_block")
         );
         Gson gson = new Gson();
+        java.net.URL structuresDir = getClass().getClassLoader()
+                .getResource("data/israel_simulator/worldgen/structure");
+        assertNotNull(structuresDir, "Structure JSON directory must be on the classpath");
+        java.nio.file.Path dir = java.nio.file.Paths.get(structuresDir.toURI());
+        java.util.List<java.nio.file.Path> structureFiles;
+        try (java.util.stream.Stream<java.nio.file.Path> files = java.nio.file.Files.list(dir)) {
+            structureFiles = files.filter(path -> path.getFileName().toString().endsWith(".json")).toList();
+        }
+        assertFalse(structureFiles.isEmpty(), "Expected structure JSON files");
 
-        for (Map.Entry<String, String> city : markerBlocks.entrySet()) {
-            String name = city.getKey();
-            String structurePath = "data/israel_simulator/worldgen/structure/" + name + ".json";
-            InputStream structureStream = getClass().getClassLoader().getResourceAsStream(structurePath);
-            assertNotNull(structureStream, "Missing structure JSON: " + structurePath);
-            JsonObject structure = gson.fromJson(new InputStreamReader(structureStream, StandardCharsets.UTF_8), JsonObject.class);
+        for (java.nio.file.Path structureFile : structureFiles) {
+            String name = structureFile.getFileName().toString().replace(".json", "");
+            JsonObject structure = gson.fromJson(
+                    java.nio.file.Files.newBufferedReader(structureFile, StandardCharsets.UTF_8),
+                    JsonObject.class);
             assertTrue(structure.has("start_pool"), name + " must define start_pool");
             String startPool = structure.get("start_pool").getAsString();
             assertFalse(startPool.contains("minecraft:village"),
                     name + " start_pool must not reference a vanilla village pool, was: " + startPool);
             assertEquals("israel_simulator:" + name, startPool,
                     name + " must start from its own israel_simulator template pool");
+            assertTrue(markerBlocks.containsKey(name),
+                    name + " must declare a marker block for its template");
 
             String poolPath = "data/israel_simulator/worldgen/template_pool/" + name + ".json";
             InputStream poolStream = getClass().getClassLoader().getResourceAsStream(poolPath);
@@ -96,8 +118,8 @@ class StructureFrameworkTest {
             assertNotNull(nbtStream, "Missing structure template NBT: " + nbtPath);
             byte[] nbt = new GZIPInputStream(nbtStream).readAllBytes();
             String decoded = new String(nbt, StandardCharsets.ISO_8859_1);
-            assertTrue(decoded.contains(city.getValue()),
-                    name + " template must place its own marker block " + city.getValue());
+            assertTrue(decoded.contains(markerBlocks.get(name)),
+                    name + " template must place its own marker block " + markerBlocks.get(name));
             assertTrue(decoded.contains("DataVersion"), name + " template must be a structure NBT file");
         }
     }
