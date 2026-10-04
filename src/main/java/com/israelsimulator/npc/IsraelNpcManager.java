@@ -78,6 +78,14 @@ public final class IsraelNpcManager {
     }
 
     /**
+     * Vanilla villagers are not mod NPCs. Only an entry already stored via
+     * {@link #registerNpcData} may replace the villager GUI.
+     */
+    public static boolean shouldHandleRegisteredNpc(IsraelNpcData existing) {
+        return existing != null;
+    }
+
+    /**
      * Handles player interaction with an NPC: provides dialogue and executes Shekel trading.
      */
     public static boolean handleNpcInteraction(Player player, InteractionHand hand, AbstractVillager villager) {
@@ -86,7 +94,10 @@ public final class IsraelNpcManager {
         }
 
         Level level = player.level();
-        IsraelNpcData npcData = getOrAssignNpcData(villager);
+        IsraelNpcData npcData = getNpcData(villager.getUUID());
+        if (!shouldHandleRegisteredNpc(npcData)) {
+            return false;
+        }
         NpcProfession profession = npcData.getProfession();
         boolean isShabbat = NpcSchedule.isShabbat(level.getGameTime());
         long dayTime = level.getOverworldClockTime() % 24000L;
