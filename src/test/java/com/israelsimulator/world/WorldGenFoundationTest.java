@@ -55,7 +55,7 @@ class WorldGenFoundationTest {
     @Test
     @DisplayName("Verify structure and structure set keys")
     void testStructures() {
-        assertEquals(11, ModStructures.allStructures().size());
+        assertEquals(16, ModStructures.allStructures().size());
         for (var key : ModStructures.allStructures()) {
             assertEquals(Registries.STRUCTURE, key.registryKey());
             assertEquals("israel_simulator", key.identifier().getNamespace());

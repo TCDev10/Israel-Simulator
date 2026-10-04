@@ -135,5 +135,16 @@
   "item.israel_simulator.first_amendment.effect": "Right-click to claim the Freedom effect, breaking free of slowness and restraint.",
   "message.israel_simulator.first_amendment_used": "You proclaim freedom of thought and assembly! You feel completely unburdened and free!",
   "message.israel_simulator.public_speech_reward": "You actively participated in the Civic Speech and stood for free expression! You received the First Amendment!",
-  "message.israel_simulator.public_speech_start": "[Public Forum] A civic speech on democracy and liberty is now commencing at the forum!"
+  "message.israel_simulator.public_speech_start": "[Public Forum] A civic speech on democracy and liberty is now commencing at the forum!",
+
+  "item.israel_simulator.rabbis_crown.desc": "Sacred mythic crown worn by revered spiritual sages.",
+  "item.israel_simulator.rabbis_crown.armor": "+20 Armor when equipped on head",
+  "item.israel_simulator.rabbis_crown.effect": "Bestows permanent Blessed Trader aura upon the wearer.",
+  "effect.israel_simulator.blessed_trader": "Blessed Trader",
+
+  "structure.israel_simulator.historical_house": "Historical Limestone House",
+  "structure.israel_simulator.grand_market": "Grand Mediterranean Bazaar",
+  "structure.israel_simulator.startup_office": "High-Tech Startup Office",
+  "structure.israel_simulator.government_building": "Civic Government Building",
+  "structure.israel_simulator.ancient_sanctuary": "Ancient Highland Sanctuary"
 }

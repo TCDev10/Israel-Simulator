@@ -35,6 +35,16 @@ public final class ModStructures {
             structureKey("jerusalem_city");
     public static final ResourceKey<Structure> WESTERN_WALL =
             structureKey("western_wall");
+    public static final ResourceKey<Structure> HISTORICAL_HOUSE =
+            structureKey("historical_house");
+    public static final ResourceKey<Structure> GRAND_MARKET =
+            structureKey("grand_market");
+    public static final ResourceKey<Structure> STARTUP_OFFICE =
+            structureKey("startup_office");
+    public static final ResourceKey<Structure> GOVERNMENT_BUILDING =
+            structureKey("government_building");
+    public static final ResourceKey<Structure> ANCIENT_SANCTUARY =
+            structureKey("ancient_sanctuary");
 
     // Structure Sets
     public static final ResourceKey<StructureSet> MEDITERRANEAN_VILLAGES =
@@ -59,6 +69,16 @@ public final class ModStructures {
             structureSetKey("jerusalem_cities");
     public static final ResourceKey<StructureSet> WESTERN_WALLS =
             structureSetKey("western_walls");
+    public static final ResourceKey<StructureSet> HISTORICAL_HOUSES =
+            structureSetKey("historical_houses");
+    public static final ResourceKey<StructureSet> GRAND_MARKETS =
+            structureSetKey("grand_markets");
+    public static final ResourceKey<StructureSet> STARTUP_OFFICES =
+            structureSetKey("startup_offices");
+    public static final ResourceKey<StructureSet> GOVERNMENT_BUILDINGS =
+            structureSetKey("government_buildings");
+    public static final ResourceKey<StructureSet> ANCIENT_SANCTUARIES =
+            structureSetKey("ancient_sanctuaries");
 
     // Processor Lists
     public static final ResourceKey<net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList> ANCIENT_RUINS_WEATHERING =
@@ -75,7 +95,12 @@ public final class ModStructures {
             EIN_GEDI_OASIS,
             JAFFA_PORT,
             JERUSALEM_CITY,
-            WESTERN_WALL
+            WESTERN_WALL,
+            HISTORICAL_HOUSE,
+            GRAND_MARKET,
+            STARTUP_OFFICE,
+            GOVERNMENT_BUILDING,
+            ANCIENT_SANCTUARY
     );
 
     private ModStructures() {}

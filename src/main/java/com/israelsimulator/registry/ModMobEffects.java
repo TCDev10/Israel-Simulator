@@ -22,6 +22,7 @@ public final class ModMobEffects {
 
     public static void register(IEventBus modEventBus) {
         ModEffects.BLESSED = MOB_EFFECTS.register("blessed", BlessedEffect::new);
+        ModEffects.BLESSED_TRADER = MOB_EFFECTS.register("blessed_trader", com.israelsimulator.effect.BlessedTraderEffect::new);
         ModEffects.FREEDOM = MOB_EFFECTS.register("freedom", FreedomEffect::new);
         ModEffects.MEAT_DIGESTION = MOB_EFFECTS.register("meat_digestion", MeatDigestionEffect::new);
         ModEffects.DAIRY_DIGESTION = MOB_EFFECTS.register("dairy_digestion", DairyDigestionEffect::new);

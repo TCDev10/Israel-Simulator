@@ -7,7 +7,11 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.equipment.EquipmentAsset;
 import net.minecraft.world.item.equipment.EquipmentAssets;
 import net.minecraft.world.item.equipment.Equippable;
@@ -25,6 +29,9 @@ public final class CulturalItems {
 
     public static final ResourceKey<EquipmentAsset> TALIT_ASSET =
             ResourceKey.create(EquipmentAssets.ROOT_ID, Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "talit"));
+
+    public static final ResourceKey<EquipmentAsset> RABBIS_CROWN_ASSET =
+            ResourceKey.create(EquipmentAssets.ROOT_ID, Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "rabbis_crown"));
 
     private CulturalItems() {}
 
@@ -61,9 +68,32 @@ public final class CulturalItems {
         return p.stacksTo(1).rarity(RarityLevel.RARE.vanilla());
     }
 
-    /** Rabbi's Crown — MYTHIC. Fire-resistant, unstackable. Not craftable, not common loot. */
+    /** Rabbi's Crown — MYTHIC head item, +20 Armor, unstackable, fire-resistant, swappable. */
     public static Item.Properties rabbisCrown(Item.Properties p) {
-        return p.stacksTo(1).rarity(RarityLevel.MYTHIC.vanilla()).fireResistant();
+        Equippable equippable = Equippable.builder(EquipmentSlot.HEAD)
+                .setEquipSound(SoundEvents.ARMOR_EQUIP_NETHERITE)
+                .setAsset(RABBIS_CROWN_ASSET)
+                .setSwappable(true)
+                .setDamageOnHurt(false)
+                .build();
+
+        ItemAttributeModifiers modifiers = ItemAttributeModifiers.builder()
+                .add(
+                        Attributes.ARMOR,
+                        new AttributeModifier(
+                                Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "armor_rabbis_crown"),
+                                20.0,
+                                AttributeModifier.Operation.ADD_VALUE
+                        ),
+                        EquipmentSlotGroup.HEAD
+                )
+                .build();
+
+        return p.stacksTo(1)
+                .rarity(RarityLevel.MYTHIC.vanilla())
+                .fireResistant()
+                .component(DataComponents.EQUIPPABLE, equippable)
+                .attributes(modifiers);
     }
 
     /** Prayer Note — consumable interaction resource for the Western Wall ritual. */

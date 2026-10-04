@@ -4,6 +4,7 @@ import com.israelsimulator.IsraelSimulator;
 import com.israelsimulator.item.collectible.CollectibleItems;
 import com.israelsimulator.item.cultural.CulturalItems;
 import com.israelsimulator.item.cultural.KippahItem;
+import com.israelsimulator.item.cultural.RabbisCrownItem;
 import com.israelsimulator.item.cultural.TalitItem;
 import com.israelsimulator.item.cultural.TefillinItem;
 import com.israelsimulator.item.currency.CurrencyItems;
@@ -26,7 +27,7 @@ public final class ModItems {
     public static final DeferredHolder<Item, KippahItem> KIPPAH = ITEMS.registerItem("kippah", p -> new KippahItem(CulturalItems.kippah(p)));
     public static final DeferredHolder<Item, TalitItem> TALIT = ITEMS.registerItem("talit", p -> new TalitItem(CulturalItems.talit(p)));
     public static final DeferredHolder<Item, TefillinItem> TEFILLIN = ITEMS.registerItem("tefillin", p -> new TefillinItem(CulturalItems.tefillin(p)));
-    public static final DeferredHolder<Item, Item> RABBIS_CROWN = ITEMS.registerItem("rabbis_crown", p -> new Item(CulturalItems.rabbisCrown(p)));
+    public static final DeferredHolder<Item, RabbisCrownItem> RABBIS_CROWN = ITEMS.registerItem("rabbis_crown", p -> new RabbisCrownItem(CulturalItems.rabbisCrown(p)));
     public static final DeferredHolder<Item, Item> PRAYER_NOTE = ITEMS.registerItem("prayer_note", p -> new Item(CulturalItems.prayerNote(p)));
     public static final DeferredHolder<Item, FirstAmendmentItem> FIRST_AMENDMENT = ITEMS.registerItem("first_amendment", p -> new FirstAmendmentItem(CulturalItems.firstAmendment(p)));
     public static final DeferredHolder<Item, Item> HAVA_NAGILA_DISC = ITEMS.registerItem("hava_nagila_disc", p -> new Item(CulturalItems.havaNagilaDisc(p)));

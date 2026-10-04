@@ -1,11 +1,14 @@
 package com.israelsimulator.trading;
 
 import com.israelsimulator.effect.BlessedEffect;
+import com.israelsimulator.effect.ModEffects;
+import com.israelsimulator.registry.ModItems;
 import com.israelsimulator.reputation.ReputationFaction;
 import com.israelsimulator.reputation.ReputationManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 
 /**
@@ -76,36 +79,66 @@ public final class IsraelVillagerTrades {
     }
 
     /**
-     * Checks if player has the Blessed effect active to qualify for the Blessed Trader interaction.
+     * Checks if player has the Rabbi's Crown equipped or Blessed Trader / Blessed effect active.
      */
     public static boolean isBlessedTraderEligible(Player player) {
         if (player == null) {
             return false;
         }
-        return player.hasEffect(com.israelsimulator.effect.ModEffects.BLESSED);
+        boolean hasEquippedCrown = ModItems.RABBIS_CROWN != null
+                && player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.RABBIS_CROWN.get());
+        boolean hasTraderEffect = ModEffects.BLESSED_TRADER != null
+                && player.hasEffect(ModEffects.BLESSED_TRADER);
+        boolean hasBlessed = ModEffects.BLESSED != null
+                && player.hasEffect(ModEffects.BLESSED);
+
+        return hasEquippedCrown || hasTraderEffect || hasBlessed;
     }
 
     /**
      * Pure validation logic for Blessed Trader status, testable offline.
      */
+    public static boolean isBlessedTraderEligible(boolean hasCrown, boolean hasBlessedTraderEffect, boolean hasBlessedEffect) {
+        return hasCrown || hasBlessedTraderEffect || hasBlessedEffect;
+    }
+
     public static boolean isBlessedTraderEligible(boolean hasBlessedEffect) {
         return hasBlessedEffect;
     }
 
     /**
-     * Calculates the adjusted price in Shekels taking reputation and Blessed Trader status into account.
+     * Calculates the adjusted price in Shekels/Emeralds taking reputation and Blessed Trader status into account.
+     * Prevents negative prices and infinite generation loops by enforcing a strict positive lower bound (minimum 1).
      */
-    public static int calculateAdjustedPrice(int baseShekels, UUID playerId, ReputationFaction faction, boolean isBlessed) {
+    public static int calculateAdjustedPrice(int basePrice, UUID playerId, ReputationFaction faction, boolean isBlessed) {
         double modifier = ReputationManager.getPriceModifier(playerId, faction);
         double finalMultiplier = 1.0 + modifier;
 
-        // Blessed Trader grants an additional 15% holy discount
+        // Blessed Trader grants substantial holy discount (15% reduction)
         if (isBlessed) {
             finalMultiplier *= 0.85;
         }
 
-        int adjusted = (int) Math.round(baseShekels * finalMultiplier);
+        int adjusted = (int) Math.round(basePrice * finalMultiplier);
+        // Hard minimum of 1 to strictly prevent invalid negative prices or free item generation
         return Math.max(1, adjusted);
+    }
+
+    /**
+     * Verifies that two complimentary trades cannot be chained into an infinite emerald / item duplication loop.
+     */
+    public static boolean isTradeExploitSafe(SpecialTrade buyTrade, SpecialTrade sellTrade) {
+        if (buyTrade == null || sellTrade == null) {
+            return true;
+        }
+        // If the player buys item X with currency and sells item X back for currency
+        if (buyTrade.outputItemId().equals(sellTrade.inputItemId()) && buyTrade.inputItemId().equals(sellTrade.outputItemId())) {
+            double buyUnitPrice = (double) buyTrade.inputCount() / (double) buyTrade.outputCount();
+            double sellUnitPrice = (double) sellTrade.outputCount() / (double) sellTrade.inputCount();
+            // Buying price must be strictly greater than or equal to selling price
+            return buyUnitPrice >= sellUnitPrice;
+        }
+        return true;
     }
 
     /**
