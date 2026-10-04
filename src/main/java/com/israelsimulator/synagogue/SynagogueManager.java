@@ -3,9 +3,7 @@ package com.israelsimulator.synagogue;
 import com.israelsimulator.effect.BlessedEffect;
 import com.israelsimulator.item.cultural.KippahItem;
 import com.israelsimulator.registry.ModItems;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -25,7 +23,6 @@ import net.minecraft.world.level.block.state.BlockState;
 public final class SynagogueManager {
 
     public static final long COOLDOWN_TICKS = 12000L; // 10 minutes (anti-spam cooldown)
-    private static final Map<UUID, Long> LAST_PRAYER_TIMES = new ConcurrentHashMap<>();
 
     public enum ArkInteractionStatus {
         SUCCESS,
@@ -46,13 +43,18 @@ public final class SynagogueManager {
         return ArkInteractionStatus.SUCCESS;
     }
 
-    public static boolean isOnCooldown(UUID playerId, long currentGameTime) {
-        Long lastTime = LAST_PRAYER_TIMES.get(playerId);
+    public static boolean isOnCooldown(SynagogueCooldowns cooldowns, UUID playerId, long currentGameTime) {
+        if (cooldowns == null || playerId == null) {
+            return false;
+        }
+        Long lastTime = cooldowns.getLastUseTime(playerId);
         return lastTime != null && (currentGameTime - lastTime) < COOLDOWN_TICKS;
     }
 
-    public static void clearCooldown(UUID playerId) {
-        LAST_PRAYER_TIMES.remove(playerId);
+    public static void clearCooldown(SynagogueCooldowns cooldowns, UUID playerId) {
+        if (cooldowns != null) {
+            cooldowns.clearCooldown(playerId);
+        }
     }
 
     /**
@@ -61,7 +63,10 @@ public final class SynagogueManager {
      */
     public static boolean tryArkPray(Player player, InteractionHand hand, BlockPos pos) {
         Level level = player.level();
-        if (level.isClientSide() || hand != InteractionHand.MAIN_HAND) {
+        if (hand != InteractionHand.MAIN_HAND || level.isClientSide()) {
+            return false;
+        }
+        if (!(level instanceof ServerLevel serverLevel)) {
             return false;
         }
 
@@ -75,7 +80,9 @@ public final class SynagogueManager {
         }
 
         boolean hasKippah = KippahItem.isWearingKippah(player);
-        boolean onCooldown = !player.getAbilities().instabuild && isOnCooldown(player.getUUID(), level.getGameTime());
+        SynagogueCooldowns cooldowns = SynagogueCooldowns.get(serverLevel);
+        boolean onCooldown = !player.getAbilities().instabuild
+                && isOnCooldown(cooldowns, player.getUUID(), level.getGameTime());
 
         ArkInteractionStatus status = validateInteraction(hasKippah, onCooldown);
 
@@ -101,7 +108,7 @@ public final class SynagogueManager {
                     isOffering = true;
                 }
 
-                LAST_PRAYER_TIMES.put(player.getUUID(), level.getGameTime());
+                cooldowns.setLastUseTime(player.getUUID(), level.getGameTime());
                 BlessedEffect.applyTo(player);
 
                 if (isOffering) {
@@ -113,14 +120,12 @@ public final class SynagogueManager {
                 level.playSound(null, pos.getX(), pos.getY(), pos.getZ(),
                         SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 1.0F, 1.2F);
 
-                if (level instanceof ServerLevel serverLevel) {
-                    serverLevel.sendParticles(ParticleTypes.ENCHANT,
-                            pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5,
-                            25, 0.4, 0.4, 0.4, 0.15);
-                    serverLevel.sendParticles(ParticleTypes.TOTEM_OF_UNDYING,
-                            pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5,
-                            15, 0.3, 0.3, 0.3, 0.08);
-                }
+                serverLevel.sendParticles(ParticleTypes.ENCHANT,
+                        pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5,
+                        25, 0.4, 0.4, 0.4, 0.15);
+                serverLevel.sendParticles(ParticleTypes.TOTEM_OF_UNDYING,
+                        pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5,
+                        15, 0.3, 0.3, 0.3, 0.08);
                 return true;
             }
             default -> {

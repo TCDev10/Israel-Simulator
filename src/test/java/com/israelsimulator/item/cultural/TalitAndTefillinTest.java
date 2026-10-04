@@ -91,17 +91,52 @@ class TalitAndTefillinTest {
         UUID playerId = UUID.randomUUID();
         long now = 10000L;
 
-        assertFalse(TefillinManager.isOnCooldown(playerId, now));
+        TefillinCooldowns cooldowns = new TefillinCooldowns();
+        assertFalse(TefillinManager.isOnCooldown(cooldowns, playerId, now));
 
-        TefillinManager.setLastUseTime(playerId, now);
-        assertTrue(TefillinManager.isOnCooldown(playerId, now + 100L));
-        assertTrue(TefillinManager.isOnCooldown(playerId, now + TefillinManager.COOLDOWN_TICKS - 1L));
+        TefillinManager.setLastUseTime(cooldowns, playerId, now);
+        assertTrue(TefillinManager.isOnCooldown(cooldowns, playerId, now + 100L));
+        assertTrue(TefillinManager.isOnCooldown(cooldowns, playerId, now + TefillinManager.COOLDOWN_TICKS - 1L));
 
         // Cooldown expires after COOLDOWN_TICKS
-        assertFalse(TefillinManager.isOnCooldown(playerId, now + TefillinManager.COOLDOWN_TICKS + 1L));
+        assertFalse(TefillinManager.isOnCooldown(cooldowns, playerId, now + TefillinManager.COOLDOWN_TICKS + 1L));
 
-        TefillinManager.clearCooldown(playerId);
-        assertFalse(TefillinManager.isOnCooldown(playerId, now));
+        TefillinManager.clearCooldown(cooldowns, playerId);
+        assertFalse(TefillinManager.isOnCooldown(cooldowns, playerId, now));
+    }
+
+    @Test
+    @DisplayName("Tefillin cooldown is saved data, not a static map, and survives a codec reload")
+    void testTefillinCooldownPersists() throws Exception {
+        for (Class<?> type : java.util.List.of(TefillinManager.class, TefillinCooldowns.class, TefillinItem.class)) {
+            for (java.lang.reflect.Field field : type.getDeclaredFields()) {
+                if (java.lang.reflect.Modifier.isStatic(field.getModifiers())
+                        && java.util.Map.class.isAssignableFrom(field.getType())) {
+                    fail(type.getSimpleName() + " must not keep cooldown in a static map: " + field.getName());
+                }
+            }
+        }
+
+        UUID playerId = UUID.randomUUID();
+        long usedAt = 10000L;
+        TefillinCooldowns live = new TefillinCooldowns();
+        TefillinCooldowns other = new TefillinCooldowns();
+        TefillinManager.setLastUseTime(live, playerId, usedAt);
+        assertTrue(TefillinManager.isOnCooldown(live, playerId, usedAt));
+        assertFalse(TefillinManager.isOnCooldown(other, playerId, usedAt));
+
+        net.minecraft.nbt.Tag encoded = TefillinCooldowns.CODEC
+                .encodeStart(net.minecraft.nbt.NbtOps.INSTANCE, live)
+                .getOrThrow();
+        TefillinCooldowns restored = TefillinCooldowns.CODEC
+                .parse(net.minecraft.nbt.NbtOps.INSTANCE, encoded)
+                .getOrThrow();
+
+        assertNotSame(live, restored);
+        assertTrue(TefillinManager.isOnCooldown(restored, playerId, usedAt + 100L));
+        assertTrue(TefillinManager.isOnCooldown(restored, playerId, usedAt + TefillinManager.COOLDOWN_TICKS - 1L));
+        assertFalse(TefillinManager.isOnCooldown(restored, playerId, usedAt + TefillinManager.COOLDOWN_TICKS));
+        assertEquals("israel_simulator:tefillin_prayers", TefillinCooldowns.TYPE.id().toString());
     }
 
     @Test

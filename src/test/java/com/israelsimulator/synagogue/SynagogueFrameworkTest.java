@@ -81,6 +81,45 @@ class SynagogueFrameworkTest {
                 SynagogueManager.validateInteraction(true, false));
 
         UUID id = UUID.randomUUID();
-        assertFalse(SynagogueManager.isOnCooldown(id, 5000L));
+        SynagogueCooldowns cooldowns = new SynagogueCooldowns();
+        assertFalse(SynagogueManager.isOnCooldown(cooldowns, id, 5000L));
+        cooldowns.setLastUseTime(id, 5000L);
+        assertTrue(SynagogueManager.isOnCooldown(cooldowns, id, 5000L));
+        SynagogueManager.clearCooldown(cooldowns, id);
+        assertFalse(SynagogueManager.isOnCooldown(cooldowns, id, 5000L));
+    }
+
+    @Test
+    @DisplayName("Synagogue cooldown is saved data, not a static map, and survives a codec reload")
+    void testSynagogueCooldownPersists() throws Exception {
+        for (Class<?> type : java.util.List.of(SynagogueManager.class, SynagogueCooldowns.class)) {
+            for (java.lang.reflect.Field field : type.getDeclaredFields()) {
+                if (java.lang.reflect.Modifier.isStatic(field.getModifiers())
+                        && java.util.Map.class.isAssignableFrom(field.getType())) {
+                    fail(type.getSimpleName() + " must not keep cooldown in a static map: " + field.getName());
+                }
+            }
+        }
+
+        UUID playerId = UUID.randomUUID();
+        long prayedAt = 8000L;
+        SynagogueCooldowns first = new SynagogueCooldowns();
+        SynagogueCooldowns second = new SynagogueCooldowns();
+        first.setLastUseTime(playerId, prayedAt);
+        assertTrue(SynagogueManager.isOnCooldown(first, playerId, prayedAt));
+        assertFalse(SynagogueManager.isOnCooldown(second, playerId, prayedAt));
+
+        net.minecraft.nbt.Tag encoded = SynagogueCooldowns.CODEC
+                .encodeStart(net.minecraft.nbt.NbtOps.INSTANCE, first)
+                .getOrThrow();
+        SynagogueCooldowns restored = SynagogueCooldowns.CODEC
+                .parse(net.minecraft.nbt.NbtOps.INSTANCE, encoded)
+                .getOrThrow();
+
+        assertNotSame(first, restored);
+        assertTrue(SynagogueManager.isOnCooldown(restored, playerId, prayedAt + 100L));
+        assertTrue(SynagogueManager.isOnCooldown(restored, playerId, prayedAt + SynagogueManager.COOLDOWN_TICKS - 1L));
+        assertFalse(SynagogueManager.isOnCooldown(restored, playerId, prayedAt + SynagogueManager.COOLDOWN_TICKS));
+        assertEquals("israel_simulator:synagogue_prayers", SynagogueCooldowns.TYPE.id().toString());
     }
 }
