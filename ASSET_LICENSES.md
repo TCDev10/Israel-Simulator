@@ -81,3 +81,4 @@ All assets in Israel-Simulator follow strict licensing, originality, and provena
 | **Redistribution** | Yes | Permitted with source code availability under AGPL-3.0. |
 | **Modification** | Yes | Permitted; modified versions must retain attribution and AGPL-3.0 license. |
 | **Attribution** | Mandatory | Must credit Israel-Simulator developers and preserve `CREDITS.md`. |
+

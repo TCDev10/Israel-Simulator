@@ -40,3 +40,4 @@ Israel-Simulator is an open-source Minecraft Java Edition modification created w
 ## 5. Cultural & Historical Inspiration
 - Inspired by the vibrant culture, Mediterranean landscapes, desert biomes, ancient history, cuisine, and celebrations of Israel and the Levant.
 - Fictionalized and satirical elements (such as the Bibi Boss) are lighthearted parody and game mechanics, not historical statements.
+
