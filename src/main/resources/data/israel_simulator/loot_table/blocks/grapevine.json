@@ -9,7 +9,7 @@
           "children": [
             {
               "type": "minecraft:item",
-              "name": "israel_simulator:dates",
+              "name": "israel_simulator:grapes",
               "conditions": [
                 {
                   "condition": "minecraft:block_state_property",
@@ -22,7 +22,7 @@
             },
             {
               "type": "minecraft:item",
-              "name": "minecraft:wheat_seeds"
+              "name": "israel_simulator:grapes"
             }
           ]
         }
@@ -30,4 +30,3 @@
     }
   ]
 }
-

@@ -23,6 +23,10 @@ public final class IsraelFoodProperties {
     public static final FoodProperties DATES = new FoodProperties.Builder()
             .nutrition(3).saturationModifier(0.4F).build();
 
+    // Grapes: same modest fruit stats as citrus, lighter than dates.
+    public static final FoodProperties GRAPES = new FoodProperties.Builder()
+            .nutrition(2).saturationModifier(0.3F).build();
+
     public static final FoodProperties OLIVES = new FoodProperties.Builder()
             .nutrition(1).saturationModifier(0.2F).build();
 

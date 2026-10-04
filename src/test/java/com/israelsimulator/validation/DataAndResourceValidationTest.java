@@ -31,7 +31,7 @@ public class DataAndResourceValidationTest {
 
     public static final List<String> ALL_MOD_ITEMS = List.of(
             "kippah", "talit", "tefillin", "rabbis_crown", "prayer_note", "first_amendment",
-            "hava_nagila_disc", "tahini", "dates", "olives", "citrus", "challah", "rugelach",
+            "hava_nagila_disc", "tahini", "dates", "grapes", "olives", "citrus", "challah", "rugelach",
             "falafel", "hummus", "shakshuka", "sabich", "mezuzah", "star_of_david",
             "olive_wood_carving", "ancient_coin", "dead_sea_scroll_fragment", "dead_sea_mud",
             "shekel", "agora", "matzo", "sufganiyah", "dreidel", "hamantash", "shofar",

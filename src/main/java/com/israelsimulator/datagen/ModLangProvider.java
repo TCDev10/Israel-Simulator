@@ -31,6 +31,7 @@ public final class ModLangProvider extends LanguageProvider {
         add(ModItems.RUGELACH.get(), "Rugelach");
         add(ModItems.TAHINI.get(), "Tahini");
         add(ModItems.DATES.get(), "Dates");
+        add(ModItems.GRAPES.get(), "Grapes");
         add(ModItems.OLIVES.get(), "Olives");
         add(ModItems.CITRUS.get(), "Citrus");
     }

@@ -33,6 +33,7 @@ public final class ModCreativeTabs {
                         // Food
                         output.accept(ModItems.TAHINI.get());
                         output.accept(ModItems.DATES.get());
+                        output.accept(ModItems.GRAPES.get());
                         output.accept(ModItems.OLIVES.get());
                         output.accept(ModItems.CITRUS.get());
                         output.accept(ModItems.CHALLAH.get());

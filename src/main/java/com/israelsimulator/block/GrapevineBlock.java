@@ -29,7 +29,7 @@ public class GrapevineBlock extends CropBlock {
 
     @Override
     protected ItemLike getBaseSeedId() {
-        return ModItems.DATES.get();
+        return ModItems.GRAPES.get();
     }
 
     @Override
@@ -38,7 +38,7 @@ public class GrapevineBlock extends CropBlock {
         if (age >= this.getMaxAge()) {
             if (!level.isClientSide()) {
                 int count = 1 + level.getRandom().nextInt(3);
-                Block.popResource(level, pos, new ItemStack(ModItems.DATES.get(), count));
+                Block.popResource(level, pos, new ItemStack(ModItems.GRAPES.get(), count));
                 level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 1.0F);
                 level.setBlock(pos, this.getStateForAge(3), Block.UPDATE_CLIENTS);
                 return InteractionResult.SUCCESS_SERVER;
