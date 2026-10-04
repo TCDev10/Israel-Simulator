@@ -1,0 +1,45 @@
+{
+  "display": {
+    "icon": {
+      "id": "israel_simulator:western_wall_stone"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.visit_jerusalem.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.visit_jerusalem.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_stone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "israel_simulator:western_wall_stone"
+          }
+        ]
+      }
+    },
+    "has_jerusalem_stone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "israel_simulator:jerusalem_stone"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_stone",
+      "has_jerusalem_stone"
+    ]
+  ]
+}

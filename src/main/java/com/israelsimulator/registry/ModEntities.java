@@ -25,6 +25,10 @@ public final class ModEntities {
             ENTITY_TYPES.registerEntityType("bibi_guard", BibiGuardEntity::new, MobCategory.MONSTER,
                     b -> b.sized(0.6F, 1.95F).clientTrackingRange(8));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<com.israelsimulator.transport.BicycleEntity>> BICYCLE =
+            ENTITY_TYPES.registerEntityType("bicycle", com.israelsimulator.transport.BicycleEntity::new, MobCategory.MISC,
+                    b -> b.sized(0.8F, 1.0F).clientTrackingRange(8));
+
     private ModEntities() {}
 
     public static void register(IEventBus modEventBus) {
@@ -35,5 +39,6 @@ public final class ModEntities {
     private static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
         event.put(BIBI_BOSS.get(), BibiBossEntity.createAttributes().build());
         event.put(BIBI_GUARD.get(), BibiGuardEntity.createAttributes().build());
+        event.put(BICYCLE.get(), com.israelsimulator.transport.BicycleEntity.createAttributes().build());
     }
 }

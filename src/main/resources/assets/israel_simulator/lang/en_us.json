@@ -160,5 +160,40 @@
   "speech.israel_simulator.bibi_boss.quote_1": "\"I have guided this land through storm and sun. You cannot unseat me!\"",
   "speech.israel_simulator.bibi_boss.quote_2": "\"No weapon formed against our podium shall prosper! Filibuster!\"",
   "advancements.israel_simulator.hava_nagila.title": "Hava Nagila",
-  "advancements.israel_simulator.hava_nagila.description": "Defeat the formidable Bibi Boss and claim the legendary Hava Nagila music disc!"
+  "advancements.israel_simulator.hava_nagila.description": "Defeat the formidable Bibi Boss and claim the legendary Hava Nagila music disc!",
+
+  "block.israel_simulator.paved_road": "Paved Road",
+  "block.israel_simulator.transport_stop": "Public Transit Stop",
+  "entity.israel_simulator.bicycle": "Bicycle",
+  "item.israel_simulator.bicycle": "Bicycle",
+  "item.israel_simulator.rav_kav": "Rav-Kav Smart Transit Card",
+  "item.israel_simulator.rav_kav.status": "Rav-Kav valid: Unlimited regional transit pass active.",
+  "item.israel_simulator.rav_kav.desc": "Official smart travel card for Israeli public transportation.",
+  "item.israel_simulator.rav_kav.unlimited": "Provides free rides on buses, trains, and ferries.",
+  "item.israel_simulator.walking_shoes": "Trail Walking Shoes",
+  "item.israel_simulator.walking_shoes.desc": "Sturdy leather walking shoes for long overland hikes and city tours.",
+  "item.israel_simulator.walking_shoes.effect": "Grants swift movement speed while travelling.",
+  "item.israel_simulator.israel_map": "Explorer's Map of Israel",
+  "item.israel_simulator.israel_map.desc": "Cartographic map tracking visited regions and discovered landmarks.",
+  "item.israel_simulator.israel_map.usage": "Right-click to inspect your exploration progress and discovered sites.",
+
+  "message.israel_simulator.transit_cooldown": "Please wait %d seconds before boarding public transit again.",
+  "message.israel_simulator.no_route": "No connected transit line available from this station.",
+  "message.israel_simulator.insufficient_fare": "Insufficient Shekels! Route to %s requires %d Shekels (or a Rav-Kav pass).",
+  "message.israel_simulator.transit_success": "Arrived at %s! %s",
+  "message.israel_simulator.landmark_discovered": "Landmark Discovered: %s",
+  "message.israel_simulator.discovery_progress": "Exploration Progress: %d / %d Landmarks Discovered",
+
+  "subtitles.israel_simulator.bicycle_bell": "Bicycle bell rings",
+  "subtitles.israel_simulator.bus_horn": "Bus horn honks",
+  "subtitles.israel_simulator.train_whistle": "Train whistle blows",
+  "subtitles.israel_simulator.transit_travel": "Transit departure",
+  "subtitles.israel_simulator.landmark_discovered": "Landmark fanfare plays",
+
+  "advancements.israel_simulator.welcome_to_israel.title": "Welcome to Israel",
+  "advancements.israel_simulator.welcome_to_israel.description": "Acquire an Explorer's Map and your first Shekels to begin your journey.",
+  "advancements.israel_simulator.visit_jerusalem.title": "Visit Jerusalem",
+  "advancements.israel_simulator.visit_jerusalem.description": "Step into the Holy City and touch the sacred stones of Jerusalem.",
+  "advancements.israel_simulator.master_explorer.title": "Master Explorer",
+  "advancements.israel_simulator.master_explorer.description": "Equip yourself with a bicycle, walking shoes, and an Explorer's Map to travel all across the land!"
 }

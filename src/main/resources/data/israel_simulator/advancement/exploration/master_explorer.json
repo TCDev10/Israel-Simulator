@@ -1,0 +1,56 @@
+{
+  "display": {
+    "icon": {
+      "id": "israel_simulator:walking_shoes"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.master_explorer.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.master_explorer.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_shoes": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "israel_simulator:walking_shoes"
+          }
+        ]
+      }
+    },
+    "has_bicycle": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "israel_simulator:bicycle"
+          }
+        ]
+      }
+    },
+    "has_map": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "israel_simulator:israel_map"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_shoes",
+      "has_bicycle",
+      "has_map"
+    ]
+  ]
+}

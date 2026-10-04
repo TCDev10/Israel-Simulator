@@ -1,0 +1,45 @@
+{
+  "display": {
+    "icon": {
+      "id": "israel_simulator:israel_map"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.welcome_to_israel.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.welcome_to_israel.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_map": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "israel_simulator:israel_map"
+          }
+        ]
+      }
+    },
+    "has_shekel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "israel_simulator:shekel"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_map",
+      "has_shekel"
+    ]
+  ]
+}

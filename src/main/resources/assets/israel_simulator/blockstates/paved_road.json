@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "israel_simulator:block/paved_road"
+    }
+  }
+}

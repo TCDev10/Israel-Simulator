@@ -35,5 +35,6 @@ public class IsraelSimulatorClient {
     static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ModEntities.BIBI_BOSS.get(), BibiBossRenderer::new);
         event.registerEntityRenderer(ModEntities.BIBI_GUARD.get(), BibiGuardRenderer::new);
+        event.registerEntityRenderer(ModEntities.BICYCLE.get(), com.israelsimulator.client.renderer.BicycleRenderer::new);
     }
 }

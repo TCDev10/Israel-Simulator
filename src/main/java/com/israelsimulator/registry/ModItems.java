@@ -71,6 +71,14 @@ public final class ModItems {
     public static final DeferredHolder<Item, Item> LAPTOP = ITEMS.registerItem("laptop", p -> new Item(TechnologyItems.laptop(p)));
     public static final DeferredHolder<Item, Item> DRONE_PART = ITEMS.registerItem("drone_part", p -> new Item(TechnologyItems.dronePart(p)));
 
+    // Transportation items (§47)
+    public static final DeferredHolder<Item, com.israelsimulator.transport.BicycleItem> BICYCLE = ITEMS.registerItem("bicycle", p -> new com.israelsimulator.transport.BicycleItem(p.stacksTo(1)));
+    public static final DeferredHolder<Item, com.israelsimulator.transport.RavKavItem> RAV_KAV = ITEMS.registerItem("rav_kav", p -> new com.israelsimulator.transport.RavKavItem(p.stacksTo(1)));
+    public static final DeferredHolder<Item, com.israelsimulator.transport.WalkingShoesItem> WALKING_SHOES = ITEMS.registerItem("walking_shoes", p -> new com.israelsimulator.transport.WalkingShoesItem(p.stacksTo(1)));
+
+    // Map & Exploration items (§48)
+    public static final DeferredHolder<Item, com.israelsimulator.world.map.IsraelMapItem> ISRAEL_MAP = ITEMS.registerItem("israel_map", p -> new com.israelsimulator.world.map.IsraelMapItem(p.stacksTo(1)));
+
     private ModItems() {}
 
     public static void register(IEventBus modEventBus) {

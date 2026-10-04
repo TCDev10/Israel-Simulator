@@ -32,6 +32,13 @@ public final class ModGameEvents {
             if (entity instanceof net.minecraft.world.entity.player.Player player) {
                 com.israelsimulator.desert.DesertHazards.handleDesertTick(player);
             }
+
+            // Landmark discovery proximity check (§48)
+            if (entity instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                if (serverPlayer.tickCount % 20 == 0) {
+                    com.israelsimulator.world.map.PlayerLandmarkTracker.checkProximityAndDiscover(serverPlayer);
+                }
+            }
         }
     }
 

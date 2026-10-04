@@ -91,6 +91,21 @@ public final class ModBlocks {
     );
     public static final DeferredItem<BlockItem> MENORAH_ITEM = ModItems.ITEMS.registerSimpleBlockItem("menorah", MENORAH);
 
+    // Transportation & Road Infrastructure (§47)
+    public static final DeferredBlock<com.israelsimulator.block.PavedRoadBlock> PAVED_ROAD = BLOCKS.registerBlock(
+            "paved_road",
+            com.israelsimulator.block.PavedRoadBlock::new,
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).sound(SoundType.STONE).strength(2.0F)
+    );
+    public static final DeferredItem<BlockItem> PAVED_ROAD_ITEM = ModItems.ITEMS.registerSimpleBlockItem("paved_road", PAVED_ROAD);
+
+    public static final DeferredBlock<com.israelsimulator.transport.TransportStopBlock> TRANSPORT_STOP = BLOCKS.registerBlock(
+            "transport_stop",
+            com.israelsimulator.transport.TransportStopBlock::new,
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).sound(SoundType.METAL).strength(3.0F).noOcclusion()
+    );
+    public static final DeferredItem<BlockItem> TRANSPORT_STOP_ITEM = ModItems.ITEMS.registerSimpleBlockItem("transport_stop", TRANSPORT_STOP);
+
     private ModBlocks() {}
 
     public static void register(IEventBus modEventBus) {
