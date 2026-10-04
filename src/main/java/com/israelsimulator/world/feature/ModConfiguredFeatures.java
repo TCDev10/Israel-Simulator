@@ -25,6 +25,8 @@ public final class ModConfiguredFeatures {
             key("grapevine_patch");
     public static final ResourceKey<ConfiguredFeature<?, ?>> MEDITERRANEAN_HERBS_PATCH =
             key("mediterranean_herbs_patch");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> DESERT_ROCK_MOUND =
+            key("desert_rock_mound");
 
     private static final List<ResourceKey<ConfiguredFeature<?, ?>>> ALL = List.of(
             OLIVE_TREE,
@@ -33,7 +35,8 @@ public final class ModConfiguredFeatures {
             DEAD_SEA_SALT_CLUSTER,
             DESERT_SCRUB,
             GRAPEVINE_PATCH,
-            MEDITERRANEAN_HERBS_PATCH
+            MEDITERRANEAN_HERBS_PATCH,
+            DESERT_ROCK_MOUND
     );
 
     private ModConfiguredFeatures() {}

@@ -55,6 +55,14 @@ public final class ModBlocks {
     );
     public static final DeferredItem<BlockItem> MEDITERRANEAN_HERBS_ITEM = ModItems.ITEMS.registerSimpleBlockItem("mediterranean_herbs", MEDITERRANEAN_HERBS);
 
+    // Minerals and environmental blocks (Dead Sea)
+    public static final DeferredBlock<net.minecraft.world.level.block.Block> SALT_BLOCK = BLOCKS.registerBlock(
+            "salt_block",
+            net.minecraft.world.level.block.Block::new,
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.CALCITE).sound(SoundType.CALCITE)
+    );
+    public static final DeferredItem<BlockItem> SALT_BLOCK_ITEM = ModItems.ITEMS.registerSimpleBlockItem("salt_block", SALT_BLOCK);
+
     private ModBlocks() {}
 
     public static void register(IEventBus modEventBus) {

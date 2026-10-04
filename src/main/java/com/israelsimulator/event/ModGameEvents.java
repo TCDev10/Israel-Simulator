@@ -19,9 +19,34 @@ public final class ModGameEvents {
     }
 
     @SubscribeEvent
+    public static void onEntityTick(net.neoforged.neoforge.event.tick.EntityTickEvent.Post event) {
+        if (event.getEntity() instanceof net.minecraft.world.entity.LivingEntity entity) {
+            if (entity.level().isClientSide()) {
+                return;
+            }
+
+            // Dead Sea buoyancy
+            com.israelsimulator.deadsea.DeadSeaMechanics.applyBuoyancy(entity);
+
+            // Desert sun and heat exhaustion (player-specific)
+            if (entity instanceof net.minecraft.world.entity.player.Player player) {
+                com.israelsimulator.desert.DesertHazards.handleDesertTick(player);
+            }
+        }
+    }
+
+    @SubscribeEvent
     public static void onEntityInteract(net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.EntityInteract event) {
         if (event.getTarget() instanceof net.minecraft.world.entity.npc.villager.AbstractVillager villager) {
-            if (com.israelsimulator.agriculture.AgriculturalTrades.tryTrade(event.getEntity(), event.getHand(), villager)) {
+            net.minecraft.world.entity.player.Player player = event.getEntity();
+            net.minecraft.world.InteractionHand hand = event.getHand();
+
+            // Try regional trades in priority order
+            if (com.israelsimulator.agriculture.AgriculturalTrades.tryTrade(player, hand, villager)
+                    || com.israelsimulator.deadsea.DeadSeaTrades.tryTrade(player, hand, villager)
+                    || com.israelsimulator.desert.DesertTrades.tryTrade(player, hand, villager)
+                    || com.israelsimulator.city.telaviv.TelAvivTrades.tryTrade(player, hand, villager)
+                    || com.israelsimulator.religion.RuralSynagogueTrades.tryInteract(player, hand, villager)) {
                 event.setCanceled(true);
             }
         }

@@ -61,5 +61,16 @@
   "block.israel_simulator.date_palm_leaves": "Date Palm Leaves",
   "block.israel_simulator.citrus_leaves": "Citrus Leaves",
   "block.israel_simulator.grapevine": "Grapevine",
-  "block.israel_simulator.mediterranean_herbs": "Mediterranean Herbs"
+  "block.israel_simulator.mediterranean_herbs": "Mediterranean Herbs",
+  "block.israel_simulator.salt_block": "Dead Sea Salt Block",
+
+  "item.israel_simulator.dead_sea_mud": "Dead Sea Mineral Mud",
+
+  "structure.israel_simulator.mediterranean_village": "Mediterranean Village",
+  "structure.israel_simulator.agricultural_farm": "Agricultural Farm",
+  "structure.israel_simulator.dead_sea_resort": "Dead Sea Resort",
+  "structure.israel_simulator.desert_ruins": "Desert Ruins",
+  "structure.israel_simulator.synagogue": "Synagogue",
+  "structure.israel_simulator.tel_aviv_city": "Tel Aviv City",
+  "structure.israel_simulator.ein_gedi_oasis": "Ein Gedi Oasis"
 }

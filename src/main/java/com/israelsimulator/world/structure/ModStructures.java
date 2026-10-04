@@ -23,6 +23,10 @@ public final class ModStructures {
             structureKey("desert_ruins");
     public static final ResourceKey<Structure> SYNAGOGUE =
             structureKey("synagogue");
+    public static final ResourceKey<Structure> TEL_AVIV_CITY =
+            structureKey("tel_aviv_city");
+    public static final ResourceKey<Structure> EIN_GEDI_OASIS =
+            structureKey("ein_gedi_oasis");
 
     // Structure Sets
     public static final ResourceKey<StructureSet> MEDITERRANEAN_VILLAGES =
@@ -35,6 +39,10 @@ public final class ModStructures {
             structureSetKey("desert_ruins");
     public static final ResourceKey<StructureSet> SYNAGOGUES =
             structureSetKey("synagogues");
+    public static final ResourceKey<StructureSet> TEL_AVIV_CITIES =
+            structureSetKey("tel_aviv_cities");
+    public static final ResourceKey<StructureSet> EIN_GEDI_OASES =
+            structureSetKey("ein_gedi_oases");
 
     // Processor Lists
     public static final ResourceKey<net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList> ANCIENT_RUINS_WEATHERING =
@@ -45,7 +53,9 @@ public final class ModStructures {
             AGRICULTURAL_FARM,
             DEAD_SEA_RESORT,
             DESERT_RUINS,
-            SYNAGOGUE
+            SYNAGOGUE,
+            TEL_AVIV_CITY,
+            EIN_GEDI_OASIS
     );
 
     private ModStructures() {}

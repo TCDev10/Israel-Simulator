@@ -47,6 +47,7 @@ public final class ModItems {
     public static final DeferredHolder<Item, Item> OLIVE_WOOD_CARVING = ITEMS.registerItem("olive_wood_carving", p -> new Item(CollectibleItems.oliveWoodCarving(p)));
     public static final DeferredHolder<Item, Item> ANCIENT_COIN = ITEMS.registerItem("ancient_coin", p -> new Item(CollectibleItems.ancientCoin(p)));
     public static final DeferredHolder<Item, Item> DEAD_SEA_SCROLL_FRAGMENT = ITEMS.registerItem("dead_sea_scroll_fragment", p -> new Item(CollectibleItems.deadSeaScrollFragment(p)));
+    public static final DeferredHolder<Item, Item> DEAD_SEA_MUD = ITEMS.registerItem("dead_sea_mud", p -> new com.israelsimulator.item.deadsea.DeadSeaMudItem(p.stacksTo(16)));
 
     // Currency items
     public static final DeferredHolder<Item, Item> SHEKEL = ITEMS.registerItem("shekel", p -> new Item(CurrencyItems.shekel(p)));

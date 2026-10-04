@@ -48,12 +48,14 @@ public final class ModCreativeTabs {
                         output.accept(ModBlocks.CITRUS_LEAVES_ITEM.get());
                         output.accept(ModBlocks.MEDITERRANEAN_HERBS_ITEM.get());
 
-                        // Collectibles
+                        // Collectibles & Minerals
                         output.accept(ModItems.MEZUZAH.get());
                         output.accept(ModItems.STAR_OF_DAVID.get());
                         output.accept(ModItems.OLIVE_WOOD_CARVING.get());
                         output.accept(ModItems.ANCIENT_COIN.get());
                         output.accept(ModItems.DEAD_SEA_SCROLL_FRAGMENT.get());
+                        output.accept(ModItems.DEAD_SEA_MUD.get());
+                        output.accept(ModBlocks.SALT_BLOCK_ITEM.get());
 
                         // Currency
                         output.accept(ModItems.SHEKEL.get());

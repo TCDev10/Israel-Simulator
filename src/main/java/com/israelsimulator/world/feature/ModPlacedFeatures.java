@@ -25,6 +25,8 @@ public final class ModPlacedFeatures {
             key("grapevine_patch_placed");
     public static final ResourceKey<PlacedFeature> MEDITERRANEAN_HERBS_PLACED =
             key("mediterranean_herbs_placed");
+    public static final ResourceKey<PlacedFeature> DESERT_ROCK_MOUND_PLACED =
+            key("desert_rock_mound_placed");
 
     private static final List<ResourceKey<PlacedFeature>> ALL = List.of(
             OLIVE_TREE_PLACED,
@@ -33,7 +35,8 @@ public final class ModPlacedFeatures {
             DEAD_SEA_SALT_PLACED,
             DESERT_SCRUB_PLACED,
             GRAPEVINE_PATCH_PLACED,
-            MEDITERRANEAN_HERBS_PLACED
+            MEDITERRANEAN_HERBS_PLACED,
+            DESERT_ROCK_MOUND_PLACED
     );
 
     private ModPlacedFeatures() {}

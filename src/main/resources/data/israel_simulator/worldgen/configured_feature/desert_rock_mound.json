@@ -1,24 +1,24 @@
 {
-  "type": "minecraft:block_pile",
+  "type": "minecraft:forest_rock",
   "config": {
     "state_provider": {
       "type": "minecraft:weighted_state_provider",
       "entries": [
         {
           "data": {
-            "Name": "israel_simulator:salt_block"
+            "Name": "minecraft:sandstone"
           },
-          "weight": 6
+          "weight": 5
         },
         {
           "data": {
-            "Name": "minecraft:calcite"
+            "Name": "minecraft:smooth_sandstone"
           },
           "weight": 3
         },
         {
           "data": {
-            "Name": "minecraft:dripstone_block"
+            "Name": "minecraft:red_sandstone"
           },
           "weight": 2
         }

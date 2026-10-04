@@ -34,7 +34,7 @@ class WorldGenFoundationTest {
     @Test
     @DisplayName("Verify configured features keys")
     void testConfiguredFeatures() {
-        assertEquals(7, ModConfiguredFeatures.all().size());
+        assertEquals(8, ModConfiguredFeatures.all().size());
         for (var key : ModConfiguredFeatures.all()) {
             assertEquals(Registries.CONFIGURED_FEATURE, key.registryKey());
             assertEquals("israel_simulator", key.identifier().getNamespace());
@@ -44,7 +44,7 @@ class WorldGenFoundationTest {
     @Test
     @DisplayName("Verify placed features keys")
     void testPlacedFeatures() {
-        assertEquals(7, ModPlacedFeatures.all().size());
+        assertEquals(8, ModPlacedFeatures.all().size());
         for (var key : ModPlacedFeatures.all()) {
             assertEquals(Registries.PLACED_FEATURE, key.registryKey());
             assertEquals("israel_simulator", key.identifier().getNamespace());
@@ -54,7 +54,7 @@ class WorldGenFoundationTest {
     @Test
     @DisplayName("Verify structure and structure set keys")
     void testStructures() {
-        assertEquals(5, ModStructures.allStructures().size());
+        assertEquals(7, ModStructures.allStructures().size());
         for (var key : ModStructures.allStructures()) {
             assertEquals(Registries.STRUCTURE, key.registryKey());
             assertEquals("israel_simulator", key.identifier().getNamespace());
