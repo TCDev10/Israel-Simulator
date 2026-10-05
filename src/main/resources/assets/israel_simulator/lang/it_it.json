@@ -185,5 +185,7 @@
   "advancements.israel_simulator.secret_kippah_cat.title": "Cittadino Felino Onorario",
   "advancements.israel_simulator.secret_kippah_cat.description": "Hai mostrato una Kippah a un gatto randagio devoto del quartiere!",
   "advancements.israel_simulator.hummus_connoisseur.title": "L'Esperto di Hummus",
-  "advancements.israel_simulator.hummus_connoisseur.description": "Assaggia il sacro trio culinario levantino: Hummus, Falafel e Sabich."
+  "advancements.israel_simulator.hummus_connoisseur.description": "Assaggia il sacro trio culinario levantino: Hummus, Falafel e Sabich.",
+  "message.israel_simulator.western_wall_praying": "Preghiera in corso...",
+  "message.israel_simulator.western_wall_prayer_interrupted": "La preghiera e stata interrotta."
 }
