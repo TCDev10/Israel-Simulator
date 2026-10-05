@@ -218,3 +218,11 @@ Problema aggiuntivo: su alcuni seed (42, 20261005) `judean_desert`/`dead_sea` no
 Funzionamento aspettato: il deserto giudeo e il Mar Morto restano adiacenti a jerusalem nella stessa striscia calda/arida.
 
 Come e stato risolto (tweak): judean+dead_sea con T 0.60–1.00, H -1.00–-0.30, C 0.28–0.85, E -0.40–0.45; split weirdness judean -1.00–0.25 / dead_sea 0.25–1.00.
+
+## Texture item: kippah e disco Hava Nagila
+
+Problema riscontrato: le texture item di `kippah` e `hava_nagila_disc` erano placeholder/precedenti, non le opere fornite dall'utente.
+
+Funzionamento aspettato: in inventario si vedono i PNG 32x32 dell'utente; i model item puntano a `israel_simulator:item/kippah` e `israel_simulator:item/hava_nagila_disc`.
+
+Come e stato risolto: copiati `/workspace/user-textures/kippah.png` e `hava_nagila_disc.png` in `assets/israel_simulator/textures/item/` senza ridimensionare. I model erano gia sul path del mod.
