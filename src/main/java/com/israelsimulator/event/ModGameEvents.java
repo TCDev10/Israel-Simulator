@@ -35,6 +35,7 @@ public final class ModGameEvents {
 
             // Landmark discovery proximity check (§48)
             if (entity instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                com.israelsimulator.westernwall.WesternWallManager.tickPlayer(serverPlayer);
                 if (serverPlayer.tickCount % 20 == 0) {
                     com.israelsimulator.world.map.PlayerLandmarkTracker.checkProximityAndDiscover(serverPlayer);
                 }
@@ -80,6 +81,7 @@ public final class ModGameEvents {
     @SubscribeEvent
     public static void onRightClickBlock(net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock event) {
         if (event.getLevel().getBlockState(event.getPos()).is(com.israelsimulator.registry.ModBlocks.WESTERN_WALL_STONE.get())) {
+            // tryPray starts a multi-tick prayer session (or immediate failure). SUCCESS cancels vanilla use.
             if (com.israelsimulator.westernwall.WesternWallManager.tryPray(event.getEntity(), event.getHand(), event.getPos())) {
                 event.setCanceled(true);
                 event.setCancellationResult(net.minecraft.world.InteractionResult.SUCCESS);

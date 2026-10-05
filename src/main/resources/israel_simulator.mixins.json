@@ -6,7 +6,9 @@
   "mixins": [
     "OverworldBiomeBuilderMixin"
   ],
-  "client": [],
+  "client": [
+    "client.HumanoidModelPrayerMixin"
+  ],
   "server": [],
   "injectors": {
     "defaultRequire": 1
