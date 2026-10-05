@@ -227,6 +227,14 @@ Funzionamento aspettato: in inventario si vedono i PNG 32x32 dell'utente; i mode
 
 Come e stato risolto: copiati `/workspace/user-textures/kippah.png` e `hava_nagila_disc.png` in `assets/israel_simulator/textures/item/` senza ridimensionare. I model erano gia sul path del mod.
 
+## Agricultural farm structure
+
+Problema: `agricultural_farm` era un placeholder 7x5x7.
+
+Aspettato: fattoria reale (campi, irrigazione, serre, capanno, chest loot).
+
+Risolto: `gen_agricultural_farm.py` + NBT 48x10x40, `beard_box`, loot `chests/agricultural_farm`. Non testato in-game.
+
 ## Western Wall: da placeholder a Kotel vero
 
 Problema riscontrato: `western_wall.nbt` era una scatola cava 9x6x5 (stone bricks/calcite/gold/sea lantern) senza `western_wall_stone`, senza plaza e senza chest treasury. La preghiera richiede il right-click su `israel_simulator:western_wall_stone` (`ModGameEvents` → `WesternWallManager.tryPray`), quindi al placeholder non si poteva pregare in modo credibile.

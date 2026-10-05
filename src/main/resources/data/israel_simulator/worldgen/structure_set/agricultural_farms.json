@@ -1,14 +1,14 @@
 {
-  "placement": {
-    "type": "minecraft:random_spread",
-    "salt": 19482025,
-    "separation": 8,
-    "spacing": 30
-  },
   "structures": [
     {
       "structure": "israel_simulator:agricultural_farm",
       "weight": 1
     }
-  ]
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 32,
+    "separation": 12,
+    "salt": 91827364
+  }
 }
