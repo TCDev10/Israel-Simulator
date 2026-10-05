@@ -9,6 +9,8 @@ from typing import Any
 import nbtlib
 from nbtlib import Byte, Compound, Int, List, String
 
+from connect_blocks import apply_connections
+
 ROOT = Path(__file__).resolve().parents[2]
 STRUCT = ROOT / "src/main/resources/data/israel_simulator/structure/jerusalem"
 POOL = ROOT / "src/main/resources/data/israel_simulator/worldgen/template_pool/jerusalem"
@@ -117,24 +119,55 @@ class Structure:
 
     def save(self, path: Path) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
-        clean_palette = []
-        for e in self.palette:
-            pe = Compound({"Name": e["Name"]})
-            if "Properties" in e:
-                pe["Properties"] = e["Properties"]
-            clean_palette.append(pe)
-        blocks_list = []
-        for (x, y, z), state in sorted(self.blocks.items()):
+
+        # Materialize Name+Properties grid, then fix fence/pane/wall connections.
+        grid: dict[tuple[int, int, int], dict] = {}
+        for (x, y, z), state in self.blocks.items():
+            entry = self.palette[state]
+            props = (
+                {str(k): str(v) for k, v in entry["Properties"].items()}
+                if "Properties" in entry
+                else {}
+            )
+            grid[(x, y, z)] = {"Name": str(entry["Name"]), "Properties": props}
+        apply_connections(grid, size=(self.sx, self.sy, self.sz))
+
+        # Rebuild palette from connected grid (jigsaw block entity NBT preserved).
+        new_palette: list[Compound] = []
+        new_index: dict[str, int] = {}
+        blocks_list: list[Compound] = []
+        for (x, y, z) in sorted(grid.keys()):
+            cell = grid[(x, y, z)]
+            props = cell["Properties"]
+            pe = Compound({"Name": String(cell["Name"])})
+            if props:
+                pe["Properties"] = Compound({k: String(v) for k, v in props.items()})
+            # Include block-entity payload in the dedupe key via parallel map only
+            key_obj = {
+                "Name": cell["Name"],
+                "Properties": props or None,
+                "nbt": (
+                    {str(k): str(v) for k, v in self.block_nbt[(x, y, z)].items()}
+                    if (x, y, z) in self.block_nbt
+                    else None
+                ),
+            }
+            key = json.dumps(key_obj, sort_keys=True)
+            if key not in new_index:
+                new_index[key] = len(new_palette)
+                new_palette.append(pe)
+            state = new_index[key]
             b = Compound({"pos": List[Int]([Int(x), Int(y), Int(z)]), "state": Int(state)})
             if (x, y, z) in self.block_nbt:
                 b["nbt"] = self.block_nbt[(x, y, z)]
             blocks_list.append(b)
+
         root = Compound(
             {
                 "size": List[Int]([Int(self.sx), Int(self.sy), Int(self.sz)]),
                 "entities": List[Compound]([]),
                 "blocks": List[Compound](blocks_list),
-                "palette": List[Compound](clean_palette),
+                "palette": List[Compound](new_palette),
                 "DataVersion": Int(DATA_VERSION),
             }
         )
