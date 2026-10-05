@@ -1,0 +1,137 @@
+#!/usr/bin/env python3
+"""jaffa_port, mediterranean_village, tel_aviv_city — DataVersion 4903."""
+from structure_lib import Structure, blk, chest, write_jigsaw, ROOT
+
+def fence():
+    return blk("minecraft:oak_fence", north="false", south="false", east="false", west="false", waterlogged="false")
+def wall():
+    return blk("minecraft:cobblestone_wall", up="true", north="none", south="none", east="none", west="none", waterlogged="false")
+def lantern():
+    return blk("minecraft:lantern", hanging="false", waterlogged="false")
+def slab(name="oak_slab", t="bottom"):
+    return blk(f"minecraft:{name}", type=t, waterlogged="false")
+def stair(name="oak_stairs", f="east"):
+    return blk(f"minecraft:{name}", facing=f, half="bottom", shape="straight", waterlogged="false")
+
+def gen_jaffa():
+    SX,SY,SZ=40,12,36; fy=1
+    s=Structure(SX,SY,SZ)
+    s.fills(0,0,0,SX-1,fy-1,SZ-1, blk("minecraft:sand"))
+    for x in range(SX):
+        for z in range(SZ):
+            if z < 10:
+                s.set(x,fy,z, blk("minecraft:water", level="0"))
+            elif z < 14:
+                s.set(x,fy,z, blk("minecraft:sand"))
+            else:
+                s.set(x,fy,z, blk("minecraft:smooth_sandstone") if (x+z)%3==0 else blk("minecraft:sandstone"))
+    # Pier into water
+    for x in range(16,24):
+        for z in range(2,14):
+            s.set(x,fy,z, blk("minecraft:oak_planks"))
+            if z < 10:
+                s.set(x,0,z, blk("minecraft:oak_log", axis="y"))
+    for z in (2,6,10):
+        s.set(16,fy+1,z, fence()); s.set(23,fy+1,z, fence())
+    # Warehouse
+    s.fills(8,fy,18,20,fy,30, blk("minecraft:stone_bricks"))
+    for y in range(fy+1, fy+4):
+        for x in range(8,21):
+            s.set(x,y,18, blk("minecraft:stone_bricks")); s.set(x,y,30, blk("minecraft:stone_bricks"))
+        for z in range(18,31):
+            s.set(8,y,z, blk("minecraft:stone_bricks")); s.set(20,y,z, blk("minecraft:stone_bricks"))
+    s.set(14,fy+1,18, blk("minecraft:air")); s.set(14,fy+2,18, blk("minecraft:air"))
+    s.fills(8,fy+4,18,20,fy+4,30, slab("stone_brick_slab"))
+    s.set(10,fy+1,28, chest(facing="south", loot="israel_simulator:chests/jaffa_flea_market"))
+    s.set(18,fy+1,28, blk("minecraft:barrel", facing="up", open="false"))
+    # Market stalls
+    for x0 in (24, 30):
+        s.fills(x0,fy,20,x0+4,fy,26, blk("minecraft:oak_planks"))
+        for y in range(fy+1, fy+3):
+            s.set(x0,y,20, fence()); s.set(x0+4,y,20, fence())
+            s.set(x0,y,26, fence()); s.set(x0+4,y,26, fence())
+        s.fills(x0,fy+3,20,x0+4,fy+3,26, slab())
+        s.set(x0+2,fy+1,23, chest(facing="south", loot="israel_simulator:chests/jaffa_flea_market"))
+    s.set(1,fy+1,1, blk("minecraft:prismarine_bricks"))
+    write_jigsaw("jaffa_port", "israel_simulator:mediterranean_coast", salt=771122)
+    s.save(ROOT/"src/main/resources/data/israel_simulator/structure/jaffa_port.nbt")
+
+def gen_village():
+    SX,SY,SZ=48,10,40; fy=1
+    s=Structure(SX,SY,SZ)
+    s.fills(0,0,0,SX-1,fy-1,SZ-1, blk("minecraft:dirt"))
+    for x in range(SX):
+        for z in range(SZ):
+            s.set(x,fy,z, blk("minecraft:grass_block", snowy="false") if (x+z)%7 else blk("minecraft:dirt_path"))
+    # Central path
+    for x in range(SX):
+        s.set(x,fy,19, blk("minecraft:dirt_path")); s.set(x,fy,20, blk("minecraft:dirt_path"))
+    # Houses
+    def house(x0,z0,loot):
+        s.fills(x0,fy,z0,x0+6,fy,z0+6, blk("minecraft:cobblestone"))
+        for y in range(fy+1, fy+4):
+            for x in range(x0,x0+7):
+                s.set(x,y,z0, blk("minecraft:oak_planks")); s.set(x,y,z0+6, blk("minecraft:oak_planks"))
+            for z in range(z0,z0+7):
+                s.set(x0,y,z, blk("minecraft:oak_planks")); s.set(x0+6,y,z, blk("minecraft:oak_planks"))
+        s.set(x0+3,fy+1,z0, blk("minecraft:air")); s.set(x0+3,fy+2,z0, blk("minecraft:air"))
+        s.fills(x0,fy+4,z0,x0+6,fy+4,z0+6, slab())
+        s.set(x0+1,fy+1,z0+4, chest(facing="south", loot=loot))
+        s.set(x0+5,fy+1,z0+4, lantern())
+    house(4,4, "israel_simulator:chests/mediterranean_village")
+    house(14,4, "israel_simulator:chests/mediterranean_village")
+    house(28,4, "israel_simulator:chests/mediterranean_village")
+    house(8,24, "israel_simulator:chests/mediterranean_village")
+    house(22,24, "israel_simulator:chests/mediterranean_village")
+    # Well
+    for dx,dz in [(-1,0),(1,0),(0,-1),(0,1)]:
+        s.set(24+dx,fy+1,20+dz, wall())
+    s.set(24,fy,20, blk("minecraft:water", level="0"))
+    # Fence perimeter
+    for x in range(SX):
+        s.set(x,fy+1,0, fence()); s.set(x,fy+1,SZ-1, fence())
+    for z in range(SZ):
+        s.set(0,fy+1,z, fence()); s.set(SX-1,fy+1,z, fence())
+    s.set(1,fy+1,1, blk("minecraft:light_gray_terracotta"))
+    write_jigsaw("mediterranean_village", "israel_simulator:mediterranean_coast", salt=882233)
+    s.save(ROOT/"src/main/resources/data/israel_simulator/structure/mediterranean_village.nbt")
+
+def gen_tel_aviv():
+    SX,SY,SZ=40,16,40; fy=1
+    s=Structure(SX,SY,SZ)
+    s.fills(0,0,0,SX-1,fy-1,SZ-1, blk("minecraft:stone"))
+    for x in range(SX):
+        for z in range(SZ):
+            s.set(x,fy,z, blk("minecraft:smooth_stone") if (x%8==0 or z%8==0) else blk("minecraft:white_concrete"))
+    # Building A
+    def tower(x0,z0,w,d,h,loot=None):
+        s.fills(x0,fy,z0,x0+w-1,fy,z0+d-1, blk("minecraft:stone_bricks"))
+        for y in range(fy+1, fy+h):
+            for x in range(x0,x0+w):
+                s.set(x,y,z0, blk("minecraft:white_concrete")); s.set(x,y,z0+d-1, blk("minecraft:white_concrete"))
+            for z in range(z0,z0+d):
+                s.set(x0,y,z, blk("minecraft:white_concrete")); s.set(x0+w-1,y,z, blk("minecraft:white_concrete"))
+            # windows
+            if y%2==0:
+                for x in range(x0+1,x0+w-1,2):
+                    s.set(x,y,z0, blk("minecraft:glass_pane", north="false",south="false",east="false",west="false",waterlogged="false"))
+        s.fills(x0,fy+h,z0,x0+w-1,fy+h,z0+d-1, blk("minecraft:smooth_stone_slab", type="bottom", waterlogged="false"))
+        s.set(x0+w//2,fy+1,z0, blk("minecraft:air")); s.set(x0+w//2,fy+2,z0, blk("minecraft:air"))
+        if loot:
+            s.set(x0+1,fy+1,z0+d-2, chest(facing="south", loot=loot))
+    tower(4,4,10,10,8, "israel_simulator:chests/historical_house")
+    tower(18,4,12,10,12, "israel_simulator:chests/historical_house")
+    tower(4,20,14,12,10, "israel_simulator:chests/historical_house")
+    # Plaza fountain
+    for x in range(22,30):
+        for z in range(22,30):
+            s.set(x,fy,z, blk("minecraft:polished_andesite"))
+    for x in range(24,28):
+        for z in range(24,28):
+            s.set(x,fy,z, blk("minecraft:water", level="0"))
+    s.set(1,fy+1,1, blk("minecraft:light_blue_stained_glass"))
+    write_jigsaw("tel_aviv_city", "israel_simulator:urban_area", salt=993344)
+    s.save(ROOT/"src/main/resources/data/israel_simulator/structure/tel_aviv_city.nbt")
+
+if __name__ == "__main__":
+    gen_jaffa(); gen_village(); gen_tel_aviv()
