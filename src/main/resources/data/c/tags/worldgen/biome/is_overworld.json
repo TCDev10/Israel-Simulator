@@ -5,6 +5,7 @@
     "israel_simulator:israeli_agriculture",
     "israel_simulator:judean_desert",
     "israel_simulator:dead_sea",
-    "israel_simulator:urban_area"
+    "israel_simulator:urban_area",
+    "israel_simulator:jerusalem"
   ]
 }
