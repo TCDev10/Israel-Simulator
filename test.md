@@ -120,3 +120,11 @@ Problema riscontrato: in un mondo fresco (`jerusalem-city-test`, città a `[3680
 Funzionamento aspettato: ogni città ha la sinagoga a cupola attaccata alla piazza; edifici a livello strada anche in collina; il gate è un passaggio aperto allineato alla strada, senza porta che lo chiude.
 
 Come è stato risolto: pool `jerusalem/landmarks` (solo sinagoga) collegato al lato nord della plaza (i tre lati restano strade). Fondamenta di 3 blocchi di arenaria sotto case/shuk/sinagoga/pozzo/gate/plaza; `terrain_adaptation` da `beard_thin` a `beard_box`; strade ancora `terrain_matching`, edifici `rigid`. `wall_gate` riscritto con tunnel E–W aperto (niente porta). Rigenerato con `scripts/worldgen/gen_jerusalem_city.py`. I test `JerusalemCityStructureTest` controllano landmarks, beard_box e assenza di porta nel gate. Unit test Gradle, non un passaggio in-game su mondo nuovo.
+
+## Jerusalem city: fondamenta ancora falliscono sulle colline
+
+Problema riscontrato: in `jerusalem-city-test2` (città a `[304,~,−2976]`, collina verso sud) sinagoga e gate ok, ma le fondamenta no. Piazza ~Y112 e strada ovest ~Y89: stall e strada `terrain_matching` su mensole di erba/terra sopra grotte, piattaforme di sabbia con strapiombo, terra sotto l'arenaria. Il quartiere sud su terreno dolce era a posto. `beard_box` era già nel JSON ma i pezzi `terrain_matching` non ricevono la densità del beard.
+
+Funzionamento aspettato: città a un solo livello con la piazza, piedistallo di arenaria sotto i pezzi rigid, niente mensole fluttuanti sopra grotte, meno spawn su biomi ripidi.
+
+Come è stato risolto: fondamenta da 3 a **8** blocchi di arenaria su plaza/case/shuk/sinagoga/pozzo/gate **e strade**; pool strade/terminator da `terrain_matching` a **`rigid`** (allineate alla piazza; `beard_box` riempie sotto); biomi: tolti `minecraft:meadow` e `minecraft:windswept_hills`, restano `israel_simulator:jerusalem` e `minecraft:savanna_plateau`. `terrain_adaptation` resta `beard_box`. Unit test aggiornati. Non un passaggio in-game.

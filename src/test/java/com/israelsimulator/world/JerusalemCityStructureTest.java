@@ -135,6 +135,39 @@ class JerusalemCityStructureTest {
         assertEquals("beard_box", structure.get("terrain_adaptation").getAsString());
     }
 
+
+    @Test
+    @DisplayName("Jerusalem drops steep biomes and keeps jerusalem + savanna_plateau")
+    void biomesAvoidSteepHills() throws Exception {
+        JsonObject structure = readJson("data/israel_simulator/worldgen/structure/jerusalem_city.json");
+        String biomes = structure.get("biomes").toString();
+        assertTrue(biomes.contains("israel_simulator:jerusalem"));
+        assertTrue(biomes.contains("minecraft:savanna_plateau"));
+        assertFalse(biomes.contains("windswept_hills"), "windswept_hills removed (too steep)");
+        assertFalse(biomes.contains("meadow"), "meadow removed (too hilly)");
+        assertEquals("beard_box", structure.get("terrain_adaptation").getAsString());
+    }
+
+    @Test
+    @DisplayName("Jerusalem streets are rigid with deep sandstone foundations (not terrain_matching)")
+    void streetsAreRigidWithDeepFoundations() throws Exception {
+        JsonObject streets = readJson("data/israel_simulator/worldgen/template_pool/jerusalem/streets.json");
+        streets.getAsJsonArray("elements").forEach(el -> {
+            String projection = el.getAsJsonObject().getAsJsonObject("element")
+                    .get("projection").getAsString();
+            assertEquals("rigid", projection, "streets must be rigid to stay level with the plaza");
+        });
+        JsonObject terminators = readJson("data/israel_simulator/worldgen/template_pool/jerusalem/terminators.json");
+        assertEquals("rigid", terminators.getAsJsonArray("elements").get(0).getAsJsonObject()
+                .getAsJsonObject("element").get("projection").getAsString());
+        for (String piece : List.of("plaza", "shuk_stalls", "street_straight", "house_a")) {
+            byte[] nbt = readGzip("data/israel_simulator/structure/jerusalem/" + piece + ".nbt");
+            String decoded = new String(nbt, StandardCharsets.ISO_8859_1);
+            assertTrue(decoded.contains("minecraft:sandstone"),
+                    piece + " must include sandstone foundation layers");
+        }
+    }
+
     @Test
     @DisplayName("Jerusalem wall_gate is an open E-W passage without a blocking door")
     void wallGateIsOpenPassage() throws Exception {

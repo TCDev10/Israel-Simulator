@@ -7,7 +7,7 @@
         "element_type": "minecraft:single_pool_element",
         "location": "israel_simulator:jerusalem/street_straight",
         "processors": "minecraft:empty",
-        "projection": "terrain_matching"
+        "projection": "rigid"
       }
     },
     {
@@ -16,7 +16,7 @@
         "element_type": "minecraft:single_pool_element",
         "location": "israel_simulator:jerusalem/street_crossroad",
         "processors": "minecraft:empty",
-        "projection": "terrain_matching"
+        "projection": "rigid"
       }
     },
     {
@@ -25,7 +25,7 @@
         "element_type": "minecraft:single_pool_element",
         "location": "israel_simulator:jerusalem/street_corner",
         "processors": "minecraft:empty",
-        "projection": "terrain_matching"
+        "projection": "rigid"
       }
     }
   ]
