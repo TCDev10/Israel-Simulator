@@ -2,7 +2,7 @@
   "music_disc.hava_nagila": {
     "sounds": [
       {
-        "name": "minecraft:music/game/calm1",
+        "name": "israel_simulator:records/hava_nagila",
         "stream": true
       }
     ]

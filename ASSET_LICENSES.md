@@ -19,7 +19,7 @@ All assets in Israel-Simulator follow strict licensing, originality, and provena
 
 | Sound Identifier | In-Game Event | Provenance / Type | License | Redistribution & Usage |
 | :--- | :--- | :--- | :--- | :--- |
-| `music_disc.hava_nagila` | Hava Nagila Music Disc | Folk melody stream mapping | Public Domain melody / Vanilla audio event | Permitted under Mojang EULA |
+| `music_disc.hava_nagila` | Hava Nagila Music Disc | Bundled `sounds/records/hava_nagila.ogg`. Replaces the earlier Wikimedia Commons `File:Hava_nagila.ogg` (MIDI render). Audio taken from the recording the user supplied: https://www.youtube.com/watch?v=vHSNZK4Je-Y . The user stated this is the original public-domain recording. Encoded here as Ogg Vorbis, 44100 Hz, stereo, 165.3 s. | User-stated public domain. Copyright status was not verified beyond that statement. Not the Commons `{{PD/1923|1938}}` file. | Bundled because the user supplied this source. Do not treat this row as a verified Commons PD grant. |
 | `music.cultural.klezmer` | Cultural Klezmer music | Traditional melody stream mapping | Public Domain folk theme / Vanilla audio event | Permitted under Mojang EULA |
 | `music.cultural.shabbat_shalom` | Shabbat melody | Traditional liturgy stream mapping | Public Domain melody / Vanilla audio event | Permitted under Mojang EULA |
 | `ambient.city.tel_aviv` | Mediterranean coastal ambiance | Ambient wave stream mapping | Mojang EULA | Built-in vanilla fallback |
