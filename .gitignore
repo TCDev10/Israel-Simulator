@@ -40,3 +40,4 @@ repo/
 !**/src/**/repo/
 logs/
 run_game.bat
+__pycache__/

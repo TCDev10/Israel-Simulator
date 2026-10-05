@@ -235,3 +235,26 @@ Aspettato: texture 16x16 stile vanilla (vite/grappoli, non grano).
 
 Risolto: PNG stage0-7 + item grapes; blockstate/modelli aggiornati. Non testato in-game.
 
+## Agricultural farm structure
+
+Problema: `agricultural_farm` era un placeholder 7x5x7.
+
+Aspettato: fattoria reale (campi, irrigazione, serre, capanno, chest loot).
+
+Risolto: `gen_agricultural_farm.py` + NBT 48x10x40, `beard_box`, loot `chests/agricultural_farm`. Non testato in-game.
+
+## Western Wall: da placeholder a Kotel vero
+
+Problema riscontrato: `western_wall.nbt` era una scatola cava 9x6x5 (stone bricks/calcite/gold/sea lantern) senza `western_wall_stone`, senza plaza e senza chest treasury. La preghiera richiede il right-click su `israel_simulator:western_wall_stone` (`ModGameEvents` → `WesternWallManager.tryPray`), quindi al placeholder non si poteva pregare in modo credibile.
+
+Funzionamento aspettato: un muro lungo in pietra pale (corsi herodiani a setback), plaza pavimentata, mechitza (fence collegate), lectern/lanterne, alcova con chest `western_wall_treasury`, bioma solo `jerusalem`, terrain `beard_box`. Il giocatore prega toccando le pietre del muro dalla plaza.
+
+Come e stato risolto: generatore `scripts/worldgen/gen_western_wall.py` (Structure.save + connect_blocks); NBT 56x20x42 con centinaia di `western_wall_stone` sulla facciata; JSON aggiornati. Test `WesternWallStructureTest`. Verifica headless: seed 20261005 wall a [-3488,~,-7040] (67 blocchi dalla citta), chest treasury in BB; seed -3194586807213286118 wall a [-8944,~,-4288].
+
+## Western Wall: posa di preghiera
+
+Problema: serviva una posa di preghiera (~3s), non uno swing di piazzamento.
+
+Aspettato: sessione server di 60 tick, sync ai client, braccio teso e capo chino; poi reward.
+
+Risolto: `WesternWallPrayerSession` + payload; mixin `HumanoidModel.setupAnim`; FP `RenderHandEvent` + pitch camera. Fallimenti immediati; successo differito. Non testato in-game.
