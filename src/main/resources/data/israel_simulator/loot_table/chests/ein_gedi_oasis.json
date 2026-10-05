@@ -3,39 +3,81 @@
   "pools": [
     {
       "rolls": {
-        "min": 3,
-        "max": 6
+        "type": "minecraft:uniform",
+        "min": 3.0,
+        "max": 6.0
       },
       "entries": [
         {
           "type": "minecraft:item",
           "name": "israel_simulator:dates",
           "weight": 20,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 4, "max": 12 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 4.0,
+                "max": 12.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:sweet_berries",
           "weight": 15,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 4, "max": 10 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 4.0,
+                "max": 10.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "israel_simulator:shekel",
           "weight": 15,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 3, "max": 9 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 3.0,
+                "max": 9.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:emerald",
           "weight": 10,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 1, "max": 4 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 4.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:golden_apple",
           "weight": 2,
-          "functions": [{ "function": "minecraft:set_count", "count": 1 }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1.0
+            }
+          ]
         }
       ]
     }

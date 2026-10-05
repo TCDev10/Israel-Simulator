@@ -3,63 +3,125 @@
   "pools": [
     {
       "rolls": {
-        "min": 3,
-        "max": 6
+        "type": "minecraft:uniform",
+        "min": 3.0,
+        "max": 6.0
       },
       "entries": [
         {
           "type": "minecraft:item",
           "name": "israel_simulator:rabbis_crown",
           "weight": 1,
-          "functions": [{ "function": "minecraft:set_count", "count": 1 }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1.0
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "israel_simulator:mezuzah",
           "weight": 20,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 1, "max": 2 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 2.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "israel_simulator:talit",
           "weight": 15,
-          "functions": [{ "function": "minecraft:set_count", "count": 1 }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1.0
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "israel_simulator:tefillin",
           "weight": 15,
-          "functions": [{ "function": "minecraft:set_count", "count": 1 }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1.0
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "israel_simulator:kippah",
           "weight": 20,
-          "functions": [{ "function": "minecraft:set_count", "count": 1 }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1.0
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "israel_simulator:prayer_note",
           "weight": 25,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 3, "max": 8 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 3.0,
+                "max": 8.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "israel_simulator:shekel",
           "weight": 20,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 5, "max": 20 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 5.0,
+                "max": 20.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:gold_ingot",
           "weight": 10,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 1, "max": 4 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 4.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:chiseled_bookshelf",
           "weight": 5,
-          "functions": [{ "function": "minecraft:set_count", "count": 1 }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1.0
+            }
+          ]
         }
       ]
     }

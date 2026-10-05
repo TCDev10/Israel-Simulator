@@ -10,8 +10,8 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "israel_simulator:prayer_note",
-          "weight": 22,
+          "name": "israel_simulator:olives",
+          "weight": 18,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -25,18 +25,67 @@
         },
         {
           "type": "minecraft:item",
-          "name": "israel_simulator:kippah",
-          "weight": 10,
+          "name": "israel_simulator:dates",
+          "weight": 18,
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": 1.0
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 6.0
+              }
             }
           ]
         },
         {
           "type": "minecraft:item",
-          "name": "israel_simulator:talit",
+          "name": "israel_simulator:grapes",
+          "weight": 12,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 5.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "israel_simulator:challah",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "israel_simulator:shekel",
+          "weight": 20,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 8.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "israel_simulator:mezuzah",
           "weight": 6,
           "functions": [
             {
@@ -47,8 +96,8 @@
         },
         {
           "type": "minecraft:item",
-          "name": "israel_simulator:tefillin",
-          "weight": 5,
+          "name": "israel_simulator:kippah",
+          "weight": 4,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -58,34 +107,8 @@
         },
         {
           "type": "minecraft:item",
-          "name": "israel_simulator:mezuzah",
-          "weight": 8,
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": 1.0
-            }
-          ]
-        },
-        {
-          "type": "minecraft:item",
-          "name": "israel_simulator:shekel",
-          "weight": 16,
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 3.0,
-                "max": 10.0
-              }
-            }
-          ]
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:book",
-          "weight": 14,
+          "name": "minecraft:bread",
+          "weight": 15,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -93,6 +116,21 @@
                 "type": "minecraft:uniform",
                 "min": 1.0,
                 "max": 4.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:wheat",
+          "weight": 12,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 8.0
               }
             }
           ]
@@ -107,7 +145,22 @@
               "count": {
                 "type": "minecraft:uniform",
                 "min": 1.0,
-                "max": 4.0
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:book",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 2.0
               }
             }
           ]
@@ -115,26 +168,15 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:gold_nugget",
-          "weight": 10,
+          "weight": 8,
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 4.0,
-                "max": 16.0
+                "min": 2.0,
+                "max": 8.0
               }
-            }
-          ]
-        },
-        {
-          "type": "minecraft:item",
-          "name": "israel_simulator:shofar",
-          "weight": 2,
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": 1.0
             }
           ]
         }

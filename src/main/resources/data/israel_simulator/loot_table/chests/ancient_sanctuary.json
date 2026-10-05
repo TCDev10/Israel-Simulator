@@ -2,49 +2,100 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "rolls": { "min": 3, "max": 6 },
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 3.0,
+        "max": 6.0
+      },
       "entries": [
         {
           "type": "minecraft:item",
           "name": "israel_simulator:rabbis_crown",
           "weight": 1,
-          "functions": [{ "function": "minecraft:set_count", "count": 1 }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1.0
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "israel_simulator:dead_sea_scroll_fragment",
           "weight": 35,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 1, "max": 3 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "israel_simulator:ancient_coin",
           "weight": 40,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 2, "max": 6 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 6.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "israel_simulator:mezuzah",
           "weight": 30,
-          "functions": [{ "function": "minecraft:set_count", "count": 1 }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1.0
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "israel_simulator:shofar",
           "weight": 20,
-          "functions": [{ "function": "minecraft:set_count", "count": 1 }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1.0
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "israel_simulator:menorah",
           "weight": 25,
-          "functions": [{ "function": "minecraft:set_count", "count": 1 }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1.0
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:diamond",
           "weight": 15,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 1, "max": 3 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
         }
       ]
     }
