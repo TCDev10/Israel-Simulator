@@ -644,11 +644,11 @@ def main() -> None:
     write_pool(
         POOL / "buildings.json",
         [
-            ("israel_simulator:jerusalem/house_a", 3, "rigid"),
-            ("israel_simulator:jerusalem/house_b", 3, "rigid"),
-            ("israel_simulator:jerusalem/house_c", 2, "rigid"),
-            ("israel_simulator:jerusalem/shuk_stalls", 2, "rigid"),
-            ("israel_simulator:jerusalem/well", 2, "rigid"),
+            ("israel_simulator:jerusalem/house_a", 4, "rigid"),
+            ("israel_simulator:jerusalem/house_b", 4, "rigid"),
+            ("israel_simulator:jerusalem/house_c", 3, "rigid"),
+            ("israel_simulator:jerusalem/shuk_stalls", 3, "rigid"),
+            ("israel_simulator:jerusalem/well", 1, "rigid"),  # was weight 2 (~9 wells/city)
         ],
         "minecraft:empty",
     )

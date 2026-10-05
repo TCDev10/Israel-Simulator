@@ -193,6 +193,24 @@ class JerusalemCityStructureTest {
     }
 
     @Test
+    @DisplayName("Jerusalem well is rare in the buildings pool (weight share <= 1/10)")
+    void wellIsRareInBuildingsPool() throws Exception {
+        JsonObject buildings = readJson("data/israel_simulator/worldgen/template_pool/jerusalem/buildings.json");
+        int well = 0, total = 0;
+        for (var el : buildings.getAsJsonArray("elements")) {
+            var obj = el.getAsJsonObject();
+            int w = obj.get("weight").getAsInt();
+            total += w;
+            String loc = obj.getAsJsonObject("element").get("location").getAsString();
+            if (loc.endsWith("well")) {
+                well = w;
+            }
+        }
+        assertTrue(well > 0, "well must still be in buildings");
+        assertTrue(total / well >= 10, "well weight share must be <= 1/10 so cities get few wells");
+    }
+
+    @Test
     @DisplayName("Jerusalem wall_gate is an open E-W passage without a blocking door")
     void wallGateIsOpenPassage() throws Exception {
         byte[] nbt = readGzip("data/israel_simulator/structure/jerusalem/wall_gate.nbt");

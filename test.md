@@ -152,3 +152,10 @@ Problema riscontrato: in `jerusalem-city-test4` (start a X=-2784 Z=-336) il terr
 Funzionamento aspettato: 1–2 gate per città; fontana riconoscibile; piazza+sinagoga presenti (anche se più in basso sul pendio).
 
 Come è stato risolto: pesi strade 12/6/6 e gate 1 (~1/25); fontana con `water_cauldron[level=3]` al posto dell'acqua fluida; marker yellow terracotta sul pavimento. Analisi headless del save (strutture + blocchi). Unit test sul peso del gate. Serve mondo nuovo per i pezzi.
+
+## Jerusalem city: troppi pozzi (verifica headless 8e8de2b)
+
+Problema riscontrato: in `jerusalem-verify5` (seed -2399866279920343874, start [-6608,~,-7104]) gate=0 OK, sinagoga×1+dome+glowstone OK, fontana `water_cauldron[level=3]` OK, marker yellow OK, streets-over-air 0.26%, plaza Y93 allineata alle strade (76–99, non in una fossa). Ma **9× well** (peso 2 nel pool buildings).
+
+Come è stato risolto: peso `well` da 2 a 1 nel pool `jerusalem/buildings` (generatore + JSON + unit test). Re-verifica headless su mondo nuovo.
+
