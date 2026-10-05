@@ -129,10 +129,10 @@ class JerusalemCityStructureTest {
     }
 
     @Test
-    @DisplayName("Jerusalem uses beard_box so foundations sit into hilly terrain")
-    void usesBeardBoxAdaptation() throws Exception {
+    @DisplayName("Jerusalem uses beard_thin like vanilla villages")
+    void usesBeardThinAdaptation() throws Exception {
         JsonObject structure = readJson("data/israel_simulator/worldgen/structure/jerusalem_city.json");
-        assertEquals("beard_box", structure.get("terrain_adaptation").getAsString());
+        assertEquals("beard_thin", structure.get("terrain_adaptation").getAsString());
     }
 
 
@@ -145,7 +145,7 @@ class JerusalemCityStructureTest {
         assertTrue(biomes.contains("minecraft:savanna_plateau"));
         assertFalse(biomes.contains("windswept_hills"), "windswept_hills removed (too steep)");
         assertFalse(biomes.contains("meadow"), "meadow removed (too hilly)");
-        assertEquals("beard_box", structure.get("terrain_adaptation").getAsString());
+        assertEquals("beard_thin", structure.get("terrain_adaptation").getAsString());
     }
 
     @Test

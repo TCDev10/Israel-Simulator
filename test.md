@@ -136,3 +136,11 @@ Problema riscontrato: in `jerusalem-city-test3` la città era una piattaforma ri
 Funzionamento aspettato: città immersa nel terreno (beard_box, niente scogliere di fondamenta), strade che seguono il pendio come un villaggio vanilla, gate con tunnel aperto allineato alla strada.
 
 Come è stato risolto: strade/terminator di nuovo `terrain_matching` senza sottostrato profondo; pezzi rigid (plaza/case/shuk/sinagoga/pozzo) con fondamenta **2** blocchi; `beard_box` e biomi `jerusalem`+`savanna_plateau` invariati. `wall_gate` spostato nel pool strade come arco con jigsaw `street` a ovest e est e tunnel E–W aperto (niente porta, niente attachment laterale come building). La sinagoga a sud della piazza è rotazione casuale, non un bug. Unit test aggiornati. Non un passaggio in-game.
+
+## Jerusalem city allineata allo stile villaggio vanilla
+
+Problema riscontrato: le fondamenta profonde e `beard_box` producevano un plinto/fortezza; serviva lo stesso adattamento dei villaggi vanilla.
+
+Funzionamento aspettato: come `minecraft:village_desert` / plains in 26.2 — strade `terrain_matching`, edifici `rigid`, `terrain_adaptation: beard_thin`, size 6, max_distance 80, `WORLD_SURFACE_WG`, start_height 0, case senza piedistallo profondo (pavimento a y=0, jigsaw ingresso a y=1).
+
+Come è stato risolto: `FOUNDATION = 0`; JSON struttura allineato a village_desert (`beard_thin`, stessi size/distance/heightmap/hack); strade restano `terrain_matching`; gate resta arco nel pool strade. Biomi invariati (`jerusalem` + `savanna_plateau`). Unit test aggiornati.

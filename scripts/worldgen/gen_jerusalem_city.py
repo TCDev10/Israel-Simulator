@@ -15,7 +15,7 @@ POOL = ROOT / "src/main/resources/data/israel_simulator/worldgen/template_pool/j
 STRUCTURE_JSON = ROOT / "src/main/resources/data/israel_simulator/worldgen/structure/jerusalem_city.json"
 DATA_VERSION = 4903
 BLOCKS_JSON = Path("/workspace/mcreports/out/reports/blocks.json")
-FOUNDATION = 2  # shallow footing; beard_box fills natural terrain below
+FOUNDATION = 0  # vanilla village style: floor at y=0, no deep footings
 
 KNOWN = json.loads(BLOCKS_JSON.read_text()) if BLOCKS_JSON.exists() else {}
 
@@ -578,8 +578,16 @@ def write_pool(path: Path, elements: list[tuple[str, int, str]], fallback: str) 
 
 def update_structure_json() -> None:
     data = json.loads(STRUCTURE_JSON.read_text())
-    data["terrain_adaptation"] = "beard_box"
-    # Drop steep vanilla biomes that perched the city on cliffs/caves.
+    # Mirror minecraft:village_desert / village_plains (26.2):
+    # beard_thin, size 6, max_distance 80, WORLD_SURFACE_WG, start_height 0.
+    data["terrain_adaptation"] = "beard_thin"
+    data["max_distance_from_center"] = 80
+    data["size"] = 6
+    data["project_start_to_heightmap"] = "WORLD_SURFACE_WG"
+    data["start_height"] = {"absolute": 0}
+    data["use_expansion_hack"] = True
+    data["step"] = "surface_structures"
+    # Keep our biome filter (not the vanilla village tag).
     data["biomes"] = [
         "israel_simulator:jerusalem",
         "minecraft:savanna_plateau",
@@ -587,7 +595,7 @@ def update_structure_json() -> None:
     STRUCTURE_JSON.write_text(json.dumps(data, indent=2) + "\n")
     print(
         f"updated {STRUCTURE_JSON.relative_to(ROOT)} "
-        f"terrain_adaptation=beard_box biomes={data['biomes']}"
+        f"terrain_adaptation=beard_thin biomes={data['biomes']}"
     )
 
 
