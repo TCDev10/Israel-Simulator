@@ -2,6 +2,7 @@ package com.israelsimulator.trading;
 
 import com.israelsimulator.reputation.ReputationFaction;
 import com.israelsimulator.reputation.ReputationManager;
+import com.israelsimulator.reputation.ReputationScores;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
@@ -40,11 +41,12 @@ class TradingAndBlessedTraderTest {
 
         // Base price
         int base = 100;
-        int normalPrice = IsraelVillagerTrades.calculateAdjustedPrice(base, player, faction, false);
+        ReputationScores emptyScores = new ReputationScores();
+        int normalPrice = IsraelVillagerTrades.calculateAdjustedPrice(base, emptyScores, player, faction, false);
         assertEquals(base, normalPrice);
 
         // Blessed trader discount (15% additional discount)
-        int blessedPrice = IsraelVillagerTrades.calculateAdjustedPrice(base, player, faction, true);
+        int blessedPrice = IsraelVillagerTrades.calculateAdjustedPrice(base, emptyScores, player, faction, true);
         assertEquals(85, blessedPrice);
         assertTrue(blessedPrice < normalPrice);
     }
@@ -56,22 +58,23 @@ class TradingAndBlessedTraderTest {
         ReputationFaction faction = ReputationFaction.MERCHANT;
 
         int base = 100;
+        ReputationScores scores = new ReputationScores();
         // Respected tier (-10%)
-        ReputationManager.setReputation(player, faction, 30);
-        int respectedPrice = IsraelVillagerTrades.calculateAdjustedPrice(base, player, faction, false);
+        ReputationManager.setReputation(scores, player, faction, 30);
+        int respectedPrice = IsraelVillagerTrades.calculateAdjustedPrice(base, scores, player, faction, false);
         assertEquals(90, respectedPrice);
 
         // Champion tier (-20%)
-        ReputationManager.setReputation(player, faction, 95);
-        int championPrice = IsraelVillagerTrades.calculateAdjustedPrice(base, player, faction, false);
+        ReputationManager.setReputation(scores, player, faction, 95);
+        int championPrice = IsraelVillagerTrades.calculateAdjustedPrice(base, scores, player, faction, false);
         assertEquals(80, championPrice);
 
         // Exiled tier (+25%)
-        ReputationManager.setReputation(player, faction, -80);
-        int exiledPrice = IsraelVillagerTrades.calculateAdjustedPrice(base, player, faction, false);
+        ReputationManager.setReputation(scores, player, faction, -80);
+        int exiledPrice = IsraelVillagerTrades.calculateAdjustedPrice(base, scores, player, faction, false);
         assertEquals(125, exiledPrice);
 
-        ReputationManager.clearForPlayer(player);
+        ReputationManager.clearForPlayer(scores, player);
     }
 
     @Test

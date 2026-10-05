@@ -1,5 +1,6 @@
 package com.israelsimulator.item.cultural;
 
+import com.israelsimulator.reputation.ReputationScores;
 import com.israelsimulator.trading.IsraelVillagerTrades;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -95,15 +96,16 @@ class RabbisCrownAndBlessedTraderTest {
     void testBlessedTraderPricingRules() {
         UUID playerId = UUID.randomUUID();
         int basePrice = 100;
+        ReputationScores scores = new ReputationScores();
 
-        int normalPrice = IsraelVillagerTrades.calculateAdjustedPrice(basePrice, playerId, null, false);
-        int blessedPrice = IsraelVillagerTrades.calculateAdjustedPrice(basePrice, playerId, null, true);
+        int normalPrice = IsraelVillagerTrades.calculateAdjustedPrice(basePrice, scores, playerId, null, false);
+        int blessedPrice = IsraelVillagerTrades.calculateAdjustedPrice(basePrice, scores, playerId, null, true);
 
         assertTrue(blessedPrice < normalPrice, "Blessed price must be discounted compared to normal price");
         assertEquals(85, blessedPrice, "15% discount on base 100 should yield 85");
 
         // Hard minimum validation: low base price cannot drop below 1
-        int cheapPrice = IsraelVillagerTrades.calculateAdjustedPrice(1, playerId, null, true);
+        int cheapPrice = IsraelVillagerTrades.calculateAdjustedPrice(1, scores, playerId, null, true);
         assertEquals(1, cheapPrice, "Minimum price must be capped at 1 Shekel/Emerald");
     }
 

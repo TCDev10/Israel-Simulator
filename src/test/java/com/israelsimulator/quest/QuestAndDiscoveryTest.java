@@ -1,18 +1,12 @@
 package com.israelsimulator.quest;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.util.UUID;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class QuestAndDiscoveryTest {
-
-    @BeforeEach
-    public void setup() {
-        QuestManager.resetForTesting();
-    }
 
     @Test
     public void testDiscoveryQuestsIntegrity() {
@@ -31,9 +25,43 @@ public class QuestAndDiscoveryTest {
     @Test
     public void testQuestManagerCompletionState() {
         UUID testPlayer = UUID.randomUUID();
-        assertFalse(QuestManager.isCompleted(testPlayer, DiscoveryQuest.HOLY_CITY_PILGRIM));
+        CompletedQuests data = new CompletedQuests();
+        assertFalse(QuestManager.isCompleted(data, testPlayer, DiscoveryQuest.HOLY_CITY_PILGRIM));
+        assertTrue(QuestManager.getCompletedQuests(data, testPlayer).isEmpty());
+    }
 
-        // Initial completion count is 0
-        assertTrue(QuestManager.getCompletedQuests(testPlayer).isEmpty());
+    @Test
+    @DisplayName("Completed quests are saved data, not a static map, and survive a codec reload")
+    void testCompletedQuestsPersistThroughCodec() throws Exception {
+        for (Class<?> type : java.util.List.of(QuestManager.class, CompletedQuests.class)) {
+            for (java.lang.reflect.Field field : type.getDeclaredFields()) {
+                if (java.lang.reflect.Modifier.isStatic(field.getModifiers())
+                        && java.util.Map.class.isAssignableFrom(field.getType())) {
+                    fail(type.getSimpleName() + " must not keep completed quests in a static map: " + field.getName());
+                }
+            }
+        }
+
+        UUID playerId = UUID.randomUUID();
+        DiscoveryQuest quest = DiscoveryQuest.HOLY_CITY_PILGRIM;
+        CompletedQuests live = new CompletedQuests();
+        CompletedQuests other = new CompletedQuests();
+        assertTrue(live.markCompleted(playerId, quest));
+        assertFalse(live.markCompleted(playerId, quest));
+        assertTrue(QuestManager.isCompleted(live, playerId, quest));
+        assertFalse(QuestManager.isCompleted(other, playerId, quest));
+
+        net.minecraft.nbt.Tag encoded = CompletedQuests.CODEC
+                .encodeStart(net.minecraft.nbt.NbtOps.INSTANCE, live)
+                .getOrThrow();
+        CompletedQuests restored = CompletedQuests.CODEC
+                .parse(net.minecraft.nbt.NbtOps.INSTANCE, encoded)
+                .getOrThrow();
+
+        assertNotSame(live, restored);
+        assertTrue(QuestManager.isCompleted(restored, playerId, quest));
+        assertTrue(QuestManager.getCompletedQuests(restored, playerId).contains(quest));
+        assertFalse(QuestManager.isCompleted(restored, playerId, DiscoveryQuest.DEAD_SEA_MINERALIST));
+        assertEquals("israel_simulator:completed_quests", CompletedQuests.TYPE.id().toString());
     }
 }

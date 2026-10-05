@@ -4,6 +4,8 @@ import com.israelsimulator.economy.CityRegion;
 import com.israelsimulator.economy.IsraelEconomy;
 import com.israelsimulator.npc.schedule.NpcSchedule;
 import com.israelsimulator.registry.ModItems;
+import com.israelsimulator.reputation.ReputationManager;
+import com.israelsimulator.reputation.ReputationScores;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,6 +20,7 @@ import net.minecraft.world.entity.npc.villager.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 
 /**
@@ -140,8 +143,11 @@ public final class IsraelNpcManager {
             case COMMODITIES_MINERALS -> com.israelsimulator.reputation.ReputationFaction.MERCHANT;
         };
 
+        ReputationScores reputationScores = level instanceof ServerLevel serverLevel
+                ? ReputationScores.get(serverLevel)
+                : null;
         int playerRep = Math.max(npcData.getReputation(),
-                com.israelsimulator.reputation.ReputationManager.getReputation(player.getUUID(), faction));
+                ReputationManager.getReputation(reputationScores, player.getUUID(), faction));
 
         // Player wants to BUY a primary item from this NPC using Shekels
         if (held.is(ModItems.SHEKEL.get()) && !profession.getTradedItems().isEmpty()) {
@@ -169,7 +175,7 @@ public final class IsraelNpcManager {
                     player.addItem(new ItemStack(itemToGive, 1));
                     npcData.recordTrade(level.getGameTime());
                     npcData.adjustReputation(2);
-                    com.israelsimulator.reputation.ReputationManager.adjustReputation(player.getUUID(), faction, 2);
+                    ReputationManager.adjustReputation(reputationScores, player.getUUID(), faction, 2);
 
                     player.sendSystemMessage(Component.literal("[" + profession.getDisplayName() + "] Pleasure doing business! "
                             + costInShekels + " Shekels for " + soldItemId + "."));

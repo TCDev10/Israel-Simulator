@@ -5,6 +5,7 @@ import com.israelsimulator.effect.ModEffects;
 import com.israelsimulator.registry.ModItems;
 import com.israelsimulator.reputation.ReputationFaction;
 import com.israelsimulator.reputation.ReputationManager;
+import com.israelsimulator.reputation.ReputationScores;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -110,8 +111,8 @@ public final class IsraelVillagerTrades {
      * Calculates the adjusted price in Shekels/Emeralds taking reputation and Blessed Trader status into account.
      * Prevents negative prices and infinite generation loops by enforcing a strict positive lower bound (minimum 1).
      */
-    public static int calculateAdjustedPrice(int basePrice, UUID playerId, ReputationFaction faction, boolean isBlessed) {
-        double modifier = ReputationManager.getPriceModifier(playerId, faction);
+    public static int calculateAdjustedPrice(int basePrice, ReputationScores scores, UUID playerId, ReputationFaction faction, boolean isBlessed) {
+        double modifier = ReputationManager.getPriceModifier(scores, playerId, faction);
         double finalMultiplier = 1.0 + modifier;
 
         // Blessed Trader grants substantial holy discount (15% reduction)
