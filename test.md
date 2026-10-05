@@ -226,3 +226,11 @@ Problema riscontrato: le texture item di `kippah` e `hava_nagila_disc` erano pla
 Funzionamento aspettato: in inventario si vedono i PNG 32x32 dell'utente; i model item puntano a `israel_simulator:item/kippah` e `israel_simulator:item/hava_nagila_disc`.
 
 Come e stato risolto: copiati `/workspace/user-textures/kippah.png` e `hava_nagila_disc.png` in `assets/israel_simulator/textures/item/` senza ridimensionare. I model erano gia sul path del mod.
+
+## Western Wall: da placeholder a Kotel vero
+
+Problema riscontrato: `western_wall.nbt` era una scatola cava 9x6x5 (stone bricks/calcite/gold/sea lantern) senza `western_wall_stone`, senza plaza e senza chest treasury. La preghiera richiede il right-click su `israel_simulator:western_wall_stone` (`ModGameEvents` → `WesternWallManager.tryPray`), quindi al placeholder non si poteva pregare in modo credibile.
+
+Funzionamento aspettato: un muro lungo in pietra pale (corsi herodiani a setback), plaza pavimentata, mechitza (fence collegate), lectern/lanterne, alcova con chest `western_wall_treasury`, bioma solo `jerusalem`, terrain `beard_box`. Il giocatore prega toccando le pietre del muro dalla plaza.
+
+Come e stato risolto: generatore `scripts/worldgen/gen_western_wall.py` (Structure.save + connect_blocks); NBT 56x20x42 con centinaia di `western_wall_stone` sulla facciata; JSON aggiornati. Test `WesternWallStructureTest`. Verifica headless: seed 20261005 wall a [-3488,~,-7040] (67 blocchi dalla citta), chest treasury in BB; seed -3194586807213286118 wall a [-8944,~,-4288].
