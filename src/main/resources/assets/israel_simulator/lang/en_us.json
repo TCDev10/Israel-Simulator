@@ -2,9 +2,7 @@
   "israel_simulator.configuration.title": "Israel-Simulator Configs",
   "israel_simulator.configuration.section.israel_simulator.common.toml": "Israel-Simulator Configs",
   "israel_simulator.configuration.section.israel_simulator.common.toml.title": "Israel-Simulator Configs",
-
   "itemGroup.israel_simulator": "Israel-Simulator",
-
   "item.israel_simulator.kippah": "Kippah",
   "item.israel_simulator.kippah.desc": "Traditional cultural head covering.",
   "item.israel_simulator.kippah.requirement": "Required for prayer at the Western Wall.",
@@ -17,8 +15,7 @@
   "item.israel_simulator.rabbis_crown": "Rabbi's Crown",
   "item.israel_simulator.prayer_note": "Prayer Note",
   "item.israel_simulator.first_amendment": "First Amendment",
-  "item.israel_simulator.hava_nagila_disc": "Music Disc (Hava Nagila)",
-
+  "item.israel_simulator.hava_nagila_disc": "Music Disc - Hava Nagila",
   "item.israel_simulator.tahini": "Tahini",
   "item.israel_simulator.dates": "Dates",
   "item.israel_simulator.grapes": "Grapes",
@@ -30,41 +27,33 @@
   "item.israel_simulator.hummus": "Hummus",
   "item.israel_simulator.shakshuka": "Shakshuka",
   "item.israel_simulator.sabich": "Sabich",
-
   "item.israel_simulator.mezuzah": "Mezuzah",
   "item.israel_simulator.star_of_david": "Star of David",
   "item.israel_simulator.olive_wood_carving": "Olive Wood Carving",
   "item.israel_simulator.ancient_coin": "Ancient Coin",
   "item.israel_simulator.dead_sea_scroll_fragment": "Dead Sea Scroll Fragment",
-
   "item.israel_simulator.shekel": "Shekel",
   "item.israel_simulator.agora": "Agora",
-
   "item.israel_simulator.matzo": "Matzo",
   "item.israel_simulator.sufganiyah": "Sufganiyah",
   "item.israel_simulator.dreidel": "Dreidel",
   "item.israel_simulator.hamantash": "Hamantash",
   "item.israel_simulator.shofar": "Shofar",
-
   "item.israel_simulator.smartphone": "Smartphone",
   "item.israel_simulator.laptop": "Laptop",
   "item.israel_simulator.drone_part": "Drone Part",
-
-  "item.israel_simulator.hava_nagila_disc.desc": "Hava Nagila",
-
+  "item.israel_simulator.hava_nagila_disc.desc": "Plays traditional folk song: Hava Nagila",
   "effect.israel_simulator.blessed": "Blessed",
   "effect.israel_simulator.freedom": "Freedom",
   "effect.israel_simulator.meat_digestion": "Waiting (Meat)",
   "effect.israel_simulator.dairy_digestion": "Waiting (Dairy)",
   "message.israel_simulator.kosher_violation": "You feel unwell from mixing meat and dairy.",
-
   "biome.israel_simulator.mediterranean_coast": "Mediterranean Coast",
   "biome.israel_simulator.israeli_agriculture": "Israeli Agricultural Valley",
   "biome.israel_simulator.judean_desert": "Judean Desert",
   "biome.israel_simulator.dead_sea": "Dead Sea",
   "biome.israel_simulator.urban_area": "Mediterranean Urban District",
   "biome.israel_simulator.jerusalem": "Jerusalem",
-
   "block.israel_simulator.olive_leaves": "Olive Leaves",
   "block.israel_simulator.date_palm_leaves": "Date Palm Leaves",
   "block.israel_simulator.citrus_leaves": "Citrus Leaves",
@@ -74,9 +63,7 @@
   "block.israel_simulator.jerusalem_stone": "Jerusalem Stone",
   "block.israel_simulator.western_wall_stone": "Western Wall Stone",
   "block.israel_simulator.menorah": "Menorah",
-
   "item.israel_simulator.dead_sea_mud": "Dead Sea Mineral Mud",
-
   "structure.israel_simulator.mediterranean_village": "Mediterranean Village",
   "structure.israel_simulator.agricultural_farm": "Agricultural Farm",
   "structure.israel_simulator.dead_sea_resort": "Dead Sea Resort",
@@ -88,37 +75,30 @@
   "structure.israel_simulator.jaffa_port": "Ancient Port of Jaffa",
   "structure.israel_simulator.jerusalem_city": "Jerusalem Old City",
   "structure.israel_simulator.western_wall": "Western Wall (Kotel)",
-
   "message.israel_simulator.western_wall_need_kippah": "You must cover your head (wear a Kippah) before approaching the Western Wall.",
   "message.israel_simulator.western_wall_need_prayer_note": "Hold a Prayer Note in your hand to place a prayer into the Western Wall.",
   "message.israel_simulator.western_wall_cooldown": "You have already placed a prayer note recently. Please return later.",
   "message.israel_simulator.western_wall_blessed": "Your prayer has been placed into the sacred stones. You have been blessed!",
-
   "message.israel_simulator.tefillin_need_kippah": "You must wear a Kippah on your head to bind Tefillin.",
   "message.israel_simulator.tefillin_not_daytime": "Tefillin is traditionally bound during morning and daytime hours.",
   "message.israel_simulator.tefillin_cooldown": "You have recently concluded Tefillin prayer. Allow time before binding again.",
   "message.israel_simulator.tefillin_blessed": "You bind the Tefillin for morning prayer, receiving spiritual fortitude.",
   "message.israel_simulator.tefillin_talit_complete": "With Kippah, Talit, and Tefillin united, you receive a full morning prayer blessing!",
-
   "message.israel_simulator.ark_need_kippah": "Cover your head with a Kippah before prayer at the Aron Kodesh.",
   "message.israel_simulator.ark_cooldown": "You have reflected at the holy ark recently. Take time for contemplation.",
   "message.israel_simulator.ark_prayer_complete": "You pray before the Aron Kodesh, feeling peace and clarity.",
   "message.israel_simulator.ark_offering_complete": "You placed an offering before the Aron Kodesh. A rich blessing is bestowed upon you!",
-
   "item.israel_simulator.dreidel.desc": "Traditional Hanukkah spinning top. Right-click to spin for Shekels!",
   "item.israel_simulator.shofar.desc": "Sacred musical ram's horn. Right-click to blast and receive a New Year blessing.",
-
   "message.israel_simulator.dreidel_spin": "You spun the Dreidel: %s! (%s)",
   "message.israel_simulator.dreidel_win": "Miracle! You won %d Shekels from the Hanukkah pot!",
   "message.israel_simulator.shofar_blast": "Teki'ah Gedolah! The piercing blast of the Shofar awakens the soul!",
   "message.israel_simulator.blessed_trader_greeting": "Shalom! The holy light of a blessed traveler shines upon you. Behold my sacred wares!",
-
   "faction.israel_simulator.merchant": "Bazaar Merchants",
   "faction.israel_simulator.city": "Urban Inhabitants",
   "faction.israel_simulator.village": "Agricultural Villages",
   "faction.israel_simulator.religious": "Sacred Congregations",
   "faction.israel_simulator.tech_district": "Tech Pioneers",
-
   "festival.israel_simulator.shabbat": "Shabbat",
   "festival.israel_simulator.rosh_hashanah": "Rosh Hashanah",
   "festival.israel_simulator.yom_kippur": "Yom Kippur",
@@ -126,34 +106,27 @@
   "festival.israel_simulator.hanukkah": "Hanukkah",
   "festival.israel_simulator.purim": "Purim",
   "festival.israel_simulator.pesach": "Pesach",
-
   "message.israel_simulator.menorah_lit": "You lit candle #%d on the Menorah.",
   "message.israel_simulator.menorah_fully_lit": "All eight lights are glowing with miraculous radiance! Chag Hanukkah Sameach!",
   "message.israel_simulator.menorah_extinguished": "The Menorah candles have been gently extinguished.",
   "message.israel_simulator.menorah_status": "Menorah: %d of 8 candles currently burning.",
-
   "item.israel_simulator.first_amendment.desc": "Historic charter of free speech, assembly, and open debate.",
   "item.israel_simulator.first_amendment.effect": "Right-click to claim the Freedom effect, breaking free of slowness and restraint.",
   "message.israel_simulator.first_amendment_used": "You proclaim freedom of thought and assembly! You feel completely unburdened and free!",
   "message.israel_simulator.public_speech_reward": "You actively participated in the Civic Speech and stood for free expression! You received the First Amendment!",
   "message.israel_simulator.public_speech_start": "[Public Forum] A civic speech on democracy and liberty is now commencing at the forum!",
-
   "item.israel_simulator.rabbis_crown.desc": "Sacred mythic crown worn by revered spiritual sages.",
   "item.israel_simulator.rabbis_crown.armor": "+20 Armor when equipped on head",
   "item.israel_simulator.rabbis_crown.effect": "Bestows permanent Blessed Trader aura upon the wearer.",
   "effect.israel_simulator.blessed_trader": "Blessed Trader",
-
   "structure.israel_simulator.historical_house": "Historical Limestone House",
   "structure.israel_simulator.grand_market": "Grand Mediterranean Bazaar",
   "structure.israel_simulator.startup_office": "High-Tech Startup Office",
   "structure.israel_simulator.government_building": "Civic Government Building",
   "structure.israel_simulator.ancient_sanctuary": "Ancient Highland Sanctuary",
-
   "entity.israel_simulator.bibi_boss": "Bibi - The Longstanding Leader",
   "entity.israel_simulator.bibi_boss.enraged": "Bibi (ENRAGED) - Coalition Powerhouse",
   "entity.israel_simulator.bibi_guard": "Coalition Elite Guard",
-  "item.israel_simulator.hava_nagila_disc": "Music Disc - Hava Nagila",
-  "item.israel_simulator.hava_nagila_disc.desc": "Plays traditional folk song: Hava Nagila",
   "item.israel_simulator.hava_nagila_disc.lore": "LEGENDARY Boss Reward — Let us rejoice and be glad!",
   "jukebox_song.israel_simulator.hava_nagila": "Hava Nagila",
   "message.israel_simulator.bibi_boss_defeated": "Bibi has been defeated! The legendary Hava Nagila music disc drops upon the floor!",
@@ -162,7 +135,6 @@
   "speech.israel_simulator.bibi_boss.quote_2": "\"No weapon formed against our podium shall prosper! Filibuster!\"",
   "advancements.israel_simulator.hava_nagila.title": "Hava Nagila",
   "advancements.israel_simulator.hava_nagila.description": "Defeat the formidable Bibi Boss and claim the legendary Hava Nagila music disc!",
-
   "block.israel_simulator.paved_road": "Paved Road",
   "block.israel_simulator.transport_stop": "Public Transit Stop",
   "entity.israel_simulator.bicycle": "Bicycle",
@@ -177,20 +149,17 @@
   "item.israel_simulator.israel_map": "Explorer's Map of Israel",
   "item.israel_simulator.israel_map.desc": "Cartographic map tracking visited regions and discovered landmarks.",
   "item.israel_simulator.israel_map.usage": "Right-click to inspect your exploration progress and discovered sites.",
-
   "message.israel_simulator.transit_cooldown": "Please wait %d seconds before boarding public transit again.",
   "message.israel_simulator.no_route": "No connected transit line available from this station.",
   "message.israel_simulator.insufficient_fare": "Insufficient Shekels! Route to %s requires %d Shekels (or a Rav-Kav pass).",
   "message.israel_simulator.transit_success": "Arrived at %s! %s",
   "message.israel_simulator.landmark_discovered": "Landmark Discovered: %s",
   "message.israel_simulator.discovery_progress": "Exploration Progress: %d / %d Landmarks Discovered",
-
   "subtitles.israel_simulator.bicycle_bell": "Bicycle bell rings",
   "subtitles.israel_simulator.bus_horn": "Bus horn honks",
   "subtitles.israel_simulator.train_whistle": "Train whistle blows",
   "subtitles.israel_simulator.transit_travel": "Transit departure",
   "subtitles.israel_simulator.landmark_discovered": "Landmark fanfare plays",
-
   "advancements.israel_simulator.welcome_to_israel.title": "Welcome to Israel",
   "advancements.israel_simulator.welcome_to_israel.description": "Acquire an Explorer's Map and your first Shekels to begin your journey.",
   "advancements.israel_simulator.shalom.title": "Shalom!",
@@ -216,5 +185,7 @@
   "advancements.israel_simulator.secret_kippah_cat.title": "Honorary Feline Citizen",
   "advancements.israel_simulator.secret_kippah_cat.description": "You showed a Kippah to an observant neighborhood stray cat!",
   "advancements.israel_simulator.hummus_connoisseur.title": "The Hummus Connoisseur",
-  "advancements.israel_simulator.hummus_connoisseur.description": "Sample the sacred Levantine culinary trio: Hummus, Falafel, and Sabich."
+  "advancements.israel_simulator.hummus_connoisseur.description": "Sample the sacred Levantine culinary trio: Hummus, Falafel, and Sabich.",
+  "message.israel_simulator.western_wall_praying": "Praying...",
+  "message.israel_simulator.western_wall_prayer_interrupted": "Your prayer was interrupted."
 }
