@@ -649,7 +649,6 @@ def update_structure_json() -> None:
     # Keep our biome filter (not the vanilla village tag).
     data["biomes"] = [
         "israel_simulator:jerusalem",
-        "minecraft:savanna_plateau",
     ]
     STRUCTURE_JSON.write_text(json.dumps(data, indent=2) + "\n")
     print(

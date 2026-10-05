@@ -204,3 +204,25 @@ Funzionamento aspettato: ogni chest/barrel di Jerusalem punta a una loot table `
 
 Come e stato risolto: normalizzati tutti i JSON in `loot_table/**` a uniform 26.2; aggiunti/aggiornati house/pantry/bazaar/synagogue; `CHEST`/`BARREL` in `gen_jerusalem_city.py` scrivono `id`+`LootTable`+`LootTableSeed`; rigenerati gli NBT. Test `LootTableValidationTest` + `JerusalemChestLootTest`. Verifica headless su seed -3194586807213286118, citta [-1744,~,4192]: 51 contenitori con `israel_simulator:chests/*` (10 house, 10 pantry, 30 bazaar, 1 synagogue), nessun errore di parse loot; `/loot spawn` ha droppato 3–5 item per tabella.
 
+## Biomi israeliani raggruppati e strutture solo nel proprio bioma
+
+Problema riscontrato: i sei biomi israeliani erano sparsi nel climate space (fasce temperate diverse); `dead_sea` stava in un angolo erosione/weirdness quasi vuoto e `/locate` restava appeso. Il mixin registrava anche depth `1.0`, cosi i biomi (soprattutto agriculture) comparivano spesso sottoterra. Le 16 strutture accettavano biomi vanilla di fallback (`savanna_plateau`, plains, desert, tag `is_israel_region` con plains/desert/savanna/beach/badlands): `jerusalem_city` nasceva anche fuori da `jerusalem`.
+
+Funzionamento aspettato: una striscia calda/arida Ovest→Est (costa → urban → agriculture → jerusalem → judean_desert, con `dead_sea` come pocket di weirdness del deserto). Solo depth `0.0`. Ogni struttura solo nel proprio bioma israeliano; `is_israel_region` elenca solo i 6 biomi del mod.
+
+Come e stato risolto: `IsraelBiomeClimateParams` + mixin aggiornato; JSON strutture e `gen_jerusalem_city.py` bloccati a un bioma; tag ristretto. Test climate (reachability/`dead_sea`) e lock strutture; verifica headless su piu seed.
+
+Verifica headless seed `-3194586807213286118`: citta `jerusalem_city` a [-8912, -4352]; `/locate biome dead_sea` ok in ~951 blocchi ([-8112, -4864]); chunk Israel {'israel_simulator:israeli_agriculture': 90, 'israel_simulator:jerusalem': 296, 'israel_simulator:judean_desert': 222, 'israel_simulator:dead_sea': 172}; desert vanilla 49, savanna 891; agri surface 75 vs deep 5; distanze da jerusalem {"israel_simulator:mediterranean_coast": null, "israel_simulator:israeli_agriculture": {"min": 187.3, "median": 385.3, "n_j": 296, "n_o": 90}, "israel_simulator:urban_area": null, "israel_simulator:judean_desert": {"min": 0.0, "median": 851.6, "n_j": 296, "n_o": 222}, "israel_simulator:dead_sea": {"min": 102.4, "median": 919.3, "n_j": 296, "n_o": 172}}. Seed `42`: jerusalem+agriculture+urban+coast trovati; dead_sea/judean fuori raggio locate da quella citta (non ogni patch jerusalem ha deserto adiacente).
+Problema aggiuntivo: su alcuni seed (42, 20261005) `judean_desert`/`dead_sea` non comparivano nel raggio di `/locate` dalla citta: jerusalem era troppo fresco/umido/collinare rispetto al deserto (temp da 0.70, erosione solo al bordo -0.22).
+
+Funzionamento aspettato: il deserto giudeo e il Mar Morto restano adiacenti a jerusalem nella stessa striscia calda/arida.
+
+Come e stato risolto (tweak): judean+dead_sea con T 0.60–1.00, H -1.00–-0.30, C 0.28–0.85, E -0.40–0.45; split weirdness judean -1.00–0.25 / dead_sea 0.25–1.00.
+
+## Texture item: kippah e disco Hava Nagila
+
+Problema riscontrato: le texture item di `kippah` e `hava_nagila_disc` erano placeholder/precedenti, non le opere fornite dall'utente.
+
+Funzionamento aspettato: in inventario si vedono i PNG 32x32 dell'utente; i model item puntano a `israel_simulator:item/kippah` e `israel_simulator:item/hava_nagila_disc`.
+
+Come e stato risolto: copiati `/workspace/user-textures/kippah.png` e `hava_nagila_disc.png` in `assets/israel_simulator/textures/item/` senza ridimensionare. I model erano gia sul path del mod.

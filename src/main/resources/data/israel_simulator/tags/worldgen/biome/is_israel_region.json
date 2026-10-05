@@ -6,11 +6,6 @@
     "israel_simulator:judean_desert",
     "israel_simulator:dead_sea",
     "israel_simulator:urban_area",
-    "israel_simulator:jerusalem",
-    "minecraft:plains",
-    "minecraft:desert",
-    "minecraft:savanna",
-    "minecraft:beach",
-    "minecraft:badlands"
+    "israel_simulator:jerusalem"
   ]
 }
