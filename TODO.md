@@ -31,6 +31,17 @@
 
 ---
 
+
+## Recently completed (keep in sync with main)
+
+* [x] Israeli biomes clustered (West→East strip) + Dead Sea weirdness pocket; depth 0.0 only.
+* [x] All 16 structures biome-locked to one Israeli biome; `is_israel_region` = 6 Israeli biomes.
+* [x] Structure connected-block states (fences/panes/walls) via `connect_blocks.py`.
+* [x] Jerusalem chest/barrel loot tables (26.2 schema) + generator NBT `LootTable`.
+* [x] User textures for kippah + Hava Nagila disc.
+* [ ] Replace remaining hollow structure placeholders (farm, Western Wall, ports, desert sites, …).
+* [ ] Custom grapevine/grapes textures (if not yet merged).
+
 # 1. NeoForge / Minecraft Baseline
 
 ## 1.1 Primary Version
@@ -418,7 +429,7 @@ For every food:
 
 # 13. Agriculture
 
-* [x] Farm structures. (Integrated via Mediterranean agricultural villages and crop patches in `israeli_agriculture`)
+* [!] Farm structures. — registered, but NBT is still a hollow placeholder (see README status).
 * [x] Agricultural villages. (`mediterranean_villages` structure set targeted at `israeli_agriculture` and `mediterranean_coast`)
 * [x] Crop generation. (`grapevine_patch`, `citrus_orchard`, `olive_tree`, and `date_palm` feature placements)
 * [x] Harvesting. (Right-click non-destructive harvesting on mature grapevines and block breaking drops on leaves)
@@ -443,7 +454,7 @@ For every food:
 * [x] Mineral resources. (`ModItems.DEAD_SEA_MUD` therapeutic mud cleansing debuffs and granting Absorption/Regen)
 * [x] Unique landscape. (Shoreline salt flats and turquoise water palette)
 * [x] Tourist NPCs. (Tourist interactions in `DeadSeaTrades` exchanging Shekels for mud, salt, and scroll fragments)
-* [x] Resort structures. (`dead_sea_resort` structure and `dead_sea_resorts` structure set)
+* [!] Resort structures. — registered; NBT still hollow placeholder.
 * [x] Dead Sea landmarks. (Dead Sea salt clusters and spa resort pavilions)
 * [x] Specialized loot. (`data/israel_simulator/loot_table/chests/dead_sea_resort.json` with mud, salt, and scroll fragments)
 * [x] Tourism interactions. (`DeadSeaTrades` server-authoritative trading transactions with happy villager effects)
@@ -458,8 +469,8 @@ For every food:
 * [x] Canyons. (Sandstone plateaus, cliff edges, and wadi valleys)
 * [x] Rocks. (`desert_rock_mound` configured and placed feature added via `add_desert_rocks` biome modifier)
 * [x] Limited vegetation. (`desert_scrub` scrub clusters and dead bushes)
-* [x] Desert structures. (`desert_ruins` ancient sandstone arches and buried jar chambers)
-* [x] Rare structures. (`ein_gedi_oasis` secret canyon freshwater oasis with date palms)
+* [!] Desert structures. — registered; NBT still hollow placeholder (not yet arches/jars).
+* [!] Rare structures. — `ein_gedi_oasis` registered; NBT still hollow placeholder.
 * [x] Environmental hazards. (`DesertHazards.handleDesertTick` solar heat exhaustion mitigated by wearing Kippah or headgear)
 * [x] Desert-specific mobs. (Camels and Husks configured in biome spawner definitions)
 * [x] Desert resources. (Sandstone, ancient pottery, ancient coins, and scroll fragments)
@@ -487,13 +498,13 @@ For every food:
 
 # 17. Rural Structures
 
-* [x] Agricultural farms. (`agricultural_farm` structure and `agricultural_farm.json` loot table)
-* [x] Villages. (`mediterranean_village` structure and `mediterranean_village.json` loot table)
-* [x] Synagogues. (`synagogue` structure and `synagogue.json` loot table)
+* [!] Agricultural farms. — structure + loot table registered; NBT still placeholder until a real generator merges.
+* [!] Villages. — registered + loot table; NBT still placeholder.
+* [!] Synagogues. — registered + loot; rural synagogue NBT still placeholder (Jerusalem pieces are real).
 * [x] Historical houses. (Traditional stone buildings in village layout)
 * [x] Markets. (Village and farm produce exchange via `AgriculturalTrades`)
 * [x] Desert ruins. (`desert_ruins` structure and `desert_ruins.json` loot table)
-* [x] Dead Sea resorts. (`dead_sea_resort` structure and `dead_sea_resort.json` loot table)
+* [!] Dead Sea resorts. — registered + loot; NBT still placeholder.
 * [x] Rare religious structures. (Synagogues with Torah ark and bimah; spiritual blessings via `RuralSynagogueTrades`)
 * [x] Secret/easter-egg structures. (`ein_gedi_oasis` hidden freshwater waterfall and oasis)
 

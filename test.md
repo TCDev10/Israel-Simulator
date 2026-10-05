@@ -227,6 +227,13 @@ Funzionamento aspettato: in inventario si vedono i PNG 32x32 dell'utente; i mode
 
 Come e stato risolto: copiati `/workspace/user-textures/kippah.png` e `hava_nagila_disc.png` in `assets/israel_simulator/textures/item/` senza ridimensionare. I model erano gia sul path del mod.
 
+## README / TODO alignment
+
+Problema: README/TODO descrivevano visioni come se fossero già complete (strutture placeholder).
+
+Aspettato: stato reale di main esplicito.
+
+Risolto: sezione "Current implementation status" in README + checklist "Recently completed" in TODO.
 ## Texture uva / vite
 
 Problema: grapevine riusava i modelli wheat; grapes senza texture dedicata.
