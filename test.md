@@ -227,6 +227,13 @@ Funzionamento aspettato: in inventario si vedono i PNG 32x32 dell'utente; i mode
 
 Come e stato risolto: copiati `/workspace/user-textures/kippah.png` e `hava_nagila_disc.png` in `assets/israel_simulator/textures/item/` senza ridimensionare. I model erano gia sul path del mod.
 
+## Coastal / urban structures
+
+Problema: jaffa_port, mediterranean_village, tel_aviv_city erano placeholder.
+
+Aspettato: geometria reale + loot.
+
+Risolto: `gen_coastal_structures.py` (molo/magazzino, villaggio, torri urbane). Non testato in-game.
 ## Desert structures (ruins / oasis / resort)
 
 Problema: desert_ruins, ein_gedi_oasis, dead_sea_resort erano placeholder.
