@@ -234,6 +234,13 @@ Problema: README/TODO descrivevano visioni come se fossero già complete (strutt
 Aspettato: stato reale di main esplicito.
 
 Risolto: sezione "Current implementation status" in README + checklist "Recently completed" in TODO.
+## Texture uva / vite
+
+Problema: grapevine riusava i modelli wheat; grapes senza texture dedicata.
+
+Aspettato: texture 16x16 stile vanilla (vite/grappoli, non grano).
+
+Risolto: PNG stage0-7 + item grapes; blockstate/modelli aggiornati. Non testato in-game.
 
 ## Agricultural farm structure
 
