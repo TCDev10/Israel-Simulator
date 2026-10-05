@@ -1,1267 +1,259 @@
 # Israel-Simulator
 
-> A Minecraft Java Edition sandbox expansion focused on exploration, culture, cities, dynamic NPCs, events, rare discoveries, and chaotic endgame content.
+<p align="center">
+  <img src="israel_simulator.png" alt="Israel-Simulator Logo" width="160" height="160" />
+</p>
 
-**Israel-Simulator** is a Minecraft Java Edition mod that transforms the vanilla world into a large open-world sandbox inspired by Israel, Israeli culture, Jewish traditions, Mediterranean environments, modern cities, historical locations, food, commerce, festivals, and fictional/comedic events.
+<p align="center">
+  <strong>An open-world Minecraft Java Edition expansion exploring Israeli environments, living cities, cultural traditions, dynamic economies, and chaotic sandbox encounters.</strong>
+</p>
 
-The project combines two distinct experiences:
-
-* **Cultural Simulation** — cities, architecture, food, traditions, festivals, NPCs, landmarks, transportation, and everyday-world simulation.
-* **Chaotic Sandbox** — rare events, powerful items, secret structures, boss encounters, easter eggs, absurd NPCs, and unexpected discoveries.
-
-The goal is not to create a linear campaign. The player should be able to explore freely and continuously discover new systems, locations, characters, and events.
-
----
-
-## Current implementation status
-
-Snapshot of what is actually in the repository today (NeoForge 26.2). Vision / design text below may describe future goals.
-
-### Shipped on `main`
-
-* **Six Israeli Biomes & Deterministic Geography**: Clustered West→East (`mediterranean_coast` → `urban_area` → `israeli_agriculture` → `jerusalem` → `judean_desert`, with `dead_sea` reliably bordering Jerusalem and the Judean Desert across all seeds including seed 42); depth `0.0` surface points with dedicated surface rules.
-* **16 Fully Implemented Real Structures**: All 16 registered structures feature complete, multi-thousand-block NBT architectures (DataVersion 4903) with interior details, marker blocks, and dedicated chest loot tables:
-  * `western_wall` (54x19x18, 18,468 blocks, prayer plaza, ramparts, underground tunnels)
-  * `tel_aviv_city` (48x18x48, 41,472 blocks, multi-district zoning)
-  * `jerusalem_city` (Dynamic jigsaw assembly with 12 modular Old City pieces)
-  * `great_synagogue` (36x18x36, 23,328 blocks, soaring dome, stained glass, bimah, Torah Ark)
-  * `ancient_sanctuary` (30x12x34, 12,240 blocks, mythic desert shrine housing the Rabbi's Crown)
-  * `grand_market` (32x12x30, 11,520 blocks, lively stalls and produce bazaar)
-  * `government_building` (28x14x26, 10,192 blocks, civic halls, chambers, and offices)
-  * `startup_office` (26x14x26, 9,464 blocks, modern tech hub, desks, servers, and meeting rooms)
-  * `synagogue` (26x13x26, 8,788 blocks, traditional stone house of worship)
-  * `historical_house` (24x11x24, 6,336 blocks, multi-floor heritage residence)
-  * `agricultural_farm` (32x12x32, greenhouse, crop plots, farmhouse, barn storage)
-  * `dead_sea_resort` (36x10x32, spa pavilions, mineral pools, relaxation lounges)
-  * `desert_ruins` (28x14x28, sandstone colonnades, crumbling arches, and buried relic vault)
-  * `ein_gedi_oasis` (32x16x32, natural waterfall, lush palm oasis, and hidden cave loot)
-  * `jaffa_port` (40x14x36, seaside harbor, docks, fishing depot, and warehouses)
-  * `mediterranean_village` (40x14x40, coastal plaza, stone houses, bell tower, and shuk)
-* **Optimized World Generation & Structure Locating**: Structure sets configured with balanced spacing/separation, ensuring instant `/locate` searches without freezing or deep spiral misses.
-* **Active Tel Aviv District System**: 6 distinct functional districts (Startup, Rothschild, Florentin, Sarona, Promenade, White City) with real-time HUD actionbar entry banners, district-specific trade economy multipliers, and recommended professions.
-* **Rich Cultural & Living Gameplay**: Western Wall prayers, Synagogue Torah ark blessings, progressive Menorah lighting, 32 cultural/food/tech items with full English & Italian localization parity, holiday festivals, kosher food digestion system, and the satirical Bibi boss encounter.
+<p align="center">
+  <a href="https://neoforged.net/"><img src="https://img.shields.io/badge/NeoForge-26.2.0.88-ea580c?style=for-the-badge" alt="NeoForge 26.2" /></a>
+  <a href="https://minecraft.net/"><img src="https://img.shields.io/badge/Minecraft-26.2-248046?style=for-the-badge&logo=minecraft&logoColor=white" alt="Minecraft 26.2" /></a>
+  <a href="https://adoptium.net/"><img src="https://img.shields.io/badge/Java-25-b07219?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java 25" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-AGPL--3.0-blue?style=for-the-badge" alt="AGPL-3.0" /></a>
+  <a href="https://github.com/TCDev10/Israel-Simulator/actions/workflows/build.yml"><img src="https://img.shields.io/github/actions/workflow/status/TCDev10/Israel-Simulator/build.yml?branch=main&label=CI%20Build&style=for-the-badge" alt="CI Build" /></a>
+  <a href="https://github.com/TCDev10/Israel-Simulator/releases"><img src="https://img.shields.io/github/v/release/TCDev10/Israel-Simulator?logo=github&label=Release&style=for-the-badge" alt="Latest Release" /></a>
+</p>
 
 ---
 
-## Features
+## Table of Contents
 
-### 🌍 Open World
-
-The world contains multiple distinct environments and regions:
-
-* Mediterranean coast
-* Tel Aviv
-* Jaffa
-* Jerusalem
-* Dead Sea
-* Desert regions
-* Agricultural areas
-* Villages
-* Technology districts
-* Historical areas
-* Rare structures
-* Secret locations
-
-Different regions have their own architecture, NPC behavior, activities, resources, structures, and atmosphere.
-
----
-
-### 🏙️ Dynamic Cities
-
-Cities are intended to feel like living environments rather than static structures.
-
-NPCs can:
-
-* Walk around
-* Work
-* Trade
-* Eat
-* Socialize
-* Enter buildings
-* Use transportation
-* Participate in events
-* Follow daily schedules
-
-Major cities have different architectural and gameplay identities.
-
-#### Tel Aviv
-
-Includes concepts such as:
-
-* Modern skyscrapers
-* Beaches
-* Hotels
-* Restaurants
-* Cafés
-* Shops
-* Rothschild Boulevard
-* Florentin
-* Sarona
-* White City / Bauhaus architecture
-* Technology district
-* Offices
-* Nightlife
-* Public transportation
-
-#### Jaffa
-
-A historical coastal area featuring:
-
-* Old city streets
-* Port
-* Markets
-* Restaurants
-* Shops
-* Clock tower
-* Flea market
-* Mediterranean architecture
-
-#### Jerusalem
-
-A major exploration and endgame location containing:
-
-* Old City
-* Markets
-* Historical buildings
-* Synagogues
-* Religious landmarks
-* Modern districts
-* Rare structures
-* Special encounters
+- [Overview](#overview)
+- [Key Features](#key-features)
+  - [Deterministic Biomes & World Generation](#-deterministic-biomes--world-generation)
+  - [16 Procedural Real Structures](#-16-procedural-real-structures)
+  - [Dynamic Cities & Tel Aviv District System](#-dynamic-cities--tel-aviv-district-system)
+  - [Living Cultural & Religious Mechanics](#-living-cultural--religious-mechanics)
+  - [Currency, Economy & Food](#-currency-economy--food)
+  - [Endgame & Sandbox Encounters](#-endgame--sandbox-encounters)
+- [Installation Guide](#installation-guide)
+  - [Client (Singleplayer & Multiplayer)](#client-singleplayer--multiplayer)
+  - [Dedicated Server](#dedicated-server)
+- [Building from Source (Developer Guide)](#building-from-source-developer-guide)
+  - [Prerequisites](#prerequisites)
+  - [Compiling the Mod JAR](#compiling-the-mod-jar)
+  - [Running Development Client / Server](#running-development-client--server)
+  - [Running the Test Suite](#running-the-test-suite)
+- [Project Architecture](#project-architecture)
+- [Contributing](#contributing)
+- [Localization](#localization)
+- [License & Credits](#license--credits)
 
 ---
 
-## 🗺️ Exploration & Landmarks
+## Overview
 
-Exploration is one of the core gameplay systems.
+**Israel-Simulator** is a sandbox mod built for **NeoForge 26.2** (targeting **Minecraft 26.2** on **Java 25**). Rather than being a linear adventure map or a scripted tour, the mod proceduralizes the landscape of Israel into Minecraft's native world generation.
 
-Major discoveries include:
+It combines two core experiences:
+1. **Authentic Cultural Simulation**: Walk the limestone alleys of Jerusalem's Old City, pray at the Western Wall with a Kippah and Prayer Note, light the Hanukkah Menorah, celebrate Shabbat, sample street food (falafel, shakshuka, sabich, hummus), and trade using Shekels and Rav-Kav transit cards.
+2. **Chaotic Sandbox Gameplay**: Discover ancient desert sanctuaries holding the mythic *Rabbi's Crown*, venture into tech startups in Tel Aviv, battle the satirical *Bibi* boss and his security guards, and play the legendary *Hava Nagila* music disc.
 
-* Western Wall
-* Synagogues
-* Historical buildings
-* Markets
-* Desert ruins
-* Dead Sea resorts
-* Government buildings
-* Technology offices
-* Rare religious structures
-* Secret easter-egg structures
-
-The world map progressively records discovered landmarks.
+Every mechanic is built from the ground up to be **authoritative on the server**, ensuring fair multiplayer environments without client-side exploit vectors.
 
 ---
 
-## 🕍 Cultural Content
+## Key Features
 
-The mod includes optional cultural and religious content that can be discovered through exploration and interaction.
+### 🌍 Deterministic Biomes & World Generation
 
-Planned content includes:
+The mod organizes Israeli biomes into an intuitive West-to-East geographic strip at depth `0.0`:
+* **Mediterranean Coast**: Sandy shorelines, warm waters, palm flora, and maritime climate.
+* **Urban Area**: Modern metropolitan terrain, paved transit grids, and bustling plazas.
+* **Israeli Agriculture**: Fertile terraced fields, olive groves, and vineyards producing custom grapevine crops.
+* **Jerusalem Highlands**: Rugged limestone hills, ancient pathways, and Jerusalem Stone bedrock.
+* **Judean Desert**: Arid sandstone valleys, canyons, oasis pockets, and harsh survival conditions.
+* **Dead Sea**: Deep salt-crusted depression with salt blocks, mineral water, and extreme elevation drops bordering Jerusalem and the desert.
 
-* Kippah
-* Talit
-* Tefillin
-* Menorah
-* Synagogues
-* Prayer Notes
-* Jewish festivals
-* Hebrew signage
-* Religious NPCs
-* Cultural objects
-* Traditional food
+### 🏛️ 16 Procedural Real Structures
 
-These systems are optional and are not intended to force the player into a linear religious progression.
+All 16 registered structures feature complete, hand-tuned procedural NBT architectures with furnished interiors, functional block entities, and dedicated chest/barrel loot tables:
 
----
+| Structure | Dimensions | Key Highlights |
+| :--- | :--- | :--- |
+| `western_wall` | 54×19×18 | Sacred limestone plaza, underground prayer tunnels, note crevices |
+| `tel_aviv_city` | 48×18×48 | Multi-district urban complex with high-rises and boulevards |
+| `jerusalem_city` | Jigsaw Assembly | Dynamic 12-piece Old City (bazaars, houses, arches, alleys, walls) |
+| `great_synagogue` | 36×18×36 | Stained glass halls, central bimah, Torah Ark, vaulted ceiling |
+| `ancient_sanctuary` | 30×12×34 | Hidden desert temple guarding the Mythic Rabbi's Crown |
+| `grand_market` | 32×12×30 | Lively covered shuk stalls, spice crates, produce barrels |
+| `government_building` | 28×14×26 | Civic halls, debating chambers, executive offices |
+| `startup_office` | 26×14×26 | Modern tech hub with laptops, monitors, server racks |
+| `synagogue` | 26×13×26 | Traditional neighbourhood house of prayer and study |
+| `historical_house` | 24×11×24 | Heritage limestone multi-floor residential home |
+| `agricultural_farm` | 32×12×32 | Modern greenhouses, irrigated crop plots, barn storage |
+| `dead_sea_resort` | 36×10×32 | Seaside spa pavilions, mineral mud pools, tourist lounges |
+| `desert_ruins` | 28×14×28 | Weathered sandstone arches, colonnades, buried treasure vault |
+| `ein_gedi_oasis` | 32×16×32 | Natural mountain waterfall, lush palm pools, hidden cavern loot |
+| `jaffa_port` | 40×14×36 | Sea docks, fishing warehouses, maritime cargo crates |
+| `mediterranean_village` | 40×14×40 | Coastal village square, stone homes, coastal clock tower |
 
-## 🧢 Equipment & Rare Items
+*Structure set placement and spacing are optimized for lightning-fast `/locate` searches without freezing chunk generation.*
 
-Israel-Simulator features a rarity system:
+### 🏙️ Dynamic Cities & Tel Aviv District System
 
-```text
-COMMON
-UNCOMMON
-RARE
-EPIC
-LEGENDARY
-MYTHIC
-```
+When walking through Tel Aviv, players traverse **6 functional districts**, each greeted with a real-time HUD actionbar banner and unique economic multipliers:
+- **Startup District**: Hub for tech items; boosts electronic trades and laptop rewards.
+- **Rothschild Boulevard**: Financial spine with banking bonuses and cafe commerce.
+- **Florentin**: Artistic quarter with artisan workshops and street market bargains.
+- **Sarona**: Culinary market sector offering food item discounts and specialty stalls.
+- **Promenade**: Seaside beachfront enhancing fishing trade values and leisure items.
+- **White City**: Bauhaus architectural zone with cultural heritage bonuses.
 
-Some items are intentionally extremely difficult to obtain.
+### 🕍 Living Cultural & Religious Mechanics
 
-### Kippah
+- **Western Wall Prayer**: Equip a Kippah (head armor slot) and right-click the Western Wall with a *Prayer Note*. The server processes the prayer, consumes the note, plays celebratory sounds, spawns holy particles, and grants the *Blessed Effect* (Luck II + Regeneration I) alongside 5 Diamonds (with an anti-exploit cooldown).
+- **Menorah Lighting**: Placeable multi-state Menorah block that can be progressively lit candle by candle during holiday festivals.
+- **Synagogue Torah Ark**: Interactive holy ark providing community blessings to gathered worshippers.
+- **Kosher Digestion System**: Dietary status effects rewarding proper kosher food combinations.
+- **Holiday Calendar Events**: Scheduled in-game world events for Shabbat and Hanukkah.
 
-Head equipment with:
+### 💰 Currency, Economy & Food
 
-* Custom model
-* Texture
-* Third-person rendering
-* Multiplayer synchronization
-* Compatibility with certain interactions
+- **Currency**: Minted **Shekel** and **Agora** coins with server-authoritative exchange rates and merchant discounts.
+- **Public Transport**: **Rav-Kav** smart cards and transport stop blocks providing rapid transit across distant cities.
+- **Mediterranean Cuisine**: 12 custom foods with original textures and realistic nutrition values:
+  - *Falafel*, *Shakshuka*, *Sabich*, *Hummus*, *Challah*, *Matzo*, *Sufganiyah*, *Hamantash*, *Rugelach*, *Tahini*, *Olives*, *Citrus*, and fresh vineyard *Grapes*.
 
-### Talit
+### ⚡ Endgame & Sandbox Encounters
 
-Special equipment providing smaller temporary or passive bonuses.
-
-### Tefillin
-
-A contextual interaction item featuring:
-
-* Animation
-* Cooldown
-* Temporary bonus
-* Achievement
-
-### Rabbi's Crown
-
-A **MYTHIC** endgame item.
-
-The item features a complete custom model including:
-
-* Rabbi-style hat
-* Long beard
-* Payot
-* Decorative details
-
-Stats:
-
-```text
-Armor: +20
-```
-
-It also provides the permanent:
-
-```text
-Blessed Trader
-```
-
-effect.
-
-Compatible villager trades can be reduced to their configured minimum cost, such as:
-
-```text
-1 Emerald
-```
-
-The item is not normally craftable and is intended to be one of the rarest items in the game.
+- **Rabbi's Crown** *(MYTHIC)*: Ultra-rare sacred crown found exclusively within the deep chambers of the *Ancient Sanctuary*.
+- **First Amendment** *(LEGENDARY)*: High-tier artifact granting speech and immunity effects.
+- **Hava Nagila Music Disc** *(LEGENDARY)*: Custom music disc with full jukebox audio integration.
+- **Bibi Boss Battle**: Satirical boss entity with custom AI goals, armed security guards, speech sound effects, and unique endgame drops.
 
 ---
 
-## 🧱 Western Wall Interaction
+## Installation Guide
 
-The Western Wall is a generated landmark rather than a decorative placeholder.
+### Client (Singleplayer & Multiplayer)
 
-Players can interact with it using a **Prayer Note**.
+1. Make sure you have **Minecraft Java Edition 26.2** installed.
+2. Download and install **[NeoForge 26.2.0.88+](https://neoforged.net/)**.
+3. Download the latest `israel_simulator-x.y.z.jar` from the [GitHub Releases](https://github.com/TCDev10/Israel-Simulator/releases) tab.
+4. Place the downloaded `.jar` file into your `.minecraft/mods` directory:
+   - **Windows**: `%appdata%\.minecraft\mods`
+   - **Linux**: `~/.minecraft/mods`
+   - **macOS**: `~/Library/Application Support/minecraft/mods`
+5. Select the NeoForge profile in the Minecraft Launcher and launch the game.
 
-A valid interaction can trigger:
+### Dedicated Server
 
-1. Player approaches the Wall.
-2. Player faces the landmark.
-3. Interaction animation begins.
-4. Particles and audio play.
-5. Prayer Note is placed.
-6. Player receives a temporary blessing.
-
-Example reward:
-
-```text
-+5 Diamonds
-+ Blessed Effect
-```
-
-The reward uses a cooldown to prevent infinite farming.
-
-The **Blessed Effect** can provide temporary bonuses such as:
-
-* Regeneration
-* Resistance
-* Luck
+1. Set up a standard NeoForge 26.2 dedicated server.
+2. Ensure the server runs on **Java 25** (`java -version`).
+3. Place `israel_simulator-x.y.z.jar` into the server's `mods/` directory.
+4. Start the server via `run.bat` or `run.sh`. World generation rules and city structures will automatically generate in newly explored chunks.
 
 ---
 
-## 🍴 Food & Cooking
+## Building from Source (Developer Guide)
 
-The mod introduces an expanded food system inspired by Israeli and Jewish cuisine.
+### Prerequisites
 
-Planned foods include:
+- **Java Development Kit (JDK) 25** or higher (e.g. Eclipse Temurin 25).
+- **Git**.
 
-* Falafel
-* Hummus
-* Shakshuka
-* Sabich
-* Tahini
-* Challah
-* Rugelach
-* Dates
-* Olives
-* Citrus fruits
+### Compiling the Mod JAR
 
-Each food item can define:
-
-* Recipe
-* Texture
-* Model
-* Food value
-* Saturation
-* Optional effects
-
-A lightweight kosher cooking system may also provide ingredient and recipe tagging without turning the mechanic into an unnecessarily complex simulation.
-
----
-
-## 🎉 Festivals & Events
-
-The world contains a configurable event system.
-
-Planned festivals include:
-
-* Shabbat
-* Rosh Hashanah
-* Yom Kippur
-* Sukkot
-* Hanukkah
-* Purim
-* Pesach
-
-Festivals can modify:
-
-* NPC schedules
-* Decorations
-* Food
-* Audio
-* Structures
-* Particles
-* Events
-* Rewards
-
-### Hanukkah
-
-The Menorah can progressively illuminate during the festival:
-
-```text
-Day 1 → 1 candle
-Day 2 → 2 candles
-...
-Day 8 → 8 candles
-```
-
----
-
-## 🌊 Dead Sea
-
-The Dead Sea is a dedicated region with unique environmental mechanics.
-
-Planned features include:
-
-* Increased buoyancy
-* Unique water behavior
-* Salt resources
-* Minerals
-* Unique terrain
-* Tourism
-* Special NPCs
-* Resort structures
-
----
-
-## 🏜️ Desert
-
-Desert regions provide more dangerous exploration.
-
-Features include:
-
-* Sand
-* Rock formations
-* Canyons
-* Limited vegetation
-* Unique resources
-* Rare structures
-* Environmental hazards
-* Special mobs
-* Hidden discoveries
-
----
-
-## 💻 Technology District
-
-Tel Aviv contains a dedicated technology/startup district.
-
-Possible locations include:
-
-* Startup offices
-* Coworking spaces
-* Server rooms
-* Laboratories
-* Conference rooms
-* Offices
-* Technology companies
-
-NPC professions include:
-
-```text
-Developer
-Founder
-Investor
-Engineer
-```
-
----
-
-## 🚕 Transportation
-
-The world includes multiple transportation systems:
-
-* Walking
-* Bicycles
-* Buses
-* Trains
-* Taxis
-* Boats
-
-Major cities and regions can be connected through the transportation network.
-
----
-
-## 🧑‍🤝‍🧑 NPC System
-
-NPCs have professions, schedules, trades, dialogue, and preferred locations.
-
-Examples:
-
-```text
-Merchant
-Rabbi
-Farmer
-Fisherman
-Chef
-Artisan
-Developer
-Taxi Driver
-Tourist
-Musician
-Historian
-Shopkeeper
-Founder
-Investor
-Engineer
-```
-
-A typical NPC schedule may look like:
-
-```text
-06:00 → Wake
-08:00 → Work
-12:00 → Lunch
-14:00 → Work
-18:00 → Social
-22:00 → Home
-```
-
-Schedules can change during festivals and world events.
-
----
-
-## 💰 Economy & Trading
-
-The economy expands Minecraft's vanilla trading systems.
-
-Possible economic locations include:
-
-* Markets
-* Shops
-* Restaurants
-* Farms
-* Technology businesses
-* Cultural stores
-* Agricultural regions
-
-Different regions have different economic identities.
-
-Urban areas focus more heavily on commerce and technology, while rural regions focus on agriculture and food production.
-
----
-
-## 🎭 World Events
-
-The world has a dynamic event system.
-
-Possible events include:
-
-```text
-Public Speech
-Market Day
-Festival
-Concert
-Beach Event
-Religious Event
-Food Festival
-Technology Conference
-Rare NPC Spawn
-Boss Event
-```
-
-Events define:
-
-* Spawn conditions
-* Duration
-* Participants
-* Rewards
-* Cooldowns
-* Configuration
-
-Events should create unexpected situations while exploring the world.
-
----
-
-## 🧑‍⚖️ Public Speech Event
-
-A fictional/satirical public event can occur around a gazebo or public stage.
-
-The structure can contain:
-
-* Gazebo
-* Stage
-* Microphone
-* Speaker NPC
-* Crowd
-* Signs
-* Seating
-* Public area
-
-NPCs react dynamically through:
-
-* Applause
-* Booing
-* Movement
-* Dialogue
-* Idle animations
-
-After participating for at least:
-
-```text
-60 seconds
-```
-
-the player can complete the event.
-
-Reward:
-
-### First Amendment
-
-A rare collectible featuring:
-
-* Custom lore
-* Achievement
-* Optional gameplay effect
-
-The event and characters are presented as fictional/satirical game content.
-
----
-
-## 🧟 Bibi Boss
-
-Israel-Simulator includes a fictional fantasy boss inspired by Benjamin Netanyahu.
-
-The encounter is designed as a comedic gameplay event rather than a representation of real-world events.
-
-### Boss Stats
-
-The boss has extremely high configurable health.
-
-Example:
-
-```text
-HP: 10,000+
-```
-
-### Boss States
-
-```text
-IDLE
- ↓
-ALERT
- ↓
-COMBAT
- ↓
-ENRAGED
- ↓
-DEFEATED
-```
-
-Possible abilities include:
-
-* Ranged attacks
-* Defensive abilities
-* Special attacks
-* Summoning guards
-* Escape mechanics
-
-All combat mechanics are fictional fantasy gameplay.
-
-### Boss Locations
-
-Possible spawn locations:
-
-* Government building
-* Rare structure
-* Special world event
-* Dedicated boss arena
-
-### Boss Reward
-
-Defeating the boss can reward:
-
-```text
-Music Disc — Hava Nagila
-```
-
-The included recording must use an appropriately licensed recording or an original recording created for the project.
-
----
-
-## 🎵 Music
-
-The mod can contain music for:
-
-* Jewish cultural themes
-* Israeli-inspired environments
-* City ambience
-* Festivals
-* Special events
-* Boss encounters
-
-All included audio must have compatible licensing.
-
-Commercial recordings must not be redistributed without permission.
-
----
-
-## 🏆 Achievements
-
-Examples include:
-
-| Achievement       | Requirement                              |
-| ----------------- | ---------------------------------------- |
-| Welcome to Israel | Enter the main region for the first time |
-| Shalom            | Interact with your first NPC             |
-| Visit Jerusalem   | Discover Jerusalem                       |
-| Tel Aviv Nights   | Complete a nighttime Tel Aviv event      |
-| Jaffa             | Visit Jaffa                              |
-| Dead Sea Tourist  | Enter the Dead Sea region                |
-| Five Diamonds     | Complete the Western Wall interaction    |
-| Blessed Trader    | Obtain the Rabbi's Crown                 |
-| Hava Nagila       | Obtain the music disc                    |
-| Freedom of Speech | Complete the Public Speech Event         |
-| Startup Founder   | Visit the Technology District            |
-| Master Explorer   | Discover all major landmarks             |
-
----
-
-## ⭐ Reputation
-
-Players can build reputation with different groups and locations.
-
-Possible reputation categories:
-
-```text
-Merchants
-Cities
-Villages
-Religious NPCs
-Technology District
-Special Factions
-```
-
-Reputation can affect:
-
-* Prices
-* Dialogue
-* Access
-* Events
-* Rare trades
-
----
-
-## 🥚 Easter Eggs
-
-The world contains optional hidden content.
-
-Examples include:
-
-* Secret structures
-* Rare NPCs
-* Random dialogue
-* Meme items
-* Hidden achievements
-* Ultra-rare events
-* Procedural dialogue
-* Hidden interactions
-
-Easter eggs are intended to complement the main world rather than replace it.
-
----
-
-## 🗺️ Core Gameplay Loop
-
-Israel-Simulator is designed around discovery rather than a mandatory questline.
-
-```text
-EXPLORE
-   ↓
-DISCOVER
-   ↓
-INTERACT
-   ↓
-TRADE / CRAFT
-   ↓
-COMPLETE EVENTS
-   ↓
-OBTAIN RARE ITEMS
-   ↓
-EXPLORE RARER / MORE DANGEROUS AREAS
-   ↓
-DISCOVER ENDGAME CONTENT
-```
-
-Players can ignore many systems and simply explore the world.
-
----
-
-## 🧭 Progression
-
-There is no mandatory linear campaign.
-
-Progression comes from:
-
-* Exploration
-* Discoveries
-* Optional events
-* Collections
-* Achievements
-* Reputation
-* Rare structures
-* Rare equipment
-* Boss encounters
-
-The world should remain playable as a sandbox even after the major content has been discovered.
-
----
-
-## 🌐 Multiplayer
-
-Israel-Simulator is designed to support multiplayer.
-
-Important gameplay systems should be server-authoritative:
-
-* Rewards
-* Trading
-* Boss encounters
-* Events
-* Cooldowns
-* Items
-* Progression
-
-The implementation must prevent:
-
-* Item duplication
-* Reward abuse
-* Client-side exploits
-* Desynchronization
-
----
-
-## ⚙️ Configuration
-
-Major systems should be configurable.
-
-Configuration options include:
-
-* World generation
-* City frequency
-* Structure generation
-* NPC spawning
-* Event frequency
-* Rewards
-* Boss HP
-* Boss damage
-* Item rarity
-* Cooldowns
-* Festival calendar
-* Music
-* Particles
-
----
-
-## 🚀 Performance
-
-Large cities and procedural generation must be implemented with performance in mind.
-
-Avoid:
-
-* Heavy global tick handlers
-* Unnecessary pathfinding
-* Excessive entity AI
-* Particle spam
-* Expensive chunk generation
-* Memory leaks
-
-Large structures should use controlled generation and efficient entity management.
-
----
-
-## 🏗️ Architecture
-
-The project should remain modular.
-
-Suggested package structure:
-
-```text
-world/
-biomes/
-structures/
-cities/
-blocks/
-items/
-equipment/
-entities/
-npc/
-bosses/
-animation/
-events/
-festivals/
-food/
-trading/
-economy/
-transport/
-quests/
-achievements/
-network/
-client/
-server/
-config/
-audio/
-```
-
-Avoid giant classes and tightly coupled systems.
-
-Where possible, content should use a data-driven approach:
-
-* JSON
-* Tags
-* Loot tables
-* Recipes
-* Configuration files
-* Datapack-compatible data
-
----
-
-## 🧪 Testing
-
-The project should test:
-
-### Items
-
-* Kippah
-* Rabbi's Crown
-* Talit
-* Tefillin
-* Prayer Note
-* First Amendment
-* Music Disc
-
-### Gameplay
-
-* Western Wall interaction
-* Cooldowns
-* Rewards
-* Villager discounts
-* Boss encounter
-* Public Speech
-* Festivals
-
-### World
-
-* Biomes
-* Cities
-* Structures
-* Landmarks
-* Generation boundaries
-
-### Multiplayer
-
-* Synchronization
-* Rewards
-* Bosses
-* Events
-* Trading
-* Item duplication
-
----
-
-## 📦 Development Roadmap
-
-### Phase 1 — Foundation
-
-* Mod setup
-* Registries
-* Configuration
-* Networking
-* Basic items
-
-### Phase 2 — World
-
-* Biomes
-* Terrain
-* Vegetation
-* Coast
-* Desert
-* Dead Sea
-
-### Phase 3 — Cities
-
-* Tel Aviv
-* Jaffa
-* Jerusalem
-* Villages
-
-### Phase 4 — Culture
-
-* Kippah
-* Talit
-* Tefillin
-* Menorah
-* Synagogues
-* Food
-* Hebrew signage
-
-### Phase 5 — Gameplay
-
-* Western Wall
-* Prayer Notes
-* Blessed Effect
-* Trading
-* Reputation
-* Events
-
-### Phase 6 — Endgame
-
-* Rabbi's Crown
-* Rare structures
-* Bibi Boss
-* Music Disc
-
-### Phase 7 — Events
-
-* Festivals
-* Public Speech
-* City events
-* Concerts
-* Markets
-
-### Phase 8 — Polish
-
-* Animations
-* Sounds
-* Particles
-* UI
-* Achievements
-* Performance
-
-### Phase 9 — QA
-
-* Multiplayer
-* Exploit testing
-* World generation
-* Compatibility
-* Performance
-
----
-
-## 📜 Asset & Licensing Policy
-
-Israel-Simulator should only use:
-
-* Original assets
-* Procedurally generated assets
-* Assets with compatible licenses
-* Assets explicitly permitted for commercial use
-
-External assets must be documented.
-
-The repository should maintain:
-
-```text
-CREDITS.md
-ASSET_LICENSES.md
-```
-
-Audio must follow the same licensing requirements.
-
-In particular, commercial recordings must not be bundled without redistribution rights.
-
----
-
-## 🎯 Design Principles
-
-### Exploration First
-
-The world should continuously provide reasons to explore.
-
-### Discovery
-
-Important content should not always be immediately visible.
-
-### Variety
-
-Different cities and regions must feel meaningfully different.
-
-### Optionality
-
-Cultural and religious systems should be discoverable without becoming a mandatory progression path.
-
-### Comedy
-
-Comedic content should primarily appear through optional events, easter eggs, NPCs, and rare encounters.
-
-### Rare Rewards
-
-The strongest and most unusual items should require meaningful exploration or difficult encounters.
-
-### Replayability
-
-Procedural generation, dynamic NPCs, events, rare structures, and random encounters should create different experiences across worlds.
-
----
-
-## ✅ Definition of Done
-
-The mod is not considered complete if it contains:
-
-* Placeholder content
-* Unresolved TODOs
-* Items without textures
-* NPCs without required AI
-* Fake structures
-* Non-functional rewards
-* Missing animations where actual animations are required
-* Systems that exist only in documentation
-* Non-compiling code
-
-A release candidate must satisfy:
-
-```text
-BUILD SUCCESS
-+
-GAME LAUNCHES
-+
-WORLD GENERATES
-+
-FEATURES FUNCTION
-+
-MULTIPLAYER WORKS
-+
-NO CRITICAL CRASHES
-+
-NO MAJOR DUPLICATION EXPLOITS
-+
-ASSETS LICENSED
-+
-CONTENT TESTED
-```
-
----
-
-## 🎮 Intended Player Experience
-
-A typical long-term playthrough may look like:
-
-```text
-Spawn
-  ↓
-Village
-  ↓
-Mediterranean Coast
-  ↓
-Tel Aviv
-  ↓
-Jaffa
-  ↓
-Technology District
-  ↓
-Jerusalem
-  ↓
-Western Wall
-  ↓
-Prayer Note
-  ↓
-Blessed Effect
-  ↓
-Synagogues & Rare Structures
-  ↓
-Festivals & World Events
-  ↓
-Dead Sea
-  ↓
-Desert
-  ↓
-Rare Structures
-  ↓
-Endgame Equipment
-  ↓
-Rabbi's Crown
-  ↓
-Secret Events
-  ↓
-Bibi Boss
-  ↓
-Hava Nagila
-  ↓
-Public Speech
-  ↓
-First Amendment
-  ↓
-Master Explorer
-  ↓
-Continue Exploring
-```
-
-The player should be able to deviate from this path at almost any point.
-
----
-
-## 📌 Project Vision
-
-Israel-Simulator is intended to be more than a collection of Minecraft items.
-
-It combines:
-
-**Open-world exploration**
-
-**Cultural simulation**
-
-**Dynamic cities**
-
-**NPC life**
-
-**Procedural discovery**
-
-**Events**
-
-**Rare items**
-
-**Boss encounters**
-
-**Easter eggs**
-
-**Multiplayer sandbox gameplay**
-
-The central experience is:
-
-```text
-WORLD
- ↓
-EXPLORATION
- ↓
-DISCOVERY
- ↓
-INTERACTION
- ↓
-COLLECTION
- ↓
-RARE EVENTS
- ↓
-ENDGAME
- ↓
-MORE EXPLORATION
-```
-
-The objective is to create a world where a player can start by simply exploring a Mediterranean coastline and, hours later, discover a rare structure, obtain an extremely uncommon item, participate in a dynamic public event, encounter an absurd boss, or uncover a secret that they had no reason to expect.
-
----
-
-## 🔧 Build, CI/CD & Installation
-
-### Build Requirements
-
-```text
-Java:       25 (toolchain provisioned automatically via Foojay resolver)
-Minecraft:  26.2
-Mod loader: NeoForge 26.2 (26.2.0.88)
-Build:      ModDevGradle 2.0.147, Gradle wrapper 9.2.1 (committed)
-```
-
-### Build Instructions
+Clone the repository and build using the committed Gradle wrapper:
 
 ```bash
+# Clone the repository
+git clone https://github.com/TCDev10/Israel-Simulator.git
+cd Israel-Simulator
+
+# Compile, run automated verification, and package the release JAR
 ./gradlew build
 ```
 
-The mod `.jar` is produced at `build/libs/israel_simulator-<version>.jar`.
+The resulting mod JAR will be located at:
+```text
+build/libs/israel_simulator-0.1.0.jar
+```
 
-### CI/CD
+### Running Development Client / Server
 
-GitHub Actions (`.github/workflows/build.yml`) runs on every push and pull request and:
+NeoForge ModDevGradle comes preconfigured with dedicated run configurations:
 
-1. Compiles the mod with the Gradle wrapper on JDK 25 (Temurin).
-2. Verifies the produced `.jar` contains the expanded `neoforge.mods.toml` and the mod classes.
-3. Publishes the `.jar` as a downloadable artifact named `israel-simulator-<version>-<commit>`.
-4. Uploads build reports as artifacts on failure.
+```bash
+# Launch a development Minecraft client with the mod loaded
+./gradlew runClient
 
-A build is not considered complete if compilation, verification, or artifact publication fails.
+# Launch a headless development dedicated server
+./gradlew runServer
 
-### Installation
+# Run automated GameTest server
+./gradlew runGameTestServer
+```
 
-#### Client
-1. Install [NeoForge 26.2](https://neoforged.net/) for Minecraft 26.2.
-2. Drop the downloaded mod `.jar` into the `.minecraft/mods` directory.
-3. Prebuilt `.jar` artifacts can be obtained from any successful GitHub Actions CI run (GitHub → Actions → `build` → Artifacts).
+### Running the Test Suite
 
-#### Dedicated Server
-1. Set up a NeoForge 26.2 dedicated server running on Java 25.
-2. Place `israel_simulator-<version>.jar` into the server `mods/` directory.
-3. Start the server; configurations will generate automatically in `config/israel_simulator-common.toml`.
+Israel-Simulator enforces strict test coverage across all worldgen algorithms, registries, economies, and data assets:
 
----
+```bash
+# Run all 54 JUnit 5 test suites (248 tests)
+./gradlew test
+```
 
-### 🌐 Multiplayer Requirements
-
-Israel-Simulator is fully engineered for multiplayer compatibility and server authority:
-* **Server Authority**: All economic trades, Western Wall reward claims, boss health/loot distribution, cooldowns, and reputation tiers are validated and tracked strictly on the server side.
-* **Synchronization**: Player equipment layers (Kippah, Talit, Tefillin, Rabbi's Crown), transit travel states, and dynamic festival schedules synchronize across all joined clients.
-* **Anti-Exploit / Anti-Duplication**: Multi-UUID tracking, atomic note consumption, and cooldown maps prevent packet replay or double-claim exploits.
-* **Separation of Concerns**: Client-side rendering and audio streams are separated cleanly from server logic, ensuring headless dedicated servers run without crashes (`DedicatedServerCompatibilityTest`).
+Test reports are generated in HTML format under `build/reports/tests/test/index.html`.
 
 ---
 
-### ⚙️ Configuration
+## Project Architecture
 
-Gameplay and balance values are centralized in `config/israel_simulator-common.toml`:
-* `effects`: Blessed effect duration and amplifier.
-* `food`: Kosher dietary system toggle, meat and dairy digestion waiting periods.
-* `boss`: Bibi Boss health (`10,000`), attack damage, maximum summoned guards, arena radius.
-* `worldgen`: Major city spacing (`34` chunks default) and rare structure distribution.
-* `npc`: Maximum NPC density per chunk, villager trade discount ceiling.
-* `events`: Event duration (`6000` ticks), cooldown intervals, minimum Public Speech participation requirement (`1200` ticks / 60s).
-* `cooldowns`: Western Wall prayer cooldown, Shofar cooldown, transit cooldown.
-* `performance`: Particle count ceilings and entity density throttling.
-* `audio`: City ambience toggles and music volume multipliers.
+The codebase follows a modular server-authoritative structure:
+
+```text
+src/main/java/com/israelsimulator/
+├── IsraelSimulator.java          # Mod entrypoint & event bus registrations
+├── city/                         # City simulation & Tel Aviv district logic
+│   ├── telaviv/                  # District boundaries, banners, economy multipliers
+│   ├── jerusalem/                # Old City bazaar trades and economy
+│   └── jaffa/                    # Port merchant trades and maritime economy
+├── cultural/                     # Cultural interaction handlers (Western Wall, Menorah)
+├── entity/                       # Custom entity definitions, AI goals, Bibi boss
+├── event/                        # World events, festivals, player join/tick listeners
+├── food/                         # Kosher digestion and nutrition handlers
+├── registry/                     # NeoForge deferred registers (Blocks, Items, Entities, etc.)
+└── world/                        # Climate parameters, biomes, jigsaw pools, structure sets
+```
 
 ---
 
-### ⚠️ Known Limitations
+## Contributing
 
-* Requires **Java 25** and **NeoForge 26.2**; earlier versions of Minecraft or alternative mod loaders (Fabric/Quilt/Forge) are not supported.
-* Dedicated servers must provide sufficient heap allocation for multi-noise procedural worldgen and jigsaw structures.
+Contributions from the community are warmly welcome! Whether you are designing new jigsaw pieces, fixing bugs, or adding localizations:
+
+1. **Fork the Repository** and create a descriptive branch:
+   ```bash
+   git checkout -b feature/my-cool-feature
+   ```
+2. **Follow Architectural Rules**:
+   - Keep gameplay authoritative on the server (never trust client-supplied progression).
+   - Use Minecraft data-driven registries (JSON structures, loot tables, tags) where appropriate.
+   - Use original or compatibly licensed assets (AGPL-3.0 compatible).
+3. **Verify Before Submitting**:
+   - Ensure `./gradlew test` passes with zero failures.
+   - Ensure `./gradlew build` builds cleanly.
+4. **Open a Pull Request** describing your changes and testing steps.
 
 ---
 
-### 🚀 Implementation Status
+## Localization
 
-All 62 feature milestones defined in [`GAME_DESIGN.md`](GAME_DESIGN.md) and [`PLAN.md`](PLAN.md) are **fully implemented, tested, and verified**:
-* **Worldgen & Biomes**: Mediterranean coast, Judean desert, Dead Sea with hypersaline buoyancy, agricultural terraces, and olive groves.
-* **Cities & Architecture**: Procedural generation and landmarks for Tel Aviv, Jerusalem Old City, and Jaffa Port.
-* **Entities & NPCs**: Living NPC schedules (work, lunch, market, home, sleep), Shuk merchants, and Bibi Coalition Guards.
-* **Economy & Trade**: Regional supply-demand curves, Shekel currency exchange, and anti-arbitrage price floors.
-* **Cultural Content & Festivals**: Functional Menorah with dynamic candle lighting, Shabbat cycle, Hanukkah festival, kosher dietary validation, and Western Wall prayer notes.
-* **Endgame & Boss**: Fictional/satirical Bibi Boss encounter with summoned guards and enrage phase, Rabbi's Crown (+20 armor, Blessed Trader), First Amendment, and Hava Nagila music disc.
-* **Quality Assurance**: 38 automated test suites passing with 100% success rate, verified clean dedicated server separation, zero memory leaks, and complete localization parity (`en_us`, `it_it`). Detailed task status is tracked in [`TODO.md`](TODO.md).
+Israel-Simulator features complete dual-language support with 100% key parity:
+* **English (`en_us`)**
+* **Italian (`it_it`)**
+
+Want to translate Israel-Simulator to Hebrew (`he_il`), Spanish (`es_es`), or another language? Simply copy `src/main/resources/assets/israel_simulator/lang/en_us.json` to your language code and submit a Pull Request!
+
+---
+
+## License & Credits
+
+- **Code & Assets**: Licensed under the **[GNU Affero General Public License v3.0](LICENSE)** (AGPL-3.0).
+- **Third-Party Credits**: See [CREDITS.md](CREDITS.md) for toolchain and library attribution.
+- **Asset Licenses**: See [ASSET_LICENSES.md](ASSET_LICENSES.md) for licensing details of textures and audio.

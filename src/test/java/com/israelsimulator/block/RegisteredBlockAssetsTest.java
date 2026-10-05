@@ -176,13 +176,14 @@ class RegisteredBlockAssetsTest {
     }
 
     @Test
-    @DisplayName("Jerusalem stone, salt block, and paved road use existing vanilla textures")
-    void keySurfaceBlocksUseVanillaTextures() throws Exception {
+    @DisplayName("Jerusalem stone, salt block, and paved road resolve to valid textures")
+    void keySurfaceBlocksUseValidTextures() throws Exception {
         for (String id : List.of("jerusalem_stone", "salt_block", "paved_road")) {
             JsonObject model = readJsonResource("assets/israel_simulator/models/block/" + id + ".json");
             String all = model.getAsJsonObject("textures").get("all").getAsString();
-            assertTrue(all.startsWith("minecraft:block/"), id + " should reuse a vanilla block texture");
-            assertTrue(vanillaTextureExists(all), id + " texture missing in 26.2 jar: " + all);
+            assertTrue(all.startsWith("minecraft:block/") || all.startsWith("israel_simulator:block/"),
+                    id + " should use a valid block texture");
+            assertTrue(vanillaTextureExists(all), id + " texture missing: " + all);
             assertTrue(resourceExists("assets/israel_simulator/blockstates/" + id + ".json"));
             assertTrue(resourceExists("assets/israel_simulator/models/item/" + id + ".json"));
         }
