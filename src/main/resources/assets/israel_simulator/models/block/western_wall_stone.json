@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "israel_simulator:block/western_wall_stone"
+    "all": "minecraft:block/sandstone_top"
   }
 }

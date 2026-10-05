@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "israel_simulator:block/salt_block"
+    "all": "minecraft:block/white_concrete_powder"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "israel_simulator:block/jerusalem_stone"
+    "all": "minecraft:block/cut_sandstone"
   }
 }
