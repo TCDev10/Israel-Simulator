@@ -161,3 +161,12 @@ Come è stato risolto: peso `well` da 2 a 1 nel pool `jerusalem/buildings` (gene
 
 Re-verifica `jerusalem-verify6` (commit `1619fb5`, seed -6555682282253742967, start [4672,~,6256]): well 9→6 (migliorato ma ancora >4), gate=3, sinagoga×1+glowstone OK, cauldron level=3 OK, marker OK, streets-over-air 0.74%, floating rigid 0, plaza Y110 aperta (92% aria sopra; strade 62–111). Un solo ciclo fix/re-verify come da brief.
 
+## Advancement JSON: errori di parse su NeoForge 26.2
+
+Problema riscontrato: all'avvio del dedicated server tre advancement di `israel_simulator` fallivano il parse (`Couldn't parse data file`):
+1. `combat/hava_nagila` — predicato entita legacy `{"type":"israel_simulator:bibi_boss"}` (entity_sub_predicate_type invalido su 26.2; l'entita `bibi_boss` e registrata)
+2. `exploration/dead_sea_tourist` — item inesistente `israel_simulator:dead_sea_salt` (nel mod c'e `salt_block`)
+3. `technology/startup_founder` — item inesistente `israel_simulator:drone` (nel mod c'e `drone_part`)
+
+Come e stato risolto: predicato di kill allineato a vanilla 26.2 (`minecraft:entity_properties` + `minecraft:entity_type`); tourist usa `salt_block`; founder usa `drone_part`; descrizioni en/it aggiornate. Aggiunto unit test che valida ogni id item/entity negli advancement JSON contro i registry del mod. Verifica headless su mondo `advancement-parse-verify1`: nessuna riga `Couldn't parse` per israel_simulator; `Loaded 1702 advancements`. Grep su recipe/loot: i food (falafel, hummus, ecc.) sono registrati; nessun altro riferimento advancement della stessa classe da correggere ora.
+

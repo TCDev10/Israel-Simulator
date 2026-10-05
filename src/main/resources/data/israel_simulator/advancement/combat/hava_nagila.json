@@ -18,9 +18,15 @@
     "kill_bibi_boss": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
-        "entity": {
-          "type": "israel_simulator:bibi_boss"
-        }
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "israel_simulator:bibi_boss"
+            }
+          }
+        ]
       }
     },
     "has_disc": {

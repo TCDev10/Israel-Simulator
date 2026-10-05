@@ -26,12 +26,12 @@
         ]
       }
     },
-    "has_dead_sea_salt": {
+    "has_salt_block": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": "israel_simulator:dead_sea_salt"
+            "items": "israel_simulator:salt_block"
           }
         ]
       }
@@ -40,7 +40,7 @@
   "requirements": [
     [
       "has_dead_sea_mud",
-      "has_dead_sea_salt"
+      "has_salt_block"
     ]
   ]
 }

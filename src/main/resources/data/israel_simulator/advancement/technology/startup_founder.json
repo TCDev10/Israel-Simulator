@@ -36,12 +36,12 @@
         ]
       }
     },
-    "has_drone": {
+    "has_drone_part": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": "israel_simulator:drone"
+            "items": "israel_simulator:drone_part"
           }
         ]
       }
@@ -51,7 +51,7 @@
     [
       "has_laptop",
       "has_smartphone",
-      "has_drone"
+      "has_drone_part"
     ]
   ]
 }
