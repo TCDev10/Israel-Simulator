@@ -103,3 +103,61 @@ Problema riscontrato: `music_disc.hava_nagila` in `sounds.json` puntava a `minec
 Funzionamento aspettato: il jukebox suona l'ogg di Hava Nagila del mod, non una lista vuota e non un file vanilla mancante o sostitutivo. L'id dell'item resta `hava_nagila_disc`.
 
 Come è stato risolto: il file di Wikimedia Commons (`File:Hava_nagila.ogg`) era la registrazione sbagliata ed è stato sovrascritto. L'audio ora viene dal video indicato dall'utente, https://www.youtube.com/watch?v=vHSNZK4Je-Y , che ha descritto come la registrazione originale e di pubblico dominio. Oltre a quella affermazione non è stata verificata una licenza. Il file è `assets/israel_simulator/sounds/records/hava_nagila.ogg` (Ogg Vorbis, 165,3 secondi). `sounds.json` indica `israel_simulator:records/hava_nagila` con `stream: true`. La durata in `jukebox_song/hava_nagila.json` è 165.3. `DataAndResourceValidationTest.testHavaNagilaDiscOggPresent` resta il controllo che l'ogg esista e non sia vuoto, e che il nome non sia vanilla. I test non sono stati rieseguiti, perché Gradle è occupato dal client già aperto. Nessun commit.
+
+## Jerusalem city era un guscio 7×7, non una città
+
+Problema riscontrato: `israel_simulator:jerusalem_city` era un solo NBT 7×7 (guscio di arenaria con marker `yellow_terracotta` a `[3,6,3]`). In gioco sembrava un tetto di arenaria, non una città. Il JSON era già `minecraft:jigsaw` con `start_pool` del mod, ma il pool aveva un solo pezzo.
+
+Funzionamento aspettato: una piccola città vecchia multi-pezzo come un villaggio vanilla: piazza centrale con strade, case in pietra/arenaria a tetto piatto, bancarelle dello shuk, una piccola sinagoga a cupola, un pozzo e un tratto di mura con porta. Stesso id `jerusalem_city`, stessi biomi, `terrain_adaptation: beard_thin`. Il marker giallo resta.
+
+Come è stato risolto: pezzi NBT in `structure/jerusalem/` (DataVersion 4903) e pool `jerusalem_city` (start → plaza), `jerusalem/streets`, `jerusalem/terminators`, `jerusalem/buildings`. Generatore `scripts/worldgen/gen_jerusalem_city.py`. `StructureFrameworkTest` accetta il start sulla plaza; `JerusalemCityStructureTest` controlla pool e NBT. Il file root `structure/jerusalem_city.nbt` resta come marker. Unit test Gradle, non un passaggio in-game.
+
+
+## Jerusalem city: sinagoga assente, edifici su mucchi, porta chiusa nel gate
+
+Problema riscontrato: in un mondo fresco (`jerusalem-city-test`, città a `[3680,~,2752]`) la città generava case, shuk, gatehouse e villager, ma (1) `synagogue_small` non compariva mai (peso 1 nel pool buildings e pezzo grande che perdeva per collisione), (2) case/shuk restavano su mucchi di terra/erba sopra il livello strada, con terra sotto le fondamenta, (3) `wall_gate` aveva il passaggio N–S mentre il jigsaw guardava ovest: entrando dalla strada si finiva contro un muro di arenaria con porta di quercia chiusa.
+
+Funzionamento aspettato: ogni città ha la sinagoga a cupola attaccata alla piazza; edifici a livello strada anche in collina; il gate è un passaggio aperto allineato alla strada, senza porta che lo chiude.
+
+Come è stato risolto: pool `jerusalem/landmarks` (solo sinagoga) collegato al lato nord della plaza (i tre lati restano strade). Fondamenta di 3 blocchi di arenaria sotto case/shuk/sinagoga/pozzo/gate/plaza; `terrain_adaptation` da `beard_thin` a `beard_box`; strade ancora `terrain_matching`, edifici `rigid`. `wall_gate` riscritto con tunnel E–W aperto (niente porta). Rigenerato con `scripts/worldgen/gen_jerusalem_city.py`. I test `JerusalemCityStructureTest` controllano landmarks, beard_box e assenza di porta nel gate. Unit test Gradle, non un passaggio in-game su mondo nuovo.
+
+## Jerusalem city: fondamenta ancora falliscono sulle colline
+
+Problema riscontrato: in `jerusalem-city-test2` (città a `[304,~,−2976]`, collina verso sud) sinagoga e gate ok, ma le fondamenta no. Piazza ~Y112 e strada ovest ~Y89: stall e strada `terrain_matching` su mensole di erba/terra sopra grotte, piattaforme di sabbia con strapiombo, terra sotto l'arenaria. Il quartiere sud su terreno dolce era a posto. `beard_box` era già nel JSON ma i pezzi `terrain_matching` non ricevono la densità del beard.
+
+Funzionamento aspettato: città a un solo livello con la piazza, piedistallo di arenaria sotto i pezzi rigid, niente mensole fluttuanti sopra grotte, meno spawn su biomi ripidi.
+
+Come è stato risolto: fondamenta da 3 a **8** blocchi di arenaria su plaza/case/shuk/sinagoga/pozzo/gate **e strade**; pool strade/terminator da `terrain_matching` a **`rigid`** (allineate alla piazza; `beard_box` riempie sotto); biomi: tolti `minecraft:meadow` e `minecraft:windswept_hills`, restano `israel_simulator:jerusalem` e `minecraft:savanna_plateau`. `terrain_adaptation` resta `beard_box`. Unit test aggiornati. Non un passaggio in-game.
+
+## Jerusalem city: plinto di arenaria e gate come muro pieno
+
+Problema riscontrato: in `jerusalem-city-test3` la città era una piattaforma rigid con muri di arenaria alti 8 blocchi sul pendio, mensole di erba a ovest e vuoti sotto i ledges. Il `wall_gate` attaccato come building laterale dalla piazza sembrava un muro pieno di stone brick (il fianco), con una buca di arenaria davanti; il passaggio non seguiva l'asse della strada.
+
+Funzionamento aspettato: città immersa nel terreno (beard_box, niente scogliere di fondamenta), strade che seguono il pendio come un villaggio vanilla, gate con tunnel aperto allineato alla strada.
+
+Come è stato risolto: strade/terminator di nuovo `terrain_matching` senza sottostrato profondo; pezzi rigid (plaza/case/shuk/sinagoga/pozzo) con fondamenta **2** blocchi; `beard_box` e biomi `jerusalem`+`savanna_plateau` invariati. `wall_gate` spostato nel pool strade come arco con jigsaw `street` a ovest e est e tunnel E–W aperto (niente porta, niente attachment laterale come building). La sinagoga a sud della piazza è rotazione casuale, non un bug. Unit test aggiornati. Non un passaggio in-game.
+
+## Jerusalem city allineata allo stile villaggio vanilla
+
+Problema riscontrato: le fondamenta profonde e `beard_box` producevano un plinto/fortezza; serviva lo stesso adattamento dei villaggi vanilla.
+
+Funzionamento aspettato: come `minecraft:village_desert` / plains in 26.2 — strade `terrain_matching`, edifici `rigid`, `terrain_adaptation: beard_thin`, size 6, max_distance 80, `WORLD_SURFACE_WG`, start_height 0, case senza piedistallo profondo (pavimento a y=0, jigsaw ingresso a y=1).
+
+Come è stato risolto: `FOUNDATION = 0`; JSON struttura allineato a village_desert (`beard_thin`, stessi size/distance/heightmap/hack); strade restano `terrain_matching`; gate resta arco nel pool strade. Biomi invariati (`jerusalem` + `savanna_plateau`). Unit test aggiornati.
+
+## Jerusalem city: troppi wall_gate e fontana senza acqua (verifica save)
+
+Problema riscontrato: in `jerusalem-city-test4` (start a X=-2784 Z=-336) il terreno si adatta come un villaggio, ma dalla collina alta non si vedevano piazza/sinagoga (sono a Y≈101; le strade salgono a Y≈130–145). Nel save: 6× `wall_gate` su 93 pezzi; fontana con pilastro chiseled/lantern ma **senza acqua** (il blocco `minecraft:water` del template non risulta nel chunk).
+
+Funzionamento aspettato: 1–2 gate per città; fontana riconoscibile; piazza+sinagoga presenti (anche se più in basso sul pendio).
+
+Come è stato risolto: pesi strade 12/6/6 e gate 1 (~1/25); fontana con `water_cauldron[level=3]` al posto dell'acqua fluida; marker yellow terracotta sul pavimento. Analisi headless del save (strutture + blocchi). Unit test sul peso del gate. Serve mondo nuovo per i pezzi.
+
+## Jerusalem city: troppi pozzi (verifica headless 8e8de2b)
+
+Problema riscontrato: in `jerusalem-verify5` (seed -2399866279920343874, start [-6608,~,-7104]) gate=0 OK, sinagoga×1+dome+glowstone OK, fontana `water_cauldron[level=3]` OK, marker yellow OK, streets-over-air 0.26%, plaza Y93 allineata alle strade (76–99, non in una fossa). Ma **9× well** (peso 2 nel pool buildings).
+
+Come è stato risolto: peso `well` da 2 a 1 nel pool `jerusalem/buildings` (generatore + JSON + unit test). Re-verifica headless su mondo nuovo.
+
+Re-verifica `jerusalem-verify6` (commit `1619fb5`, seed -6555682282253742967, start [4672,~,6256]): well 9→6 (migliorato ma ancora >4), gate=3, sinagoga×1+glowstone OK, cauldron level=3 OK, marker OK, streets-over-air 0.74%, floating rigid 0, plaza Y110 aperta (92% aria sopra; strade 62–111). Un solo ciclo fix/re-verify come da brief.
+

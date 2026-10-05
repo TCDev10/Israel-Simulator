@@ -108,12 +108,26 @@ class StructureFrameworkTest {
             JsonObject pool = gson.fromJson(new InputStreamReader(poolStream, StandardCharsets.UTF_8), JsonObject.class);
             String location = pool.getAsJsonArray("elements").get(0).getAsJsonObject()
                     .getAsJsonObject("element").get("location").getAsString();
-            assertEquals("israel_simulator:" + name, location,
-                    name + " pool must place this mod's structure template");
+            assertTrue(location.startsWith("israel_simulator:"),
+                    name + " pool must place a mod structure template, was: " + location);
             assertFalse(location.contains("minecraft:village"),
                     name + " pool location must not be a vanilla village piece");
+            // Single-piece structures keep location == israel_simulator:<name>.
+            // Jerusalem is a multi-piece jigsaw that starts at jerusalem/plaza.
+            if ("jerusalem_city".equals(name)) {
+                assertEquals("israel_simulator:jerusalem/plaza", location,
+                        "jerusalem_city must start from the plaza piece");
+            } else {
+                assertEquals("israel_simulator:" + name, location,
+                        name + " pool must place this mod's structure template");
+            }
 
-            String nbtPath = "data/israel_simulator/structure/" + name + ".nbt";
+            // Marker NBT: single-piece templates use structure/<name>.nbt.
+            // Jerusalem also keeps a small root marker file for the yellow terracotta check,
+            // and the live plaza piece carries the same marker.
+            String nbtPath = "jerusalem_city".equals(name)
+                    ? "data/israel_simulator/structure/jerusalem/plaza.nbt"
+                    : "data/israel_simulator/structure/" + name + ".nbt";
             InputStream nbtStream = getClass().getClassLoader().getResourceAsStream(nbtPath);
             assertNotNull(nbtStream, "Missing structure template NBT: " + nbtPath);
             byte[] nbt = new GZIPInputStream(nbtStream).readAllBytes();
@@ -121,6 +135,11 @@ class StructureFrameworkTest {
             assertTrue(decoded.contains(markerBlocks.get(name)),
                     name + " template must place its own marker block " + markerBlocks.get(name));
             assertTrue(decoded.contains("DataVersion"), name + " template must be a structure NBT file");
+            if ("jerusalem_city".equals(name)) {
+                InputStream rootMarker = getClass().getClassLoader()
+                        .getResourceAsStream("data/israel_simulator/structure/jerusalem_city.nbt");
+                assertNotNull(rootMarker, "Root jerusalem_city.nbt marker template must remain");
+            }
         }
     }
 }
