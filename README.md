@@ -194,11 +194,13 @@ NeoForge ModDevGradle comes preconfigured with dedicated run configurations:
 Israel-Simulator enforces strict test coverage across all worldgen algorithms, registries, economies, and data assets:
 
 ```bash
-# Run all 54 JUnit 5 test suites (248 tests)
+# Run all 54 JUnit 5 test suites (249 tests)
 ./gradlew test
 ```
 
 Test reports are generated in HTML format under `build/reports/tests/test/index.html`.
+
+For manual in-game testing, beta checklist, scenario walkthroughs, and cheat sheet commands, consult the [Beta Testing Checklist (TESTING_GUIDE.md)](TESTING_GUIDE.md).
 
 ---
 
