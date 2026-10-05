@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 import nbtlib
-from nbtlib import Byte, Compound, Int, List, String
+from nbtlib import Byte, Compound, Int, List, Long, String
 
 from connect_blocks import apply_connections
 
@@ -205,12 +205,37 @@ GP = lambda: blk(
 )
 LANTERN = lambda: blk("minecraft:lantern", hanging="false", waterlogged="false")
 HLANTERN = lambda: blk("minecraft:lantern", hanging="true", waterlogged="false")
-BARREL = lambda facing="up": blk("minecraft:barrel", facing=facing, open="false")
+def BARREL(facing: str = "up", loot: str | None = None) -> Compound:
+    entry = blk("minecraft:barrel", facing=facing, open="false")
+    if loot:
+        entry["_nbt"] = Compound(
+            {
+                "id": String("minecraft:barrel"),
+                "LootTable": String(loot),
+                "LootTableSeed": Long(0),
+            }
+        )
+    return entry
+
+
 COMPOSTER = lambda: blk("minecraft:composter", level="3")
 CRAFT = lambda: blk("minecraft:crafting_table")
-CHEST = lambda facing="south": blk(
-    "minecraft:chest", facing=facing, type="single", waterlogged="false"
-)
+
+
+def CHEST(facing: str = "south", loot: str | None = None) -> Compound:
+    entry = blk(
+        "minecraft:chest", facing=facing, type="single", waterlogged="false"
+    )
+    if loot:
+        entry["_nbt"] = Compound(
+            {
+                "id": String("minecraft:chest"),
+                "LootTable": String(loot),
+                "LootTableSeed": Long(0),
+            }
+        )
+    return entry
+
 BED = lambda facing="north", part="foot": blk(
     "minecraft:white_bed", facing=facing, part=part, occupied="false"
 )
@@ -414,9 +439,9 @@ def house(name: str, accent) -> None:
     s.set(5, f + 1, 1, BED(facing="south", part="foot"))
     s.set(5, f + 1, 2, BED(facing="south", part="head"))
     s.set(1, f + 1, 1, CRAFT())
-    s.set(1, f + 1, 5, BARREL("up"))
+    s.set(1, f + 1, 5, BARREL("up", loot="israel_simulator:chests/jerusalem_pantry"))
     s.set(5, f + 1, 5, POT())
-    s.set(3, f + 1, 5, CHEST(facing="north"))
+    s.set(3, f + 1, 5, CHEST(facing="north", loot="israel_simulator:chests/jerusalem_house"))
     s.set(3, f + 4, 3, HLANTERN())
     s.set(
         0,
@@ -448,11 +473,11 @@ def shuk() -> None:
         s.set(x, f + 3, 2, WOOL("red" if x % 2 else "yellow"))
         s.set(x, f + 3, 3, WOOL("yellow" if x % 2 else "red"))
     for x in (2, 5, 8):
-        s.set(x, f + 1, 3, BARREL("up"))
+        s.set(x, f + 1, 3, BARREL("up", loot="israel_simulator:chests/jerusalem_bazaar"))
         s.set(x + 1, f + 1, 3, COMPOSTER())
         s.set(x, f + 1, 4, POT())
-    s.set(1, f + 1, 4, CHEST(facing="south"))
-    s.set(9, f + 1, 4, CHEST(facing="south"))
+    s.set(1, f + 1, 4, CHEST(facing="south", loot="israel_simulator:chests/jerusalem_bazaar"))
+    s.set(9, f + 1, 4, CHEST(facing="south", loot="israel_simulator:chests/jerusalem_bazaar"))
     s.set(5, f + 4, 4, HLANTERN())
     # open west face toward street (clear wall hole around jigsaw)
     s.fills(0, f + 1, 1, 0, f + 3, 3, AIR())
@@ -514,6 +539,7 @@ def synagogue() -> None:
     s.set(1, f + 2, 1, POT())
     s.set(6, f + 2, 1, POT())
     s.set(3, f + 5, 3, HLANTERN())
+    s.set(6, f + 1, 5, CHEST(facing="west", loot="israel_simulator:chests/synagogue"))
     s.set(
         0,
         f + 1,

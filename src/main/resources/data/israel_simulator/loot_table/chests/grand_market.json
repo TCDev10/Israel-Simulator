@@ -2,37 +2,86 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "rolls": { "min": 3, "max": 6 },
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 3.0,
+        "max": 6.0
+      },
       "entries": [
         {
           "type": "minecraft:item",
           "name": "israel_simulator:shekel",
           "weight": 30,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 8, "max": 32 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 8.0,
+                "max": 32.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "israel_simulator:agora",
           "weight": 25,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 10, "max": 50 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 10.0,
+                "max": 50.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "israel_simulator:falafel",
           "weight": 15,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 2, "max": 6 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 6.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "israel_simulator:ancient_coin",
           "weight": 10,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 1, "max": 2 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 2.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:emerald",
           "weight": 20,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 2, "max": 8 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 8.0
+              }
+            }
+          ]
         }
       ]
     }

@@ -4,28 +4,73 @@
     {
       "rolls": {
         "type": "minecraft:uniform",
-        "min": 3.0,
-        "max": 6.0
+        "min": 2.0,
+        "max": 4.0
       },
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:wheat",
-          "weight": 15,
+          "name": "israel_simulator:olives",
+          "weight": 20,
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 4.0,
-                "max": 16.0
+                "min": 3.0,
+                "max": 8.0
               }
             }
           ]
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:wheat_seeds",
+          "name": "israel_simulator:dates",
+          "weight": 18,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 6.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "israel_simulator:grapes",
+          "weight": 16,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 6.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "israel_simulator:citrus",
+          "weight": 12,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 4.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:wheat",
           "weight": 15,
           "functions": [
             {
@@ -41,14 +86,14 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:carrot",
-          "weight": 10,
+          "weight": 12,
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
                 "min": 2.0,
-                "max": 8.0
+                "max": 6.0
               }
             }
           ]
@@ -56,37 +101,22 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:potato",
-          "weight": 10,
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 2.0,
-                "max": 8.0
-              }
-            }
-          ]
-        },
-        {
-          "type": "minecraft:item",
-          "name": "israel_simulator:olives",
           "weight": 12,
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 3.0,
-                "max": 8.0
+                "min": 2.0,
+                "max": 6.0
               }
             }
           ]
         },
         {
           "type": "minecraft:item",
-          "name": "israel_simulator:shekel",
-          "weight": 8,
+          "name": "minecraft:bread",
+          "weight": 10,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -100,12 +130,31 @@
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:iron_hoe",
-          "weight": 2,
+          "name": "israel_simulator:shekel",
+          "weight": 6,
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": 1.0
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:bowl",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 2.0
+              }
             }
           ]
         }

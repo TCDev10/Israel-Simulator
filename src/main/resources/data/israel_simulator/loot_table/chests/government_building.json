@@ -2,31 +2,71 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "rolls": { "min": 3, "max": 6 },
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 3.0,
+        "max": 6.0
+      },
       "entries": [
         {
           "type": "minecraft:item",
           "name": "israel_simulator:shekel",
           "weight": 35,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 20, "max": 64 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 20.0,
+                "max": 64.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:gold_ingot",
           "weight": 25,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 2, "max": 8 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 8.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:emerald",
           "weight": 25,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 4, "max": 12 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 4.0,
+                "max": 12.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:book",
           "weight": 15,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 1, "max": 4 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 4.0
+              }
+            }
+          ]
         }
       ]
     }

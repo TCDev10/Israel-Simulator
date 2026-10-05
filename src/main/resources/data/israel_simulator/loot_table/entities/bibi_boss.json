@@ -2,7 +2,7 @@
   "type": "minecraft:entity",
   "pools": [
     {
-      "rolls": 1,
+      "rolls": 1.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -13,33 +13,70 @@
     },
     {
       "rolls": {
-        "min": 2,
-        "max": 4
+        "type": "minecraft:uniform",
+        "min": 2.0,
+        "max": 4.0
       },
       "entries": [
         {
           "type": "minecraft:item",
           "name": "israel_simulator:shekel",
           "weight": 25,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 16, "max": 48 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 16.0,
+                "max": 48.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "israel_simulator:ancient_coin",
           "weight": 15,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 2, "max": 6 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 6.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:diamond",
           "weight": 10,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 3, "max": 7 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 3.0,
+                "max": 7.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:netherite_scrap",
           "weight": 5,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 1, "max": 2 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 2.0
+              }
+            }
+          ]
         }
       ]
     }

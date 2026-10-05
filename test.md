@@ -196,3 +196,11 @@ Funzionamento aspettato: ogni fence/pane/muro nel template ha le proprieta di co
 
 Come e stato risolto: aggiunto `scripts/worldgen/connect_blocks.py` che, data la griglia completa, calcola north/south/east/west (e up per i muri) e viene chiamato da `Structure.save()` prima di scrivere l'NBT. Rigenerati tutti i pezzi `structure/jerusalem/*.nbt` (stesso conteggio blocchi, solo proprieta diverse). `JerusalemConnectedBlocksTest` fallisce se un connectable con vicino stesso-famiglia/solido resta scollegato. Verifica headless su mondo fresco con `jerusalem_city`.
 
+## Baule di Jerusalem senza loot table
+
+Problema riscontrato: case, shuk e (dopo) sinagoga di `jerusalem_city` avevano chest/barrel senza NBT di blocco: niente `LootTable`, quindi in gioco restavano vuoti. Esistevano gia JSON in `loot_table/chests/` (formato legacy min/max senza `minecraft:uniform`) ma non erano collegati ai template. I 15 placeholder non hanno contenitori.
+
+Funzionamento aspettato: ogni chest/barrel di Jerusalem punta a una loot table `israel_simulator:chests/...` con `LootTableSeed` 0 (riempimento al primo open). Le tabelle usano number provider 26.2. Casa → `jerusalem_house` / barile → `jerusalem_pantry`; shuk → `jerusalem_bazaar`; sinagoga → `synagogue` (un chest aggiunto).
+
+Come e stato risolto: normalizzati tutti i JSON in `loot_table/**` a uniform 26.2; aggiunti/aggiornati house/pantry/bazaar/synagogue; `CHEST`/`BARREL` in `gen_jerusalem_city.py` scrivono `id`+`LootTable`+`LootTableSeed`; rigenerati gli NBT. Test `LootTableValidationTest` + `JerusalemChestLootTest`. Verifica headless su seed -3194586807213286118, citta [-1744,~,4192]: 51 contenitori con `israel_simulator:chests/*` (10 house, 10 pantry, 30 bazaar, 1 synagogue), nessun errore di parse loot; `/loot spawn` ha droppato 3–5 item per tabella.
+

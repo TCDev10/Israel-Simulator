@@ -3,45 +3,100 @@
   "pools": [
     {
       "rolls": {
-        "min": 3,
-        "max": 6
+        "type": "minecraft:uniform",
+        "min": 3.0,
+        "max": 6.0
       },
       "entries": [
         {
           "type": "minecraft:item",
           "name": "israel_simulator:ancient_coin",
           "weight": 18,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 2, "max": 6 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 6.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "israel_simulator:dead_sea_scroll_fragment",
           "weight": 12,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 1, "max": 2 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 2.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "israel_simulator:shekel",
           "weight": 15,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 2, "max": 8 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 8.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:gold_ingot",
           "weight": 10,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 1, "max": 4 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 4.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:lapis_lazuli",
           "weight": 10,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 2, "max": 7 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 7.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:diamond",
           "weight": 3,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 1, "max": 2 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 2.0
+              }
+            }
+          ]
         }
       ]
     }

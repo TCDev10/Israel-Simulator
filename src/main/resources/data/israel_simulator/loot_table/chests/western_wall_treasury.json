@@ -3,45 +3,100 @@
   "pools": [
     {
       "rolls": {
-        "min": 4,
-        "max": 7
+        "type": "minecraft:uniform",
+        "min": 4.0,
+        "max": 7.0
       },
       "entries": [
         {
           "type": "minecraft:item",
           "name": "minecraft:diamond",
           "weight": 10,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 2, "max": 5 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 5.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "israel_simulator:prayer_note",
           "weight": 25,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 3, "max": 7 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 3.0,
+                "max": 7.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "israel_simulator:ancient_coin",
           "weight": 15,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 2, "max": 5 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 5.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "israel_simulator:shekel",
           "weight": 20,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 5, "max": 20 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 5.0,
+                "max": 20.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:gold_ingot",
           "weight": 15,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 2, "max": 6 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 6.0
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:emerald",
           "weight": 10,
-          "functions": [{ "function": "minecraft:set_count", "count": { "min": 2, "max": 6 } }]
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 6.0
+              }
+            }
+          ]
         }
       ]
     }
