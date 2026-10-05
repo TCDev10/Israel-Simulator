@@ -61,6 +61,16 @@ public final class WesternWallManager {
         return PrayerStatus.SUCCESS;
     }
 
+    /**
+     * Arm swing when the player clicked the wall with a prayer note in the main hand.
+     * Covers success and the feedback paths that already ate the click (missing kippah / cooldown).
+     */
+    public static boolean shouldAnimateSwing(PrayerStatus status) {
+        return status == PrayerStatus.SUCCESS
+                || status == PrayerStatus.MISSING_KIPPAH
+                || status == PrayerStatus.COOLDOWN_ACTIVE;
+    }
+
     public static boolean isOnCooldown(WesternWallCooldowns cooldowns, UUID playerId, long currentGameTime) {
         if (cooldowns == null || playerId == null) {
             return false;
@@ -87,7 +97,11 @@ public final class WesternWallManager {
         boolean hasPrayerNote = held.is(ModItems.PRAYER_NOTE.get());
 
         if (level.isClientSide()) {
-            // The client has no cooldown store. Reward and cooldown are decided on the server.
+            // No cooldown/reward on the client. Returning true lets ModGameEvents cancel with
+            // SUCCESS so the local arm swings; the server still runs the real prayer once.
+            if (hasPrayerNote) {
+                player.swing(InteractionHand.MAIN_HAND);
+            }
             return hasPrayerNote;
         }
 
@@ -105,6 +119,8 @@ public final class WesternWallManager {
             case MISSING_KIPPAH -> {
                 player.sendSystemMessage(Component.translatable("message.israel_simulator.western_wall_need_kippah"));
                 level.playSound(null, pos, SoundEvents.VILLAGER_NO, SoundSource.PLAYERS, 0.9F, 1.0F);
+                // true = notify other clients of the swing
+                player.swing(InteractionHand.MAIN_HAND, true);
                 return true;
             }
             case MISSING_PRAYER_NOTE -> {
@@ -114,6 +130,7 @@ public final class WesternWallManager {
             case COOLDOWN_ACTIVE -> {
                 player.sendSystemMessage(Component.translatable("message.israel_simulator.western_wall_cooldown"));
                 level.playSound(null, pos, SoundEvents.VILLAGER_NO, SoundSource.PLAYERS, 0.8F, 1.2F);
+                player.swing(InteractionHand.MAIN_HAND, true);
                 return true;
             }
             case SUCCESS -> {
@@ -139,6 +156,7 @@ public final class WesternWallManager {
                         40, 0.6, 0.6, 0.6, 0.2);
 
                 player.sendSystemMessage(Component.translatable("message.israel_simulator.western_wall_blessed"));
+                player.swing(InteractionHand.MAIN_HAND, true);
                 return true;
             }
         }

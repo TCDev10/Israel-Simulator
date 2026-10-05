@@ -234,3 +234,11 @@ Problema riscontrato: `western_wall.nbt` era una scatola cava 9x6x5 (stone brick
 Funzionamento aspettato: un muro lungo in pietra pale (corsi herodiani a setback), plaza pavimentata, mechitza (fence collegate), lectern/lanterne, alcova con chest `western_wall_treasury`, bioma solo `jerusalem`, terrain `beard_box`. Il giocatore prega toccando le pietre del muro dalla plaza.
 
 Come e stato risolto: generatore `scripts/worldgen/gen_western_wall.py` (Structure.save + connect_blocks); NBT 56x20x42 con centinaia di `western_wall_stone` sulla facciata; JSON aggiornati. Test `WesternWallStructureTest`. Verifica headless: seed 20261005 wall a [-3488,~,-7040] (67 blocchi dalla citta), chest treasury in BB; seed -3194586807213286118 wall a [-8944,~,-4288].
+
+## Western Wall: swing del braccio in preghiera
+
+Problema riscontrato: al right-click su `western_wall_stone` con la prayer note la preghiera funzionava, ma il braccio del giocatore non animava lo swing.
+
+Funzionamento aspettato: quando si tenta la preghiera con la note in mano principale, lo swing parte (almeno in caso di successo; anche se manca la kippah o c'e cooldown).
+
+Come e stato risolto: in `WesternWallManager.tryPray` il client con prayer note chiama `player.swing(MAIN_HAND)` e restituisce true cosi `ModGameEvents` cancella con `InteractionResult.SUCCESS`; sul server, per SUCCESS / MISSING_KIPPAH / COOLDOWN, `player.swing(MAIN_HAND, true)` notifica gli altri client. La logica di reward/cooldown resta solo server-side.

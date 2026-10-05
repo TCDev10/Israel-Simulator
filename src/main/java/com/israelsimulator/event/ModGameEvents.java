@@ -80,6 +80,8 @@ public final class ModGameEvents {
     @SubscribeEvent
     public static void onRightClickBlock(net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock event) {
         if (event.getLevel().getBlockState(event.getPos()).is(com.israelsimulator.registry.ModBlocks.WESTERN_WALL_STONE.get())) {
+            // tryPray returns true on the client when a prayer note is held (and swings locally),
+            // and on the server after handling the prayer. SUCCESS cancels vanilla use so the arm swings.
             if (com.israelsimulator.westernwall.WesternWallManager.tryPray(event.getEntity(), event.getHand(), event.getPos())) {
                 event.setCanceled(true);
                 event.setCancellationResult(net.minecraft.world.InteractionResult.SUCCESS);

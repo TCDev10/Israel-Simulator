@@ -110,4 +110,24 @@ class WesternWallInteractionTest {
         assertEquals(5, WesternWallManager.REWARD_DIAMONDS);
         assertEquals(24000L, WesternWallManager.COOLDOWN_TICKS);
     }
+
+    @Test
+    @DisplayName("Prayer attempts with a note should animate the arm swing")
+    void prayerAttemptsAnimateSwing() {
+        assertTrue(WesternWallManager.shouldAnimateSwing(WesternWallManager.PrayerStatus.SUCCESS));
+        assertTrue(WesternWallManager.shouldAnimateSwing(WesternWallManager.PrayerStatus.MISSING_KIPPAH));
+        assertTrue(WesternWallManager.shouldAnimateSwing(WesternWallManager.PrayerStatus.COOLDOWN_ACTIVE));
+        assertFalse(WesternWallManager.shouldAnimateSwing(WesternWallManager.PrayerStatus.MISSING_PRAYER_NOTE));
+    }
+
+    @Test
+    @DisplayName("tryPray source swings the main hand on handled prayer paths")
+    void tryPraySourceCallsSwing() throws Exception {
+        String src = java.nio.file.Files.readString(
+                java.nio.file.Path.of("src/main/java/com/israelsimulator/westernwall/WesternWallManager.java"));
+        assertTrue(src.contains("player.swing(InteractionHand.MAIN_HAND)"),
+                "client path should swing locally");
+        assertTrue(src.contains("player.swing(InteractionHand.MAIN_HAND, true)"),
+                "server path should swing and notify other clients");
+    }
 }
