@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "israel_simulator:item/grapes"
+    "layer0": "israel_simulator:block/grapevine_stage0"
   }
 }

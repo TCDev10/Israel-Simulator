@@ -234,6 +234,20 @@ Problema: desert_ruins, ein_gedi_oasis, dead_sea_resort erano placeholder.
 Aspettato: geometria reale + chest loot.
 
 Risolto: `gen_desert_structures.py` (archi/rovine, oasi con palme, resort con piscina). Non testato in-game.
+## README / TODO alignment
+
+Problema: README/TODO descrivevano visioni come se fossero già complete (strutture placeholder).
+
+Aspettato: stato reale di main esplicito.
+
+Risolto: sezione "Current implementation status" in README + checklist "Recently completed" in TODO.
+## Texture uva / vite
+
+Problema: grapevine riusava i modelli wheat; grapes senza texture dedicata.
+
+Aspettato: texture 16x16 stile vanilla (vite/grappoli, non grano).
+
+Risolto: PNG stage0-7 + item grapes; blockstate/modelli aggiornati. Non testato in-game.
 
 ## Agricultural farm structure
 
