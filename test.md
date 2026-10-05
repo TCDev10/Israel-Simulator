@@ -159,3 +159,5 @@ Problema riscontrato: in `jerusalem-verify5` (seed -2399866279920343874, start [
 
 Come è stato risolto: peso `well` da 2 a 1 nel pool `jerusalem/buildings` (generatore + JSON + unit test). Re-verifica headless su mondo nuovo.
 
+Re-verifica `jerusalem-verify6` (commit `1619fb5`, seed -6555682282253742967, start [4672,~,6256]): well 9→6 (migliorato ma ancora >4), gate=3, sinagoga×1+glowstone OK, cauldron level=3 OK, marker OK, streets-over-air 0.74%, floating rigid 0, plaza Y110 aperta (92% aria sopra; strade 62–111). Un solo ciclo fix/re-verify come da brief.
+
