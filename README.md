@@ -13,6 +13,30 @@ The goal is not to create a linear campaign. The player should be able to explor
 
 ---
 
+## Current implementation status
+
+Snapshot of what is actually in the repository today (NeoForge 26.2). Vision / design text below may describe future goals.
+
+### Shipped on `main`
+
+* Six Israeli biomes clustered West→East (`mediterranean_coast` → `urban_area` → `israeli_agriculture` → `jerusalem` → `judean_desert`, with `dead_sea` as a weirdness pocket of the arid band); depth `0.0` surface points only.
+* All 16 registered structures biome-locked to a single Israeli biome; `is_israel_region` tag contains only those six biomes.
+* Jerusalem Old City jigsaw pieces (houses, shuk, synagogues, walls, etc.) with connected fences/panes/walls and chest/barrel loot tables.
+* Cultural gameplay: Western Wall prayer (kippah + prayer note), synagogue Ark, Menorah, food items, kippah / talit / shofar, Hava Nagila disc textures, grapevine crop block.
+* Boss / chaos content scaffolding (Bibi boss, etc.) as already present in code.
+
+### Still placeholders (hollow NBT boxes)
+
+These structure templates are registered and findable with `/locate`, but their NBT is still a small hollow box pending a real generator:
+
+`agricultural_farm`, `ancient_sanctuary`, `dead_sea_resort`, `desert_ruins`, `ein_gedi_oasis`, `government_building`, `grand_market`, `historical_house`, `jaffa_port`, `mediterranean_village`, `startup_office`, `synagogue`, `tel_aviv_city`, `western_wall` (plus the tiny `jerusalem_city` start marker — real geometry lives in the Jerusalem jigsaw pieces).
+
+`great_synagogue` is a larger hand-built piece but still minimal compared to the design doc.
+
+Open PRs may replace some of these; this README tracks **merged** `main` only.
+
+---
+
 ## Features
 
 ### 🌍 Open World
