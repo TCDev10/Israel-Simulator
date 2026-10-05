@@ -170,3 +170,21 @@ Problema riscontrato: all'avvio del dedicated server tre advancement di `israel_
 
 Come e stato risolto: predicato di kill allineato a vanilla 26.2 (`minecraft:entity_properties` + `minecraft:entity_type`); tourist usa `salt_block`; founder usa `drone_part`; descrizioni en/it aggiornate. Aggiunto unit test che valida ogni id item/entity negli advancement JSON contro i registry del mod. Verifica headless su mondo `advancement-parse-verify1`: nessuna riga `Couldn't parse` per israel_simulator; `Loaded 1702 advancements`. Grep su recipe/loot: i food (falafel, hummus, ecc.) sono registrati; nessun altro riferimento advancement della stessa classe da correggere ora.
 
+## Superfici biome israeliani (override noise_settings)
+
+Problema riscontrato: i biome `israel_simulator:*` usavano la superficie vanilla (erba/terra) perche i biome modifier NeoForge 26.2 non espongono un API surface, e le `surface_rule` vanilla filtrano solo id biome hardcoded.
+
+Funzionamento aspettato: ogni biome israeliano ha una superficie coerente (es. `jerusalem_stone` a Gerusalemme, sabbia/sale al Mar Morto, sabbia rossa nel Negev) senza cambiare i biome non-israeliani.
+
+Come e stato risolto: script `scripts/worldgen/gen_israel_surface_rules.py` copia i JSON vanilla 26.2 (`overworld`/`amplified`/`large_biomes`) dal jar e antepone regole biome dentro il ramo `above_preliminary_surface`. Agricoltura resta vanilla. Verifica headless `israel-surfaces-verify1`/`verify3` (seed -3194586807213286118): jerusalem_stone dominante a jerusalem; red_sand a judean_desert; sand+grass a mediterranean_coast; paved_road/stone patch in urban_area; plains invariato (grass/dirt). Nessun errore codec/worldgen nel log.
+
+### Gap-close pre-PR (verify3, stesso seed)
+
+**Dead Sea — generazione (priorita utente):** il biome E iniettato in `OverworldBiomeBuilderMixin` (2 `ParameterPoint`: depth 0.0 e depth 1.0) e compare nei tag `c:is_overworld` / `is_hot` / `is_dry` / `is_israel_region` / `has_dead_sea_salt`. Non e un buco di registrazione. Lo slot climatico e pero ambiguo/quasi vuoto: temp 0.80–1.00, humidity −0.80–−0.20, continentalness 0.25–0.70 (**inland**), erosion 0.40–0.90 (**alta**, tipicamente costiera in vanilla), weirdness 0.30–0.80. Zero overlap 1D su erosion e weirdness con `judean_desert` (isola isolata, non variante del deserto). Empirico senza `/locate`: parse di 10377 chunk in verify3 → `dead_sea` presente in soli **41** chunk di superficie, tutti intorno a **(−24320, −5344)**; altrove e assente. `/locate biome` non “rompe” il mondo: cerca in un raggio ~6400 un hypercube rarissimo e resta bloccato a lungo. Superficie nel cluster: sand/sandstone + patch `salt_block` (es. 112 sand / 48 salt su 212 colonne filtrate). **Fix proposto (non implementato):** dare a `dead_sea` uno slot raggiungibile accanto a `judean_desert` (stesso cluster hot/arid/inland, sotto-range di erosion/weirdness che esiste davvero, eventualmente offset piu basso come variante salt-flat). In piu: `depth point(1.0F)` e etichettato “hills” ma depth 1.0 e sottosuolo — togliere o riservarlo ai cave; spiega anche perche `israeli_agriculture` compare spesso underground.
+
+**Agricoltura (superficie, non bordo):** interior grass a **(−15804, 67, −5919)** e vicini (106 colonne `grass_block`+`dirt` con vicini agriculture). Nessuna regola surface iniettata → resta vanilla come da design.
+
+**Texture/modelli:** `jerusalem_stone`, `salt_block`, `paved_road` avevano gia blockstate + block model + item model. Nessun PNG del mod; riusavano gia texture vanilla (non purple/black). Aggiornati a riferimenti piu chiari in 26.2: `cut_sandstone`, `white_concrete_powder`, `gray_concrete` (PNG presenti nel jar). Aggiunto `RegisteredBlockAssetsTest` che per ogni `registerBlock` verifica blockstate/model/texture risolvibile (mod PNG o jar vanilla).
+
+**Coordinate client (seed −3194586807213286118):** Jerusalem stone sotto i piedi a **x=−3872, y=105, z=−1934**.
+
