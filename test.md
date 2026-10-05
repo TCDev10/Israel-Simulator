@@ -188,3 +188,11 @@ Come e stato risolto: script `scripts/worldgen/gen_israel_surface_rules.py` copi
 
 **Coordinate client (seed −3194586807213286118):** Jerusalem stone sotto i piedi a **x=−3872, y=105, z=−1934**.
 
+## Recinzioni e vetri delle strutture Jerusalem non si collegavano
+
+Problema riscontrato: nei pezzi jigsaw di `jerusalem_city` (case, shuk, sinagoga, pozzo, strade) i blocchi `oak_fence`, `glass_pane` e `sandstone_wall` erano salvati nell'NBT con tutte le facce a `false`/`none` (il muro aveva solo `up=true`). In gioco restavano pali/lastre isolati, senza collegarsi ai vicini. Il generatore `gen_jerusalem_city.py` scriveva helper `FENCE`/`GP`/`SW` con proprieta fisse e non ricalcolava i vicini in `Structure.save()`.
+
+Funzionamento aspettato: ogni fence/pane/muro nel template ha le proprieta di connessione coerenti con i vicini (stessa famiglia o cubo pieno; i muri usano `none`/`low`/`tall` e `up` come in vanilla).
+
+Come e stato risolto: aggiunto `scripts/worldgen/connect_blocks.py` che, data la griglia completa, calcola north/south/east/west (e up per i muri) e viene chiamato da `Structure.save()` prima di scrivere l'NBT. Rigenerati tutti i pezzi `structure/jerusalem/*.nbt` (stesso conteggio blocchi, solo proprieta diverse). `JerusalemConnectedBlocksTest` fallisce se un connectable con vicino stesso-famiglia/solido resta scollegato. Verifica headless su mondo fresco con `jerusalem_city`.
+
