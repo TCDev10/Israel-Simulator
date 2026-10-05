@@ -103,3 +103,11 @@ Problema riscontrato: `music_disc.hava_nagila` in `sounds.json` puntava a `minec
 Funzionamento aspettato: il jukebox suona l'ogg di Hava Nagila del mod, non una lista vuota e non un file vanilla mancante o sostitutivo. L'id dell'item resta `hava_nagila_disc`.
 
 Come è stato risolto: il file di Wikimedia Commons (`File:Hava_nagila.ogg`) era la registrazione sbagliata ed è stato sovrascritto. L'audio ora viene dal video indicato dall'utente, https://www.youtube.com/watch?v=vHSNZK4Je-Y , che ha descritto come la registrazione originale e di pubblico dominio. Oltre a quella affermazione non è stata verificata una licenza. Il file è `assets/israel_simulator/sounds/records/hava_nagila.ogg` (Ogg Vorbis, 165,3 secondi). `sounds.json` indica `israel_simulator:records/hava_nagila` con `stream: true`. La durata in `jukebox_song/hava_nagila.json` è 165.3. `DataAndResourceValidationTest.testHavaNagilaDiscOggPresent` resta il controllo che l'ogg esista e non sia vuoto, e che il nome non sia vanilla. I test non sono stati rieseguiti, perché Gradle è occupato dal client già aperto. Nessun commit.
+
+## Jerusalem city era un guscio 7×7, non una città
+
+Problema riscontrato: `israel_simulator:jerusalem_city` era un solo NBT 7×7 (guscio di arenaria con marker `yellow_terracotta` a `[3,6,3]`). In gioco sembrava un tetto di arenaria, non una città. Il JSON era già `minecraft:jigsaw` con `start_pool` del mod, ma il pool aveva un solo pezzo.
+
+Funzionamento aspettato: una piccola città vecchia multi-pezzo come un villaggio vanilla: piazza centrale con strade, case in pietra/arenaria a tetto piatto, bancarelle dello shuk, una piccola sinagoga a cupola, un pozzo e un tratto di mura con porta. Stesso id `jerusalem_city`, stessi biomi, `terrain_adaptation: beard_thin`. Il marker giallo resta.
+
+Come è stato risolto: pezzi NBT in `structure/jerusalem/` (DataVersion 4903) e pool `jerusalem_city` (start → plaza), `jerusalem/streets`, `jerusalem/terminators`, `jerusalem/buildings`. Generatore `scripts/worldgen/gen_jerusalem_city.py`. `StructureFrameworkTest` accetta il start sulla plaza; `JerusalemCityStructureTest` controlla pool e NBT. Il file root `structure/jerusalem_city.nbt` resta come marker. Unit test Gradle, non un passaggio in-game.

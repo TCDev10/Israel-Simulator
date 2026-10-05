@@ -1,0 +1,32 @@
+{
+  "fallback": "israel_simulator:jerusalem/terminators",
+  "elements": [
+    {
+      "weight": 4,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:jerusalem/street_straight",
+        "processors": "minecraft:empty",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:jerusalem/street_crossroad",
+        "processors": "minecraft:empty",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:jerusalem/street_corner",
+        "processors": "minecraft:empty",
+        "projection": "terrain_matching"
+      }
+    }
+  ]
+}
