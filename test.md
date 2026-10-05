@@ -170,3 +170,11 @@ Problema riscontrato: all'avvio del dedicated server tre advancement di `israel_
 
 Come e stato risolto: predicato di kill allineato a vanilla 26.2 (`minecraft:entity_properties` + `minecraft:entity_type`); tourist usa `salt_block`; founder usa `drone_part`; descrizioni en/it aggiornate. Aggiunto unit test che valida ogni id item/entity negli advancement JSON contro i registry del mod. Verifica headless su mondo `advancement-parse-verify1`: nessuna riga `Couldn't parse` per israel_simulator; `Loaded 1702 advancements`. Grep su recipe/loot: i food (falafel, hummus, ecc.) sono registrati; nessun altro riferimento advancement della stessa classe da correggere ora.
 
+## Superfici biome israeliani (override noise_settings)
+
+Problema riscontrato: i biome `israel_simulator:*` usavano la superficie vanilla (erba/terra) perche i biome modifier NeoForge 26.2 non espongono un API surface, e le `surface_rule` vanilla filtrano solo id biome hardcoded.
+
+Funzionamento aspettato: ogni biome israeliano ha una superficie coerente (es. `jerusalem_stone` a Gerusalemme, sabbia/sale al Mar Morto, sabbia rossa nel Negev) senza cambiare i biome non-israeliani.
+
+Come e stato risolto: script `scripts/worldgen/gen_israel_surface_rules.py` copia i JSON vanilla 26.2 (`overworld`/`amplified`/`large_biomes`) dal jar e antepone regole biome dentro il ramo `above_preliminary_surface`. Agricoltura resta vanilla. Verifica headless `israel-surfaces-verify1` (seed -3194586807213286118): jerusalem_stone dominante a jerusalem; red_sand a judean_desert; sand+grass a mediterranean_coast; paved_road/stone patch in urban_area; plains invariato (grass/dirt). `dead_sea` locate ha timeout (biome raro); nessun errore codec/worldgen nel log.
+
