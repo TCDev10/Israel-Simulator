@@ -42,7 +42,8 @@ class JerusalemCityStructureTest {
             "jerusalem_city",
             "jerusalem/streets",
             "jerusalem/terminators",
-            "jerusalem/buildings"
+            "jerusalem/buildings",
+            "jerusalem/landmarks"
     );
 
     @Test
@@ -100,15 +101,49 @@ class JerusalemCityStructureTest {
     }
 
     @Test
-    @DisplayName("Jerusalem buildings include house, shuk, synagogue, well and wall gate")
+    @DisplayName("Jerusalem buildings include house, shuk, well and wall gate")
     void buildingsPoolCoversDistinctTypes() throws Exception {
         JsonObject pool = readJson("data/israel_simulator/worldgen/template_pool/jerusalem/buildings.json");
         String blob = pool.toString();
         for (String required : List.of(
                 "house_a", "house_b", "house_c",
-                "shuk_stalls", "synagogue_small", "well", "wall_gate")) {
+                "shuk_stalls", "well", "wall_gate")) {
             assertTrue(blob.contains(required), "buildings pool must include " + required);
         }
+        assertFalse(blob.contains("synagogue_small"),
+                "synagogue must come from landmarks, not the random buildings pool");
+    }
+
+    @Test
+    @DisplayName("Jerusalem landmarks pool guarantees the synagogue off the plaza")
+    void landmarksPoolIsSynagogue() throws Exception {
+        JsonObject pool = readJson("data/israel_simulator/worldgen/template_pool/jerusalem/landmarks.json");
+        String location = pool.getAsJsonArray("elements").get(0).getAsJsonObject()
+                .getAsJsonObject("element").get("location").getAsString();
+        assertEquals("israel_simulator:jerusalem/synagogue_small", location);
+        byte[] nbt = readGzip("data/israel_simulator/structure/jerusalem/synagogue_small.nbt");
+        String decoded = new String(nbt, StandardCharsets.ISO_8859_1);
+        assertTrue(decoded.contains("minecraft:glowstone") || decoded.contains("minecraft:smooth_sandstone"),
+                "synagogue must include dome blocks");
+        assertTrue(decoded.contains("minecraft:jigsaw"));
+    }
+
+    @Test
+    @DisplayName("Jerusalem uses beard_box so foundations sit into hilly terrain")
+    void usesBeardBoxAdaptation() throws Exception {
+        JsonObject structure = readJson("data/israel_simulator/worldgen/structure/jerusalem_city.json");
+        assertEquals("beard_box", structure.get("terrain_adaptation").getAsString());
+    }
+
+    @Test
+    @DisplayName("Jerusalem wall_gate is an open E-W passage without a blocking door")
+    void wallGateIsOpenPassage() throws Exception {
+        byte[] nbt = readGzip("data/israel_simulator/structure/jerusalem/wall_gate.nbt");
+        String decoded = new String(nbt, StandardCharsets.ISO_8859_1);
+        assertFalse(decoded.contains("minecraft:oak_door"),
+                "wall_gate must not place a closed oak door in the passage");
+        assertTrue(decoded.contains("minecraft:jigsaw"));
+        assertTrue(decoded.contains("minecraft:stone_bricks"));
     }
 
     private JsonObject readJson(String path) throws Exception {

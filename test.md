@@ -111,3 +111,12 @@ Problema riscontrato: `israel_simulator:jerusalem_city` era un solo NBT 7×7 (gu
 Funzionamento aspettato: una piccola città vecchia multi-pezzo come un villaggio vanilla: piazza centrale con strade, case in pietra/arenaria a tetto piatto, bancarelle dello shuk, una piccola sinagoga a cupola, un pozzo e un tratto di mura con porta. Stesso id `jerusalem_city`, stessi biomi, `terrain_adaptation: beard_thin`. Il marker giallo resta.
 
 Come è stato risolto: pezzi NBT in `structure/jerusalem/` (DataVersion 4903) e pool `jerusalem_city` (start → plaza), `jerusalem/streets`, `jerusalem/terminators`, `jerusalem/buildings`. Generatore `scripts/worldgen/gen_jerusalem_city.py`. `StructureFrameworkTest` accetta il start sulla plaza; `JerusalemCityStructureTest` controlla pool e NBT. Il file root `structure/jerusalem_city.nbt` resta come marker. Unit test Gradle, non un passaggio in-game.
+
+
+## Jerusalem city: sinagoga assente, edifici su mucchi, porta chiusa nel gate
+
+Problema riscontrato: in un mondo fresco (`jerusalem-city-test`, città a `[3680,~,2752]`) la città generava case, shuk, gatehouse e villager, ma (1) `synagogue_small` non compariva mai (peso 1 nel pool buildings e pezzo grande che perdeva per collisione), (2) case/shuk restavano su mucchi di terra/erba sopra il livello strada, con terra sotto le fondamenta, (3) `wall_gate` aveva il passaggio N–S mentre il jigsaw guardava ovest: entrando dalla strada si finiva contro un muro di arenaria con porta di quercia chiusa.
+
+Funzionamento aspettato: ogni città ha la sinagoga a cupola attaccata alla piazza; edifici a livello strada anche in collina; il gate è un passaggio aperto allineato alla strada, senza porta che lo chiude.
+
+Come è stato risolto: pool `jerusalem/landmarks` (solo sinagoga) collegato al lato nord della plaza (i tre lati restano strade). Fondamenta di 3 blocchi di arenaria sotto case/shuk/sinagoga/pozzo/gate/plaza; `terrain_adaptation` da `beard_thin` a `beard_box`; strade ancora `terrain_matching`, edifici `rigid`. `wall_gate` riscritto con tunnel E–W aperto (niente porta). Rigenerato con `scripts/worldgen/gen_jerusalem_city.py`. I test `JerusalemCityStructureTest` controllano landmarks, beard_box e assenza di porta nel gate. Unit test Gradle, non un passaggio in-game su mondo nuovo.

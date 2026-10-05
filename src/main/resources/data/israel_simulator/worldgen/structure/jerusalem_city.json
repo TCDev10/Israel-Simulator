@@ -15,6 +15,6 @@
   },
   "start_pool": "israel_simulator:jerusalem_city",
   "step": "surface_structures",
-  "terrain_adaptation": "beard_thin",
+  "terrain_adaptation": "beard_box",
   "use_expansion_hack": true
 }
