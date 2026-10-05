@@ -235,10 +235,10 @@ Funzionamento aspettato: un muro lungo in pietra pale (corsi herodiani a setback
 
 Come e stato risolto: generatore `scripts/worldgen/gen_western_wall.py` (Structure.save + connect_blocks); NBT 56x20x42 con centinaia di `western_wall_stone` sulla facciata; JSON aggiornati. Test `WesternWallStructureTest`. Verifica headless: seed 20261005 wall a [-3488,~,-7040] (67 blocchi dalla citta), chest treasury in BB; seed -3194586807213286118 wall a [-8944,~,-4288].
 
-## Western Wall: swing del braccio in preghiera
+## Western Wall: posa di preghiera
 
-Problema riscontrato: al right-click su `western_wall_stone` con la prayer note la preghiera funzionava, ma il braccio del giocatore non animava lo swing.
+Problema: serviva una posa di preghiera (~3s), non uno swing di piazzamento.
 
-Funzionamento aspettato: quando si tenta la preghiera con la note in mano principale, lo swing parte (almeno in caso di successo; anche se manca la kippah o c'e cooldown).
+Aspettato: sessione server di 60 tick, sync ai client, braccio teso e capo chino; poi reward.
 
-Come e stato risolto: in `WesternWallManager.tryPray` il client con prayer note chiama `player.swing(MAIN_HAND)` e restituisce true cosi `ModGameEvents` cancella con `InteractionResult.SUCCESS`; sul server, per SUCCESS / MISSING_KIPPAH / COOLDOWN, `player.swing(MAIN_HAND, true)` notifica gli altri client. La logica di reward/cooldown resta solo server-side.
+Risolto: `WesternWallPrayerSession` + payload; mixin `HumanoidModel.setupAnim`; FP `RenderHandEvent` + pitch camera. Fallimenti immediati; successo differito. Non testato in-game.
