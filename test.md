@@ -144,3 +144,11 @@ Problema riscontrato: le fondamenta profonde e `beard_box` producevano un plinto
 Funzionamento aspettato: come `minecraft:village_desert` / plains in 26.2 — strade `terrain_matching`, edifici `rigid`, `terrain_adaptation: beard_thin`, size 6, max_distance 80, `WORLD_SURFACE_WG`, start_height 0, case senza piedistallo profondo (pavimento a y=0, jigsaw ingresso a y=1).
 
 Come è stato risolto: `FOUNDATION = 0`; JSON struttura allineato a village_desert (`beard_thin`, stessi size/distance/heightmap/hack); strade restano `terrain_matching`; gate resta arco nel pool strade. Biomi invariati (`jerusalem` + `savanna_plateau`). Unit test aggiornati.
+
+## Jerusalem city: troppi wall_gate e fontana senza acqua (verifica save)
+
+Problema riscontrato: in `jerusalem-city-test4` (start a X=-2784 Z=-336) il terreno si adatta come un villaggio, ma dalla collina alta non si vedevano piazza/sinagoga (sono a Y≈101; le strade salgono a Y≈130–145). Nel save: 6× `wall_gate` su 93 pezzi; fontana con pilastro chiseled/lantern ma **senza acqua** (il blocco `minecraft:water` del template non risulta nel chunk).
+
+Funzionamento aspettato: 1–2 gate per città; fontana riconoscibile; piazza+sinagoga presenti (anche se più in basso sul pendio).
+
+Come è stato risolto: pesi strade 12/6/6 e gate 1 (~1/25); fontana con `water_cauldron[level=3]` al posto dell'acqua fluida; marker yellow terracotta sul pavimento. Analisi headless del save (strutture + blocchi). Unit test sul peso del gate. Serve mondo nuovo per i pezzi.

@@ -173,6 +173,25 @@ class JerusalemCityStructureTest {
         assertTrue(decoded.contains("minecraft:jigsaw"));
     }
 
+
+    @Test
+    @DisplayName("Jerusalem wall_gate is rare in the streets pool (~1/25 weight share)")
+    void wallGateIsRareInStreetsPool() throws Exception {
+        JsonObject streets = readJson("data/israel_simulator/worldgen/template_pool/jerusalem/streets.json");
+        int gate = 0, total = 0;
+        for (var el : streets.getAsJsonArray("elements")) {
+            var obj = el.getAsJsonObject();
+            int w = obj.get("weight").getAsInt();
+            total += w;
+            String loc = obj.getAsJsonObject("element").get("location").getAsString();
+            if (loc.endsWith("wall_gate")) {
+                gate = w;
+            }
+        }
+        assertTrue(gate > 0, "wall_gate must still be in streets");
+        assertTrue(total / gate >= 20, "gate weight share must be <= 1/20 so cities get ~1-2 gates");
+    }
+
     @Test
     @DisplayName("Jerusalem wall_gate is an open E-W passage without a blocking door")
     void wallGateIsOpenPassage() throws Exception {

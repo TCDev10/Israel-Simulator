@@ -225,14 +225,14 @@ def plaza() -> None:
     f = s.fy
     s.fills(0, f, 0, 14, f, 14, SSS())
     s.fills(2, f, 2, 12, f, 12, CS())
-    # fountain
+    # fountain (water_cauldron survives structure placement; raw water often vanishes)
     s.fills(6, f + 1, 6, 8, f + 1, 8, SS())
-    s.set(7, f + 1, 7, WAT())
+    s.set(7, f + 1, 7, blk("minecraft:water_cauldron", level="3"))
     s.set(7, f + 2, 7, CH())
     s.set(7, f + 3, 7, LANTERN())
     for x, z in ((3, 3), (11, 3), (3, 11), (11, 11)):
         s.set(x, f + 1, z, POT())
-    s.set(7, f + 1, 3, YT())  # marker
+    s.set(7, f, 3, YT())  # floor marker  # marker
     # North face: synagogue only (dedicated landmarks pool — avoids colliding with a street
     # on the same side, which was why synagogue_small never won a random buildings slot).
     s.set(
@@ -627,9 +627,10 @@ def main() -> None:
     write_pool(
         POOL / "streets.json",
         [
-            ("israel_simulator:jerusalem/street_straight", 4, "terrain_matching"),
-            ("israel_simulator:jerusalem/street_crossroad", 2, "terrain_matching"),
-            ("israel_simulator:jerusalem/street_corner", 2, "terrain_matching"),
+            ("israel_simulator:jerusalem/street_straight", 12, "terrain_matching"),
+            ("israel_simulator:jerusalem/street_crossroad", 6, "terrain_matching"),
+            ("israel_simulator:jerusalem/street_corner", 6, "terrain_matching"),
+            # Rare: ~1/25 street picks -> about 1-2 gates per city
             ("israel_simulator:jerusalem/wall_gate", 1, "terrain_matching"),
         ],
         "israel_simulator:jerusalem/terminators",
