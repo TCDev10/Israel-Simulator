@@ -293,6 +293,38 @@ public class DataAndResourceValidationTest {
     }
 
     @Test
+    @DisplayName("Hava Nagila disc sound is a non-empty bundled ogg, not a vanilla fallback")
+    void testHavaNagilaDiscOggPresent() throws IOException {
+        Path soundsJsonPath = RESOURCES_PATH.resolve(Paths.get("assets", IsraelSimulator.MOD_ID, "sounds.json"));
+        try (FileReader reader = new FileReader(soundsJsonPath.toFile())) {
+            JsonObject soundsJson = GSON.fromJson(reader, JsonObject.class);
+            assertTrue(soundsJson.has("music_disc.hava_nagila"), "music_disc.hava_nagila must be registered");
+            JsonObject event = soundsJson.getAsJsonObject("music_disc.hava_nagila");
+            assertTrue(event.has("sounds"), "music_disc.hava_nagila must list sounds");
+            var sounds = event.getAsJsonArray("sounds");
+            assertFalse(sounds.isEmpty(), "music_disc.hava_nagila sounds list must not be empty");
+            JsonElement first = sounds.get(0);
+            String name = first.isJsonObject()
+                    ? first.getAsJsonObject().get("name").getAsString()
+                    : first.getAsString();
+            assertFalse(name.isBlank(), "music_disc.hava_nagila sound name must not be blank");
+            assertFalse(name.startsWith("minecraft:"),
+                    "music_disc.hava_nagila must not fall back to a vanilla file: " + name);
+            String relative = name.contains(":") ? name.substring(name.indexOf(':') + 1) : name;
+            Path ogg = RESOURCES_PATH
+                    .resolve(Paths.get("assets", IsraelSimulator.MOD_ID, "sounds"))
+                    .resolve(relative + ".ogg");
+            assertTrue(Files.exists(ogg), "Missing ogg for music_disc.hava_nagila: " + ogg);
+            assertTrue(Files.size(ogg) > 0L, "Hava Nagila ogg must not be empty");
+        }
+
+        String discProperties = Files.readString(Paths.get(
+                "src", "main", "java", "com", "israelsimulator", "item", "cultural", "CulturalItems.java"));
+        assertTrue(discProperties.contains(".jukeboxPlayable(HAVA_NAGILA_SONG)"),
+                "hava_nagila_disc must stay a jukebox disc via jukeboxPlayable");
+    }
+
+    @Test
     @DisplayName("Validate advancement JSON files have proper display titles and criteria")
     void testAdvancementsValidation() throws IOException {
         Path advDir = RESOURCES_PATH.resolve(Paths.get("data", IsraelSimulator.MOD_ID, "advancement"));
