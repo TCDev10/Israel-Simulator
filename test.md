@@ -95,3 +95,11 @@ Problema riscontrato: `data/c/tags/worldgen/biome/is_overworld.json` elenca `med
 Funzionamento aspettato: `israel_simulator:jerusalem` sta in `c:is_overworld` insieme agli altri biomi israeliani, stesso stile (stringa nell'array `values`, `replace: false`). Il tag del mod non cambia. Il mixin non cambia.
 
 Come è stato risolto: aggiunta la riga `israel_simulator:jerusalem` in `is_overworld.json`, dopo `urban_area`. Nessun generatore da aggiornare. `CommonOverworldBiomeTagTest` fallisce se gli altri cinque biomi ci sono e jerusalem no. Prima della riga il test falliva; dopo, `./gradlew test --tests com.israelsimulator.world.CommonOverworldBiomeTagTest` e `./gradlew test` sono passati. Un mondo Minecraft non è stato generato. Nessun commit.
+
+## Il disco Hava Nagila suonava una traccia vanilla
+
+Problema riscontrato: `music_disc.hava_nagila` in `sounds.json` puntava a `minecraft:music/game/calm1`, una musica vanilla, non a Hava Nagila. Non c'era un ogg del mod. L'item `hava_nagila_disc` era già un disco da jukebox (`jukeboxPlayable` sulla canzone `israel_simulator:hava_nagila`), ma la canzone durava 150 secondi e non corrispondeva a un file vero.
+
+Funzionamento aspettato: il jukebox suona l'ogg di Hava Nagila del mod, non una lista vuota e non un file vanilla mancante o sostitutivo. L'id dell'item resta `hava_nagila_disc`.
+
+Come è stato risolto: il file di Wikimedia Commons (`File:Hava_nagila.ogg`) era la registrazione sbagliata ed è stato sovrascritto. L'audio ora viene dal video indicato dall'utente, https://www.youtube.com/watch?v=vHSNZK4Je-Y , che ha descritto come la registrazione originale e di pubblico dominio. Oltre a quella affermazione non è stata verificata una licenza. Il file è `assets/israel_simulator/sounds/records/hava_nagila.ogg` (Ogg Vorbis, 165,3 secondi). `sounds.json` indica `israel_simulator:records/hava_nagila` con `stream: true`. La durata in `jukebox_song/hava_nagila.json` è 165.3. `DataAndResourceValidationTest.testHavaNagilaDiscOggPresent` resta il controllo che l'ogg esista e non sia vuoto, e che il nome non sia vanilla. I test non sono stati rieseguiti, perché Gradle è occupato dal client già aperto. Nessun commit.
