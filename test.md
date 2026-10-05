@@ -226,3 +226,12 @@ Problema riscontrato: le texture item di `kippah` e `hava_nagila_disc` erano pla
 Funzionamento aspettato: in inventario si vedono i PNG 32x32 dell'utente; i model item puntano a `israel_simulator:item/kippah` e `israel_simulator:item/hava_nagila_disc`.
 
 Come e stato risolto: copiati `/workspace/user-textures/kippah.png` e `hava_nagila_disc.png` in `assets/israel_simulator/textures/item/` senza ridimensionare. I model erano gia sul path del mod.
+
+## Texture uva / vite
+
+Problema: grapevine riusava i modelli wheat; grapes senza texture dedicata.
+
+Aspettato: texture 16x16 stile vanilla (vite/grappoli, non grano).
+
+Risolto: PNG stage0-7 + item grapes; blockstate/modelli aggiornati. Non testato in-game.
+
