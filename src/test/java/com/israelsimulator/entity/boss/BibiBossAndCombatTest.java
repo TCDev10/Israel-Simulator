@@ -118,6 +118,7 @@ class BibiBossAndCombatTest {
         try {
             String json = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
             assertTrue(json.contains("israel_simulator:bibi_boss"));
+            assertTrue(json.contains("minecraft:entity_type"));
             assertTrue(json.contains("israel_simulator:hava_nagila_disc"));
             assertTrue(json.contains("advancements.israel_simulator.hava_nagila.title"));
         } catch (Exception e) {
