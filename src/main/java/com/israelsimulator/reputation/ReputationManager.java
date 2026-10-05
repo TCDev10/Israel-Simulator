@@ -1,71 +1,68 @@
 package com.israelsimulator.reputation;
 
-import java.util.EnumMap;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import net.minecraft.server.level.ServerLevel;
 
 /**
  * Server-authoritative reputation manager tracking faction standing (GAME_DESIGN.md §31, TODO §31).
+ *
+ * <p>Scores live in {@link ReputationScores} (world SavedData), not in a static map.
+ * A server restart must not reset faction standing.</p>
  */
 public final class ReputationManager {
 
-    private static final Map<UUID, Map<ReputationFaction, Integer>> REPUTATION_MAP = new ConcurrentHashMap<>();
-
     private ReputationManager() {}
 
-    private static Map<ReputationFaction, Integer> getPlayerMap(UUID playerId) {
-        return REPUTATION_MAP.computeIfAbsent(playerId, id -> new EnumMap<>(ReputationFaction.class));
+    public static ReputationScores get(ServerLevel level) {
+        return ReputationScores.get(level);
     }
 
-    public static int getReputation(UUID playerId, ReputationFaction faction) {
-        if (playerId == null || faction == null) {
+    public static int getReputation(ReputationScores scores, UUID playerId, ReputationFaction faction) {
+        if (scores == null) {
             return 0;
         }
-        return getPlayerMap(playerId).getOrDefault(faction, 0);
+        return scores.getScore(playerId, faction);
     }
 
-    public static void setReputation(UUID playerId, ReputationFaction faction, int value) {
-        if (playerId == null || faction == null) {
+    public static void setReputation(ReputationScores scores, UUID playerId, ReputationFaction faction, int value) {
+        if (scores == null) {
             return;
         }
-        getPlayerMap(playerId).put(faction, Math.clamp(value, -100, 100));
+        scores.setScore(playerId, faction, value);
     }
 
-    public static int adjustReputation(UUID playerId, ReputationFaction faction, int delta) {
-        if (playerId == null || faction == null) {
+    public static int adjustReputation(ReputationScores scores, UUID playerId, ReputationFaction faction, int delta) {
+        if (scores == null) {
             return 0;
         }
-        Map<ReputationFaction, Integer> map = getPlayerMap(playerId);
-        int current = map.getOrDefault(faction, 0);
-        int updated = Math.clamp(current + delta, -100, 100);
-        map.put(faction, updated);
-        return updated;
+        return scores.adjustScore(playerId, faction, delta);
     }
 
-    public static ReputationTier getTier(UUID playerId, ReputationFaction faction) {
-        return ReputationTier.fromScore(getReputation(playerId, faction));
+    public static ReputationTier getTier(ReputationScores scores, UUID playerId, ReputationFaction faction) {
+        return ReputationTier.fromScore(getReputation(scores, playerId, faction));
     }
 
-    public static double getPriceModifier(UUID playerId, ReputationFaction faction) {
-        return getTier(playerId, faction).getPriceModifier();
+    public static double getPriceModifier(ReputationScores scores, UUID playerId, ReputationFaction faction) {
+        return getTier(scores, playerId, faction).getPriceModifier();
     }
 
-    public static boolean canAccessSpecialTrades(UUID playerId, ReputationFaction faction) {
-        return getTier(playerId, faction).canAccessSpecialTrades();
+    public static boolean canAccessSpecialTrades(ReputationScores scores, UUID playerId, ReputationFaction faction) {
+        return getTier(scores, playerId, faction).canAccessSpecialTrades();
     }
 
-    public static boolean canAccessRareTrades(UUID playerId, ReputationFaction faction) {
-        return getTier(playerId, faction).canAccessRareTrades();
+    public static boolean canAccessRareTrades(ReputationScores scores, UUID playerId, ReputationFaction faction) {
+        return getTier(scores, playerId, faction).canAccessRareTrades();
     }
 
-    public static void clearForPlayer(UUID playerId) {
-        if (playerId != null) {
-            REPUTATION_MAP.remove(playerId);
+    public static void clearForPlayer(ReputationScores scores, UUID playerId) {
+        if (scores != null) {
+            scores.clearPlayer(playerId);
         }
     }
 
-    public static void clearAll() {
-        REPUTATION_MAP.clear();
+    public static void clearAll(ReputationScores scores) {
+        if (scores != null) {
+            scores.clearAll();
+        }
     }
 }

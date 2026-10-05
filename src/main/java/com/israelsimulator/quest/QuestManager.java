@@ -2,33 +2,42 @@ package com.israelsimulator.quest;
 
 import com.israelsimulator.registry.ModItems;
 import com.israelsimulator.reputation.ReputationManager;
+import com.israelsimulator.reputation.ReputationScores;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Collections;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * Server-authoritative manager for optional non-linear discovery quests (GAME_DESIGN.md §52).
  *
- * <p>Tracks completed quests per player UUID, awards faction reputation and currency rewards,
- * and ensures quests can only be claimed once without duplicate farming.</p>
+ * <p>Completed quests are stored in {@link CompletedQuests} (world SavedData), not in a static
+ * map, so a server restart keeps finished quests and blocks duplicate reward claims.</p>
  */
 public final class QuestManager {
-    private static final Map<UUID, Set<DiscoveryQuest>> COMPLETED_QUESTS = new ConcurrentHashMap<>();
 
     private QuestManager() {}
+
+    public static CompletedQuests get(ServerLevel level) {
+        return CompletedQuests.get(level);
+    }
 
     /**
      * Checks if a player has completed a given quest.
      */
-    public static boolean isCompleted(UUID playerUuid, DiscoveryQuest quest) {
-        Set<DiscoveryQuest> completed = COMPLETED_QUESTS.get(playerUuid);
-        return completed != null && completed.contains(quest);
+    public static boolean isCompleted(CompletedQuests data, UUID playerUuid, DiscoveryQuest quest) {
+        if (data == null) {
+            return false;
+        }
+        return data.isCompleted(playerUuid, quest);
     }
 
     /**
@@ -41,16 +50,18 @@ public final class QuestManager {
         Objects.requireNonNull(player, "Player must not be null");
         Objects.requireNonNull(quest, "Quest must not be null");
 
-        UUID uuid = player.getUUID();
-        Set<DiscoveryQuest> set = COMPLETED_QUESTS.computeIfAbsent(uuid, k -> ConcurrentHashMap.newKeySet());
+        if (!(player.level() instanceof ServerLevel serverLevel)) {
+            return false;
+        }
 
-        // Atomically check and add
-        if (!set.add(quest)) {
+        UUID uuid = player.getUUID();
+        CompletedQuests completed = CompletedQuests.get(serverLevel);
+        if (!completed.markCompleted(uuid, quest)) {
             return false; // Already completed
         }
 
-        // Award reputation
-        ReputationManager.adjustReputation(uuid, quest.getRewardFaction(), quest.getReputationReward());
+        ReputationScores scores = ReputationScores.get(serverLevel);
+        ReputationManager.adjustReputation(scores, uuid, quest.getRewardFaction(), quest.getReputationReward());
 
         // Award currency rewards (e.g. Shekels)
         if (quest.getRewardAmount() > 0) {
@@ -80,15 +91,10 @@ public final class QuestManager {
     /**
      * Gets all quests completed by a player.
      */
-    public static Set<DiscoveryQuest> getCompletedQuests(UUID playerUuid) {
-        Set<DiscoveryQuest> set = COMPLETED_QUESTS.get(playerUuid);
-        return set == null ? Collections.emptySet() : Collections.unmodifiableSet(set);
-    }
-
-    /**
-     * Resets quest data for testing.
-     */
-    public static void resetForTesting() {
-        COMPLETED_QUESTS.clear();
+    public static Set<DiscoveryQuest> getCompletedQuests(CompletedQuests data, UUID playerUuid) {
+        if (data == null) {
+            return Collections.emptySet();
+        }
+        return data.getCompleted(playerUuid);
     }
 }

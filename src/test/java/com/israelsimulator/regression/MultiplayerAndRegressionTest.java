@@ -9,9 +9,11 @@ import com.israelsimulator.economy.IsraelEconomy;
 import com.israelsimulator.economy.ProductCategory;
 import com.israelsimulator.entity.boss.BibiBossState;
 import com.israelsimulator.performance.PerformanceManager;
+import com.israelsimulator.quest.CompletedQuests;
 import com.israelsimulator.quest.DiscoveryQuest;
 import com.israelsimulator.quest.QuestManager;
 import com.israelsimulator.reputation.ReputationFaction;
+import com.israelsimulator.reputation.ReputationScores;
 import com.israelsimulator.reputation.ReputationManager;
 import com.israelsimulator.transport.TransportNetwork;
 import com.israelsimulator.transport.TransportType;
@@ -60,16 +62,18 @@ public class MultiplayerAndRegressionTest {
         UUID player1 = UUID.randomUUID();
         UUID player2 = UUID.randomUUID();
 
-        // Independent reputation tracking
-        ReputationManager.setReputation(player1, ReputationFaction.CITY, 50);
-        ReputationManager.setReputation(player2, ReputationFaction.CITY, -20);
+        // Independent reputation tracking on saved data (not a shared static map)
+        ReputationScores scores = new ReputationScores();
+        ReputationManager.setReputation(scores, player1, ReputationFaction.CITY, 50);
+        ReputationManager.setReputation(scores, player2, ReputationFaction.CITY, -20);
 
-        assertEquals(50, ReputationManager.getReputation(player1, ReputationFaction.CITY));
-        assertEquals(-20, ReputationManager.getReputation(player2, ReputationFaction.CITY));
+        assertEquals(50, ReputationManager.getReputation(scores, player1, ReputationFaction.CITY));
+        assertEquals(-20, ReputationManager.getReputation(scores, player2, ReputationFaction.CITY));
 
-        // Independent quest state
-        assertFalse(QuestManager.isCompleted(player1, DiscoveryQuest.HOLY_CITY_PILGRIM));
-        assertFalse(QuestManager.isCompleted(player2, DiscoveryQuest.HOLY_CITY_PILGRIM));
+        // Independent quest state on saved data
+        CompletedQuests quests = new CompletedQuests();
+        assertFalse(QuestManager.isCompleted(quests, player1, DiscoveryQuest.HOLY_CITY_PILGRIM));
+        assertFalse(QuestManager.isCompleted(quests, player2, DiscoveryQuest.HOLY_CITY_PILGRIM));
     }
 
     @Test
