@@ -319,3 +319,19 @@ Come e stato risolto:
 - `IsraelBiomeClimateParams.java`: `dead_sea` e `judean_desert` estesi a temperatura minima 0.55F (coprendo l'intera escursione di Gerusalemme), umidità massima -0.25F, continentalità minima 0.25F ed erosione minima -0.65F.
 - Divisione di weirdness impostata a `0.00F`: `judean_desert` [-1.00F, 0.00F] e `dead_sea` [0.00F, 1.00F]. In questo modo, l'intero range di weirdness di Gerusalemme [0.00F, 0.45F] ricade pienamente nel dominio del Mar Morto, garantendo che verso est (continentalità crescente) il Mar Morto sia naturalmente adiacente e raggiungibile su seed come il 42.
 Test: `IsraelBiomeClimateTest` (verifica reachability Monte Carlo 1,9M campioni, adiacenza climatica e overlap).
+
+## Loot table mancanti per i blocchi paved_road e transport_stop
+
+Problema riscontrato: i blocchi `paved_road` e `transport_stop` erano privi di un file JSON in `data/israel_simulator/loot_table/blocks/`. Se piazzati o trovati nel mondo e minati, non droppavano il proprio blocco item, scomparendo nel nulla.
+
+Funzionamento aspettato: tutti gli 11 blocchi registrati nel mod devono avere una loot table valida che rilasci il corrispondente blocco/drop.
+
+Come è stato risolto: create le loot table `paved_road.json` e `transport_stop.json` (tipo `minecraft:block`, drop di se stessi), ed esteso il test `DataAndResourceValidationTest` con `testAllModBlocksHaveLootTables` per garantire che tutti gli 11 blocchi registrati abbiano una loot table dedicata.
+
+## Routing dei trasporti fermo sempre su Tel Aviv
+
+Problema riscontrato: in `TransportStopBlock.java`, l'interazione con la fermata calcolava la destinazione usando `TransportNetwork.getNextStop("tel_aviv_central")` con l'ID fissato a Tel Aviv. In questo modo, interagire con qualunque fermata nel mondo (es. a Gerusalemme, a Jaffa o al Mar Morto) trasportava sempre e solo a Jaffa Clock Tower, senza permettere la prosecuzione lungo il circuito dei trasporti.
+
+Funzionamento aspettato: la fermata determina la propria posizione nello spazio, identifica la fermata più vicina (`TransportNetwork.getNearestStop(pos)`) e calcola la fermata successiva nel circuito regionale.
+
+Come è stato risolto: implementato `TransportNetwork.getNearestStop(BlockPos pos)` basato sulla distanza euclidea minima rispetto alle fermate registrate, e aggiornato `TransportStopBlock.handleInteraction` per prelevare la fermata corrente e instradare alla successiva. Aggiunto test di verifica routing in `TransportationTest`.

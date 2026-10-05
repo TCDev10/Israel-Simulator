@@ -44,6 +44,23 @@ public final class TransportNetwork {
     }
 
     /**
+     * Gets the nearest stop to a given block position.
+     */
+    public static TransportStop getNearestStop(BlockPos pos) {
+        if (STOPS.isEmpty() || pos == null) return null;
+        TransportStop nearest = null;
+        double minDistanceSq = Double.MAX_VALUE;
+        for (TransportStop stop : STOPS.values()) {
+            double distSq = stop.defaultPos().distSqr(pos);
+            if (distSq < minDistanceSq) {
+                minDistanceSq = distSq;
+                nearest = stop;
+            }
+        }
+        return nearest;
+    }
+
+    /**
      * Gets the next destination stop along the transit line.
      */
     public static TransportStop getNextStop(String currentStopId) {

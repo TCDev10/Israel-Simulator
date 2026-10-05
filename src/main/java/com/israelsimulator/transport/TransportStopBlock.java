@@ -94,8 +94,10 @@ public class TransportStopBlock extends Block {
             return InteractionResult.CONSUME;
         }
 
-        // Determine destination stop
-        TransportNetwork.TransportStop nextStop = TransportNetwork.getNextStop("tel_aviv_central");
+        // Determine current stop and next destination stop
+        TransportNetwork.TransportStop currentStop = TransportNetwork.getNearestStop(pos);
+        String currentStopId = currentStop != null ? currentStop.id() : "tel_aviv_central";
+        TransportNetwork.TransportStop nextStop = TransportNetwork.getNextStop(currentStopId);
         if (nextStop == null) {
             player.sendSystemMessage(Component.translatable("message.israel_simulator.no_route").withStyle(ChatFormatting.RED));
             return InteractionResult.CONSUME;

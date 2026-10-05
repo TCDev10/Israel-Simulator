@@ -48,6 +48,15 @@ class TransportationTest {
         TransportNetwork.TransportStop next = TransportNetwork.getNextStop("tel_aviv_central");
         assertNotNull(next, "Next stop from Tel Aviv must exist");
         assertNotEquals("tel_aviv_central", next.id());
+
+        // Test nearest stop lookup
+        TransportNetwork.TransportStop nearestJerusalem = TransportNetwork.getNearestStop(new net.minecraft.core.BlockPos(810, 110, 805));
+        assertNotNull(nearestJerusalem);
+        assertEquals("jerusalem_navon", nearestJerusalem.id());
+
+        TransportNetwork.TransportStop fromJerusalem = TransportNetwork.getNextStop(nearestJerusalem.id());
+        assertNotNull(fromJerusalem);
+        assertEquals("dead_sea_resort", fromJerusalem.id());
     }
 
     @Test

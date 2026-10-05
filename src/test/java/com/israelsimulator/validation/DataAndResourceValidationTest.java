@@ -362,4 +362,16 @@ public class DataAndResourceValidationTest {
             });
         }
     }
+
+    @Test
+    @DisplayName("Validate all mod blocks have dedicated block loot tables")
+    void testAllModBlocksHaveLootTables() {
+        Path blockLootDir = RESOURCES_PATH.resolve(Paths.get("data", IsraelSimulator.MOD_ID, "loot_table", "blocks"));
+        assertTrue(Files.exists(blockLootDir), "loot_table/blocks must exist");
+
+        for (String block : ALL_MOD_BLOCKS) {
+            Path lootPath = blockLootDir.resolve(block + ".json");
+            assertTrue(Files.exists(lootPath), "Missing block loot table for: " + block);
+        }
+    }
 }
