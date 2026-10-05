@@ -137,14 +137,15 @@ class JerusalemCityStructureTest {
 
 
     @Test
-    @DisplayName("Jerusalem drops steep biomes and keeps jerusalem + savanna_plateau")
+    @DisplayName("Jerusalem city structure is locked to the jerusalem biome only")
     void biomesAvoidSteepHills() throws Exception {
         JsonObject structure = readJson("data/israel_simulator/worldgen/structure/jerusalem_city.json");
-        String biomes = structure.get("biomes").toString();
-        assertTrue(biomes.contains("israel_simulator:jerusalem"));
-        assertTrue(biomes.contains("minecraft:savanna_plateau"));
-        assertFalse(biomes.contains("windswept_hills"), "windswept_hills removed (too steep)");
-        assertFalse(biomes.contains("meadow"), "meadow removed (too hilly)");
+        var biomes = structure.getAsJsonArray("biomes");
+        assertEquals(1, biomes.size());
+        assertEquals("israel_simulator:jerusalem", biomes.get(0).getAsString());
+        assertFalse(biomes.toString().contains("savanna_plateau"));
+        assertFalse(biomes.toString().contains("windswept_hills"));
+        assertFalse(biomes.toString().contains("meadow"));
         assertEquals("beard_thin", structure.get("terrain_adaptation").getAsString());
     }
 

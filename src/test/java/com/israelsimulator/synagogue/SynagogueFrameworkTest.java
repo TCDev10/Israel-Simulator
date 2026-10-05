@@ -31,7 +31,8 @@ class SynagogueFrameworkTest {
         try {
             String json = new String(structStream.readAllBytes(), StandardCharsets.UTF_8);
             assertTrue(json.contains("minecraft:jigsaw"));
-            assertTrue(json.contains("israel_simulator:is_israel_region"));
+            assertTrue(json.contains("israel_simulator:jerusalem"));
+            assertFalse(json.contains("is_israel_region"));
         } catch (Exception e) {
             fail("Failed reading great_synagogue.json: " + e.getMessage());
         }
