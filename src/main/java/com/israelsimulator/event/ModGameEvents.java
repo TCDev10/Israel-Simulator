@@ -38,6 +38,7 @@ public final class ModGameEvents {
                 com.israelsimulator.westernwall.WesternWallManager.tickPlayer(serverPlayer);
                 if (serverPlayer.tickCount % 20 == 0) {
                     com.israelsimulator.world.map.PlayerLandmarkTracker.checkProximityAndDiscover(serverPlayer);
+                    com.israelsimulator.city.telaviv.TelAvivDistrictManager.checkPlayerDistrict(serverPlayer);
                 }
             }
         }

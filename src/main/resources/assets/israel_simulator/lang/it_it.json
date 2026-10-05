@@ -187,5 +187,17 @@
   "advancements.israel_simulator.hummus_connoisseur.title": "L'Esperto di Hummus",
   "advancements.israel_simulator.hummus_connoisseur.description": "Assaggia il sacro trio culinario levantino: Hummus, Falafel e Sabich.",
   "message.israel_simulator.western_wall_praying": "Preghiera in corso...",
-  "message.israel_simulator.western_wall_prayer_interrupted": "La preghiera e stata interrotta."
+  "message.israel_simulator.western_wall_prayer_interrupted": "La preghiera e stata interrotta.",
+  "district.israel_simulator.white_city": "Città Bianca",
+  "district.israel_simulator.white_city.desc": "Stile Bauhaus / Internazionale",
+  "district.israel_simulator.rothschild_boulevard": "Boulevard Rothschild",
+  "district.israel_simulator.rothschild_boulevard.desc": "Passeggiata Urbana",
+  "district.israel_simulator.florentin": "Florentin",
+  "district.israel_simulator.florentin.desc": "Quartiere Bohemien degli Artigiani",
+  "district.israel_simulator.sarona": "Sarona",
+  "district.israel_simulator.sarona.desc": "Patrimonio Templare Restaurato",
+  "district.israel_simulator.startup_district": "Distretto delle Startup e Tecnologia",
+  "district.israel_simulator.startup_district.desc": "Grattacieli Moderni ad Alta Tecnologia",
+  "district.israel_simulator.tayelet_beach": "Tayelet e Lungomare",
+  "district.israel_simulator.tayelet_beach.desc": "Lungomare Costiero Mediterraneo"
 }

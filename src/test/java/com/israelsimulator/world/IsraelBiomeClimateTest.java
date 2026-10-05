@@ -99,13 +99,42 @@ class IsraelBiomeClimateTest {
         assertNotNull(judean);
         assertNotNull(dead);
         // Contiguous weirdness: judean max meets/overlaps dead min
-        assertEquals(0.25F, dead.weirdMin(), 1e-5f, "dead_sea weirdness pocket starts at 0.25");
-        assertEquals(0.25F, judean.weirdMax(), 1e-5f, "judean weirdness ends where dead_sea begins");
+        assertEquals(0.00F, dead.weirdMin(), 1e-5f, "dead_sea weirdness pocket starts at 0.00");
+        assertEquals(0.00F, judean.weirdMax(), 1e-5f, "judean weirdness ends where dead_sea begins");
         // Overlapping arid inland envelope
         assertTrue(overlap(judean.tempMin(), judean.tempMax(), dead.tempMin(), dead.tempMax()));
         assertTrue(overlap(judean.humMin(), judean.humMax(), dead.humMin(), dead.humMax()));
         assertTrue(overlap(judean.contMin(), judean.contMax(), dead.contMin(), dead.contMax()));
         assertTrue(overlap(judean.erosMin(), judean.erosMax(), dead.erosMin(), dead.erosMax()));
+    }
+
+    @Test
+    @DisplayName("Jerusalem and Dead Sea share climate boundary for natural geographic adjacency")
+    void jerusalemAndDeadSeaAdjacent() {
+        Slot jerusalem = null;
+        Slot dead = null;
+        for (Slot slot : IsraelBiomeClimateParams.SLOTS) {
+            if (slot.biome().equals(ModBiomes.JERUSALEM)) {
+                jerusalem = slot;
+            }
+            if (slot.biome().equals(ModBiomes.DEAD_SEA)) {
+                dead = slot;
+            }
+        }
+        assertNotNull(jerusalem);
+        assertNotNull(dead);
+        // Shared temperature band
+        assertTrue(overlap(jerusalem.tempMin(), jerusalem.tempMax(), dead.tempMin(), dead.tempMax()),
+                "Jerusalem and Dead Sea must overlap in temperature");
+        // Shared humidity band
+        assertTrue(overlap(jerusalem.humMin(), jerusalem.humMax(), dead.humMin(), dead.humMax()),
+                "Jerusalem and Dead Sea must overlap in humidity");
+        // Contiguous/overlapping continentalness (Jerusalem hills transition to Dead Sea valley)
+        assertTrue(overlap(jerusalem.contMin(), jerusalem.contMax(), dead.contMin(), dead.contMax()),
+                "Jerusalem and Dead Sea must overlap in continentalness");
+        // Overlapping weirdness so Dead Sea appears in Jerusalem's weirdness spectrum
+        assertTrue(overlap(jerusalem.weirdMin(), jerusalem.weirdMax(), dead.weirdMin(), dead.weirdMax()),
+                "Jerusalem and Dead Sea must overlap in weirdness");
     }
 
     private static boolean overlap(float a0, float a1, float b0, float b1) {

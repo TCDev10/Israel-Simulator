@@ -279,3 +279,43 @@ Problema: serviva una posa di preghiera (~3s), non uno swing di piazzamento.
 Aspettato: sessione server di 60 tick, sync ai client, braccio teso e capo chino; poi reward.
 
 Risolto: `WesternWallPrayerSession` + payload; mixin `HumanoidModel.setupAnim`; FP `RenderHandEvent` + pitch camera. Fallimenti immediati; successo differito. Non testato in-game.
+
+## Strutture rimanenti: ricostruzione degli ultimi 7 placeholder
+
+Problema riscontrato: `government_building`, `grand_market`, `startup_office`, `historical_house`, `synagogue`, `ancient_sanctuary` e `great_synagogue` erano scatole 7x6x7 o 9x7x9 vuote/placeholder.
+
+Funzionamento aspettato: strutture reali complete con architettura caratteristica, arredi interni, marker corretti per `StructureFrameworkTest` e chest con loot table `israel_simulator:chests/...`.
+
+Come e stato risolto: script `scripts/worldgen/gen_remaining_structures.py`:
+- `government_building` (28x14x26, 10.192 blocchi): facciata con colonne in quarzo, assemblea con podio/leggio, archivio con librerie e chest `government_building`, marker `polished_deepslate`.
+- `grand_market` (32x12x30, 11.520 blocchi): shuk coperto con banchi a tendina colorata, spezie, casse di frutta/verdura, fontana centrale e chest `grand_market`, marker `red_terracotta`.
+- `startup_office` (26x14x26, 9.464 blocchi): open space moderno in cemento/vetro ciano, postazioni sviluppatori, sala server con rack/copper, area lounge e chest `startup_office` / `tel_aviv_tech_office`, marker `iron_block`.
+- `historical_house` (24x11x24, 6.336 blocchi): casa storica di Gerusalemme con cortile alberato (olivo), muratura in pietra/mattoni, camino, tappeto, madia e chest `historical_house`, marker `bricks`.
+- `synagogue` (26x13x26, 8.788 blocchi): sala di preghiera comunitaria con atrio, lavacro, banchi, bimah rialzata con leggio, aron kodesh con chest `synagogue_ark` e ner tamid, marker `purple_stained_glass`.
+- `ancient_sanctuary` (30x12x34, 12.240 blocchi): santuario biblico del deserto con cortile recintato, altare dei sacrifici, lavacro, Santo con Menorah e Santo dei Santi con cassa `ancient_sanctuary` (fonte ultra-rara Rabbi's Crown), marker `chiseled_sandstone`.
+- `great_synagogue` (36x18x36, 23.328 blocchi): grande cattedrale-sinagoga monumentale a Gerusalemme con loggiato a colonne, navata a doppia altezza con matroneo/balaustre, maestoso aron kodesh dorato, grande bimah in marmo e chest `synagogue_ark`, marker `blue_stained_glass`.
+Test: `RemainingStructuresTest` + `StructureFrameworkTest` + `SynagogueFrameworkTest`.
+
+## Quartieri di Tel Aviv: implementazione gameplay e spaziale
+
+Problema riscontrato: i 6 quartieri di Tel Aviv (`WHITE_CITY`, `ROTHSCHILD`, `FLORENTIN`, `SARONA`, `STARTUP_DISTRICT`, `TAYELET_BEACH`) esistevano solo come costanti statiche di testo in `TelAvivDistricts.java` senza alcuna corrispondenza spaziale o di gameplay nel mondo.
+
+Funzionamento aspettato: i quartieri devono essere riconosciuti nello spazio del bioma `urban_area`, avere moltiplicatori economici appropriati, professioni caratteristiche, tracciamento esplorativo server-authoritative e rappresentazione fisica nella struttura di Tel Aviv.
+
+Come e stato risolto:
+- `TelAvivDistricts.java`: aggiunta zonizzazione spaziale `getDistrictAt(BlockPos)` (griglia modulare 3x2 a celle 64x64 blocchi, garantendo che ogni zona contenga tutti e 6 i quartieri), lookup per ID, moltiplicatori economici specifici per tipologia merceologica (tech in Startup, cibo a Sarona, artigianato/antichità a Florentin, ecc.) e professioni raccomandate per gli NPC.
+- `TelAvivDistrictManager.java`: monitoraggio tick server-side del giocatore nel bioma urbano, notifica actionbar al cambio quartiere (`Entering [District] - [Style]`), tracciamento delle scoperte uniche del giocatore.
+- `ModGameEvents.java`: integrazione nel ciclo di tick del giocatore ogni 20 tick.
+- `gen_coastal_structures.py`: `tel_aviv_city` espansa a 48x18x48 (41.472 blocchi) con settori dedicati a ciascun quartiere (spiaggia/Tayelet a ovest, boulevard alberato di Rothschild con chiosco centrale, White City Bauhaus con balconi, torre tecnologica Startup con server, loft artistici con murales a Florentin, mercato in pietra Templare a Sarona).
+Test: `TelAvivDistrictsTest` e `CoastalStructuresTest`.
+
+## Mar Morto: contiguità climatica e presenza vicino a Gerusalemme
+
+Problema riscontrato: su determinati seed (come il seed 42), il Mar Morto non compariva nelle vicinanze di Gerusalemme perché `dead_sea` era confinato a una tasca di weirdness [0.25, 1.00] e temperatura minima 0.60, mentre Gerusalemme aveva weirdness [0.00, 0.45] e temperatura a partire da 0.55. Se una patch di Gerusalemme generava con weirdness inferiore a 0.25 (la maggioranza dei casi nella distribuzione gaussiana del rumore), il Mar Morto non poteva comparire adiacente.
+
+Funzionamento aspettato: il Mar Morto e il Deserto di Giuda devono confinare direttamente con Gerusalemme lungo il gradiente di continentalità e su tutto lo spettro di temperatura e weirdness di Gerusalemme.
+
+Come e stato risolto:
+- `IsraelBiomeClimateParams.java`: `dead_sea` e `judean_desert` estesi a temperatura minima 0.55F (coprendo l'intera escursione di Gerusalemme), umidità massima -0.25F, continentalità minima 0.25F ed erosione minima -0.65F.
+- Divisione di weirdness impostata a `0.00F`: `judean_desert` [-1.00F, 0.00F] e `dead_sea` [0.00F, 1.00F]. In questo modo, l'intero range di weirdness di Gerusalemme [0.00F, 0.45F] ricade pienamente nel dominio del Mar Morto, garantendo che verso est (continentalità crescente) il Mar Morto sia naturalmente adiacente e raggiungibile su seed come il 42.
+Test: `IsraelBiomeClimateTest` (verifica reachability Monte Carlo 1,9M campioni, adiacenza climatica e overlap).

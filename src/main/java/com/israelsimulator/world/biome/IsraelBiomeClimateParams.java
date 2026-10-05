@@ -64,8 +64,8 @@ public final class IsraelBiomeClimateParams {
             new Slot(ModBiomes.URBAN_AREA, 0.55F, 0.90F, -0.55F, -0.15F, -0.05F, 0.15F, -0.22F, 0.45F, -0.20F, 0.35F),
             new Slot(ModBiomes.ISRAELI_AGRICULTURE, 0.55F, 0.85F, -0.35F, 0.00F, 0.05F, 0.28F, -0.375F, 0.05F, -0.45F, 0.15F),
             new Slot(ModBiomes.JERUSALEM, 0.55F, 0.80F, -0.70F, -0.25F, 0.22F, 0.55F, -0.78F, -0.22F, 0.00F, 0.45F),
-            new Slot(ModBiomes.JUDEAN_DESERT, 0.60F, 1.00F, -1.00F, -0.30F, 0.28F, 0.85F, -0.40F, 0.45F, -1.00F, 0.25F),
-            new Slot(ModBiomes.DEAD_SEA, 0.60F, 1.00F, -1.00F, -0.30F, 0.28F, 0.85F, -0.40F, 0.45F, 0.25F, 1.00F)
+            new Slot(ModBiomes.JUDEAN_DESERT, 0.55F, 1.00F, -1.00F, -0.25F, 0.25F, 0.85F, -0.65F, 0.45F, -1.00F, 0.00F),
+            new Slot(ModBiomes.DEAD_SEA, 0.55F, 1.00F, -1.00F, -0.25F, 0.25F, 0.85F, -0.65F, 0.45F, 0.00F, 1.00F)
     );
 
     private IsraelBiomeClimateParams() {}
