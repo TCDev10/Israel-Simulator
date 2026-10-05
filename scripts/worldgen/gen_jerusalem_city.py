@@ -15,7 +15,7 @@ POOL = ROOT / "src/main/resources/data/israel_simulator/worldgen/template_pool/j
 STRUCTURE_JSON = ROOT / "src/main/resources/data/israel_simulator/worldgen/structure/jerusalem_city.json"
 DATA_VERSION = 4903
 BLOCKS_JSON = Path("/workspace/mcreports/out/reports/blocks.json")
-FOUNDATION = 8  # deep sandstone footing under rigid pieces (hills/caves)
+FOUNDATION = 2  # shallow footing; beard_box fills natural terrain below
 
 KNOWN = json.loads(BLOCKS_JSON.read_text()) if BLOCKS_JSON.exists() else {}
 
@@ -292,117 +292,64 @@ def plaza() -> None:
 
 
 def street_straight() -> None:
-    # Rigid street with deep sandstone sub-layer (no terrain_matching — that was
-    # draping roads over thin grass shelves and caves on hillsides).
-    s = Structure(13, 3 + FOUNDATION, 7, with_foundation=True)
-    f = s.fy
-    s.fills(0, f, 0, 12, f, 6, SSS())
-    s.fills(0, f, 2, 12, f, 4, CS())
-    s.set(3, f + 1, 1, FENCE())
-    s.set(3, f + 2, 1, LANTERN())
-    s.set(9, f + 1, 5, FENCE())
-    s.set(9, f + 2, 5, LANTERN())
-    s.set(
-        0, f + 1, 3,
-        jigsaw("west_up", "minecraft:street", "minecraft:street",
-               "israel_simulator:jerusalem/streets", "minecraft:structure_void"),
-    )
-    s.set(
-        12, f + 1, 3,
-        jigsaw("east_up", "minecraft:street", "minecraft:street",
-               "israel_simulator:jerusalem/streets", "minecraft:structure_void"),
-    )
-    s.set(
-        3, f + 1, 6,
-        jigsaw("south_up", "minecraft:building_entrance", "minecraft:building_entrance",
-               "israel_simulator:jerusalem/buildings", "minecraft:structure_void"),
-    )
-    s.set(
-        9, f + 1, 6,
-        jigsaw("south_up", "minecraft:building_entrance", "minecraft:building_entrance",
-               "israel_simulator:jerusalem/buildings", "minecraft:structure_void"),
-    )
-    s.set(
-        6, f + 1, 0,
-        jigsaw("north_up", "minecraft:building_entrance", "minecraft:building_entrance",
-               "israel_simulator:jerusalem/buildings", "minecraft:structure_void"),
-    )
+    # Vanilla-style shallow terrain_matching street (no deep sub-layer).
+    s = Structure(13, 3, 7)
+    s.fills(0, 0, 0, 12, 0, 6, SSS())
+    s.fills(0, 0, 2, 12, 0, 4, CS())
+    s.set(3, 1, 1, FENCE()); s.set(3, 2, 1, LANTERN())
+    s.set(9, 1, 5, FENCE()); s.set(9, 2, 5, LANTERN())
+    s.set(0, 1, 3, jigsaw("west_up", "minecraft:street", "minecraft:street",
+                          "israel_simulator:jerusalem/streets", "minecraft:structure_void"))
+    s.set(12, 1, 3, jigsaw("east_up", "minecraft:street", "minecraft:street",
+                           "israel_simulator:jerusalem/streets", "minecraft:structure_void"))
+    s.set(3, 1, 6, jigsaw("south_up", "minecraft:building_entrance", "minecraft:building_entrance",
+                          "israel_simulator:jerusalem/buildings", "minecraft:structure_void"))
+    s.set(9, 1, 6, jigsaw("south_up", "minecraft:building_entrance", "minecraft:building_entrance",
+                          "israel_simulator:jerusalem/buildings", "minecraft:structure_void"))
+    s.set(6, 1, 0, jigsaw("north_up", "minecraft:building_entrance", "minecraft:building_entrance",
+                          "israel_simulator:jerusalem/buildings", "minecraft:structure_void"))
     s.save(STRUCT / "street_straight.nbt")
 
 
 def street_crossroad() -> None:
-    s = Structure(11, 3 + FOUNDATION, 11, with_foundation=True)
-    f = s.fy
-    s.fills(0, f, 0, 10, f, 10, SSS())
-    s.fills(4, f, 0, 6, f, 10, CS())
-    s.fills(0, f, 4, 10, f, 6, CS())
-    s.set(5, f + 1, 5, CH())
-    s.set(5, f + 2, 5, LANTERN())
-    for orient, x, z in (
-        ("north_up", 5, 0),
-        ("south_up", 5, 10),
-        ("west_up", 0, 5),
-        ("east_up", 10, 5),
-    ):
-        s.set(
-            x, f + 1, z,
-            jigsaw(orient, "minecraft:street", "minecraft:street",
-                   "israel_simulator:jerusalem/streets", "minecraft:structure_void"),
-        )
-    s.set(
-        2, f + 1, 0,
-        jigsaw("north_up", "minecraft:building_entrance", "minecraft:building_entrance",
-               "israel_simulator:jerusalem/buildings", "minecraft:structure_void"),
-    )
-    s.set(
-        8, f + 1, 10,
-        jigsaw("south_up", "minecraft:building_entrance", "minecraft:building_entrance",
-               "israel_simulator:jerusalem/buildings", "minecraft:structure_void"),
-    )
+    s = Structure(11, 3, 11)
+    s.fills(0, 0, 0, 10, 0, 10, SSS())
+    s.fills(4, 0, 0, 6, 0, 10, CS())
+    s.fills(0, 0, 4, 10, 0, 6, CS())
+    s.set(5, 1, 5, CH()); s.set(5, 2, 5, LANTERN())
+    for orient, x, z in (("north_up", 5, 0), ("south_up", 5, 10), ("west_up", 0, 5), ("east_up", 10, 5)):
+        s.set(x, 1, z, jigsaw(orient, "minecraft:street", "minecraft:street",
+                              "israel_simulator:jerusalem/streets", "minecraft:structure_void"))
+    s.set(2, 1, 0, jigsaw("north_up", "minecraft:building_entrance", "minecraft:building_entrance",
+                          "israel_simulator:jerusalem/buildings", "minecraft:structure_void"))
+    s.set(8, 1, 10, jigsaw("south_up", "minecraft:building_entrance", "minecraft:building_entrance",
+                           "israel_simulator:jerusalem/buildings", "minecraft:structure_void"))
     s.save(STRUCT / "street_crossroad.nbt")
 
 
 def street_corner() -> None:
-    s = Structure(9, 3 + FOUNDATION, 9, with_foundation=True)
-    f = s.fy
-    s.fills(0, f, 0, 8, f, 8, SSS())
-    s.fills(3, f, 0, 5, f, 5, CS())
-    s.fills(3, f, 3, 8, f, 5, CS())
-    s.set(4, f + 1, 4, FENCE())
-    s.set(4, f + 2, 4, LANTERN())
-    s.set(
-        4, f + 1, 0,
-        jigsaw("north_up", "minecraft:street", "minecraft:street",
-               "israel_simulator:jerusalem/streets", "minecraft:structure_void"),
-    )
-    s.set(
-        8, f + 1, 4,
-        jigsaw("east_up", "minecraft:street", "minecraft:street",
-               "israel_simulator:jerusalem/streets", "minecraft:structure_void"),
-    )
-    s.set(
-        1, f + 1, 0,
-        jigsaw("north_up", "minecraft:building_entrance", "minecraft:building_entrance",
-               "israel_simulator:jerusalem/buildings", "minecraft:structure_void"),
-    )
-    s.set(
-        8, f + 1, 1,
-        jigsaw("east_up", "minecraft:building_entrance", "minecraft:building_entrance",
-               "israel_simulator:jerusalem/buildings", "minecraft:structure_void"),
-    )
+    s = Structure(9, 3, 9)
+    s.fills(0, 0, 0, 8, 0, 8, SSS())
+    s.fills(3, 0, 0, 5, 0, 5, CS())
+    s.fills(3, 0, 3, 8, 0, 5, CS())
+    s.set(4, 1, 4, FENCE()); s.set(4, 2, 4, LANTERN())
+    s.set(4, 1, 0, jigsaw("north_up", "minecraft:street", "minecraft:street",
+                          "israel_simulator:jerusalem/streets", "minecraft:structure_void"))
+    s.set(8, 1, 4, jigsaw("east_up", "minecraft:street", "minecraft:street",
+                          "israel_simulator:jerusalem/streets", "minecraft:structure_void"))
+    s.set(1, 1, 0, jigsaw("north_up", "minecraft:building_entrance", "minecraft:building_entrance",
+                          "israel_simulator:jerusalem/buildings", "minecraft:structure_void"))
+    s.set(8, 1, 1, jigsaw("east_up", "minecraft:building_entrance", "minecraft:building_entrance",
+                          "israel_simulator:jerusalem/buildings", "minecraft:structure_void"))
     s.save(STRUCT / "street_corner.nbt")
 
 
 def terminator() -> None:
-    s = Structure(3, 2 + FOUNDATION, 3, with_foundation=True)
-    f = s.fy
-    s.fills(0, f, 0, 2, f, 2, SSS())
-    s.set(1, f, 1, CS())
-    s.set(
-        1, f + 1, 0,
-        jigsaw("north_up", "minecraft:street", "minecraft:street",
-               "minecraft:empty", "minecraft:structure_void"),
-    )
+    s = Structure(3, 2, 3)
+    s.fills(0, 0, 0, 2, 0, 2, SSS())
+    s.set(1, 0, 1, CS())
+    s.set(1, 1, 0, jigsaw("north_up", "minecraft:street", "minecraft:street",
+                          "minecraft:empty", "minecraft:structure_void"))
     s.save(STRUCT / "terminator.nbt")
 
 
@@ -579,53 +526,32 @@ def well() -> None:
 
 
 def wall_gate() -> None:
-    """Gatehouse with an open E–W passage aligned to the west-facing street attachment.
+    """Street-aligned gate arch: passage runs along the street axis (local X).
 
-    Previously the opening ran N–S while the jigsaw faced west, so walking in from
-    the street hit a sandstone wall + closed oak door. No door; clear tunnel through.
+    Previously this was a building_entrance piece beside the street, so from the
+    plaza you saw a solid stone-brick flank. Now it is a street piece with
+    west/east street jigsaws and an open tunnel through both ends.
     """
-    # 11 wide (N-S walls), 8 tall+foundation, 7 deep (E-W passage)
-    s = Structure(11, 8 + FOUNDATION, 7, with_foundation=True)
-    f = s.fy
-    s.fills(0, f, 0, 10, f, 6, SSS())
-    # north and south buttresses
-    s.fills(0, f + 1, 0, 10, f + 5, 1, SB())
-    s.fills(0, f + 1, 5, 10, f + 5, 6, SB())
-    # roof over the passage
-    s.fills(0, f + 5, 0, 10, f + 5, 6, SB())
-    # OPEN passage through the middle (z=2..4), full length x=0..10 — no door, no end wall
-    s.fills(0, f + 1, 2, 10, f + 4, 4, AIR())
-    # arch accents at both mouths
-    for x in (0, 10):
-        s.set(x, f + 4, 2, CSB())
-        s.set(x, f + 4, 3, CSB())
-        s.set(x, f + 4, 4, CSB())
-        s.set(x, f + 1, 1, CSB())
-        s.set(x, f + 2, 1, CSB())
-        s.set(x, f + 3, 1, CSB())
-        s.set(x, f + 1, 5, CSB())
-        s.set(x, f + 2, 5, CSB())
-        s.set(x, f + 3, 5, CSB())
-    # battlements
-    for x in range(0, 11, 2):
-        s.set(x, f + 6, 0, SB())
-        s.set(x, f + 6, 6, SB())
-        s.set(x, f + 7, 0, SW())
-        s.set(x, f + 7, 6, SW())
-    s.set(5, f + 5, 3, LANTERN())
-    # jigsaw at west mouth, center of passage — attaches to street; passage continues east
-    s.set(
-        0,
-        f + 1,
-        3,
-        jigsaw(
-            "west_up",
-            "minecraft:building_entrance",
-            "minecraft:building_entrance",
-            "minecraft:empty",
-            "minecraft:structure_void",
-        ),
-    )
+    s = Structure(9, 7, 7)
+    s.fills(0, 0, 0, 8, 0, 6, SSS())
+    s.fills(0, 0, 2, 8, 0, 4, CS())
+    s.fills(0, 1, 0, 8, 5, 1, SB())
+    s.fills(0, 1, 5, 8, 5, 6, SB())
+    s.fills(0, 5, 0, 8, 5, 6, SB())
+    s.fills(0, 1, 2, 8, 4, 4, AIR())
+    for x in (0, 8):
+        s.set(x, 4, 2, CSB()); s.set(x, 4, 3, CSB()); s.set(x, 4, 4, CSB())
+        s.set(x, 1, 1, CSB()); s.set(x, 2, 1, CSB()); s.set(x, 3, 1, CSB())
+        s.set(x, 1, 5, CSB()); s.set(x, 2, 5, CSB()); s.set(x, 3, 5, CSB())
+    for x in range(0, 9, 2):
+        s.set(x, 6, 0, SW()); s.set(x, 6, 6, SW())
+    s.set(4, 5, 3, LANTERN())
+    s.set(0, 1, 3, jigsaw("west_up", "minecraft:street", "minecraft:street",
+                          "israel_simulator:jerusalem/streets", "minecraft:structure_void"))
+    s.set(8, 1, 3, jigsaw("east_up", "minecraft:street", "minecraft:street",
+                          "israel_simulator:jerusalem/streets", "minecraft:structure_void"))
+    s.set(4, 1, 6, jigsaw("south_up", "minecraft:building_entrance", "minecraft:building_entrance",
+                          "israel_simulator:jerusalem/buildings", "minecraft:structure_void"))
     s.save(STRUCT / "wall_gate.nbt")
 
 
@@ -693,15 +619,16 @@ def main() -> None:
     write_pool(
         POOL / "streets.json",
         [
-            ("israel_simulator:jerusalem/street_straight", 4, "rigid"),
-            ("israel_simulator:jerusalem/street_crossroad", 2, "rigid"),
-            ("israel_simulator:jerusalem/street_corner", 2, "rigid"),
+            ("israel_simulator:jerusalem/street_straight", 4, "terrain_matching"),
+            ("israel_simulator:jerusalem/street_crossroad", 2, "terrain_matching"),
+            ("israel_simulator:jerusalem/street_corner", 2, "terrain_matching"),
+            ("israel_simulator:jerusalem/wall_gate", 1, "terrain_matching"),
         ],
         "israel_simulator:jerusalem/terminators",
     )
     write_pool(
         POOL / "terminators.json",
-        [("israel_simulator:jerusalem/terminator", 1, "rigid")],
+        [("israel_simulator:jerusalem/terminator", 1, "terrain_matching")],
         "minecraft:empty",
     )
     # synagogue removed from random buildings — it comes from landmarks (plaza-guaranteed)
@@ -713,7 +640,6 @@ def main() -> None:
             ("israel_simulator:jerusalem/house_c", 2, "rigid"),
             ("israel_simulator:jerusalem/shuk_stalls", 2, "rigid"),
             ("israel_simulator:jerusalem/well", 2, "rigid"),
-            ("israel_simulator:jerusalem/wall_gate", 2, "rigid"),
         ],
         "minecraft:empty",
     )

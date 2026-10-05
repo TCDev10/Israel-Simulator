@@ -107,7 +107,7 @@ class JerusalemCityStructureTest {
         String blob = pool.toString();
         for (String required : List.of(
                 "house_a", "house_b", "house_c",
-                "shuk_stalls", "well", "wall_gate")) {
+                "shuk_stalls", "well")) {
             assertTrue(blob.contains(required), "buildings pool must include " + required);
         }
         assertFalse(blob.contains("synagogue_small"),
@@ -149,23 +149,28 @@ class JerusalemCityStructureTest {
     }
 
     @Test
-    @DisplayName("Jerusalem streets are rigid with deep sandstone foundations (not terrain_matching)")
-    void streetsAreRigidWithDeepFoundations() throws Exception {
+    @DisplayName("Jerusalem streets are terrain_matching; wall_gate is a street archway")
+    void streetsTerrainMatchingAndGateIsStreetPiece() throws Exception {
         JsonObject streets = readJson("data/israel_simulator/worldgen/template_pool/jerusalem/streets.json");
-        streets.getAsJsonArray("elements").forEach(el -> {
-            String projection = el.getAsJsonObject().getAsJsonObject("element")
-                    .get("projection").getAsString();
-            assertEquals("rigid", projection, "streets must be rigid to stay level with the plaza");
-        });
-        JsonObject terminators = readJson("data/israel_simulator/worldgen/template_pool/jerusalem/terminators.json");
-        assertEquals("rigid", terminators.getAsJsonArray("elements").get(0).getAsJsonObject()
-                .getAsJsonObject("element").get("projection").getAsString());
-        for (String piece : List.of("plaza", "shuk_stalls", "street_straight", "house_a")) {
-            byte[] nbt = readGzip("data/israel_simulator/structure/jerusalem/" + piece + ".nbt");
-            String decoded = new String(nbt, StandardCharsets.ISO_8859_1);
-            assertTrue(decoded.contains("minecraft:sandstone"),
-                    piece + " must include sandstone foundation layers");
+        boolean sawGate = false;
+        for (var el : streets.getAsJsonArray("elements")) {
+            var element = el.getAsJsonObject().getAsJsonObject("element");
+            assertEquals("terrain_matching", element.get("projection").getAsString());
+            if (element.get("location").getAsString().endsWith("wall_gate")) {
+                sawGate = true;
+            }
         }
+        assertTrue(sawGate, "wall_gate must be in the streets pool so the passage follows the street axis");
+        JsonObject terminators = readJson("data/israel_simulator/worldgen/template_pool/jerusalem/terminators.json");
+        assertEquals("terrain_matching", terminators.getAsJsonArray("elements").get(0).getAsJsonObject()
+                .getAsJsonObject("element").get("projection").getAsString());
+        JsonObject buildings = readJson("data/israel_simulator/worldgen/template_pool/jerusalem/buildings.json");
+        assertFalse(buildings.toString().contains("wall_gate"),
+                "wall_gate must not be a side building anymore");
+        byte[] nbt = readGzip("data/israel_simulator/structure/jerusalem/wall_gate.nbt");
+        String decoded = new String(nbt, StandardCharsets.ISO_8859_1);
+        assertFalse(decoded.contains("minecraft:oak_door"));
+        assertTrue(decoded.contains("minecraft:jigsaw"));
     }
 
     @Test

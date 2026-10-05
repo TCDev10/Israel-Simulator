@@ -128,3 +128,11 @@ Problema riscontrato: in `jerusalem-city-test2` (città a `[304,~,−2976]`, col
 Funzionamento aspettato: città a un solo livello con la piazza, piedistallo di arenaria sotto i pezzi rigid, niente mensole fluttuanti sopra grotte, meno spawn su biomi ripidi.
 
 Come è stato risolto: fondamenta da 3 a **8** blocchi di arenaria su plaza/case/shuk/sinagoga/pozzo/gate **e strade**; pool strade/terminator da `terrain_matching` a **`rigid`** (allineate alla piazza; `beard_box` riempie sotto); biomi: tolti `minecraft:meadow` e `minecraft:windswept_hills`, restano `israel_simulator:jerusalem` e `minecraft:savanna_plateau`. `terrain_adaptation` resta `beard_box`. Unit test aggiornati. Non un passaggio in-game.
+
+## Jerusalem city: plinto di arenaria e gate come muro pieno
+
+Problema riscontrato: in `jerusalem-city-test3` la città era una piattaforma rigid con muri di arenaria alti 8 blocchi sul pendio, mensole di erba a ovest e vuoti sotto i ledges. Il `wall_gate` attaccato come building laterale dalla piazza sembrava un muro pieno di stone brick (il fianco), con una buca di arenaria davanti; il passaggio non seguiva l'asse della strada.
+
+Funzionamento aspettato: città immersa nel terreno (beard_box, niente scogliere di fondamenta), strade che seguono il pendio come un villaggio vanilla, gate con tunnel aperto allineato alla strada.
+
+Come è stato risolto: strade/terminator di nuovo `terrain_matching` senza sottostrato profondo; pezzi rigid (plaza/case/shuk/sinagoga/pozzo) con fondamenta **2** blocchi; `beard_box` e biomi `jerusalem`+`savanna_plateau` invariati. `wall_gate` spostato nel pool strade come arco con jigsaw `street` a ovest e est e tunnel E–W aperto (niente porta, niente attachment laterale come building). La sinagoga a sud della piazza è rotazione casuale, non un bug. Unit test aggiornati. Non un passaggio in-game.
