@@ -14,6 +14,24 @@
     },
     {
       "type": "minecraft:biome"
+    },
+    {
+      "type": "minecraft:block_predicate_filter",
+      "predicate": {
+        "type": "minecraft:matching_blocks",
+        "blocks": [
+          "minecraft:sand",
+          "minecraft:gravel",
+          "minecraft:clay",
+          "israel_simulator:salt_block"
+        ],
+        "offset": [
+          0,
+          -1,
+          0
+        ]
+      }
     }
   ]
 }
+
