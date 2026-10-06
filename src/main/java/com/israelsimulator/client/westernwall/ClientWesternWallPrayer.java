@@ -7,11 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.context.ContextKey;
 import net.minecraft.resources.Identifier;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-
 /** Client mirror of who is praying (entity id → wall pos). */
-@OnlyIn(Dist.CLIENT)
 public final class ClientWesternWallPrayer {
     public static final ContextKey<Boolean> PRAYING_KEY =
             new ContextKey<>(Identifier.fromNamespaceAndPath("israel_simulator", "western_wall_praying"));

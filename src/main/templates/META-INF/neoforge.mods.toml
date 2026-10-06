@@ -14,8 +14,8 @@ version="${mod_version}" #mandatory
 displayName="${mod_name}" #mandatory
 # A URL to refer people to when problems occur with this mod
 displayURL="https://github.com/TCDev10/Israel-Simulator"
-# A file name (in the root of the mod JAR) containing a logo for display
-logoFile="israel_simulator.png"
+# An icon file name (in the root of the mod JAR) for display (512x512 square)
+iconFile="israel_simulator.png"
 # Credits for the mod
 credits="Israel-Simulator Contributors & Community"
 # Authors for the mod

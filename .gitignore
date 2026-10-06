@@ -40,4 +40,5 @@ repo/
 !**/src/**/repo/
 logs/
 run_game.bat
+start_minecraft.bat
 __pycache__/

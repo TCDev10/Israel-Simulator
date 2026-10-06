@@ -60,102 +60,126 @@ public final class IsraelSimulatorConfig {
         builder.push("effects");
         BLESSED_DURATION_TICKS = builder
                 .comment("Duration of the Blessed effect in ticks (20 ticks = 1 second, default 1200 = 60s).")
+                .translation("israel_simulator.configuration.blessedDurationTicks")
                 .defineInRange("blessedDurationTicks", 1200, 1, 72000);
         BLESSED_AMPLIFIER = builder
                 .comment("Amplifier of the Blessed effect (0 = level I).")
+                .translation("israel_simulator.configuration.blessedAmplifier")
                 .defineInRange("blessedAmplifier", 0, 0, 4);
         builder.pop();
 
         builder.push("food");
         KOSHER_SYSTEM_ENABLED = builder
                 .comment("Enable the simplified kosher system (meat/dairy/pareve tags and mixing penalty).")
+                .translation("israel_simulator.configuration.kosherSystemEnabled")
                 .define("kosherSystemEnabled", true);
         MEAT_DIGESTION_TICKS = builder
                 .comment("Duration in ticks of waiting period after consuming meat (default 3600 = 3 minutes).")
+                .translation("israel_simulator.configuration.meatDigestionTicks")
                 .defineInRange("meatDigestionTicks", 3600, 20, 72000);
         DAIRY_DIGESTION_TICKS = builder
                 .comment("Duration in ticks of waiting period after consuming dairy (default 1200 = 1 minute).")
+                .translation("israel_simulator.configuration.dairyDigestionTicks")
                 .defineInRange("dairyDigestionTicks", 1200, 20, 72000);
         builder.pop();
 
         builder.push("boss");
         BIBI_BOSS_MAX_HEALTH = builder
                 .comment("Maximum health of Bibi Boss (GAME_DESIGN §41.1, default 10,000+).")
+                .translation("israel_simulator.configuration.bibiBossMaxHealth")
                 .defineInRange("bibiBossMaxHealth", 10000.0, 100.0, 100000.0);
         BIBI_BOSS_BASE_DAMAGE = builder
                 .comment("Base attack damage of Bibi Boss.")
+                .translation("israel_simulator.configuration.bibiBossBaseDamage")
                 .defineInRange("bibiBossBaseDamage", 18.0, 1.0, 200.0);
         BIBI_BOSS_MAX_GUARDS = builder
                 .comment("Maximum simultaneous guards summoned by Bibi Boss to avoid mob runaway.")
+                .translation("israel_simulator.configuration.bibiBossMaxGuards")
                 .defineInRange("bibiBossMaxGuards", 4, 0, 12);
         BIBI_BOSS_ARENA_RADIUS = builder
                 .comment("Radius of the boss arena in blocks before leashing/resetting.")
+                .translation("israel_simulator.configuration.bibiBossArenaRadius")
                 .defineInRange("bibiBossArenaRadius", 48, 16, 128);
         builder.pop();
 
         builder.push("worldgen");
         CITY_SPACING_CHUNKS = builder
                 .comment("Average spacing between major cities in chunks.")
+                .translation("israel_simulator.configuration.citySpacingChunks")
                 .defineInRange("citySpacingChunks", 34, 16, 128);
         RARE_STRUCTURE_SPACING_CHUNKS = builder
                 .comment("Average spacing between rare historical/cultural structures in chunks.")
+                .translation("israel_simulator.configuration.rareStructureSpacingChunks")
                 .defineInRange("rareStructureSpacingChunks", 48, 24, 128);
         builder.pop();
 
         builder.push("npc");
         MAX_NPC_PER_CHUNK = builder
                 .comment("Maximum density limit of cultural NPCs per chunk to preserve server performance.")
+                .translation("israel_simulator.configuration.maxNpcPerChunk")
                 .defineInRange("maxNpcPerChunk", 12, 2, 64);
         VILLAGER_TRADE_DISCOUNT_MAX = builder
                 .comment("Maximum percentage discount applied for high reputation or Blessed Trader standing.")
+                .translation("israel_simulator.configuration.villagerTradeDiscountMax")
                 .defineInRange("villagerTradeDiscountMax", 0.20, 0.0, 0.50);
         builder.pop();
 
         builder.push("events");
         EVENT_DURATION_TICKS = builder
                 .comment("Default duration of world events in ticks (default 6000 = 5 minutes).")
+                .translation("israel_simulator.configuration.eventDurationTicks")
                 .defineInRange("eventDurationTicks", 6000, 1200, 24000);
         EVENT_COOLDOWN_TICKS = builder
                 .comment("Cooldown period between consecutive world events in ticks (default 12000 = 10 minutes).")
+                .translation("israel_simulator.configuration.eventCooldownTicks")
                 .defineInRange("eventCooldownTicks", 12000, 2400, 72000);
         SPEECH_MIN_PARTICIPATION_TICKS = builder
                 .comment("Minimum active participation duration required for Public Speech rewards (default 1200 = 60s).")
+                .translation("israel_simulator.configuration.speechMinParticipationTicks")
                 .defineInRange("speechMinParticipationTicks", 1200, 200, 6000);
         builder.pop();
 
         builder.push("cooldowns");
         PRAYER_COOLDOWN_TICKS = builder
                 .comment("Cooldown in ticks between Western Wall prayers (default 24000 = 1 in-game day).")
+                .translation("israel_simulator.configuration.prayerCooldownTicks")
                 .defineInRange("prayerCooldownTicks", 24000, 1200, 72000);
         SHOFAR_COOLDOWN_TICKS = builder
                 .comment("Cooldown in ticks between sounding the Shofar (default 600 = 30s).")
+                .translation("israel_simulator.configuration.shofarCooldownTicks")
                 .defineInRange("shofarCooldownTicks", 600, 60, 6000);
         TRANSIT_COOLDOWN_TICKS = builder
                 .comment("Cooldown in ticks between public transit rides (default 100 = 5s).")
+                .translation("israel_simulator.configuration.transitCooldownTicks")
                 .defineInRange("transitCooldownTicks", 100, 20, 1200);
         builder.pop();
 
         builder.push("performance");
         MAX_PARTICLES_PER_EVENT = builder
                 .comment("Maximum particles emitted per event tick to avoid FPS lag.")
+                .translation("israel_simulator.configuration.maxParticlesPerEvent")
                 .defineInRange("maxParticlesPerEvent", 30, 5, 100);
         ENABLE_PERFORMANCE_THROTTLING = builder
                 .comment("Enable tick and entity throttling during heavy server load.")
+                .translation("israel_simulator.configuration.enablePerformanceThrottling")
                 .define("enablePerformanceThrottling", true);
         builder.pop();
 
         builder.push("audio");
         MUSIC_VOLUME_MULTIPLIER = builder
                 .comment("Volume multiplier for mod soundtracks and regional instruments.")
+                .translation("israel_simulator.configuration.musicVolumeMultiplier")
                 .defineInRange("musicVolumeMultiplier", 1.0, 0.0, 2.0);
         CITY_AMBIENCE_ENABLED = builder
                 .comment("Enable regional ambient city soundscapes.")
+                .translation("israel_simulator.configuration.cityAmbienceEnabled")
                 .define("cityAmbienceEnabled", true);
         builder.pop();
 
         builder.push("debug");
         DEBUG_LOGGING_ENABLED = builder
                 .comment("Enable verbose debug logging for events, economy, and AI state.")
+                .translation("israel_simulator.configuration.debugLoggingEnabled")
                 .define("debugLoggingEnabled", false);
         builder.pop();
 
