@@ -13,9 +13,11 @@ import com.israelsimulator.item.food.IsraelFoodProperties;
 import com.israelsimulator.item.technology.TechnologyItems;
 import com.israelsimulator.item.cultural.FirstAmendmentItem;
 import com.israelsimulator.item.cultural.HavaNagilaDiscItem;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 /**
@@ -36,7 +38,7 @@ public final class ModItems {
     // Food items - ingredients
     public static final DeferredHolder<Item, Item> TAHINI = ITEMS.registerSimpleItem("tahini", p -> p.food(IsraelFoodProperties.TAHINI));
     public static final DeferredHolder<Item, Item> DATES = ITEMS.registerSimpleItem("dates", p -> p.food(IsraelFoodProperties.DATES));
-    public static final DeferredHolder<Item, Item> GRAPES = ITEMS.registerSimpleItem("grapes", p -> p.food(IsraelFoodProperties.GRAPES));
+    public static final DeferredItem<BlockItem> GRAPES = ITEMS.registerSimpleBlockItem("grapes", () -> ModBlocks.GRAPEVINE.get(), p -> p.food(IsraelFoodProperties.GRAPES));
     public static final DeferredHolder<Item, Item> OLIVES = ITEMS.registerSimpleItem("olives", p -> p.food(IsraelFoodProperties.OLIVES));
     public static final DeferredHolder<Item, Item> CITRUS = ITEMS.registerSimpleItem("citrus", p -> p.food(IsraelFoodProperties.CITRUS));
     public static final DeferredHolder<Item, Item> CHALLAH = ITEMS.registerSimpleItem("challah", p -> p.food(IsraelFoodProperties.CHALLAH));

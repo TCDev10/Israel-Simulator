@@ -1,4 +1,5 @@
 {
+  "parent": "israel_simulator:exploration/welcome_to_israel",
   "display": {
     "icon": {
       "id": "israel_simulator:hava_nagila_disc"

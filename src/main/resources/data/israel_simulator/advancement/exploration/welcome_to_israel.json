@@ -1,5 +1,6 @@
 {
   "display": {
+    "background": "israel_simulator:gui/advancements/backgrounds/israel_flag",
     "icon": {
       "id": "israel_simulator:israel_map"
     },

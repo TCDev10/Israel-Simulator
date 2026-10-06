@@ -41,7 +41,7 @@ class GrapevineHarvestTest {
     void testDatesStayOnThePalm() throws Exception {
         String items = Files.readString(Path.of("src/main/java/com/israelsimulator/registry/ModItems.java"));
         assertTrue(items.contains("registerSimpleItem(\"dates\""));
-        assertTrue(items.contains("registerSimpleItem(\"grapes\""));
+        assertTrue(items.contains("registerSimpleBlockItem(\"grapes\""), "grapes must be registered as plantable block item");
 
         String palm = Files.readString(Path.of(
                 "src/main/resources/data/israel_simulator/loot_table/blocks/date_palm_leaves.json"));
