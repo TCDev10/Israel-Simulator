@@ -72,13 +72,29 @@ public class BibiGuardEntity extends Monster implements RangedAttackMob {
     }
 
     @Override
+    public boolean canAttack(LivingEntity target) {
+        if (BibiBossEntity.isAlly(target)) {
+            return false;
+        }
+        return super.canAttack(target);
+    }
+
+    @Override
+    public void setTarget(@org.jspecify.annotations.Nullable LivingEntity target) {
+        if (BibiBossEntity.isAlly(target)) {
+            return;
+        }
+        super.setTarget(target);
+    }
+
+    @Override
     public void aiStep() {
         super.aiStep();
 
         if (!this.level().isClientSide()) {
             if (this.getMainHandItem().isEmpty() && ModItems.PISTOL != null) {
                 this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ModItems.PISTOL.get()));
-                this.setDropChance(EquipmentSlot.MAINHAND, 0.15F);
+                this.setDropChance(EquipmentSlot.MAINHAND, 0.015F);
             }
 
             lifeTicksRemaining--;

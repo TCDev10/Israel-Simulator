@@ -103,6 +103,6 @@ public class BicycleEntity extends PathfinderMob {
 
     @Override
     protected net.minecraft.world.phys.Vec3 getPassengerAttachmentPoint(net.minecraft.world.entity.Entity passenger, net.minecraft.world.entity.EntityDimensions dimensions, float scale) {
-        return new net.minecraft.world.phys.Vec3(0.0, 0.65, -0.15);
+        return new net.minecraft.world.phys.Vec3(0.0, 0.65, 0.15);
     }
 }

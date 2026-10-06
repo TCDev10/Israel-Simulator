@@ -18,11 +18,13 @@ class BibiBossAndCombatTest {
         assertFalse(BibiBossState.ALERT.isAggressive());
         assertTrue(BibiBossState.COMBAT.isAggressive());
         assertTrue(BibiBossState.ENRAGED.isAggressive());
+        assertTrue(BibiBossState.DESPERATE.isAggressive());
         assertFalse(BibiBossState.DEFEATED.isAggressive());
 
         assertFalse(BibiBossState.COMBAT.isEnraged());
         assertTrue(BibiBossState.ENRAGED.isEnraged());
-        assertEquals(5, BibiBossState.values().length);
+        assertTrue(BibiBossState.DESPERATE.isEnraged());
+        assertEquals(6, BibiBossState.values().length);
     }
 
     @Test
@@ -33,13 +35,15 @@ class BibiBossAndCombatTest {
         assertEquals(4, IsraelSimulatorConfig.bibiBossMaxGuards(), "Max guards limit prevents mob runaway");
         assertEquals(48, IsraelSimulatorConfig.bibiBossArenaRadius());
 
-        assertEquals(0.50F, BibiBossEntity.ENRAGE_HEALTH_FRACTION, 0.001F, "Enrage phase triggers below 50% HP");
+        assertEquals(0.66F, BibiBossEntity.PHASE_2_HEALTH_FRACTION, 0.001F, "Phase 2 (Trump) triggers below 66% HP");
+        assertEquals(0.33F, BibiBossEntity.PHASE_3_HEALTH_FRACTION, 0.001F, "Phase 3 (Epstein) triggers below 33% HP");
+        assertEquals(0.66F, BibiBossEntity.ENRAGE_HEALTH_FRACTION, 0.001F, "Phase 2 (Trump/Enrage) triggers below 66% HP in 3-phase encounter");
         assertEquals(500.0F, BibiBossEntity.MAX_SINGLE_HIT_DAMAGE, 0.001F, "Single-hit damage cap must prevent one-shot cheese");
         assertTrue(BibiBossSpawner.BOSS_DUPLICATION_CHECK_RADIUS >= 64.0, "Boss duplication radius must adequately cover the arena");
     }
 
     @Test
-    @DisplayName("Verify Bibi Boss, Miniboss Trump, ICE Agent, and Guard entity class structures")
+    @DisplayName("Verify Bibi Boss, Miniboss Trump, ICE Agent, Epstein, Child Zombie, and Guard entity class structures")
     void testEntityClassStructures() throws Exception {
         ClassLoader cl = BibiBossAndCombatTest.class.getClassLoader();
         Class<?> bossClass = Class.forName("com.israelsimulator.entity.boss.BibiBossEntity", false, cl);
@@ -57,6 +61,14 @@ class BibiBossAndCombatTest {
         Class<?> iceClass = Class.forName("com.israelsimulator.entity.boss.IceAgentEntity", false, cl);
         assertNotNull(iceClass, "IceAgentEntity class must exist");
         assertEquals("net.minecraft.world.entity.monster.Monster", iceClass.getSuperclass().getName());
+
+        Class<?> epsteinClass = Class.forName("com.israelsimulator.entity.boss.JeffreyEpsteinEntity", false, cl);
+        assertNotNull(epsteinClass, "JeffreyEpsteinEntity class must exist");
+        assertEquals("net.minecraft.world.entity.monster.Monster", epsteinClass.getSuperclass().getName());
+
+        Class<?> childZombieClass = Class.forName("com.israelsimulator.entity.boss.ChildZombieMinionEntity", false, cl);
+        assertNotNull(childZombieClass, "ChildZombieMinionEntity class must exist");
+        assertEquals("net.minecraft.world.entity.monster.Monster", childZombieClass.getSuperclass().getName());
 
         Class<?> missileClass = Class.forName("com.israelsimulator.entity.boss.BibiMissileEntity", false, cl);
         assertNotNull(missileClass, "BibiMissileEntity class must exist");
@@ -152,10 +164,44 @@ class BibiBossAndCombatTest {
 
         InputStream iceStream = getClass().getResourceAsStream("/assets/israel_simulator/textures/entity/ice_agent.png");
         assertNotNull(iceStream, "ice_agent.png must exist");
+
+        InputStream epsteinStream = getClass().getResourceAsStream("/assets/israel_simulator/textures/entity/jeffrey_epstein.png");
+        assertNotNull(epsteinStream, "jeffrey_epstein.png must exist");
+
+        InputStream childStream = getClass().getResourceAsStream("/assets/israel_simulator/textures/entity/child_zombie.png");
+        assertNotNull(childStream, "child_zombie.png must exist");
     }
 
     @Test
-    @DisplayName("Verify boss, guard, miniboss, and disc localizations in en_us.json")
+    @DisplayName("Verify dollar bill particle assets exist")
+    void testDollarBillParticleAsset() {
+        InputStream texStream = getClass().getResourceAsStream("/assets/israel_simulator/textures/particle/dollar_bill.png");
+        assertNotNull(texStream, "dollar_bill.png texture must exist");
+
+        InputStream defStream = getClass().getResourceAsStream("/assets/israel_simulator/particles/dollar_bill.json");
+        assertNotNull(defStream, "dollar_bill.json particle definition must exist");
+    }
+
+    @Test
+    @DisplayName("Verify Star of David endgame recipe requires nether star, netherite, diamonds, and rare relics")
+    void testStarOfDavidRecipe() {
+        InputStream stream = getClass().getResourceAsStream("/data/israel_simulator/recipe/star_of_david.json");
+        assertNotNull(stream, "data/israel_simulator/recipe/star_of_david.json must exist");
+        try {
+            String json = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+            assertTrue(json.contains("minecraft:nether_star"), "Recipe must require Nether Star");
+            assertTrue(json.contains("minecraft:netherite_ingot"), "Recipe must require Netherite Ingot");
+            assertTrue(json.contains("minecraft:diamond_block"), "Recipe must require Diamond Block");
+            assertTrue(json.contains("israel_simulator:dead_sea_scroll_fragment"), "Recipe must require Dead Sea Scroll Fragments");
+            assertTrue(json.contains("israel_simulator:ancient_coin"), "Recipe must require Ancient Coins");
+            assertTrue(json.contains("israel_simulator:star_of_david"), "Recipe must output Star of David");
+        } catch (Exception e) {
+            fail("Failed reading star_of_david recipe JSON: " + e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("Verify boss, guard, miniboss, epstein, and disc localizations in en_us.json")
     void testBossLocalizations() {
         InputStream stream = getClass().getResourceAsStream("/assets/israel_simulator/lang/en_us.json");
         assertNotNull(stream, "en_us.json must exist");
@@ -163,9 +209,14 @@ class BibiBossAndCombatTest {
             String json = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
             assertTrue(json.contains("\"entity.israel_simulator.bibi_boss\""));
             assertTrue(json.contains("\"entity.israel_simulator.bibi_boss.enraged\""));
+            assertTrue(json.contains("\"entity.israel_simulator.bibi_boss.desperate\""));
             assertTrue(json.contains("\"entity.israel_simulator.bibi_guard\""));
             assertTrue(json.contains("\"entity.israel_simulator.trump_miniboss\""));
             assertTrue(json.contains("\"entity.israel_simulator.ice_agent\""));
+            assertTrue(json.contains("\"entity.israel_simulator.jeffrey_epstein\""));
+            assertTrue(json.contains("\"entity.israel_simulator.child_zombie_minion\""));
+            assertTrue(json.contains("\"item.israel_simulator.star_of_david.desc\""));
+            assertTrue(json.contains("\"item.israel_simulator.star_of_david.summon_hint\""));
             assertTrue(json.contains("\"item.israel_simulator.hava_nagila_disc\""));
             assertTrue(json.contains("\"item.israel_simulator.hava_nagila_disc.desc\""));
             assertTrue(json.contains("\"item.israel_simulator.hava_nagila_disc.lore\""));

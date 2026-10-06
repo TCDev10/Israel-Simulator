@@ -32,19 +32,22 @@ public class BicycleModel extends EntityModel<LivingEntityRenderState> {
 
     public BicycleModel(ModelPart root) {
         super(root);
-        this.frame = root.getChild("frame");
-        this.frontWheel = root.getChild("front_wheel");
-        this.backWheel = root.getChild("back_wheel");
-        this.handlebars = root.getChild("handlebars");
-        this.pedals = root.getChild("pedals");
+        ModelPart bike = root.getChild("bike");
+        this.frame = bike.getChild("frame");
+        this.frontWheel = bike.getChild("front_wheel");
+        this.backWheel = bike.getChild("back_wheel");
+        this.handlebars = bike.getChild("handlebars");
+        this.pedals = bike.getChild("pedals");
     }
 
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
+        PartDefinition bike = root.addOrReplaceChild("bike", CubeListBuilder.create(),
+                PartPose.rotation(0.0F, (float) Math.PI, 0.0F));
 
         // Bicycle main frame (chassis, seat tube, top tube, down tube, chain stays, and comfortable saddle)
-        root.addOrReplaceChild("frame", CubeListBuilder.create()
+        bike.addOrReplaceChild("frame", CubeListBuilder.create()
                 // Bottom bracket (crank housing)
                 .texOffs(0, 0).addBox(-1.0F, 17.0F, -2.0F, 2.0F, 2.0F, 4.0F)
                 // Seat tube
@@ -65,19 +68,19 @@ public class BicycleModel extends EntityModel<LivingEntityRenderState> {
         );
 
         // Front wheel (centered at its axle, rotates when moving)
-        root.addOrReplaceChild("front_wheel", CubeListBuilder.create()
+        bike.addOrReplaceChild("front_wheel", CubeListBuilder.create()
                 .texOffs(0, 34).addBox(-0.5F, -5.0F, -5.0F, 1.0F, 10.0F, 10.0F),
                 PartPose.offset(0.0F, 19.0F, 8.0F)
         );
 
         // Back wheel (centered at its axle, rotates when moving)
-        root.addOrReplaceChild("back_wheel", CubeListBuilder.create()
+        bike.addOrReplaceChild("back_wheel", CubeListBuilder.create()
                 .texOffs(22, 34).addBox(-0.5F, -5.0F, -5.0F, 1.0F, 10.0F, 10.0F),
                 PartPose.offset(0.0F, 19.0F, -8.0F)
         );
 
         // Handlebars, front fork, and bell
-        root.addOrReplaceChild("handlebars", CubeListBuilder.create()
+        bike.addOrReplaceChild("handlebars", CubeListBuilder.create()
                 // Stem / steering column
                 .texOffs(44, 0).addBox(-0.5F, -3.0F, -0.5F, 1.0F, 3.0F, 1.0F)
                 // Front fork blades
@@ -94,7 +97,7 @@ public class BicycleModel extends EntityModel<LivingEntityRenderState> {
         );
 
         // Pedals and crank axle
-        root.addOrReplaceChild("pedals", CubeListBuilder.create()
+        bike.addOrReplaceChild("pedals", CubeListBuilder.create()
                 // Crank axle
                 .texOffs(44, 20).addBox(-2.5F, -0.5F, -0.5F, 5.0F, 1.0F, 1.0F)
                 // Left crank arm and pedal pad

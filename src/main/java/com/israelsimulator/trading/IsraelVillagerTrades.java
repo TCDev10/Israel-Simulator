@@ -42,7 +42,6 @@ public final class IsraelVillagerTrades {
         // Blessed Trader exclusives
         CULTURAL_TRADES.add(new SpecialTrade("shekel", 100, "ancient_coin", 1, 3, true, true));
         CULTURAL_TRADES.add(new SpecialTrade("shekel", 150, "shofar", 1, 3, true, true));
-        CULTURAL_TRADES.add(new SpecialTrade("shekel", 40, "star_of_david", 1, 6, true, true));
 
         // Agricultural Trades
         AGRICULTURAL_TRADES.add(new SpecialTrade("shekel", 6, "olives", 8, 16, false, false));

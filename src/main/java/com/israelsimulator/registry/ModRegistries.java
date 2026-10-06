@@ -20,6 +20,7 @@ public final class ModRegistries {
         ModEntities.register(modEventBus);
         ModMobEffects.register(modEventBus);
         ModSoundEvents.register(modEventBus);
+        ModParticles.register(modEventBus);
         ModWorldGen.register(modEventBus);
         ModNetworking.register(modEventBus);
         IsraelSimulatorData.register(modEventBus);
