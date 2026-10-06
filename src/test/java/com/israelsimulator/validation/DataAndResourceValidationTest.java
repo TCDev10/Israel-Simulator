@@ -39,7 +39,7 @@ public class DataAndResourceValidationTest {
             "olive_wood_carving", "ancient_coin", "dead_sea_scroll_fragment", "dead_sea_mud",
             "shekel", "agora", "matzo", "sufganiyah", "dreidel", "hamantash", "shofar",
             "smartphone", "laptop", "drone_part", "bicycle", "rav_kav", "walking_shoes",
-            "israel_map"
+            "israel_map", "pistol", "missile"
     );
 
     public static final List<String> ALL_MOD_BLOCKS = List.of(

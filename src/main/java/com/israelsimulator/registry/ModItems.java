@@ -82,6 +82,10 @@ public final class ModItems {
     // Map & Exploration items (§48)
     public static final DeferredHolder<Item, com.israelsimulator.world.map.IsraelMapItem> ISRAEL_MAP = ITEMS.registerItem("israel_map", p -> new com.israelsimulator.world.map.IsraelMapItem(p.stacksTo(1)));
 
+    // Combat items (§41–44)
+    public static final DeferredHolder<Item, com.israelsimulator.item.combat.SecurityPistolItem> PISTOL = ITEMS.registerItem("pistol", p -> new com.israelsimulator.item.combat.SecurityPistolItem(p.stacksTo(1)));
+    public static final DeferredHolder<Item, com.israelsimulator.item.combat.MissileItem> MISSILE = ITEMS.registerItem("missile", p -> new com.israelsimulator.item.combat.MissileItem(p.stacksTo(16)));
+
     private ModItems() {}
 
     public static void register(IEventBus modEventBus) {

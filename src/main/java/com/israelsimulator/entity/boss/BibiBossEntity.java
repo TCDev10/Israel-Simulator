@@ -62,7 +62,7 @@ public class BibiBossEntity extends Monster implements RangedAttackMob {
     private static final EntityDataAccessor<Boolean> DATA_SHIELD_ACTIVE =
             SynchedEntityData.defineId(BibiBossEntity.class, EntityDataSerializers.BOOLEAN);
 
-    public static final float ENRAGE_HEALTH_FRACTION = 0.30F; // Below 30% HP = ENRAGED
+    public static final float ENRAGE_HEALTH_FRACTION = 0.50F; // Below 50% HP = Phase 2 ENRAGED
     public static final float MAX_SINGLE_HIT_DAMAGE = 500.0F; // Anti-one-shot exploit cap
 
     private final ServerBossEvent bossEvent;
@@ -70,10 +70,12 @@ public class BibiBossEntity extends Monster implements RangedAttackMob {
     private BlockPos arenaCenter;
     private boolean rewardDropped = false;
 
-    private int guardSummonCooldown = 100;
+    private int guardSummonCooldown = 120;
     private int specialAttackCooldown = 120;
+    private int missileBarrageCooldown = 180;
     private int speechCooldown = 160;
 
+    private UUID trumpMinibossUuid = null;
     private final Set<UUID> participatingPlayerUuids = new HashSet<>();
     private final List<UUID> aliveGuardUuids = new ArrayList<>();
 
@@ -186,6 +188,7 @@ public class BibiBossEntity extends Monster implements RangedAttackMob {
                     setBossState(BibiBossState.ENRAGED);
                     serverLevel.sendParticles(ParticleTypes.FLAME, this.getX(), this.getY() + 1.2, this.getZ(),
                             50, 0.8, 0.8, 0.8, 0.15);
+                    summonTrumpMiniboss(serverLevel);
                 } else if (this.getTarget() != null && this.bossState == BibiBossState.IDLE) {
                     setBossState(BibiBossState.COMBAT);
                 }
@@ -211,23 +214,32 @@ public class BibiBossEntity extends Monster implements RangedAttackMob {
         // Cooldown decrements
         if (guardSummonCooldown > 0) guardSummonCooldown--;
         if (specialAttackCooldown > 0) specialAttackCooldown--;
+        if (missileBarrageCooldown > 0) missileBarrageCooldown--;
         if (speechCooldown > 0) speechCooldown--;
 
-        // 1. "Coalition Call" — summon guards up to limit
-        int maxGuards = IsraelSimulatorConfig.bibiBossMaxGuards();
-        cleanActiveGuards(serverLevel);
-        if (guardSummonCooldown <= 0 && this.aliveGuardUuids.size() < maxGuards) {
-            summonCoalitionGuards(serverLevel, Math.min(2, maxGuards - this.aliveGuardUuids.size()));
-            guardSummonCooldown = this.bossState == BibiBossState.ENRAGED ? 200 : 350;
+        // 1. "Coalition Call" — summon guards up to limit (Phase 1 only, spawn less frequently)
+        if (this.bossState != BibiBossState.ENRAGED) {
+            int maxGuards = IsraelSimulatorConfig.bibiBossMaxGuards();
+            cleanActiveGuards(serverLevel);
+            if (guardSummonCooldown <= 0 && this.aliveGuardUuids.size() < maxGuards) {
+                summonCoalitionGuards(serverLevel, Math.min(2, maxGuards - this.aliveGuardUuids.size()));
+                guardSummonCooldown = 450; // Guard spawn frequency reduced
+            }
         }
 
-        // 2. "Filibuster Shockwave" — area knockback and debuff
+        // 2. Aerial missile barrage attack bombarding environment
+        if (missileBarrageCooldown <= 0) {
+            performMissileBarrage(serverLevel);
+            missileBarrageCooldown = this.bossState == BibiBossState.ENRAGED ? 90 : 180;
+        }
+
+        // 3. "Filibuster Shockwave" — area knockback and debuff (blindness removed)
         if (specialAttackCooldown <= 0) {
             performFilibusterShockwave(serverLevel);
             specialAttackCooldown = this.bossState == BibiBossState.ENRAGED ? 120 : 200;
         }
 
-        // 3. Satirical speech quote broadcast
+        // 4. Satirical speech quote broadcast
         if (speechCooldown <= 0) {
             broadcastSpeechCue(serverLevel);
             speechCooldown = 280;
@@ -283,8 +295,109 @@ public class BibiBossEntity extends Monster implements RangedAttackMob {
             p.setDeltaMovement(knockback);
             p.hurtServer(serverLevel, this.damageSources().mobAttack(this), 12.0F);
             p.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 100, 1));
-            p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 60, 0));
+            // Blindness debuff intentionally removed per player request
         }
+    }
+
+    private void performMissileBarrage(ServerLevel serverLevel) {
+        if (ModEntities.BIBI_MISSILE == null) return;
+
+        int missileCount = this.bossState == BibiBossState.ENRAGED ? 16 : 8;
+        double spawnRadius = this.bossState == BibiBossState.ENRAGED ? 16.0 : 10.0;
+
+        serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                SoundEvents.GHAST_SHOOT, SoundSource.HOSTILE, 2.0F, 0.6F);
+        serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.HOSTILE, 1.5F, 1.5F);
+
+        Component warning = Component.translatable("speech.israel_simulator.bibi_boss.missile_barrage")
+                .withStyle(ChatFormatting.DARK_RED, ChatFormatting.BOLD);
+        AABB aabb = this.getBoundingBox().inflate(48.0);
+        for (Player p : serverLevel.getEntitiesOfClass(Player.class, aabb)) {
+            p.sendSystemMessage(warning);
+        }
+
+        for (int i = 0; i < missileCount; i++) {
+            double angle = this.random.nextDouble() * 2 * Math.PI;
+            double dist = 2.0 + this.random.nextDouble() * spawnRadius;
+            double mx = this.getX() + Math.cos(angle) * dist;
+            double mz = this.getZ() + Math.sin(angle) * dist;
+            double my = this.getY() + 16.0 + this.random.nextDouble() * 8.0;
+
+            BibiMissileEntity missile = new BibiMissileEntity(ModEntities.BIBI_MISSILE.get(), serverLevel);
+            missile.setOwner(this);
+            missile.setPos(mx, my, mz);
+            missile.setBarrageMode(true);
+            double vx = (this.random.nextDouble() - 0.5) * 0.2;
+            double vz = (this.random.nextDouble() - 0.5) * 0.2;
+            double vy = -0.9 - this.random.nextDouble() * 0.4;
+            missile.setDeltaMovement(vx, vy, vz);
+            serverLevel.addFreshEntity(missile);
+        }
+    }
+
+    private void summonTrumpMiniboss(ServerLevel serverLevel) {
+        if (ModEntities.TRUMP_MINIBOSS == null) return;
+
+        TrumpMinibossEntity trump = ModEntities.TRUMP_MINIBOSS.get().create(serverLevel, EntitySpawnReason.TRIGGERED);
+        if (trump != null) {
+            double offsetX = (this.random.nextDouble() - 0.5) * 8.0;
+            double offsetZ = (this.random.nextDouble() - 0.5) * 8.0;
+            trump.setPos(this.getX() + offsetX, this.getY(), this.getZ() + offsetZ);
+            trump.setBibiBossUuid(this.getUUID());
+            if (this.getTarget() != null) {
+                trump.setTarget(this.getTarget());
+            }
+            serverLevel.addFreshEntity(trump);
+            this.trumpMinibossUuid = trump.getUUID();
+
+            serverLevel.sendParticles(ParticleTypes.EXPLOSION_EMITTER,
+                    trump.getX(), trump.getY() + 1.0, trump.getZ(), 1, 0, 0, 0, 0);
+            serverLevel.playSound(null, trump.getX(), trump.getY(), trump.getZ(),
+                    SoundEvents.WITHER_SPAWN, SoundSource.HOSTILE, 2.0F, 1.0F);
+
+            Component arrivalMsg = Component.translatable("message.israel_simulator.trump_arrival")
+                    .withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD);
+            AABB aabb = this.getBoundingBox().inflate(64.0);
+            for (Player p : serverLevel.getEntitiesOfClass(Player.class, aabb)) {
+                p.sendSystemMessage(arrivalMsg);
+            }
+        }
+    }
+
+    public boolean isTrumpShieldActive(ServerLevel serverLevel) {
+        if (this.trumpMinibossUuid == null) {
+            return false;
+        }
+        net.minecraft.world.entity.Entity entity = serverLevel.getEntity(this.trumpMinibossUuid);
+        if (entity instanceof TrumpMinibossEntity trump && trump.isAlive()) {
+            return true;
+        }
+        this.trumpMinibossUuid = null;
+        return false;
+    }
+
+    public void onTrumpDefeated(ServerLevel serverLevel) {
+        this.trumpMinibossUuid = null;
+        serverLevel.sendParticles(ParticleTypes.ITEM_SLIME, this.getX(), this.getY() + 1.0, this.getZ(), 30, 0.5, 0.5, 0.5, 0.1);
+        serverLevel.sendParticles(ParticleTypes.EXPLOSION, this.getX(), this.getY() + 1.0, this.getZ(), 5, 0.5, 0.5, 0.5, 0.05);
+        serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                SoundEvents.SHIELD_BREAK.value(), SoundSource.HOSTILE, 2.0F, 0.9F);
+
+        Component shieldBrokenMsg = Component.translatable("message.israel_simulator.trump_defeated")
+                .withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD);
+        AABB aabb = this.getBoundingBox().inflate(64.0);
+        for (Player p : serverLevel.getEntitiesOfClass(Player.class, aabb)) {
+            p.sendSystemMessage(shieldBrokenMsg);
+        }
+    }
+
+    public UUID getTrumpMinibossUuid() {
+        return this.trumpMinibossUuid;
+    }
+
+    public void setTrumpMinibossUuid(UUID uuid) {
+        this.trumpMinibossUuid = uuid;
     }
 
     private void broadcastSpeechCue(ServerLevel serverLevel) {
@@ -305,22 +418,36 @@ public class BibiBossEntity extends Monster implements RangedAttackMob {
     @Override
     public void performRangedAttack(LivingEntity target, float distanceFactor) {
         if (!(this.level() instanceof ServerLevel serverLevel)) return;
+        if (ModEntities.BIBI_MISSILE == null) return;
 
-        Vec3 from = this.getEyePosition();
-        Vec3 to = target.getEyePosition();
-        Vec3 dir = to.subtract(from).normalize();
+        // Targeted homing missile directly at the player with tracking and area explosion
+        BibiMissileEntity missile = new BibiMissileEntity(ModEntities.BIBI_MISSILE.get(), serverLevel);
+        missile.setOwner(this);
+        missile.setPos(this.getX(), this.getY() + 1.8, this.getZ());
+        missile.setTarget(target);
+        missile.setHoming(true);
 
-        // Beam shockwave attack
-        for (double d = 1.0; d < from.distanceTo(to); d += 1.0) {
-            Vec3 p = from.add(dir.scale(d));
-            serverLevel.sendParticles(ParticleTypes.CRIT, p.x, p.y, p.z, 2, 0.1, 0.1, 0.1, 0.02);
+        Vec3 targetPos = target.getEyePosition();
+        Vec3 toTarget = targetPos.subtract(this.getX(), this.getY() + 1.8, this.getZ()).normalize();
+        missile.setDeltaMovement(toTarget.scale(0.85));
+        serverLevel.addFreshEntity(missile);
+
+        // In Phase 2 (ENRAGED), fire an additional volley missile for intensified rhythm!
+        if (this.bossState == BibiBossState.ENRAGED) {
+            BibiMissileEntity secondMissile = new BibiMissileEntity(ModEntities.BIBI_MISSILE.get(), serverLevel);
+            secondMissile.setOwner(this);
+            secondMissile.setPos(this.getX() + (this.random.nextDouble() - 0.5) * 1.5,
+                    this.getY() + 2.0,
+                    this.getZ() + (this.random.nextDouble() - 0.5) * 1.5);
+            secondMissile.setTarget(target);
+            secondMissile.setHoming(true);
+            Vec3 spread = toTarget.add((this.random.nextDouble() - 0.5) * 0.2, 0.1, (this.random.nextDouble() - 0.5) * 0.2).normalize();
+            secondMissile.setDeltaMovement(spread.scale(0.9));
+            serverLevel.addFreshEntity(secondMissile);
         }
 
-        target.hurtServer(serverLevel, this.damageSources().mobAttack(this), 14.0F);
-        target.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 40, 0));
-
         serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
-                SoundEvents.BLAZE_SHOOT, SoundSource.HOSTILE, 1.0F, 1.2F);
+                SoundEvents.FIREWORK_ROCKET_LAUNCH, SoundSource.HOSTILE, 2.0F, 0.8F);
     }
 
     @Override
@@ -328,6 +455,19 @@ public class BibiBossEntity extends Monster implements RangedAttackMob {
         // Track player damage for multiplayer reward distribution
         if (damageSource.getEntity() instanceof Player player) {
             this.participatingPlayerUuids.add(player.getUUID());
+        }
+
+        // Complete diplomatic immunity while Trump Miniboss is alive
+        if (isTrumpShieldActive(serverLevel)) {
+            serverLevel.sendParticles(ParticleTypes.TOTEM_OF_UNDYING, this.getX(), this.getY() + 1.2, this.getZ(),
+                    20, 0.4, 0.6, 0.4, 0.1);
+            serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                    SoundEvents.SHIELD_BLOCK.value(), SoundSource.HOSTILE, 1.5F, 1.2F);
+            if (damageSource.getEntity() instanceof Player player) {
+                player.sendSystemMessage(Component.translatable("message.israel_simulator.bibi_shielded_by_trump")
+                        .withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
+            }
+            return false;
         }
 
         // Engage combat on hit
@@ -365,6 +505,14 @@ public class BibiBossEntity extends Monster implements RangedAttackMob {
                 net.minecraft.world.entity.Entity guard = serverLevel.getEntity(uuid);
                 if (guard != null && guard.isAlive()) {
                     guard.discard();
+                }
+            }
+
+            // Dismiss active Donald Trump miniboss if still present
+            if (this.trumpMinibossUuid != null) {
+                net.minecraft.world.entity.Entity trump = serverLevel.getEntity(this.trumpMinibossUuid);
+                if (trump != null && trump.isAlive()) {
+                    trump.discard();
                 }
             }
 
@@ -446,6 +594,10 @@ public class BibiBossEntity extends Monster implements RangedAttackMob {
         super.addAdditionalSaveData(output);
         output.putInt("BossState", this.bossState.ordinal());
         output.putBoolean("RewardDropped", this.rewardDropped);
+        output.putInt("MissileBarrageCooldown", this.missileBarrageCooldown);
+        if (this.trumpMinibossUuid != null) {
+            output.putString("TrumpMinibossUUID", this.trumpMinibossUuid.toString());
+        }
         if (this.arenaCenter != null) {
             output.putInt("ArenaCenterX", this.arenaCenter.getX());
             output.putInt("ArenaCenterY", this.arenaCenter.getY());
@@ -461,6 +613,13 @@ public class BibiBossEntity extends Monster implements RangedAttackMob {
             setBossState(BibiBossState.values()[stateOrd]);
         }
         this.rewardDropped = input.getBooleanOr("RewardDropped", false);
+        this.missileBarrageCooldown = input.getIntOr("MissileBarrageCooldown", 180);
+        String trumpStr = input.getStringOr("TrumpMinibossUUID", "");
+        if (!trumpStr.isEmpty()) {
+            try {
+                this.trumpMinibossUuid = UUID.fromString(trumpStr);
+            } catch (IllegalArgumentException ignored) {}
+        }
         int ax = input.getIntOr("ArenaCenterX", 0);
         int ay = input.getIntOr("ArenaCenterY", 0);
         int az = input.getIntOr("ArenaCenterZ", 0);

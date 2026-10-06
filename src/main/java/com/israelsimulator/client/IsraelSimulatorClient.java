@@ -41,5 +41,8 @@ public class IsraelSimulatorClient {
         event.registerEntityRenderer(ModEntities.BIBI_BOSS.get(), BibiBossRenderer::new);
         event.registerEntityRenderer(ModEntities.BIBI_GUARD.get(), BibiGuardRenderer::new);
         event.registerEntityRenderer(ModEntities.BICYCLE.get(), com.israelsimulator.client.renderer.BicycleRenderer::new);
+        event.registerEntityRenderer(ModEntities.BIBI_MISSILE.get(), net.minecraft.client.renderer.entity.ThrownItemRenderer::new);
+        event.registerEntityRenderer(ModEntities.TRUMP_MINIBOSS.get(), com.israelsimulator.client.renderer.TrumpMinibossRenderer::new);
+        event.registerEntityRenderer(ModEntities.ICE_AGENT.get(), com.israelsimulator.client.renderer.IceAgentRenderer::new);
     }
 }

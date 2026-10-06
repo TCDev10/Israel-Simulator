@@ -33,13 +33,13 @@ class BibiBossAndCombatTest {
         assertEquals(4, IsraelSimulatorConfig.bibiBossMaxGuards(), "Max guards limit prevents mob runaway");
         assertEquals(48, IsraelSimulatorConfig.bibiBossArenaRadius());
 
-        assertEquals(0.30F, BibiBossEntity.ENRAGE_HEALTH_FRACTION, 0.001F, "Enrage phase triggers below 30% HP");
+        assertEquals(0.50F, BibiBossEntity.ENRAGE_HEALTH_FRACTION, 0.001F, "Enrage phase triggers below 50% HP");
         assertEquals(500.0F, BibiBossEntity.MAX_SINGLE_HIT_DAMAGE, 0.001F, "Single-hit damage cap must prevent one-shot cheese");
         assertTrue(BibiBossSpawner.BOSS_DUPLICATION_CHECK_RADIUS >= 64.0, "Boss duplication radius must adequately cover the arena");
     }
 
     @Test
-    @DisplayName("Verify Bibi Boss and Guard entity class structures")
+    @DisplayName("Verify Bibi Boss, Miniboss Trump, ICE Agent, and Guard entity class structures")
     void testEntityClassStructures() throws Exception {
         ClassLoader cl = BibiBossAndCombatTest.class.getClassLoader();
         Class<?> bossClass = Class.forName("com.israelsimulator.entity.boss.BibiBossEntity", false, cl);
@@ -49,6 +49,18 @@ class BibiBossAndCombatTest {
         Class<?> guardClass = Class.forName("com.israelsimulator.entity.boss.BibiGuardEntity", false, cl);
         assertNotNull(guardClass, "BibiGuardEntity class must exist");
         assertEquals("net.minecraft.world.entity.monster.Monster", guardClass.getSuperclass().getName());
+
+        Class<?> trumpClass = Class.forName("com.israelsimulator.entity.boss.TrumpMinibossEntity", false, cl);
+        assertNotNull(trumpClass, "TrumpMinibossEntity class must exist");
+        assertEquals("net.minecraft.world.entity.monster.Monster", trumpClass.getSuperclass().getName());
+
+        Class<?> iceClass = Class.forName("com.israelsimulator.entity.boss.IceAgentEntity", false, cl);
+        assertNotNull(iceClass, "IceAgentEntity class must exist");
+        assertEquals("net.minecraft.world.entity.monster.Monster", iceClass.getSuperclass().getName());
+
+        Class<?> missileClass = Class.forName("com.israelsimulator.entity.boss.BibiMissileEntity", false, cl);
+        assertNotNull(missileClass, "BibiMissileEntity class must exist");
+        assertEquals("net.minecraft.world.entity.projectile.Projectile", missileClass.getSuperclass().getName());
     }
 
     @Test
@@ -134,10 +146,16 @@ class BibiBossAndCombatTest {
 
         InputStream guardStream = getClass().getResourceAsStream("/assets/israel_simulator/textures/entity/bibi_guard.png");
         assertNotNull(guardStream, "bibi_guard.png must exist");
+
+        InputStream trumpStream = getClass().getResourceAsStream("/assets/israel_simulator/textures/entity/trump_miniboss.png");
+        assertNotNull(trumpStream, "trump_miniboss.png must exist");
+
+        InputStream iceStream = getClass().getResourceAsStream("/assets/israel_simulator/textures/entity/ice_agent.png");
+        assertNotNull(iceStream, "ice_agent.png must exist");
     }
 
     @Test
-    @DisplayName("Verify boss, guard, and disc localizations in en_us.json")
+    @DisplayName("Verify boss, guard, miniboss, and disc localizations in en_us.json")
     void testBossLocalizations() {
         InputStream stream = getClass().getResourceAsStream("/assets/israel_simulator/lang/en_us.json");
         assertNotNull(stream, "en_us.json must exist");
@@ -146,6 +164,8 @@ class BibiBossAndCombatTest {
             assertTrue(json.contains("\"entity.israel_simulator.bibi_boss\""));
             assertTrue(json.contains("\"entity.israel_simulator.bibi_boss.enraged\""));
             assertTrue(json.contains("\"entity.israel_simulator.bibi_guard\""));
+            assertTrue(json.contains("\"entity.israel_simulator.trump_miniboss\""));
+            assertTrue(json.contains("\"entity.israel_simulator.ice_agent\""));
             assertTrue(json.contains("\"item.israel_simulator.hava_nagila_disc\""));
             assertTrue(json.contains("\"item.israel_simulator.hava_nagila_disc.desc\""));
             assertTrue(json.contains("\"item.israel_simulator.hava_nagila_disc.lore\""));
