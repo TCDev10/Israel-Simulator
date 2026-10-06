@@ -58,6 +58,10 @@ public class DataAndResourceValidationTest {
             "entity.train.whistle", "entity.transport.travel", "ui.landmark_discovered"
     );
 
+    public static final List<String> ALL_MOD_EFFECTS = List.of(
+            "blessed", "blessed_trader", "freedom", "meat_digestion", "dairy_digestion"
+    );
+
     @Test
     @DisplayName("Validate all JSON files parse without syntax errors")
     void testAllJsonFilesAreValid() throws IOException {
@@ -372,6 +376,23 @@ public class DataAndResourceValidationTest {
         for (String block : ALL_MOD_BLOCKS) {
             Path lootPath = blockLootDir.resolve(block + ".json");
             assertTrue(Files.exists(lootPath), "Missing block loot table for: " + block);
+        }
+    }
+
+    @Test
+    @DisplayName("Validate all custom mob effects have dedicated 18x18 icon textures")
+    void testAllModMobEffectsHaveTextures() {
+        Path effectDir = RESOURCES_PATH.resolve(Paths.get("assets", IsraelSimulator.MOD_ID, "textures", "mob_effect"));
+        assertTrue(Files.exists(effectDir), "textures/mob_effect must exist");
+
+        for (String effect : ALL_MOD_EFFECTS) {
+            Path texturePath = effectDir.resolve(effect + ".png");
+            assertTrue(Files.exists(texturePath), "Missing mob effect texture for: " + effect);
+            try {
+                assertTrue(Files.size(texturePath) > 0L, "Mob effect texture must not be empty: " + effect);
+            } catch (IOException e) {
+                throw new AssertionError("Failed to check mob effect texture size: " + effect, e);
+            }
         }
     }
 }

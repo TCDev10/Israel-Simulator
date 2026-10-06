@@ -194,7 +194,7 @@ NeoForge ModDevGradle comes preconfigured with dedicated run configurations:
 Israel-Simulator enforces strict test coverage across all worldgen algorithms, registries, economies, and data assets:
 
 ```bash
-# Run all 54 JUnit 5 test suites (249 tests)
+# Run all 54 JUnit 5 test suites (250 tests)
 ./gradlew test
 ```
 
