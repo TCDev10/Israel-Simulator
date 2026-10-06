@@ -17,7 +17,7 @@ public final class CollectibleItems {
     }
 
     public static Item.Properties starOfDavid(Item.Properties p) {
-        return p.stacksTo(16).rarity(RarityLevel.UNCOMMON.vanilla());
+        return p.stacksTo(1).rarity(RarityLevel.LEGENDARY.vanilla());
     }
 
     public static Item.Properties oliveWoodCarving(Item.Properties p) {

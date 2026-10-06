@@ -89,26 +89,38 @@ class RareStructuresTest {
     }
 
     @Test
-    @DisplayName("Verify ultra-rare Rabbi's Crown loot source integration in rare sanctuary and synagogue ark")
+    @DisplayName("Verify Rabbi's Crown is exclusive to Bibi Boss and not found in chests")
     void testRabbisCrownLootIntegration() {
-        // 1. Ancient sanctuary chest
+        // 1. Ancient sanctuary chest must NOT contain Rabbi's Crown (exclusive to Bibi Boss)
         InputStream sanctuaryStream = getClass().getResourceAsStream("/data/israel_simulator/loot_table/chests/ancient_sanctuary.json");
         assertNotNull(sanctuaryStream, "ancient_sanctuary.json must exist");
         try {
             String json = new String(sanctuaryStream.readAllBytes(), StandardCharsets.UTF_8);
-            assertTrue(json.contains("israel_simulator:rabbis_crown"), "Ancient sanctuary must contain ultra-rare Rabbi's Crown");
+            assertFalse(json.contains("israel_simulator:rabbis_crown"), "Ancient sanctuary must not contain Rabbi's Crown (boss-exclusive)");
+            assertTrue(json.contains("israel_simulator:dead_sea_scroll_fragment"), "Ancient sanctuary must contain scroll fragment");
         } catch (Exception e) {
             fail("Failed reading ancient_sanctuary.json: " + e.getMessage());
         }
 
-        // 2. Synagogue ark chest
+        // 2. Synagogue ark chest must NOT contain Rabbi's Crown
         InputStream arkStream = getClass().getResourceAsStream("/data/israel_simulator/loot_table/chests/synagogue_ark.json");
         assertNotNull(arkStream, "synagogue_ark.json must exist");
         try {
             String json = new String(arkStream.readAllBytes(), StandardCharsets.UTF_8);
-            assertTrue(json.contains("israel_simulator:rabbis_crown"), "Synagogue ark must contain ultra-rare Rabbi's Crown");
+            assertFalse(json.contains("israel_simulator:rabbis_crown"), "Synagogue ark must not contain Rabbi's Crown (boss-exclusive)");
+            assertTrue(json.contains("israel_simulator:talit"), "Synagogue ark must contain sacred vestments");
         } catch (Exception e) {
             fail("Failed reading synagogue_ark.json: " + e.getMessage());
+        }
+
+        // 3. Bibi Boss loot table must contain Rabbi's Crown
+        InputStream bibiStream = getClass().getResourceAsStream("/data/israel_simulator/loot_table/entities/bibi_boss.json");
+        assertNotNull(bibiStream, "bibi_boss.json must exist");
+        try {
+            String json = new String(bibiStream.readAllBytes(), StandardCharsets.UTF_8);
+            assertTrue(json.contains("israel_simulator:rabbis_crown"), "Bibi Boss must drop Rabbi's Crown exclusively");
+        } catch (Exception e) {
+            fail("Failed reading bibi_boss.json: " + e.getMessage());
         }
     }
 

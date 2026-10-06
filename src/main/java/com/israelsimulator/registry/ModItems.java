@@ -52,7 +52,7 @@ public final class ModItems {
 
     // Collectible items
     public static final DeferredHolder<Item, Item> MEZUZAH = ITEMS.registerItem("mezuzah", p -> new Item(CollectibleItems.mezuzah(p)));
-    public static final DeferredHolder<Item, Item> STAR_OF_DAVID = ITEMS.registerItem("star_of_david", p -> new Item(CollectibleItems.starOfDavid(p)));
+    public static final DeferredHolder<Item, com.israelsimulator.item.cultural.StarOfDavidItem> STAR_OF_DAVID = ITEMS.registerItem("star_of_david", p -> new com.israelsimulator.item.cultural.StarOfDavidItem(CollectibleItems.starOfDavid(p)));
     public static final DeferredHolder<Item, Item> OLIVE_WOOD_CARVING = ITEMS.registerItem("olive_wood_carving", p -> new Item(CollectibleItems.oliveWoodCarving(p)));
     public static final DeferredHolder<Item, Item> ANCIENT_COIN = ITEMS.registerItem("ancient_coin", p -> new Item(CollectibleItems.ancientCoin(p)));
     public static final DeferredHolder<Item, Item> DEAD_SEA_SCROLL_FRAGMENT = ITEMS.registerItem("dead_sea_scroll_fragment", p -> new Item(CollectibleItems.deadSeaScrollFragment(p)));

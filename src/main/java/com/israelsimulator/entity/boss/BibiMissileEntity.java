@@ -94,11 +94,11 @@ public class BibiMissileEntity extends Projectile implements ItemSupplier {
         if (!super.canHitEntity(entity)) {
             return false;
         }
-        // Missiles do not damage their boss owner or fellow guards/missiles
+        // Missiles do not damage their boss owner or fellow guards/missiles/allies
         if (entity == this.getOwner() || entity instanceof BibiMissileEntity) {
             return false;
         }
-        if (this.getOwner() instanceof BibiBossEntity && entity instanceof BibiGuardEntity) {
+        if (BibiBossEntity.isAlly(entity)) {
             return false;
         }
         return true;
@@ -218,7 +218,7 @@ public class BibiMissileEntity extends Projectile implements ItemSupplier {
 
             AABB blastArea = this.getBoundingBox().inflate(blastRadius);
             List<LivingEntity> victims = serverLevel.getEntitiesOfClass(LivingEntity.class, blastArea,
-                    e -> e != this.getOwner() && !(e instanceof BibiGuardEntity) && e.isAlive());
+                    e -> e != this.getOwner() && !BibiBossEntity.isAlly(e) && e.isAlive());
 
             for (LivingEntity victim : victims) {
                 double dist = victim.position().distanceTo(pos);

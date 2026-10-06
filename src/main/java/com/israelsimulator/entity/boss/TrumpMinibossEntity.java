@@ -176,8 +176,8 @@ public class TrumpMinibossEntity extends Monster {
             for (int col = -3; col <= 3; col++) {
                 for (double dy = 0.0; dy <= 2.0; dy += 1.0) {
                     Vec3 particlePos = waveCenter.add(right.scale(col * 0.9)).add(0, dy, 0);
-                    serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER,
-                            particlePos.x, particlePos.y, particlePos.z, 2, 0.1, 0.1, 0.1, 0.02);
+                    serverLevel.sendParticles(com.israelsimulator.registry.ModParticles.DOLLAR_BILL.get(),
+                            particlePos.x, particlePos.y, particlePos.z, 2, 0.15, 0.15, 0.15, 0.05);
                     serverLevel.sendParticles(ParticleTypes.WAX_ON,
                             particlePos.x, particlePos.y, particlePos.z, 1, 0.05, 0.05, 0.05, 0.02);
                     serverLevel.sendParticles(ParticleTypes.TOTEM_OF_UNDYING,
@@ -207,11 +207,52 @@ public class TrumpMinibossEntity extends Monster {
             Vec3 knockback = forward.scale(1.8).add(0, 0.4, 0);
             p.setDeltaMovement(p.getDeltaMovement().add(knockback));
 
+            serverLevel.sendParticles(com.israelsimulator.registry.ModParticles.DOLLAR_BILL.get(),
+                    p.getX(), p.getY() + 1.0, p.getZ(), 15, 0.4, 0.4, 0.4, 0.1);
             serverLevel.sendParticles(ParticleTypes.CRIT,
                     p.getX(), p.getY() + 1.0, p.getZ(), 20, 0.5, 0.5, 0.5, 0.15);
             serverLevel.playSound(null, p.getX(), p.getY(), p.getZ(),
                     SoundEvents.ITEM_BREAK, SoundSource.PLAYERS, 1.5F, 0.8F);
         }
+    }
+
+    @Override
+    public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float amount) {
+        // Complete explosion immunity (GAME_DESIGN requirement)
+        if (damageSource.is(net.minecraft.tags.DamageTypeTags.IS_EXPLOSION)) {
+            return false;
+        }
+        // Friendly fire protection with Bibi and coalition allies
+        if (BibiBossEntity.isAlly(damageSource.getEntity())) {
+            return false;
+        }
+        return super.hurtServer(serverLevel, damageSource, amount);
+    }
+
+    @Override
+    public boolean canAttack(LivingEntity target) {
+        if (BibiBossEntity.isAlly(target)) {
+            return false;
+        }
+        return super.canAttack(target);
+    }
+
+    @Override
+    public void setTarget(@org.jspecify.annotations.Nullable LivingEntity target) {
+        if (BibiBossEntity.isAlly(target)) {
+            return;
+        }
+        super.setTarget(target);
+    }
+
+    @Override
+    public boolean doHurtTarget(ServerLevel serverLevel, Entity target) {
+        boolean hit = super.doHurtTarget(serverLevel, target);
+        if (hit) {
+            serverLevel.sendParticles(com.israelsimulator.registry.ModParticles.DOLLAR_BILL.get(),
+                    target.getX(), target.getY() + 1.0, target.getZ(), 8, 0.3, 0.3, 0.3, 0.08);
+        }
+        return hit;
     }
 
     /**

@@ -11,6 +11,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -24,11 +25,12 @@ import net.minecraft.world.phys.Vec3;
 /**
  * Standard-issue security sidearm carried by Coalition VIP guards (GAME_DESIGN.md §43).
  * Shoots high-velocity kinetic rounds with accurate ballistic raycasting.
+ * Has 250 durability, consumes durability on fire, and can be enchanted with Unbreaking and Mending.
  */
 public class SecurityPistolItem extends Item {
 
     public SecurityPistolItem(Properties properties) {
-        super(properties);
+        super(properties.durability(250).enchantable(1));
     }
 
     @Override
@@ -37,6 +39,9 @@ public class SecurityPistolItem extends Item {
         player.getCooldowns().addCooldown(held, 14);
 
         if (!level.isClientSide() && level instanceof ServerLevel serverLevel) {
+            EquipmentSlot slot = hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
+            held.hurtAndBreak(1, player, slot);
+
             Vec3 eyePos = player.getEyePosition();
             Vec3 lookVec = player.getViewVector(1.0F);
             Vec3 muzzlePos = eyePos.add(lookVec.scale(0.5));
