@@ -100,4 +100,9 @@ public class BicycleEntity extends PathfinderMob {
     protected boolean canAddPassenger(net.minecraft.world.entity.Entity passenger) {
         return this.getPassengers().isEmpty();
     }
+
+    @Override
+    protected net.minecraft.world.phys.Vec3 getPassengerAttachmentPoint(net.minecraft.world.entity.Entity passenger, net.minecraft.world.entity.EntityDimensions dimensions, float scale) {
+        return new net.minecraft.world.phys.Vec3(0.0, 0.65, -0.15);
+    }
 }

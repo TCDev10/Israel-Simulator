@@ -42,4 +42,10 @@ public class IsraelSimulatorClient {
         event.registerEntityRenderer(ModEntities.BIBI_GUARD.get(), BibiGuardRenderer::new);
         event.registerEntityRenderer(ModEntities.BICYCLE.get(), com.israelsimulator.client.renderer.BicycleRenderer::new);
     }
+
+    @SubscribeEvent
+    static void onRegisterLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(com.israelsimulator.client.renderer.BicycleModel.LAYER_LOCATION,
+                com.israelsimulator.client.renderer.BicycleModel::createBodyLayer);
+    }
 }

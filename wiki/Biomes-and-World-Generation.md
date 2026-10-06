@@ -1,59 +1,43 @@
-# Biomes and World Generation
+# Biomi e Generazione del Mondo (Biomes & World Generation)
 
-Israel-Simulator injects a realistic geographic climate gradient into Minecraft's multi-noise generation pipeline. Biomes transition organically from West to East:
-
-```text
-[Mediterranean Coast] ➔ [Urban Area] ➔ [Israeli Agriculture] ➔ [Jerusalem] ➔ [Judean Desert] ➔ [Dead Sea]
-      (Sea Level)         (Plains)          (Valley)            (Hills)          (Plateau)       (Depression)
-```
+Il mondo di **Israel-Simulator** modella il variegato clima della regione attraverso 6 biomi geografici personalizzati e un bioma urbano dedicato.
 
 ---
 
-## 1. The 6 Israeli Biomes
+## 1. I Biomi Regionali
 
-### 🌊 Mediterranean Coast (`israel_simulator:mediterranean_coast`)
-* **Geography:** Sandy coastal shores, gentle dunes, warm seawater, sea turtles and seagulls.
-* **Flora:** Coastal scrub and beach palms.
-* **Structures:** Ancient Jaffa Port (`jaffa_port`), Mediterranean Coastal Villages (`mediterranean_village`).
-* **Locate:** `/locate biome israel_simulator:mediterranean_coast`
+### 1. Costa Mediterranea (`mediterranean_coast`)
+- **Caratteristiche**: Spiagge sabbiose, dune costiere, clima temperato, brezza marina.
+- **Flora**: Agrumeti (arance, limoni), palme, erbe aromatiche mediterranee.
+- **Strutture**: Il porto storico di Giaffa, passeggiate lungomare, fari costieri.
 
-### 🏙️ Urban Area (`israel_simulator:urban_area`)
-* **Geography:** Flat coastal plain designed for modern city life and high-tech architecture.
-* **Atmosphere:** Urban soundscape (`ambient.city.tel_aviv`), street cats, cafes, and cross-quarter transitions.
-* **Vegetation Protection:** Built-in worldgen rules prevent wild trees, vines, or weeds from generating on roofs, sidewalks, or building interiors.
-* **Structures:** Tel Aviv Metropolis (`tel_aviv_city`), Startup Tech Office (`startup_office`), Government Assembly (`government_building`).
-* **Locate:** `/locate biome israel_simulator:urban_area`
+### 2. Colline di Gerusalemme (`jerusalem_hills`)
+- **Caratteristiche**: Rilievi calcarei ondulati, terrazzamenti agricoli, clima continentale mite.
+- **Flora**: Ulivi secolari, pini di Gerusalemme, viti.
+- **Strutture**: La Città Vecchia di Gerusalemme, sinagoghe storiche, il Muro Occidentale.
 
-### 🌾 Israeli Agricultural Valley (`israel_simulator:israeli_agriculture`)
-* **Geography:** Fertile valleys, irrigated terraces, and agricultural kibbutzim.
-* **Flora:** Olive groves (`olive_tree`), citrus orchards (`citrus_orchard`), grapevine vineyards (`grapevine_patch`), and Mediterranean herbs.
-* **Economy:** Farmers buy wheat, carrots, and potatoes for silver Shekels.
-* **Structures:** Agricultural Kibbutz Farm (`agricultural_farm`).
-* **Locate:** `/locate biome israel_simulator:israeli_agriculture`
+### 3. Deserto della Giudea (`judean_desert`)
+- **Caratteristiche**: Canyon aridi, dune sabbiose, gole rocciose (Wadi), sbalzi termici intensi.
+- **Flora**: Macchia desertica resistente, cespugli spinosi, oasi di palme da dattero (Ein Gedi).
+- **Pericoli**: Colpi di calore durante il giorno se non equipaggiati adeguatamente.
+- **Strutture**: Accampamenti di tende beduine, santuari antichi, grotte con rotoli storici.
 
-### 🏛️ Jerusalem (`israel_simulator:jerusalem`)
-* **Geography:** High rocky hills made of authentic Jerusalem Stone (`jerusalem_stone`), stone terraces, and historic pine groves.
-* **Atmosphere:** Historic and spiritual ambiance (`ambient.city.jerusalem`).
-* **Structures:** Old City of Jerusalem (`jerusalem_city`), Western Wall (`western_wall`), Great Synagogue (`great_synagogue`), Community Synagogue (`synagogue`), Historical Houses (`historical_house`), Grand Shuk Market (`grand_market`).
-* **Locate:** `/locate biome israel_simulator:jerusalem`
+### 4. Valle del Mar Morto (`dead_sea_basin`)
+- **Caratteristiche**: La depressione più profonda delle terre emerse (Y = -60 fino a -30).
+- **Blocchi Unici**: Sale cristallizzato, blocchi di sale compresso, fango curativo del Mar Morto.
+- **Acque Saline**: Altissima densità che fa galleggiare naturalmente il giocatore ma causa accecamento/danno se immerso a lungo senza protezione.
 
-### 🏜️ Judean Desert (`israel_simulator:judean_desert`)
-* **Geography:** Rolling arid dunes, sandstone cliffs, wind-sculpted rock mounds, and natural ravines.
-* **Hazards:** Daylight heatstroke if uncovered (wear a Kippah for shade protection).
-* **Structures:** Ein Gedi Oasis (`ein_gedi_oasis`), Desert Ruins (`desert_ruins`), Ancient Desert Sanctuary (`ancient_sanctuary`).
-* **Locate:** `/locate biome israel_simulator:judean_desert`
+### 5. Agricoltura e Campi della Galilea (`israeli_agriculture`)
+- **Caratteristiche**: Pianure fertili verdeggianti e valli fluviali (Emek Yizre'el).
+- **Coltivazioni**: Campi ordinati di grano, uliveti intensivi, agrumeti, vigneti con viti rampicanti.
+- **Economia**: Fattorie, cooperative agricole (Kibbutz) con mercati attivi di scambio prodotti.
 
-### 🧂 Dead Sea (`israel_simulator:dead_sea`)
-* **Geography:** Below sea level depression, white salt beaches (`salt_block`), mineral crusts, and hyper-saline water.
-* **Mechanics:** Natural buoyancy prevents sinking; therapeutic Dead Sea Mud (`dead_sea_mud`).
-* **Structures:** Dead Sea Spa & Wellness Resort (`dead_sea_resort`).
-* **Locate:** `/locate biome israel_simulator:dead_sea`
+### 6. Alture del Golan e Monte Hermon (`golan_heights`)
+- **Caratteristiche**: Altopiani vulcanici ventosi e vette innevate d'alta quota.
+- **Clima**: Freddo montano, precipitazioni nevose sulle cime.
+- **Strutture**: Rovine di fortezze storiche, stazioni sciistiche e bunker di vedetta.
 
----
+### 7. Area Urbana Moderna (`urban_area`)
+- **Caratteristiche**: Asfalto, marciapiedi in pietra liscia, architettura Bauhaus bianca (White City).
+- **Città**: Tel Aviv con il distretto tecnologico (Silicon Alley), grattacieli e piste ciclabili.
 
-## 2. Worldgen Flora & Clean Building Placement
-
-All custom trees, vineyards, and herbs utilize strict block predicate filters to preserve structure aesthetics:
-* **No Trees on Roofs:** Olive trees and citrus trees only generate on natural soil (`grass_block`, `dirt`, `coarse_dirt`, `podzol`).
-* **No Vines on Walls:** Grapevine crops only generate on farmland and natural ground.
-* **Clean Buildings:** Urban and historical stone blocks (`jerusalem_stone`, `paved_road`, `western_wall_stone`, concrete, terracotta, wood) are immune to wild vegetation overgrowth.

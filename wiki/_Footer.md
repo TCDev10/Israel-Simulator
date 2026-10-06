@@ -1,2 +1,4 @@
 ---
-*Israel-Simulator Mod for Minecraft 26.2 (NeoForge) • [GitHub](https://github.com/TCDev10/Israel-Simulator) • [Issues](https://github.com/TCDev10/Israel-Simulator/issues)*
+*Israel-Simulator — Minecraft Java Edition Mod (NeoForge 26.2).*
+*Documentazione aggiornata e conforme alle specifiche di GAME_DESIGN.md.*
+

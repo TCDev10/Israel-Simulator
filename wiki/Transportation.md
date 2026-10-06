@@ -1,47 +1,23 @@
-# Transportation Network
+# Trasporti e Mobilità (Transportation)
 
-Navigating between Israeli cities and across varied terrain is streamlined through specialized vehicles, infrastructure, and public transit.
-
----
-
-## 1. Paved Roads (`israel_simulator:paved_road`)
-
-* Modern asphalt paving stone found connecting urban districts and highway corridors.
-* **Speed Boost:** Walking or running on `paved_road` grants **+40% movement speed** (Speed I) for 3 seconds.
-* **Mining:** Mined with a pickaxe, drops itself intact.
+Il sistema dei trasporti di **Israel-Simulator** risponde al pilastro di design **GAME_DESIGN.md §32**: connettere le città e i biomi del mondo senza frammentare l'esplorazione.
 
 ---
 
-## 2. Rideable Bicycle (`israel_simulator:bicycle`)
+## 1. La Bicicletta (Bicycle)
 
-* **Usage:** Place the bicycle item on the ground and right-click to mount.
-* **Controls:** Standard WASD navigation.
-* **Bell Feature:** Press `Space` while riding to ring the bicycle bell (`entity.bicycle.bell`).
-* **Dismounting:** Press `Shift` to dismount. Punching the bike converts it back into an inventory item.
+La **Bicicletta** (`israel_simulator:bicycle`) è il mezzo di trasporto ecologico ideale per muoversi agilmente nelle strade di Tel Aviv, sul lungomare di Giaffa e sui sentieri regionali.
 
----
+### Modello 3D e Aspetto
+- **Telaio 3D personalizzato**: Tubo superiore, tubo diagonale, piantone sella e foderi in alluminio/acciaio color verde smeraldo/turchese (stile bike sharing di Tel Aviv).
+- **Ruote animate**: Ruota anteriore e posteriore complete di battistrada scuro e raggi che ruotano dinamicamente in base alla velocità del veicolo.
+- **Manubrio e Campanello**: Manopole ergonomiche in gomma e un campanello in ottone lucido dorato.
+- **Pedali funzionanti**: Pedivelle e pedali che ruotano durante la pedalata.
+- **Sella in cuoio**: Posizionamento della seduta studiato per allineare realisticamente il giocatore in sella.
 
-## 3. Public Transit & Rav-Kav Pass
+### Meccaniche di Gioco
+1. **Salire in sella**: Cliccare con il tasto destro sulla bicicletta per montare a bordo.
+2. **Suonare il campanello**: Premere **Shift + Tasto Destro** (o Shift mentre si è vicini) per suonare il campanello personalizzato (`ModSoundEvents.BICYCLE_BELL`), allertando pedoni e NPC.
+3. **Velocità e Guida**: Movimento fluido e reattivo (velocità base 0.42), ideale per percorrere le piste ciclabili cittadine e i viali alberati.
+4. **Recupero del veicolo**: Colpendo la bicicletta, essa viene distrutta e rilascia nuovamente l'item `Bicycle` nel tuo inventario.
 
-### 💳 Rav-Kav Transit Card (`israel_simulator:rav_kav`)
-* Multi-use transit pass for buses, trains, and rapid transit hubs.
-* Can also be substituted with **10 Shekels** if a player has not yet obtained a card.
-
-### 🚏 Transport Stop (`israel_simulator:transport_stop`)
-* Interactive station pillar block located across major destinations.
-* **Routing Network:** Stations form a circular travel loop connecting all key regions:
-
-```text
-[Tel Aviv Central] ➔ [Jaffa Clock Tower] ➔ [Jaffa Port] ➔ [Jerusalem Navon] ➔ [Dead Sea Ein Gedi] ➔ [Galilee Hub] ➔ (Loops back to Tel Aviv)
-```
-
-* **Dynamic Spatial Routing:** Right-clicking a stop detects the nearest local hub and transports the player sequentially to the next stop in the network.
-* **Sound & FX:** Plays transit travel audio (`TRANSIT_TRAVEL`).
-* **Transit Cooldown:** Enforces a 3-second server cooldown between rides to prevent spam.
-* **Mining:** Mined with a pickaxe, drops itself intact.
-
----
-
-## 4. Walking Shoes (`israel_simulator:walking_shoes`)
-
-* Sturdy hiking boots that increase sprint speed on rough off-road terrain (mountain trails, desert dunes) and reduce hunger depletion.

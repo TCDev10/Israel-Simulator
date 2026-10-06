@@ -1,33 +1,30 @@
-# Holidays and Cultural Traditions
+# Festività e Tradizioni (Holidays & Traditions)
 
-Israel-Simulator celebrates Jewish cultural traditions and festival minigames.
-
----
-
-## 1. Hanukkah & The Dreidel Minigame (`israel_simulator:dreidel`)
-
-The 4-sided spinning top (Sevivon/Dreidel) can be spun by right-clicking with Shekels in inventory. Each spin yields one of the four Hebrew letters:
-
-| Hebrew Letter | Yiddish Name | English Meaning | Game Outcome |
-|:---:|---|---|---|
-| **נ** | **Nun** (*Nisht*) | Nothing | Nothing happens; your Shekel pot is untouched. |
-| **ג** | **Gimel** (*Gantz*) | Everything | **Jackpot!** You win the entire pot in bonus Shekels. |
-| **ה** | **Hei** (*Halb*) | Half | You win half of the coin pot. |
-| **ש** | **Shin** (*Shtel*) | Put in | You contribute 1 Shekel into the communal pot. |
+Il calendario festivo dinamico di **Israel-Simulator** introduce eventi ciclici e modifiche all'ambiente di gioco.
 
 ---
 
-## 2. Rosh Hashanah & The Shofar (`israel_simulator:shofar`)
+## 1. Lo Shabbat
 
-* **Usage:** Right-click to sound the traditional ram's horn blast.
-* **Audio:** Distinctive multi-tone horn blast (`audio.festival.shofar`) audible across 32 blocks.
-* **Effect:** Grants nearby allied players temporary **Courage & Strength** buffs.
-* **Cooldown:** 30 seconds (600 ticks) enforced server-side.
+Lo Shabbat si attiva ciclicamente ogni 7 giorni di gioco, dal venerdì sera al tramonto del sabato (24.000 tick di durata).
+- **Comportamento degli NPC**:
+  - Le botteghe e i mercati ebraici osservanti chiudono i battenti ("Shabbat Shalom! Shutter is closed until Havdalah").
+  - Gli NPC religiosi camminano serenamente verso le sinagoghe o il Kotel con abiti eleganti.
+- **Benefici per i Giocatori**:
+  - Riposare durante lo Shabbat conferisce l'effetto **Sabbath Peace** con rigenerazione della salute e rimozione dello stress.
+  - Mangiare la **Challah** il venerdì sera dona sazietà spirituale prolungata.
 
 ---
 
-## 3. The 8 Nights of Hanukkah (Menorah Lighting)
+## 2. Le Principali Festività
 
-* Place the **Menorah** (`israel_simulator:menorah`) block in your home or synagogue.
-* Use a flint & steel or torch up to 8 times sequentially.
-* The candelabrum progressively lights from 1 to 8 candles (plus the Shamash servant candle), brightening from light level 4 up to maximum level 15.
+- **Hanukkah (Festa delle Luci)**:
+  - Le Menorah nelle case e nelle piazze vengono accese sera dopo sera.
+  - È possibile far girare il **Dreidel** (`dreidel`) per vincere monete e dolci tipici come la **Sufganiyah** con marmellata.
+- **Purim**:
+  - Sfilate in maschera ad Holon e Tel Aviv, consumo di **Hamantash** triangolari e clima festoso.
+- **Pesach (Pasqua Ebraica)**:
+  - Il pane lievitato viene sostituito dalla **Matzo** (pane azzimo).
+- **Yom Kippur**:
+  - Giorno di digiuno e silenzio assoluto nelle città: niente veicoli a motore o musica alta per le strade.
+

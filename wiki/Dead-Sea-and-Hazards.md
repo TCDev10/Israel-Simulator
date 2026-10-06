@@ -1,34 +1,32 @@
-# Dead Sea and Desert Hazards
+# Il Mar Morto e i Pericoli Ambientali (Dead Sea & Hazards)
 
-The eastern pocket of Israel is a region of extremes, featuring the lowest point on Earth and hyper-saline waters alongside arid desert cliffs.
-
----
-
-## 1. Dead Sea Mechanics (`israel_simulator:dead_sea`)
-
-### 🌊 Natural Buoyancy (Floating Physics)
-* Entering water in the Dead Sea biome triggers natural positive buoyancy:
-  * The player effortlessly floats at the surface without sinking or needing to hold the Jump key.
-  * Passive drowning from submersion is impossible due to the natural upward lift of the saline water.
-
-### 🧴 Dead Sea Mud (`israel_simulator:dead_sea_mud`)
-* Harvested along the mineral shoreline of the Dead Sea.
-* **Usage:** Right-click to apply the therapeutic mineral mud to the player's skin.
-* **Benefits:**
-  * Cleanses all harmful status debuffs (Poison, Weakness, Slowness).
-  * Bestows **Regeneration II** and **Absorption I** for 45 seconds.
-  * Unlocks the `"Dead Sea Tourist"` advancement.
-
-### 🧂 Salt Blocks (`israel_simulator:salt_block`)
-* Pure white mineral salt formations lining the Dead Sea shoreline.
-* Mined with any pickaxe, provides crisp decorative blocks and crafting salt.
+Il bacino del **Mar Morto** è l'ambiente naturale più estremo e affascinante della mappa, situato a profondità record sotto il livello del mare.
 
 ---
 
-## 2. Judean Desert Hazards (`israel_simulator:judean_desert`)
+## 1. Meccaniche Uniche dell'Acqua Ipersalina
 
-### ☀️ Heatstroke & Dehydration
-* Walking under the direct desert sun at midday (time 4,000–8,000 ticks) without head covering triggers heat exhaustion:
-  * Hunger bar drains rapidly.
-  * May trigger temporary Fatigue or Nausea if prolonged.
-* **Protection:** Equipping any headwear—especially the **Kippah** (`israel_simulator:kippah`)—or staying under shade blocks nullifies all heatstroke effects.
+- **Galleggiamento Naturale Estremo (Extreme Buoyancy)**:
+  - Nuotando nelle acque del Mar Morto, il giocatore viene spinto naturalmente verso l'alto ed è impossibile affondare o immergersi a fondo senza pesi.
+  - È possibile rimanere a galla a pancia in su leggendo pergamene o libri.
+- **Bruciore agli Occhi e Danno da Sale**:
+  - Se il giocatore si immerge con la testa sott'acqua senza occhiali protettivi o maschere, subisce l'effetto **Salt Sting** (danno periodico e visione offuscata).
+
+---
+
+## 2. Risorse Preziose del Mar Morto
+
+- **Fango del Mar Morto (`dead_sea_mud`)**:
+  - Raccolto lungo le rive argillose.
+  - Applicandolo sulla pelle, rimuove gli effetti di veleno e rigenera i punti salute conferendo una pelle nutrita e rinfrescata.
+- **Blocchi di Sale Naturale (`dead_sea_salt_block`)**:
+  - Utilizzabili per la conservazione dei cibi e decorazione minerale cristallina.
+
+---
+
+## 3. Pericoli del Deserto della Giudea
+
+- **Colpo di Calore (Heatstroke)**:
+  - Esporsi al sole rovente del mezzogiorno nel deserto senza cappello (o Kippah) aumenta rapidamente la sete e riduce la velocità di movimento.
+  - Cerca l'ombra delle palme da dattero, oasi d'acqua dolce ad Ein Gedi o entra nelle tende beduine per rinfrescarti.
+

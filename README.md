@@ -19,9 +19,12 @@
 
 ---
 
+> 📖 **Official Documentation & Wiki:** Explore the complete **[GitHub Wiki (wiki/)](wiki/Home.md)** for in-depth guides on all 16 structures, items, bosses, kosher rules, and economies.
+
 ## Table of Contents
 
 - [Overview](#overview)
+- [Official Wiki](wiki/Home.md)
 - [Key Features](#key-features)
   - [Deterministic Biomes & World Generation](#-deterministic-biomes--world-generation)
   - [16 Procedural Real Structures](#-16-procedural-real-structures)

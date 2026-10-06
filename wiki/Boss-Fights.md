@@ -1,49 +1,25 @@
-# Endgame Boss: Bibi, Master of Coalitions
+# Boss Fights — Il Boss Satirico Bibi
 
-The mod features a satirical fantasy endgame boss encounter: **Bibi, Master of Coalitions** (`israel_simulator:bibi_boss`).
-
----
-
-## 1. Boss Overview & Attributes
-
-* **Entity ID:** `israel_simulator:bibi_boss`
-* **Base Health:** **10,000 HP** (Configurable in `israel_simulator-common.toml`)
-* **Base Attack Damage:** 18.0
-* **Boss Bar:** Custom purple boss bar labeled *"Bibi, Master of Coalitions"*.
-* **Appearance:** Formal business suit and red tie.
-* **Music:** Dedicated boss battle theme (`music.boss.bibi_theme`).
+In conformità con **GAME_DESIGN.md §41–43** e le regole etiche di **AGENTS.md §22**, il boss Bibi è un boss fantasy satirico e fittizio, chiaramente identificabile come parodia da videogioco.
 
 ---
 
-## 2. Combat Mechanics & The 3 Phases
+## 1. Caratteristiche del Boss Bibi (`bibi_boss`)
 
-```text
-[Phase 1: Political Speeches] ➔ [Phase 2: Coalition Guards] ➔ [Phase 3: Enraged Leader]
-         (100% - 70% HP)                 (70% - 30% HP)                 (< 30% HP)
-```
-
-### 🛡️ Anti-One-Shot Protection
-* The boss features damage-capping protection: no single hit can deal more than **500 damage**, preventing cheese strategies with modded super-weapons.
-
-### Phase 1: The Speechmaker (10,000 – 7,000 HP)
-* The boss engages in melee combat while periodically delivering satirical speeches (`entity.bibi_boss.speech`).
-* Speech sound waves push players back and grant the boss brief resistance bursts.
-
-### Phase 2: Coalition Reinforcements (7,000 – 3,000 HP)
-* The boss summons up to **4 Coalition Guards** (`israel_simulator:bibi_guard` in dark suits) to distract and attack players.
-* The guard cap is strictly enforced to prevent mob runaway lag.
-
-### Phase 3: Enraged Coalition Master (< 3,000 HP)
-* When health drops below 30%, the boss triggers **Enrage Mode** (`BIBI_ENRAGE`):
-  * Movement speed doubles.
-  * Attack damage increases significantly.
-  * Emits dark smoke and fiery charge particles.
+- **Salute**: 300 HP con barra del boss personalizzata viola e dorata.
+- **Armatura**: Resistente agli attacchi da mischia ordinari e immune al fuoco.
+- **Attacchi e Meccaniche Speciali**:
+  1. **Discorso Pubblico Assordante**: Onde d'urto ad area che respingono i giocatori lontani con danni sonori.
+  2. **Evocazione Guardie della Coalizione (`bibi_guard`)**: Evoca fino a 3 guardie speciali munite di armature rinforzate e scudi.
+  3. **Manovra Elettorale**: Quando la vita scende sotto il 50%, si teletrasporta brevemente dietro un podio o scudo difensivo recuperando uno scudo temporaneo.
 
 ---
 
-## 3. Defeat & Legendary Loot
+## 2. Ricompense e Drop della Boss Fight
 
-Defeating the boss plays an epic victory fanfare (`BIBI_DEATH`) and yields:
-1. **Hava Nagila Music Disc (`israel_simulator:hava_nagila_disc`):** Legendary collectible disc playable in any Jukebox.
-2. **Advancement:** Unlocks the combat achievement `"Hava Nagila"`.
-3. **Currency Bounty:** Large pouch of silver Shekels.
+Sconfiggere il Boss Bibi sul server garantisce ricompense di alto valore:
+- **6x Ancient Coins (`israel_simulator:ancient_coin`)**: Monete antiche preziose monetizzabili nei mercati o negozi specializzati per centinaia di Shekel.
+- **Primo Emendamento (`first_amendment`)**: Pergamena leggendaria da collezione con protezione contro il silenzio forzato e gli sbalzi di status.
+- **Monete Shekel e Lingotti d'Oro**: Bottino abbondante per finanziare acquisti di tecnologia o Judaica.
+- **Esperienza e Avanzamento**: Sblocca l'avanzamento "Vittoria Elettorale" o "Coalizione Infranta".
+
