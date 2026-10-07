@@ -25,9 +25,12 @@ La cultura e gli oggetti cerimoniali ebraici sono riprodotti nel gioco come equi
 
 ---
 
-## 2. La Corona del Rabbino (Rabbi's Crown)
+---
 
-- **Rarità**: **MYTHIC** (l'oggetto più raro e prestigioso del mod).
+## 2. Oggetti di Rarità Estrema (Mythic & Legendary)
+
+### La Corona del Rabbino (Rabbi's Crown)
+- **Rarità**: **MYTHIC** (l'oggetto più raro e prestigioso del mod, come stabilito in **AGENTS.md §11**).
 - **Modello 3D**: Include cappello tradizionale a tesa larga, folta barba grigia/nera e boccoli rituali laterali (**Payot**) ondulati.
 - **Caratteristiche di Combattimento**:
   - **+20 Armatura** (altissima protezione pari a un set corazzato completo).
@@ -35,12 +38,23 @@ La cultura e gli oggetti cerimoniali ebraici sono riprodotti nel gioco come equi
   - Riduzione sostanziale (15% di sconto santo) su tutte le transazioni commerciali con i villager e mercanti.
   - Sblocca merci esclusive normalmente inaccessibili nei mercati della Città Vecchia.
 
+### Il Primo Emendamento (First Amendment)
+- **Rarità**: **LEGENDARY** (carta fondamentale di libertà di parola e assemblea civica).
+- **Attivazione e Benefici**:
+  - Cliccando con il tasto destro, purifica istantaneamente tutti i debuff di movimento (rimuove *Slowness* e *Mining Fatigue*) e dona l'effetto **Freedom** per 60 secondi con particelle dorate del Totem dell'Immortalità.
+  - **Purificazione Passiva**: Mentre è trasportato nell'inventario, dissipa continuamente i rallentamenti fisici ogni 3 secondi.
+
 ---
 
 ## 3. Oggetti Liturgici e Rituali
 
+- **Stella di David Cerimoniale (`star_of_david`)**:
+  - Talismano sacro forgiato tramite un ricettario endgame con Stella del Nether, Netherite, blocchi di diamante e Rotoli del Mar Morto.
+  - Usata come catalizzatore rituale per **evocare la Boss Fight di Bibi**.
 - **Mezuzah (`mezuzah`)**: Può essere appesa allo stipite destro della porta d'ingresso delle case per proteggere la dimora.
 - **Menorah (`menorah`)**: Candelabro a sette bracci posizionabile, emette luce calda e può essere acceso con candele rituali.
 - **Shofar (`shofar`)**: Corno d'ariete suonabile che emette un suono profondo in grado di allontanare entità ostili e richiamare i compagni.
+- **Dreidel (`dreidel`)**: Trottola tradizionale di Hanukkah con le quattro lettere ebraiche (Nun, Gimel, Hei, Shin) per giochi festivi.
 - **Frammento dei Rotoli del Mar Morto (`dead_sea_scroll_fragment`)**: Pergamena antichissima ricercata dagli storici.
+
 

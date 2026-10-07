@@ -4,7 +4,17 @@ In conformità con **GAME_DESIGN.md §41–44** e le regole etiche di **AGENTS.m
 
 ---
 
-## 1. Fase 1: Il Leader Storico (`bibi_boss`)
+## 1. Come Evocare il Boss (Stella di David)
+
+Il premier satirico Bibi non spawna casualmente nel mondo, ma deve essere invocato tramite un rituale volontario:
+- **Oggetto Richiesto**: **Stella di David Cerimoniale (`israel_simulator:star_of_david`)**.
+- **Procedura**: Cliccare con il tasto destro impugnando la Stella di David. Se non ci sono altri boss già attivi nell'area, il boss Bibi verrà generato accompagnato da tuoni, particelle oscure e un annuncio in chat per tutti i giocatori nel raggio di 96 blocchi.
+- **Protezione Anti-Exploit**: È vietato lo spawn multiplo simultaneo all'interno della stessa arena.
+
+---
+
+## 2. Fase 1: Il Leader Storico (`bibi_boss`)
+
 
 - **Salute Massima**: 10.000 HP (configurabile) con Boss Bar blu a 10 tacche.
 - **Resistenza Anti-Cheese**: Tetto massimo di 500 danni per colpo singolo (`MAX_SINGLE_HIT_DAMAGE`) per prevenire one-shot exploit.
@@ -16,7 +26,7 @@ In conformità con **GAME_DESIGN.md §41–44** e le regole etiche di **AGENTS.m
 
 ---
 
-## 2. Fase 2: Miniboss Donald Trump e Scudo Diplomatico (50% HP)
+## 3. Fase 2: Miniboss Donald Trump e Scudo Diplomatico (50% HP)
 
 Quando la salute di Bibi scende al **50% HP** (`ENRAGE_HEALTH_FRACTION = 0.50F`):
 - Bibi entra in modalità **INFURIATO** (Boss bar rossa a 10 tacche).
@@ -32,7 +42,18 @@ Quando la salute di Bibi scende al **50% HP** (`ENRAGE_HEALTH_FRACTION = 0.50F`)
 
 ---
 
-## 3. Ricompense e Drop della Boss Fight
+## 4. Arsenale Balistico del Giocatore
+
+Nel combattimento contro le forze nemiche, i giocatori possono fabbricare e impiegare armi da fuoco e da lancio dedicate:
+- **Pistola di Sicurezza (`israel_simulator:pistol`)**:
+  - Arma da fuoco di precisione a raggio immediato (raycast balistico su 32 blocchi).
+  - Infligge **9.0 cuori di danno** al bersaglio colpito. Durabilità: 250 colpi. Incantabile con *Unbreaking* e *Mending*.
+- **Missile Tattico Tascabile (`israel_simulator:missile`)**:
+  - Lanciabile direttamente dall'inventario per innescare un proiettile a razzo a impatto esplosivo.
+
+---
+
+## 5. Ricompense e Drop della Boss Fight
 
 Sconfiggere il Boss Bibi sul server garantisce ricompense leggendarie e prestigiose:
 - **Disco Musicale Hava Nagila (`hava_nagila_disc`)**: Ricompensa LEGGENDARIA garantita al 100%, riproducibile nel Jukebox.
@@ -40,4 +61,5 @@ Sconfiggere il Boss Bibi sul server garantisce ricompense leggendarie e prestigi
 - **6x Ancient Coins (`ancient_coin`)**: Monete antiche rare per il collezionismo e il commercio specializzato.
 - **5x Diamanti**: Risorse per equipaggiamento endgame.
 - **Avanzamento "Hava Nagila"**: Sbloccato per tutti i partecipanti che hanno contribuito a infliggere danni nella battaglia.
+
 

@@ -21,3 +21,20 @@ La **Bicicletta** (`israel_simulator:bicycle`) è il mezzo di trasporto ecologic
 3. **Velocità e Guida**: Movimento fluido e reattivo (velocità base 0.42), ideale per percorrere le piste ciclabili cittadine e i viali alberati.
 4. **Recupero del veicolo**: Colpendo la bicicletta, essa viene distrutta e rilascia nuovamente l'item `Bicycle` nel tuo inventario.
 
+---
+
+## 2. Carta Elettronica Rav-Kav (`rav_kav`)
+
+La **Carta Rav-Kav** (`israel_simulator:rav_kav`) è la tessera di viaggio multi-operatore per i trasporti pubblici:
+- **Utilizzo**: Cliccando con il tasto destro con la carta in mano, viene mostrato il resoconto dello stato dell'abbonamento ("Rav-Kav Transit Card active — Unlimited nationwide travel pass").
+- **Funzione di Gioco**: Permette l'accesso senza costi di Shekel alle fermate dei bus e ai vagoni delle linee di transito rapido tra Tel Aviv, Gerusalemme e i principali hub del paese.
+
+---
+
+## 3. Scarpe da Camminata (`walking_shoes`)
+
+Le **Scarpe da Camminata** (`israel_simulator:walking_shoes`) sono calzature da trekking resistenti progettate per le lunghe traversate a piedi:
+- **Effetto Passivo**: Quando equipaggiate negli slot attivi o tenute a portata di mano, conferiscono un incremento continuo della velocità di movimento (`Speed I`).
+- **Scopo**: Perfette per esplorare le vaste alture della Giudea, il Sentiero del Serpente verso Masada o gli altipiani del Golan senza affaticarsi.
+
+

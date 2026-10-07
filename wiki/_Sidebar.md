@@ -1,20 +1,21 @@
-### [Israel-Simulator Wiki](Home.md)
+### [Israel-Simulator Wiki](Home)
+ 
+ **Mondo & Esplorazione**
+ * [Biomi e World Gen](Biomes-and-World-Generation)
+ * [Strutture e Città](Structures-and-Cities)
+ * [Mar Morto & Pericoli](Dead-Sea-and-Hazards)
+ * [Trasporti & Mobilità](Transportation)
+ 
+ **Cultura & Fede**
+ * [Judaica & Oggetti Sacri](Judaica-and-Sacred-Items)
+ * [Muro Occidentale (Kotel)](Western-Wall-and-Prayers)
+ * [Festività & Shabbat](Holidays-and-Traditions)
+ 
+ **Economia & Gameplay**
+ * [Economia & Commercio](Economy-and-Trading)
+ * [Cibo & Kasherut](Food-and-Kasherut)
+ * [Boss Fights](Boss-Fights)
+ * [Esplorazione & Quest](Exploration-and-Quests)
+ * [Comandi & Config](Commands-and-Configuration)
 
-**Mondo & Esplorazione**
-* [Biomi e World Gen](Biomes-and-World-Generation.md)
-* [Strutture e Città](Structures-and-Cities.md)
-* [Mar Morto & Pericoli](Dead-Sea-and-Hazards.md)
-* [Trasporti & Mobilità](Transportation.md)
-
-**Cultura & Fede**
-* [Judaica & Oggetti Sacri](Judaica-and-Sacred-Items.md)
-* [Muro Occidentale (Kotel)](Western-Wall-and-Prayers.md)
-* [Festività & Shabbat](Holidays-and-Traditions.md)
-
-**Economia & Gameplay**
-* [Economia & Commercio](Economy-and-Trading.md)
-* [Cibo & Kasherut](Food-and-Kasherut.md)
-* [Boss Fights](Boss-Fights.md)
-* [Esplorazione & Quest](Exploration-and-Quests.md)
-* [Comandi & Config](Commands-and-Configuration.md)
 
