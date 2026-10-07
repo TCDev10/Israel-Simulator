@@ -37,9 +37,26 @@ public class IsraelSimulatorClient {
     }
 
     @SubscribeEvent
+    static void onRegisterLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(com.israelsimulator.client.renderer.BicycleModel.LAYER_LOCATION, com.israelsimulator.client.renderer.BicycleModel::createBodyLayer);
+    }
+
+    @SubscribeEvent
     static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ModEntities.BIBI_BOSS.get(), BibiBossRenderer::new);
         event.registerEntityRenderer(ModEntities.BIBI_GUARD.get(), BibiGuardRenderer::new);
         event.registerEntityRenderer(ModEntities.BICYCLE.get(), com.israelsimulator.client.renderer.BicycleRenderer::new);
+        event.registerEntityRenderer(ModEntities.BIBI_MISSILE.get(), net.minecraft.client.renderer.entity.ThrownItemRenderer::new);
+        event.registerEntityRenderer(ModEntities.TRUMP_MINIBOSS.get(), com.israelsimulator.client.renderer.TrumpMinibossRenderer::new);
+        event.registerEntityRenderer(ModEntities.ICE_AGENT.get(), com.israelsimulator.client.renderer.IceAgentRenderer::new);
+        event.registerEntityRenderer(ModEntities.JEFFREY_EPSTEIN.get(), com.israelsimulator.client.renderer.JeffreyEpsteinRenderer::new);
+        event.registerEntityRenderer(ModEntities.CHILD_ZOMBIE_MINION.get(), com.israelsimulator.client.renderer.ChildZombieMinionRenderer::new);
+    }
+
+    @SubscribeEvent
+    static void onRegisterParticleProviders(net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent event) {
+        event.registerSpriteSet(com.israelsimulator.registry.ModParticles.DOLLAR_BILL.get(),
+                com.israelsimulator.client.particle.DollarBillParticle.Provider::new);
     }
 }
+

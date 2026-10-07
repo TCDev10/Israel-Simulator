@@ -77,7 +77,7 @@ public final class CulturalItems {
                 .setEquipSound(SoundEvents.ARMOR_EQUIP_NETHERITE)
                 .setAsset(RABBIS_CROWN_ASSET)
                 .setSwappable(true)
-                .setDamageOnHurt(false)
+                .setDamageOnHurt(true)
                 .build();
 
         ItemAttributeModifiers modifiers = ItemAttributeModifiers.builder()
@@ -93,6 +93,7 @@ public final class CulturalItems {
                 .build();
 
         return p.stacksTo(1)
+                .durability(500)
                 .rarity(RarityLevel.MYTHIC.vanilla())
                 .fireResistant()
                 .component(DataComponents.EQUIPPABLE, equippable)

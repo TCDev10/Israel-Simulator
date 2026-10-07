@@ -29,6 +29,26 @@ public final class ModEntities {
             ENTITY_TYPES.registerEntityType("bicycle", com.israelsimulator.transport.BicycleEntity::new, MobCategory.MISC,
                     b -> b.sized(0.8F, 1.0F).clientTrackingRange(8));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<com.israelsimulator.entity.boss.BibiMissileEntity>> BIBI_MISSILE =
+            ENTITY_TYPES.registerEntityType("bibi_missile", com.israelsimulator.entity.boss.BibiMissileEntity::new, MobCategory.MISC,
+                    b -> b.sized(0.5F, 0.5F).clientTrackingRange(8).updateInterval(2));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<com.israelsimulator.entity.boss.TrumpMinibossEntity>> TRUMP_MINIBOSS =
+            ENTITY_TYPES.registerEntityType("trump_miniboss", com.israelsimulator.entity.boss.TrumpMinibossEntity::new, MobCategory.MONSTER,
+                    b -> b.sized(0.9F, 2.1F).clientTrackingRange(10));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<com.israelsimulator.entity.boss.IceAgentEntity>> ICE_AGENT =
+            ENTITY_TYPES.registerEntityType("ice_agent", com.israelsimulator.entity.boss.IceAgentEntity::new, MobCategory.MONSTER,
+                    b -> b.sized(0.6F, 1.95F).clientTrackingRange(8));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<com.israelsimulator.entity.boss.JeffreyEpsteinEntity>> JEFFREY_EPSTEIN =
+            ENTITY_TYPES.registerEntityType("jeffrey_epstein", com.israelsimulator.entity.boss.JeffreyEpsteinEntity::new, MobCategory.MONSTER,
+                    b -> b.sized(0.9F, 2.0F).clientTrackingRange(10));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<com.israelsimulator.entity.boss.ChildZombieMinionEntity>> CHILD_ZOMBIE_MINION =
+            ENTITY_TYPES.registerEntityType("child_zombie_minion", com.israelsimulator.entity.boss.ChildZombieMinionEntity::new, MobCategory.MONSTER,
+                    b -> b.sized(0.35F, 0.95F).clientTrackingRange(8));
+
     private ModEntities() {}
 
     public static void register(IEventBus modEventBus) {
@@ -40,5 +60,9 @@ public final class ModEntities {
         event.put(BIBI_BOSS.get(), BibiBossEntity.createAttributes().build());
         event.put(BIBI_GUARD.get(), BibiGuardEntity.createAttributes().build());
         event.put(BICYCLE.get(), com.israelsimulator.transport.BicycleEntity.createAttributes().build());
+        event.put(TRUMP_MINIBOSS.get(), com.israelsimulator.entity.boss.TrumpMinibossEntity.createAttributes().build());
+        event.put(ICE_AGENT.get(), com.israelsimulator.entity.boss.IceAgentEntity.createAttributes().build());
+        event.put(JEFFREY_EPSTEIN.get(), com.israelsimulator.entity.boss.JeffreyEpsteinEntity.createAttributes().build());
+        event.put(CHILD_ZOMBIE_MINION.get(), com.israelsimulator.entity.boss.ChildZombieMinionEntity.createAttributes().build());
     }
 }

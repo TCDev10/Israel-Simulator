@@ -76,6 +76,10 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.LAPTOP.get());
                         output.accept(ModItems.DRONE_PART.get());
 
+                        // Combat (§41–44)
+                        output.accept(ModItems.PISTOL.get());
+                        output.accept(ModItems.MISSILE.get());
+
                         // Transportation & Exploration (§47-48)
                         output.accept(ModBlocks.PAVED_ROAD_ITEM.get());
                         output.accept(ModBlocks.TRANSPORT_STOP_ITEM.get());

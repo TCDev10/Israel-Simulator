@@ -49,11 +49,12 @@ public class MultiplayerAndRegressionTest {
 
     @Test
     public void testBossCombatStateMachineRegression() {
-        assertEquals(5, BibiBossState.values().length, "BibiBossState must contain IDLE, ALERT, COMBAT, ENRAGED, DEFEATED");
+        assertEquals(6, BibiBossState.values().length, "BibiBossState must contain IDLE, ALERT, COMBAT, ENRAGED, DESPERATE, DEFEATED");
         assertNotNull(BibiBossState.IDLE);
         assertNotNull(BibiBossState.ALERT);
         assertNotNull(BibiBossState.COMBAT);
         assertNotNull(BibiBossState.ENRAGED);
+        assertNotNull(BibiBossState.DESPERATE);
         assertNotNull(BibiBossState.DEFEATED);
     }
 

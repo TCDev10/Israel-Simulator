@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "N S N",
+    "D * D",
+    "C S C"
+  ],
+  "key": {
+    "*": "minecraft:nether_star",
+    "N": "minecraft:netherite_ingot",
+    "D": "minecraft:diamond_block",
+    "S": "israel_simulator:dead_sea_scroll_fragment",
+    "C": "israel_simulator:ancient_coin"
+  },
+  "result": {
+    "count": 1,
+    "id": "israel_simulator:star_of_david"
+  }
+}
+
