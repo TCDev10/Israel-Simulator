@@ -1,0 +1,14 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": [
+    "israel_simulator:urban_area",
+    "israel_simulator:jerusalem",
+    "israel_simulator:mediterranean_coast"
+  ],
+  "spawners": {
+    "type": "israel_simulator:money_changer",
+    "weight": 8,
+    "minCount": 1,
+    "maxCount": 1
+  }
+}

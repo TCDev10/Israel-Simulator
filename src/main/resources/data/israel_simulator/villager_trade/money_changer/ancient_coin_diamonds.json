@@ -1,0 +1,11 @@
+{
+  "wants": {
+    "id": "israel_simulator:ancient_coin"
+  },
+  "gives": {
+    "count": 3,
+    "id": "minecraft:diamond"
+  },
+  "max_uses": 2,
+  "xp": 12
+}

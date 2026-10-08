@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "israel_simulator:item/money_changer_spawn_egg"
+  }
+}

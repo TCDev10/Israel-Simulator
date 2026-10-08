@@ -55,28 +55,8 @@ public final class ModGameEvents {
             }
         }
 
-        if (event.getTarget() instanceof net.minecraft.world.entity.npc.villager.AbstractVillager villager) {
-            net.minecraft.world.entity.player.Player player = event.getEntity();
-            net.minecraft.world.InteractionHand hand = event.getHand();
-
-            if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer && villager instanceof net.minecraft.world.entity.npc.villager.Villager regularVillager) {
-                com.israelsimulator.easteregg.EasterEggManager.triggerVillagerEasterEgg(serverPlayer, regularVillager);
-            }
-
-            // Regional trades already return false outside their biome.
-            // An unregistered villager must fall through so the vanilla GUI opens.
-            boolean regionalTradeHandled = com.israelsimulator.agriculture.AgriculturalTrades.tryTrade(player, hand, villager)
-                    || com.israelsimulator.deadsea.DeadSeaTrades.tryTrade(player, hand, villager)
-                    || com.israelsimulator.desert.DesertTrades.tryTrade(player, hand, villager)
-                    || com.israelsimulator.city.telaviv.TelAvivTrades.tryTrade(player, hand, villager)
-                    || com.israelsimulator.city.jaffa.JaffaTrades.tryTrade(player, hand, villager)
-                    || com.israelsimulator.city.jerusalem.JerusalemTrades.tryTrade(player, hand, villager)
-                    || com.israelsimulator.religion.RuralSynagogueTrades.tryInteract(player, hand, villager);
-            boolean registeredModNpcHandled = com.israelsimulator.npc.IsraelNpcManager.handleNpcInteraction(player, hand, villager);
-            if (VillagerInteractGate.shouldCancelVanillaGui(regionalTradeHandled, registeredModNpcHandled)) {
-                event.setCanceled(true);
-            }
-        }
+        // Villagers are never intercepted: the vanilla trading GUI must always open.
+        // Currency exchange lives on the Money Changer entity instead.
     }
 
     @SubscribeEvent

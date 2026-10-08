@@ -3,10 +3,15 @@ package com.israelsimulator.registry;
 import com.israelsimulator.IsraelSimulator;
 import com.israelsimulator.entity.boss.BibiBossEntity;
 import com.israelsimulator.entity.boss.BibiGuardEntity;
+import com.israelsimulator.entity.npc.MoneyChangerEntity;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.SpawnPlacementTypes;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -49,11 +54,16 @@ public final class ModEntities {
             ENTITY_TYPES.registerEntityType("child_zombie_minion", com.israelsimulator.entity.boss.ChildZombieMinionEntity::new, MobCategory.MONSTER,
                     b -> b.sized(0.35F, 0.95F).clientTrackingRange(8));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<MoneyChangerEntity>> MONEY_CHANGER =
+            ENTITY_TYPES.registerEntityType(MoneyChangerEntity.TRADE_SET_ID, MoneyChangerEntity::new, MobCategory.CREATURE,
+                    b -> b.sized(0.6F, 1.95F).clientTrackingRange(10));
+
     private ModEntities() {}
 
     public static void register(IEventBus modEventBus) {
         ENTITY_TYPES.register(modEventBus);
         modEventBus.addListener(EntityAttributeCreationEvent.class, ModEntities::onEntityAttributeCreation);
+        modEventBus.addListener(RegisterSpawnPlacementsEvent.class, ModEntities::onRegisterSpawnPlacements);
     }
 
     private static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
@@ -64,5 +74,19 @@ public final class ModEntities {
         event.put(ICE_AGENT.get(), com.israelsimulator.entity.boss.IceAgentEntity.createAttributes().build());
         event.put(JEFFREY_EPSTEIN.get(), com.israelsimulator.entity.boss.JeffreyEpsteinEntity.createAttributes().build());
         event.put(CHILD_ZOMBIE_MINION.get(), com.israelsimulator.entity.boss.ChildZombieMinionEntity.createAttributes().build());
+        event.put(MONEY_CHANGER.get(), MoneyChangerEntity.createAttributes().build());
+    }
+
+    /**
+     * Money Changers spawn naturally in the city biomes added by the
+     * {@code israel_simulator:add_money_changer_spawns} biome modifier; the egg and
+     * commands work without this placement, but natural spawns need it.
+     */
+    private static void onRegisterSpawnPlacements(RegisterSpawnPlacementsEvent event) {
+        event.register(MONEY_CHANGER.get(), SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                (type, level, spawnReason, pos, random) ->
+                        level.getBlockState(pos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON),
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 }

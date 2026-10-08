@@ -250,6 +250,8 @@
   "entity.israel_simulator.ice_agent": "Agente Federale ICE",
   "entity.israel_simulator.jeffrey_epstein": "Jeffrey Epstein - Il Finanziere Ombra",
   "entity.israel_simulator.child_zombie_minion": "Piccolo Zombie Schiavo",
+  "entity.israel_simulator.money_changer": "Cambista",
+  "item.israel_simulator.money_changer_spawn_egg": "Uovo Generatore di Cambista",
   "item.israel_simulator.pistol": "Pistola di Sicurezza",
   "item.israel_simulator.pistol.desc": "Arma da fianco in dotazione alle guardie di sicurezza diplomatica.",
   "item.israel_simulator.missile": "Missile Tattico",

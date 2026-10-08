@@ -1,0 +1,11 @@
+{
+  "wants": {
+    "count": 2,
+    "id": "israel_simulator:ancient_coin"
+  },
+  "gives": {
+    "id": "minecraft:enchanted_golden_apple"
+  },
+  "max_uses": 1,
+  "xp": 20
+}

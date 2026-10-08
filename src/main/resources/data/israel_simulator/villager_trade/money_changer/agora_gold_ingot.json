@@ -1,0 +1,11 @@
+{
+  "wants": {
+    "count": 64,
+    "id": "israel_simulator:agora"
+  },
+  "gives": {
+    "id": "minecraft:gold_ingot"
+  },
+  "max_uses": 16,
+  "xp": 2
+}

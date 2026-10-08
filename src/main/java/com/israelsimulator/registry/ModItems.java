@@ -15,6 +15,7 @@ import com.israelsimulator.item.cultural.FirstAmendmentItem;
 import com.israelsimulator.item.cultural.HavaNagilaDiscItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SpawnEggItem;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -85,6 +86,11 @@ public final class ModItems {
     // Combat items (§41–44)
     public static final DeferredHolder<Item, com.israelsimulator.item.combat.SecurityPistolItem> PISTOL = ITEMS.registerItem("pistol", p -> new com.israelsimulator.item.combat.SecurityPistolItem(p.stacksTo(1)));
     public static final DeferredHolder<Item, com.israelsimulator.item.combat.MissileItem> MISSILE = ITEMS.registerItem("missile", p -> new com.israelsimulator.item.combat.MissileItem(p.stacksTo(16)));
+
+    // Spawn eggs (§26, §29): debug/testing access to the Money Changer trader entity.
+    public static final DeferredHolder<Item, SpawnEggItem> MONEY_CHANGER_SPAWN_EGG =
+            ITEMS.registerItem("money_changer_spawn_egg",
+                    p -> new SpawnEggItem(p.spawnEgg(ModEntities.MONEY_CHANGER.get())));
 
     private ModItems() {}
 

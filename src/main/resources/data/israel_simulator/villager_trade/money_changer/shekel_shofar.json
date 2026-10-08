@@ -1,0 +1,11 @@
+{
+  "wants": {
+    "count": 18,
+    "id": "israel_simulator:shekel"
+  },
+  "gives": {
+    "id": "israel_simulator:shofar"
+  },
+  "max_uses": 4,
+  "xp": 6
+}

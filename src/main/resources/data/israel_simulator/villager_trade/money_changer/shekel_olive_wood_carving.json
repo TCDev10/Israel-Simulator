@@ -1,0 +1,11 @@
+{
+  "wants": {
+    "count": 10,
+    "id": "israel_simulator:shekel"
+  },
+  "gives": {
+    "id": "israel_simulator:olive_wood_carving"
+  },
+  "max_uses": 8,
+  "xp": 5
+}
