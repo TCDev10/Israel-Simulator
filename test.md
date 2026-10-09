@@ -404,3 +404,11 @@ Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure
 ## Biomi israeliani accanto a deserto/savana/badlands
 - I biomi israeliani non sostituiscono più deserto, savana e badlands: condividono la zona calda (metà per uno), come chiazze vicine.
 - Nuovo mondo: `/locate biome` dei 6 biomi israeliani e di `minecraft:desert`, `minecraft:savanna`, `minecraft:badlands` deve rispondere in pochi secondi. Controllare in volo che i biomi vanilla e israeliani si alternino in modo sensato.
+
+## Olivo, palma da datteri, agrumi ed erbe mediterranee: raccolto e texture
+- Prima: click destro infinito su olive/datteri/agrumi = cibo infinito; foglie di palma ed erbe grigie (texture vanilla `jungle_leaves`/`fern` senza tinta), olivo e agrumi con texture vanilla dell'azalea.
+- Ora foglie e erbe hanno `age` 0-3 (foglie → fiori → frutto acerbo → maturo) con texture 16x16 proprie a colori fissi (`scripts/textures/gen_crop_textures.py`), più nuove texture degli oggetti datteri, olive, agrumi ed erbe.
+- Test in gioco: click destro su foglie mature → 1-2 frutti, poi tornano a `age=1` (fiori) e un secondo click non dà niente. Su foglie/erbe non mature il click destro non fa niente. Farina d'ossa su foglie o erbe non mature → avanzano di uno stadio. Lasciate stare ricrescono da sole (tick casuali, qualche minuto per stadio).
+- Rompere le foglie senza cesoie dà il frutto solo se mature; con le cesoie dà il blocco. Le erbe rotte danno sé stesse (non più semi di grano); mature si raccolgono col click destro.
+- Nuovo mondo: gli alberi generati e le erbe hanno stadi misti, quindi alcuni frutti sono subito raccoglibili.
+- Test: `CropHarvestTest`. Non testato in gioco dal client.

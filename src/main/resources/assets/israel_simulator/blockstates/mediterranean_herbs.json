@@ -1,8 +1,16 @@
 {
   "variants": {
-    "": {
-      "model": "israel_simulator:block/mediterranean_herbs"
+    "age=0": {
+      "model": "israel_simulator:block/mediterranean_herbs_stage0"
+    },
+    "age=1": {
+      "model": "israel_simulator:block/mediterranean_herbs_stage1"
+    },
+    "age=2": {
+      "model": "israel_simulator:block/mediterranean_herbs_stage2"
+    },
+    "age=3": {
+      "model": "israel_simulator:block/mediterranean_herbs_stage3"
     }
   }
 }
-

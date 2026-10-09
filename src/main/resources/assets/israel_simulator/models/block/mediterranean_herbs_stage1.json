@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "israel_simulator:block/mediterranean_herbs_stage1"
+  }
+}

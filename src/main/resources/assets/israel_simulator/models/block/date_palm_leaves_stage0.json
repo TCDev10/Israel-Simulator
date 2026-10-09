@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "israel_simulator:block/date_palm_leaves_stage0"
+  }
+}

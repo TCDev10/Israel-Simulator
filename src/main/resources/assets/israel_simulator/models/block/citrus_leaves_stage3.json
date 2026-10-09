@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "israel_simulator:block/citrus_leaves_stage3"
+  }
+}
