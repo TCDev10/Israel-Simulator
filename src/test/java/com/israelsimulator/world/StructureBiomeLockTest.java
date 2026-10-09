@@ -38,13 +38,14 @@ class StructureBiomeLockTest {
         EXPECTED.put("desert_ruins", "israel_simulator:judean_desert");
         EXPECTED.put("ein_gedi_oasis", "israel_simulator:judean_desert");
         EXPECTED.put("ancient_sanctuary", "israel_simulator:judean_desert");
+        EXPECTED.put("island_temple", "israel_simulator:mediterranean_coast");
     }
 
     @Test
-    @DisplayName("Each of the 16 structures is locked to exactly one Israeli biome")
+    @DisplayName("Each of the 17 structures is locked to exactly one Israeli biome")
     void eachStructureSingleIsraeliBiome() throws Exception {
         Gson gson = new Gson();
-        assertEquals(16, EXPECTED.size());
+        assertEquals(17, EXPECTED.size());
         for (Map.Entry<String, String> e : EXPECTED.entrySet()) {
             String path = "/data/israel_simulator/worldgen/structure/" + e.getKey() + ".json";
             InputStream in = getClass().getResourceAsStream(path);
