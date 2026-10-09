@@ -51,6 +51,8 @@ import net.minecraft.world.phys.AABB;
 /**
  * Satirical Phase 3 Miniboss summoned by Bibi Boss at 33% HP (GAME_DESIGN.md §41–44).
  * Summons waves of easy-to-defeat child-skinned baby zombies ("Private Island Call").
+ * At 50% HP the glass dome + pavilion arena appears once; at 33% HP the boss is renamed
+ * "Palm Beach Pete" once (custom name and boss bar, persisted across save/load).
  */
 public class JeffreyEpsteinEntity extends Monster {
 
@@ -61,6 +63,7 @@ public class JeffreyEpsteinEntity extends Monster {
     private int summonMinionsCooldown = 180;
     private int speechCooldown = 200;
     private boolean domeSpawned = false;
+    private boolean renamed = false;
 
     public JeffreyEpsteinEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
@@ -163,10 +166,13 @@ public class JeffreyEpsteinEntity extends Monster {
             float progress = Math.max(0.0F, Math.min(1.0F, this.getHealth() / this.getMaxHealth()));
             this.bossEvent.setProgress(progress);
 
-            // Spawn dome at 30% health
-            if (!this.domeSpawned && progress <= 0.3F) {
-                spawnEpsteinIslandDome(serverLevel);
+            // One-shot phase triggers: arena at 50% HP, rename at 33% HP.
+            if (EpsteinPhaseRules.shouldSpawnDome(this.domeSpawned, progress)) {
                 this.domeSpawned = true;
+                spawnEpsteinIslandDome(serverLevel);
+            }
+            if (EpsteinPhaseRules.shouldRename(this.renamed, progress)) {
+                applyRename();
             }
 
             if (summonMinionsCooldown > 0) summonMinionsCooldown--;
@@ -198,6 +204,25 @@ public class JeffreyEpsteinEntity extends Monster {
                 speechCooldown = 320;
             }
         }
+    }
+
+    public boolean isRenamed() {
+        return this.renamed;
+    }
+
+    public boolean isDomeSpawned() {
+        return this.domeSpawned;
+    }
+
+    private static net.minecraft.network.chat.MutableComponent renamedName() {
+        return Component.translatable(EpsteinPhaseRules.RENAMED_NAME_KEY);
+    }
+
+    /** Switches the custom name and the boss bar to "Palm Beach Pete". */
+    private void applyRename() {
+        this.renamed = true;
+        this.setCustomName(renamedName());
+        this.bossEvent.setName(renamedName().withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.BOLD));
     }
 
     private void summonChildZombies(ServerLevel serverLevel) {
@@ -350,6 +375,8 @@ public class JeffreyEpsteinEntity extends Monster {
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
         output.putInt("SummonMinionsCooldown", this.summonMinionsCooldown);
+        output.putBoolean("DomeSpawned", this.domeSpawned);
+        output.putBoolean("Renamed", this.renamed);
         if (this.bibiBossUuid != null) {
             output.putString("BibiBossUUID", this.bibiBossUuid.toString());
         }
@@ -359,6 +386,11 @@ public class JeffreyEpsteinEntity extends Monster {
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         this.summonMinionsCooldown = input.getIntOr("SummonMinionsCooldown", 180);
+        this.domeSpawned = input.getBooleanOr("DomeSpawned", false);
+        if (input.getBooleanOr("Renamed", false)) {
+            // Custom name is restored by vanilla; the boss bar needs it again.
+            applyRename();
+        }
         String uuidStr = input.getStringOr("BibiBossUUID", "");
         if (!uuidStr.isEmpty()) {
             try {

@@ -349,5 +349,12 @@
   "district.israel_simulator.tayelet_beach": "Tayelet e Lungomare",
   "district.israel_simulator.tayelet_beach.desc": "Lungomare Costiero Mediterraneo",
   "message.israel_simulator.dreidel_lose": "Shin! I tuoi %d Shekel finiscono nel montepremi.",
-  "message.israel_simulator.dreidel_need_shekels": "Ti servono %d Shekel per girare il Dreidel."
+  "message.israel_simulator.dreidel_need_shekels": "Ti servono %d Shekel per girare il Dreidel.",
+  "entity.israel_simulator.palm_beach_pete": "Palm Beach Pete",
+  "message.israel_simulator.bibi_shielded_by_epstein": "Bibi è protetto da Epstein! Sconfiggilo prima.",
+  "category.israel_simulator.food": "Cibo",
+  "category.israel_simulator.agriculture": "Agricoltura",
+  "category.israel_simulator.judaica_cultural": "Judaica e cultura",
+  "category.israel_simulator.technology": "Tecnologia",
+  "category.israel_simulator.commodities_minerals": "Materie prime e minerali"
 }
