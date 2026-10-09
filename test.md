@@ -393,3 +393,6 @@ Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure
 - Rimossi i landmark finti con coordinate fisse (Knesset, Masada, giardini Baha'i, sinagoga della Galilea, formazioni di sale, Shuk HaCarmel). Restano Muro Occidentale (`western_wall`), Torre dell'Orologio e Mercato delle Pulci (pezzi `jaffa/clock_square`, `jaffa/flea_market` di `jaffa_port`) e Tayelet (pezzo `tel_aviv/tayelet` di `tel_aviv_city`).
 - Test in gioco: entrare in una di queste strutture/pezzi deve dare il messaggio "landmark scoperto" (+100 XP); usare la Mappa d'Israele per vedere il conteggio (x / 4).
 - Wiki/README: tolti biomi e strutture inesistenti (golan_heights, Monte Hermon, Masada, tende beduine, grotte di Qumran, tunnel della Città di David), corretti gli id dei biomi e la tabella delle strutture.
+
+## Controllo finale: ricetta Stella di David
+- La ricetta `star_of_david` non veniva caricata (pattern di 5 colonne); ora è 3x3: N S N / D * D / C S C (N lingotto di netherite, S frammento di rotolo, D blocco di diamante, * stella del Nether, C moneta antica). Verificare che sia craftabile nel banco da lavoro.
