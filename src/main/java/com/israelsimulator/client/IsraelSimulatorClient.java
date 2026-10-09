@@ -57,6 +57,9 @@ public class IsraelSimulatorClient {
         event.registerEntityRenderer(ModEntities.ORATOR.get(), com.israelsimulator.client.renderer.OratorRenderer::new);
         event.registerEntityRenderer(ModEntities.PALANTRIO_DRONE.get(), com.israelsimulator.client.renderer.PalantrioDroneRenderer::new);
         event.registerEntityRenderer(ModEntities.BIBI_POISON_BREATH.get(), net.minecraft.client.renderer.entity.DragonFireballRenderer::new);
+        event.registerEntityRenderer(ModEntities.MOSSAD_AGENT.get(), com.israelsimulator.client.renderer.MossadAgentRenderer::new);
+        event.registerEntityRenderer(ModEntities.MOSSAD_HANDLER.get(), ctx -> new com.israelsimulator.client.renderer.MossadNpcRenderer<>(ctx, "mossad_handler"));
+        event.registerEntityRenderer(ModEntities.MOSSAD_INFORMANT.get(), ctx -> new com.israelsimulator.client.renderer.MossadNpcRenderer<>(ctx, "mossad_informant"));
         event.registerEntityRenderer(ModEntities.FRAG_GRENADE.get(), net.minecraft.client.renderer.entity.ThrownItemRenderer::new);
     }
 
