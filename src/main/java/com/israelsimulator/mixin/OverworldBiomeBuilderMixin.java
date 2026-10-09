@@ -9,26 +9,23 @@ import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.OverworldBiomeBuilder;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 /**
- * Injects Israel-Simulator biomes into the Overworld multi-noise generator as a
- * hot/dry West→East strip (coast → urban → agriculture → jerusalem → judean /
- * dead_sea weirdness pocket). Surface depth 0.0 only.
+ * Puts the Israel-Simulator biomes into the Overworld multi-noise generator by wrapping the
+ * biome consumer: the dry half of vanilla's hot climate (desert/savanna/badlands entries) is
+ * re-assigned to the Israeli West→East strip (see {@link IsraelBiomeClimateParams}).
  */
 @Mixin(OverworldBiomeBuilder.class)
 public class OverworldBiomeBuilderMixin {
 
-    @Inject(method = "addBiomes", at = @At("RETURN"))
-    private void injectIsraelBiomes(Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> biomes, CallbackInfo ci) {
-        // Skip injection during VanillaRegistries bootstrap validation, where only vanilla biomes exist
+    @ModifyVariable(method = "addBiomes", at = @At("HEAD"), argsOnly = true)
+    private Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> israelSimulator$takeOverHotDryClimate(
+            Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> biomes) {
+        // Skip during VanillaRegistries bootstrap validation, where only vanilla biomes exist
         boolean isVanillaBootstrap = StackWalker.getInstance().walk(frames ->
                 frames.anyMatch(f -> f.getClassName().contains("VanillaRegistries"))
         );
-        if (isVanillaBootstrap) {
-            return;
-        }
-        IsraelBiomeClimateParams.addAll(biomes);
+        return isVanillaBootstrap ? biomes : IsraelBiomeClimateParams.wrap(biomes);
     }
 }

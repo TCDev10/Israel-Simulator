@@ -396,3 +396,7 @@ Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure
 
 ## Controllo finale: ricetta Stella di David
 - La ricetta `star_of_david` non veniva caricata (pattern di 5 colonne); ora è 3x3: N S N / D * D / C S C (N lingotto di netherite, S frammento di rotolo, D blocco di diamante, * stella del Nether, C moneta antica). Verificare che sia craftabile nel banco da lavoro.
+
+## Biomi israeliani molto più comuni
+- I 6 biomi ora prendono il posto di deserto/savana/badlands secchi (prima perdevano sempre contro i biomi vanilla ed erano rarissimi).
+- Nuovo mondo: `/locate biome israel_simulator:jerusalem` (e gli altri 5) deve rispondere in pochi secondi, di solito entro ~2000 blocchi. Controllare che la sequenza costa → città/campi → Gerusalemme → deserto/Mar Morto sia sensata e che il deserto vanilla esista ancora.
