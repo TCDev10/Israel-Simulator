@@ -82,7 +82,7 @@ class StructureFrameworkTest {
                 Map.entry("historical_house", "minecraft:bricks"),
                 Map.entry("mediterranean_village", "minecraft:light_gray_terracotta"),
                 Map.entry("ein_gedi_oasis", "minecraft:moss_block"),
-                Map.entry("island_temple", "minecraft:blue_concrete")
+                Map.entry("tropical_island", "minecraft:blue_concrete")
         );
         Gson gson = new Gson();
         java.net.URL structuresDir = getClass().getClassLoader()

@@ -46,7 +46,55 @@ public final class IsraelBiomeClimateParams {
     public static final float WET_MIN = 0.1F;        // humidity index >= 3
     public static final float FARM_WET_MIN = -0.1F;  // mid inland: farmland from humidity index 2
 
+    /** Warm deep-ocean entries that host the rare {@code tropical_island} patch. */
+    public static final Set<ResourceKey<Biome>> ISLAND_HOSTS = Set.of(Biomes.WARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN);
+    // tropical_island: an isolated sub-box far offshore inside the deep-ocean continentalness band
+    public static final float ISLAND_C_MIN = -0.85F;
+    public static final float ISLAND_C_MAX = -0.65F;
+    public static final float ISLAND_W_MIN = -0.4F;
+    public static final float ISLAND_W_MAX = 1.0F;
+    public static final float ISLAND_E_MIN = -1.0F;
+    public static final float ISLAND_E_MAX = 1.0F;
+
     private IsraelBiomeClimateParams() {}
+
+    /**
+     * Cuts the tropical_island box out of a warm deep-ocean entry; the rest stays vanilla ocean.
+     * Returns null when the entry does not overlap the island band (e.g. shallow warm ocean).
+     */
+    static List<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> carveIsland(
+            Climate.ParameterPoint p, ResourceKey<Biome> biome) {
+        long c0 = Climate.quantizeCoord(ISLAND_C_MIN), c1 = Climate.quantizeCoord(ISLAND_C_MAX);
+        if (p.continentalness().min() > c0 || p.continentalness().max() < c1) {
+            return null;
+        }
+        List<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> out = new ArrayList<>();
+        Climate.Parameter islandC = new Climate.Parameter(c0, c1);
+        if (p.continentalness().min() < c0) {
+            out.add(Pair.of(with(p, new Climate.Parameter(p.continentalness().min(), c0), p.erosion(), p.weirdness()), biome));
+        }
+        if (c1 < p.continentalness().max()) {
+            out.add(Pair.of(with(p, new Climate.Parameter(c1, p.continentalness().max()), p.erosion(), p.weirdness()), biome));
+        }
+        List<Climate.Parameter> ws = split(p.weirdness(), ISLAND_W_MIN, ISLAND_W_MAX);
+        long w0 = Math.max(p.weirdness().min(), Climate.quantizeCoord(ISLAND_W_MIN));
+        long w1 = Math.min(p.weirdness().max(), Climate.quantizeCoord(ISLAND_W_MAX));
+        long e0 = Math.max(p.erosion().min(), Climate.quantizeCoord(ISLAND_E_MIN));
+        long e1 = Math.min(p.erosion().max(), Climate.quantizeCoord(ISLAND_E_MAX));
+        for (Climate.Parameter w : ws) {
+            boolean wIn = w.min() >= w0 && w.max() <= w1;
+            for (Climate.Parameter e : split(p.erosion(), ISLAND_E_MIN, ISLAND_E_MAX)) {
+                boolean eIn = e.min() >= e0 && e.max() <= e1;
+                out.add(Pair.of(with(p, islandC, e, w), wIn && eIn ? ModBiomes.TROPICAL_ISLAND : biome));
+            }
+        }
+        return out;
+    }
+
+    private static Climate.ParameterPoint with(Climate.ParameterPoint p, Climate.Parameter c, Climate.Parameter e,
+                                               Climate.Parameter w) {
+        return new Climate.ParameterPoint(p.temperature(), p.humidity(), c, e, p.depth(), w, p.offset());
+    }
 
     /** Wraps a biome consumer so the taken vanilla entries are replaced by Israeli ones. */
     public static Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> wrap(
@@ -68,6 +116,9 @@ public final class IsraelBiomeClimateParams {
      */
     public static List<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> remap(
             Climate.ParameterPoint p, ResourceKey<Biome> biome) {
+        if (ISLAND_HOSTS.contains(biome)) {
+            return carveIsland(p, biome);
+        }
         if (!TAKEN.contains(biome) || p.weirdness().max() - p.weirdness().min() < 2) {
             return null;
         }

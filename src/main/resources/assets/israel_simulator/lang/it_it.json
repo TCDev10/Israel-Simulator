@@ -169,6 +169,8 @@
   "biome.israel_simulator.judean_desert": "Deserto di Giudea",
   "biome.israel_simulator.dead_sea": "Mar Morto",
   "biome.israel_simulator.urban_area": "Distretto Urbano Mediterraneo",
+  "biome.israel_simulator.tropical_island": "Isola tropicale",
+  "structure.israel_simulator.tropical_island": "Isola tropicale",
   "biome.israel_simulator.jerusalem": "Gerusalemme",
   "block.israel_simulator.olive_leaves": "Foglie d'Ulivo",
   "block.israel_simulator.date_palm_leaves": "Foglie di Palma da Datteri",

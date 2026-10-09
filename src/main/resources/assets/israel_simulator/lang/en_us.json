@@ -171,6 +171,8 @@
   "biome.israel_simulator.judean_desert": "Judean Desert",
   "biome.israel_simulator.dead_sea": "Dead Sea",
   "biome.israel_simulator.urban_area": "Mediterranean Urban District",
+  "biome.israel_simulator.tropical_island": "Tropical Island",
+  "structure.israel_simulator.tropical_island": "Tropical Island",
   "biome.israel_simulator.jerusalem": "Jerusalem",
   "block.israel_simulator.olive_leaves": "Olive Leaves",
   "block.israel_simulator.date_palm_leaves": "Date Palm Leaves",

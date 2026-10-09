@@ -62,6 +62,12 @@ SURFACE_SPECS: dict[str, dict] = {
             (-0.2, 0.35, "minecraft:grass_block"),
         ],
     },
+    "tropical_island": {
+        # warm sandy sea floor around the island structure (the island itself is the structure)
+        "top": "minecraft:sand",
+        "under": "minecraft:sandstone",
+        "patches": [(0.5, 0.9, "minecraft:gravel")],
+    },
     "urban_area": {
         "top": "minecraft:grass_block",
         "under": "minecraft:dirt",

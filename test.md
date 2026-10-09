@@ -467,3 +467,10 @@ Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure
 - A fine evento (o con `stop`, o `/kill` dell'Oratore) palco, Oratore e pubblico spariscono e la piazza torna com'era. Se esci a metà evento, al rientro l'Oratore se ne va e la piazza viene ripristinata.
 - Skin dell'Oratore: `src/main/resources/assets/israel_simulator/textures/entity/orator.png` (skin 64x64 standard, segnaposto da sostituire).
 - Test: `PublicSpeechEventTest`. Provato con `runServer` da console (palco, Oratore, pubblico, fine evento e ripristino); non testato in gioco dal client.
+
+## Isola tropicale (bioma + struttura `tropical_island`)
+- Nuovo bioma raro `israel_simulator:tropical_island` ("Isola tropicale"): una macchia di oceano caldo profondo lontano dalla costa (continentalness -0.85..-0.65, weirdness > -0.4), acqua turchese, nessun mostro vanilla.
+- Al centro del bioma spawna la struttura `israel_simulator:tropical_island` (circa 240x170 blocchi, un unico NBT generato da `scripts/worldgen/gen_tropical_island.py`): l'isola intera con baia a nord e spiaggia, braccio lungo a sud-est, scogliere di pietra, collina centrale con la cisterna a cupola bianca, complesso principale con tetti azzurri, piscina grande e casette, due eliporti, campo da tennis, pontile con barca, gazebo in spiaggia, casette sparse, strade sterrate tortuose, palme e arbusti secchi. Il padiglione a strisce con la cupola d'oro (`island_temple`) è sulla punta sud-ovest; la struttura `island_temple` separata non esiste più, il template resta per l'arena di Epstein.
+- L'isola può essere ruotata (rotazione casuale della struttura).
+- Test in gioco: `/locate structure israel_simulator:tropical_island` (seed 20261005: ~3600 blocchi), teletrasportarsi e controllare che l'isola sia intera, niente blocchi sospesi, casse con loot.
+- Test: `TropicalIslandTest`, `IslandTempleStructureTest`. Non testato in gioco dal client.

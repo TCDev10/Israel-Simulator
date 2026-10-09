@@ -35,21 +35,11 @@ class IslandTempleStructureTest {
     private static final int FOOTING = 4, SPAWN_X = 13, SPAWN_Z = 3, PLAYER_Z = 1, DOME_R = 21, DOME_H = 27;
 
     @Test
-    @DisplayName("island_temple is a beard_thin single-piece jigsaw on the Mediterranean coast, 32/12 spread")
-    void structureJson() throws Exception {
-        JsonObject s = readJson("data/israel_simulator/worldgen/structure/island_temple.json");
-        assertEquals("minecraft:jigsaw", s.get("type").getAsString());
-        assertEquals("beard_thin", s.get("terrain_adaptation").getAsString());
-        assertEquals("israel_simulator:mediterranean_coast", s.getAsJsonArray("biomes").get(0).getAsString());
-        assertEquals(-FOOTING, s.getAsJsonObject("start_height").get("absolute").getAsInt());
-        assertEquals("{}", s.get("spawn_overrides").toString(), "no extra mob spawns");
-        JsonObject set = readJson("data/israel_simulator/worldgen/structure_set/island_temples.json");
-        JsonObject placement = set.getAsJsonObject("placement");
-        assertEquals(32, placement.get("spacing").getAsInt());
-        assertEquals(12, placement.get("separation").getAsInt());
-        JsonObject pool = readJson("data/israel_simulator/worldgen/template_pool/island_temple.json");
-        assertEquals("israel_simulator:island_temple", pool.getAsJsonArray("elements").get(0).getAsJsonObject()
-                .getAsJsonObject("element").get("location").getAsString());
+    @DisplayName("island_temple has no worldgen structure of its own any more: it is part of tropical_island")
+    void structureJson() {
+        assertNull(getClass().getClassLoader().getResource("data/israel_simulator/worldgen/structure/island_temple.json"));
+        assertNull(getClass().getClassLoader().getResource("data/israel_simulator/worldgen/structure_set/island_temples.json"));
+        assertNotNull(getClass().getClassLoader().getResource(NBT), "arena template must stay");
     }
 
     @Test

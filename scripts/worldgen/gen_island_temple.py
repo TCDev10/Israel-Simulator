@@ -4,7 +4,7 @@
 A square pavilion with white/blue concrete bands, blue corner pilasters, a zigzag
 parapet and a stepped gold dome, raised on a quartz podium above a chevron
 terracotta plaza with palms. Used twice:
-  * worldgen: israel_simulator:island_temple (mediterranean_coast, beard_thin)
+  * worldgen: pasted on the SW tip of israel_simulator:tropical_island (gen_tropical_island.py)
   * arena:    JeffreyEpsteinEntity places the same template inside its glass dome
 
 Template layout (Rigid coordinates, floor y=0 = plaza floor, FOOTING=4 below):
@@ -233,5 +233,5 @@ def write_json() -> None:
 
 
 if __name__ == "__main__":
-    write_json()
+    # worldgen JSON now lives in gen_tropical_island.py; write_json() is kept for reference only
     build().save(DATA / f"structure/{NAME}.nbt")
