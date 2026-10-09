@@ -411,6 +411,7 @@
   "item.israel_simulator.palantrio_drone": "Palantrio Drone",
   "item.israel_simulator.palantrio_drone.desc": "Seeks the nearest hostile mob within 32 blocks and explodes on contact. Self-destructs after 20 s.",
   "entity.israel_simulator.palantrio_drone": "Palantrio Drone",
+  "entity.israel_simulator.bibi_poison_breath": "Poison Breath",
   "israel_simulator.configuration.droneBreaksBlocks": "Drone Breaks Blocks",
   "israel_simulator.configuration.droneBreaksBlocks.tooltip": "Whether the Palantrio Drone's explosion breaks blocks (off by default).",
   "israel_simulator.configuration.droneExplosionPower": "Drone Explosion Power",

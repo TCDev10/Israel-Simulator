@@ -70,6 +70,10 @@ public final class ModEntities {
             ENTITY_TYPES.registerEntityType("palantrio_drone", com.israelsimulator.entity.projectile.PalantrioDroneEntity::new, MobCategory.MISC,
                     b -> b.sized(0.7F, 0.35F).clientTrackingRange(8).updateInterval(2));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<com.israelsimulator.entity.projectile.BibiPoisonBreathEntity>> BIBI_POISON_BREATH =
+            ENTITY_TYPES.registerEntityType("bibi_poison_breath", com.israelsimulator.entity.projectile.BibiPoisonBreathEntity::new, MobCategory.MISC,
+                    b -> b.sized(1.0F, 1.0F).clientTrackingRange(4).updateInterval(10));
+
     private ModEntities() {}
 
     public static void register(IEventBus modEventBus) {
