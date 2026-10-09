@@ -383,3 +383,8 @@ Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure
 ## jerusalem_city: varianti di case
 - 6 nuove case nel pool `jerusalem/buildings` (con fondazione di 4 blocchi): casa a corte con olivo, casa con cupola (Città Vecchia), casa a terrazza (Nachlaot), casa templare con tetto rosso (German Colony), palazzina a 3 piani con balconi (Rehavia), casa stretta con porta ad arco e grate.
 - `/place structure israel_simulator:jerusalem_city` in un bioma jerusalem: controllare che le nuove case compaiano accanto alle vecchie, con porta sulla strada e loot `jerusalem_house`/`jerusalem_pantry`.
+
+## Esterni: sinagoga, grande sinagoga, casa storica, startup office
+- `/place structure israel_simulator:synagogue` (e `great_synagogue`, `historical_house` nel bioma jerusalem, `startup_office` in urban_area).
+- Sinagoga: cornicione, parapetto merlato, torrette angolari, tamburo con finestre e cupola bianca, portico a ovest, rosone. Grande sinagoga: cupola di rame su tamburo, due torri frontali con cupolette, portico con frontone e tavole della legge. Casa storica: cupola vera, archi sopra le finestre, persiane verdi, scala esterna al tetto, bouganville. Startup office: pensilina con insegna luminosa, frangisole, fioriere, rastrelliera bici, terrazza sul tetto con ombrelloni e antenna.
+- Controllare che interni, marker e loot (anche `synagogue_ark`) siano invariati.

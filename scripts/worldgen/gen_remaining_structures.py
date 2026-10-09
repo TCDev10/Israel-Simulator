@@ -15,6 +15,7 @@ from pathlib import Path
 # Add scripts/worldgen to path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from structure_lib import Structure, blk, chest, write_jigsaw, ROOT
+import exteriors
 
 def slab(name="smooth_stone_slab", t="bottom"):
     return blk(f"minecraft:{name}", type=t, waterlogged="false")
@@ -144,7 +145,7 @@ def gen_startup_office():
     Marker: minecraft:iron_block
     Loot: israel_simulator:chests/startup_office
     """
-    SX, SY, SZ = 26, 14, 26
+    SX, SY, SZ = 26, 17, 26
     fy = 1
     s = Structure(SX, SY, SZ)
     s.fills(0, 0, 0, SX - 1, fy - 1, SZ - 1, blk("minecraft:stone"))
@@ -244,6 +245,7 @@ def gen_startup_office():
     s.set(1, fy + 1, 1, blk("minecraft:iron_block"))
 
     write_jigsaw("startup_office", "israel_simulator:urban_area", salt=334455)
+    exteriors.startup_office(s, fy)
     s.save(ROOT / "src/main/resources/data/israel_simulator/structure/startup_office.nbt")
 
 
@@ -252,7 +254,7 @@ def gen_historical_house():
     Marker: minecraft:bricks
     Loot: israel_simulator:chests/historical_house
     """
-    SX, SY, SZ = 24, 11, 24
+    SX, SY, SZ = 24, 14, 24
     fy = 1
     s = Structure(SX, SY, SZ)
     s.fills(0, 0, 0, SX - 1, fy - 1, SZ - 1, blk("minecraft:dirt"))
@@ -332,15 +334,15 @@ def gen_historical_house():
     # Dining table & chairs
     s.set(14, fy + 1, 14, fence("oak_fence"))
     s.set(15, fy + 1, 14, fence("oak_fence"))
-    s.set(14, fy + 2, 14, blk("minecraft:oak_pressure_plate", power="0"))
-    s.set(15, fy + 2, 14, blk("minecraft:oak_pressure_plate", power="0"))
+    s.set(14, fy + 2, 14, blk("minecraft:oak_pressure_plate", powered="false"))
+    s.set(15, fy + 2, 14, blk("minecraft:oak_pressure_plate", powered="false"))
     s.set(13, fy + 1, 14, stair("oak_stairs", f="east"))
     s.set(16, fy + 1, 14, stair("oak_stairs", f="west"))
 
     # Hearth / Fireplace (x=20, z=14..15)
     s.set(20, fy + 1, 14, blk("minecraft:bricks"))
     s.set(20, fy + 1, 15, blk("minecraft:bricks"))
-    s.set(20, fy + 2, 14, blk("minecraft:campfire", extinguished="false", facing="west", lit="true", signal_fire="false", waterlogged="false"))
+    s.set(20, fy + 2, 14, blk("minecraft:campfire", facing="west", lit="true", signal_fire="false", waterlogged="false"))
 
     # Kitchen pantry: barrels & crafting table
     s.set(19, fy + 1, 18, blk("minecraft:crafting_table"))
@@ -363,6 +365,7 @@ def gen_historical_house():
     s.set(1, fy + 1, 1, blk("minecraft:bricks"))
 
     write_jigsaw("historical_house", "israel_simulator:jerusalem", salt=445566)
+    exteriors.historical_house(s, fy)
     s.save(ROOT / "src/main/resources/data/israel_simulator/structure/historical_house.nbt")
 
 
@@ -371,7 +374,7 @@ def gen_synagogue():
     Marker: minecraft:purple_stained_glass
     Loot: israel_simulator:chests/synagogue & israel_simulator:chests/synagogue_ark
     """
-    SX, SY, SZ = 26, 13, 26
+    SX, SY, SZ = 26, 24, 26
     fy = 1
     s = Structure(SX, SY, SZ)
     s.fills(0, 0, 0, SX - 1, fy - 1, SZ - 1, blk("minecraft:smooth_sandstone"))
@@ -472,6 +475,7 @@ def gen_synagogue():
     s.set(1, fy + 1, 1, blk("minecraft:purple_stained_glass"))
 
     write_jigsaw("synagogue", "israel_simulator:jerusalem", salt=556677)
+    exteriors.synagogue(s, fy)
     s.save(ROOT / "src/main/resources/data/israel_simulator/structure/synagogue.nbt")
 
 
@@ -506,8 +510,8 @@ def gen_ancient_sanctuary():
         for az in range(22, 26):
             s.set(ax, fy + 1, az, blk("minecraft:basalt", axis="y"))
             s.set(ax, fy + 2, az, blk("minecraft:cut_sandstone"))
-    s.set(14, fy + 2, 23, blk("minecraft:campfire", extinguished="false", facing="north", lit="true", signal_fire="false", waterlogged="false"))
-    s.set(15, fy + 2, 23, blk("minecraft:campfire", extinguished="false", facing="north", lit="true", signal_fire="false", waterlogged="false"))
+    s.set(14, fy + 2, 23, blk("minecraft:campfire", facing="north", lit="true", signal_fire="false", waterlogged="false"))
+    s.set(15, fy + 2, 23, blk("minecraft:campfire", facing="north", lit="true", signal_fire="false", waterlogged="false"))
     for hx in (13, 16):
         for hz in (22, 25):
             s.set(hx, fy + 3, hz, wall("sandstone_wall"))  # Horns of the altar
@@ -587,7 +591,7 @@ def gen_great_synagogue():
     Marker: minecraft:blue_stained_glass
     Loot: israel_simulator:chests/synagogue_ark & israel_simulator:chests/synagogue
     """
-    SX, SY, SZ = 36, 18, 36
+    SX, SY, SZ = 36, 31, 36
     fy = 1
     s = Structure(SX, SY, SZ)
     s.fills(0, 0, 0, SX - 1, fy - 1, SZ - 1, blk("minecraft:stone"))
@@ -699,6 +703,7 @@ def gen_great_synagogue():
     s.set(1, fy + 1, 1, blk("minecraft:blue_stained_glass"))
 
     write_jigsaw("great_synagogue", "israel_simulator:jerusalem", salt=778899)
+    exteriors.great_synagogue(s, fy)
     s.save(ROOT / "src/main/resources/data/israel_simulator/structure/great_synagogue.nbt")
 
 
