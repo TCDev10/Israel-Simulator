@@ -26,7 +26,7 @@ class RareStructuresTest {
         assertNotNull(ModStructures.GOVERNMENT_BUILDINGS);
         assertNotNull(ModStructures.ANCIENT_SANCTUARIES);
 
-        assertEquals(16, ModStructures.allStructures().size(), "ModStructures must track 16 structures");
+        assertEquals(17, ModStructures.allStructures().size(), "ModStructures must track 17 structures");
     }
 
     @Test

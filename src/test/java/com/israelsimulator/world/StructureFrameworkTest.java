@@ -23,7 +23,7 @@ class StructureFrameworkTest {
     void testStructureKeys() {
         List<ResourceKey<Structure>> structures = ModStructures.allStructures();
         assertNotNull(structures);
-        assertEquals(16, structures.size(), "Should register 16 structures in framework");
+        assertEquals(17, structures.size(), "Should register 17 structures in framework");
 
         for (ResourceKey<Structure> structure : structures) {
             assertEquals("israel_simulator", structure.identifier().getNamespace());
@@ -51,7 +51,8 @@ class StructureFrameworkTest {
                 "jaffa_house",
                 "jaffa_harbour",
                 "jerusalem_bazaar",
-                "western_wall_treasury"
+                "western_wall_treasury",
+                "island_temple"
         );
 
         for (String name : lootTables) {
@@ -80,7 +81,8 @@ class StructureFrameworkTest {
                 Map.entry("desert_ruins", "minecraft:cracked_stone_bricks"),
                 Map.entry("historical_house", "minecraft:bricks"),
                 Map.entry("mediterranean_village", "minecraft:light_gray_terracotta"),
-                Map.entry("ein_gedi_oasis", "minecraft:moss_block")
+                Map.entry("ein_gedi_oasis", "minecraft:moss_block"),
+                Map.entry("island_temple", "minecraft:blue_concrete")
         );
         Gson gson = new Gson();
         java.net.URL structuresDir = getClass().getClassLoader()
