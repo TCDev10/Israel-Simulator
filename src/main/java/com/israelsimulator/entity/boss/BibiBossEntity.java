@@ -246,6 +246,13 @@ public class BibiBossEntity extends Monster implements RangedAttackMob {
         }
     }
 
+    /** True for fire, lava, magma and other fire-tagged damage that Bibi ignores. */
+    public static boolean isFireOrLavaDamage(DamageSource source) {
+        return source.is(net.minecraft.tags.DamageTypeTags.IS_FIRE)
+                || source.is(net.minecraft.world.damagesource.DamageTypes.LAVA)
+                || source.is(net.minecraft.world.damagesource.DamageTypes.HOT_FLOOR);
+    }
+
     public boolean isEpsteinDefeated() {
         return this.epsteinDefeated;
     }
@@ -610,6 +617,11 @@ public class BibiBossEntity extends Monster implements RangedAttackMob {
 
     @Override
     public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float amount) {
+        // Fire and lava immunity (also fireImmune() on the EntityType)
+        if (isFireOrLavaDamage(damageSource)) {
+            this.clearFire();
+            return false;
+        }
         // Complete explosion immunity (GAME_DESIGN requirement)
         if (damageSource.is(net.minecraft.tags.DamageTypeTags.IS_EXPLOSION)) {
             return false;
