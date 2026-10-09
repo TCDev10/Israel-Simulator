@@ -36,6 +36,8 @@ class StructureFrameworkTest {
     void testChestLootTablesExist() {
         List<String> lootTables = List.of(
                 "mediterranean_village",
+                "mediterranean_bakery",
+                "mediterranean_fisherman",
                 "agricultural_farm",
                 "dead_sea_resort",
                 "desert_ruins",
@@ -118,6 +120,9 @@ class StructureFrameworkTest {
             if ("jerusalem_city".equals(name)) {
                 assertEquals("israel_simulator:jerusalem/plaza", location,
                         "jerusalem_city must start from the plaza piece");
+            } else if ("mediterranean_village".equals(name)) {
+                assertEquals("israel_simulator:mediterranean/square", location,
+                        "mediterranean_village must start from the village square piece");
             } else if ("tel_aviv_city".equals(name)) {
                 assertEquals("israel_simulator:tel_aviv/square", location,
                         "tel_aviv_city must start from the Dizengoff square piece");
@@ -133,6 +138,7 @@ class StructureFrameworkTest {
             String nbtPath = switch (name) {
                 case "jerusalem_city" -> "data/israel_simulator/structure/jerusalem/plaza.nbt";
                 case "tel_aviv_city" -> "data/israel_simulator/structure/tel_aviv/square.nbt";
+                case "mediterranean_village" -> "data/israel_simulator/structure/mediterranean/square.nbt";
                 default -> "data/israel_simulator/structure/" + name + ".nbt";
             };
             InputStream nbtStream = getClass().getClassLoader().getResourceAsStream(nbtPath);
