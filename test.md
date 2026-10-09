@@ -422,3 +422,8 @@ Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure
 - Nuova texture 16x16 per `dead_sea_mud` (fango grigio-marrone scuro con cristalli di sale e venature minerali, `scripts/textures/gen_dead_sea_mud_texture.py`) al posto della palla d'argilla vanilla.
 - Test in gioco: click destro col fango → effetti (rimuove lentezza/debolezza/veleno, assorbimento + rigenerazione), se ne consuma uno e lo slot mostra l'overlay grigio del cooldown per 30 secondi. Durante il cooldown il click destro non fa niente e non consuma fango.
 - Test: `DeadSeaMudItemTest`. Non testato in gioco dal client.
+
+## Cooldown degli oggetti a click destro e Dreidel equo
+- Cooldown (overlay grigio sullo slot, solo dopo un uso riuscito): Dreidel 10 s, Primo Emendamento 120 s (l'effetto Libertà dura 60 s), disco Hava Nagila 5 s, Mappa d'Israele e Rav-Kav 2 s. Durante il cooldown il click destro non fa niente.
+- Dreidel: ogni giro punta 3 Shekel (servono nell'inventario, altrimenti messaggio rosso e niente cooldown). Nun = riprendi la puntata (0), Gimel = +2, Hei = +1, Shin = perdi i 3 Shekel. Valore atteso 0: niente più Shekel infiniti gratis. In creativa non costa e non paga.
+- Test: `ItemCooldownTest`, `FestivalsAndCalendarTest`. Non testato in gioco dal client.

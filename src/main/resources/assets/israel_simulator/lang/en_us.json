@@ -208,10 +208,10 @@
   "message.israel_simulator.ark_cooldown": "You have reflected at the holy ark recently. Take time for contemplation.",
   "message.israel_simulator.ark_prayer_complete": "You pray before the Aron Kodesh, feeling peace and clarity.",
   "message.israel_simulator.ark_offering_complete": "You placed an offering before the Aron Kodesh. A rich blessing is bestowed upon you!",
-  "item.israel_simulator.dreidel.desc": "Traditional Hanukkah spinning top. Right-click to spin for Shekels!",
+  "item.israel_simulator.dreidel.desc": "Traditional Hanukkah spinning top. Right-click to stake 3 Shekels and spin (fair game, 10 s cooldown).",
   "item.israel_simulator.shofar.desc": "Sacred musical ram's horn. Right-click to blast and receive a New Year blessing.",
   "message.israel_simulator.dreidel_spin": "You spun the Dreidel: %s! (%s)",
-  "message.israel_simulator.dreidel_win": "Miracle! You won %d Shekels from the Hanukkah pot!",
+  "message.israel_simulator.dreidel_win": "You won %d Shekels from the Hanukkah pot!",
   "message.israel_simulator.shofar_blast": "Teki'ah Gedolah! The piercing blast of the Shofar awakens the soul!",
   "message.israel_simulator.blessed_trader_greeting": "Shalom! The holy light of a blessed traveler shines upon you. Behold my sacred wares!",
   "faction.israel_simulator.merchant": "Bazaar Merchants",
@@ -347,5 +347,7 @@
   "district.israel_simulator.startup_district": "Startup & Technology District",
   "district.israel_simulator.startup_district.desc": "Modern High-Tech High-Rise",
   "district.israel_simulator.tayelet_beach": "Tayelet & Beachfront",
-  "district.israel_simulator.tayelet_beach.desc": "Mediterranean Coastal Boardwalk"
+  "district.israel_simulator.tayelet_beach.desc": "Mediterranean Coastal Boardwalk",
+  "message.israel_simulator.dreidel_lose": "Shin! Your %d Shekels go into the pot.",
+  "message.israel_simulator.dreidel_need_shekels": "You need %d Shekels to spin the Dreidel."
 }

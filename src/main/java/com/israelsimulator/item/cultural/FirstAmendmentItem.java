@@ -27,6 +27,9 @@ import net.minecraft.world.level.Level;
  * Grants the Freedom effect, removing negative movement debuffs.
  */
 public class FirstAmendmentItem extends Item {
+    /** Item cooldown after a use: 120 s, longer than the 60 s Freedom effect. */
+    public static final int COOLDOWN_TICKS = 2400;
+
 
     public FirstAmendmentItem(Properties properties) {
         super(properties);
@@ -65,6 +68,7 @@ public class FirstAmendmentItem extends Item {
         player.sendSystemMessage(Component.translatable("message.israel_simulator.first_amendment_used")
                 .withStyle(ChatFormatting.GOLD));
 
+        player.getCooldowns().addCooldown(player.getItemInHand(hand), COOLDOWN_TICKS);
         return InteractionResult.SUCCESS;
     }
 

@@ -206,10 +206,10 @@
   "message.israel_simulator.ark_cooldown": "Hai già pregato davanti alla santa arca di recente. Prenditi del tempo per meditare.",
   "message.israel_simulator.ark_prayer_complete": "Preghi davanti all'Aron Kodesh, sentendo pace e chiarezza interiore.",
   "message.israel_simulator.ark_offering_complete": "Hai riposto un'offerta davanti all'Aron Kodesh. Una ricca benedizione scende su di te!",
-  "item.israel_simulator.dreidel.desc": "Tradizionale trottola di Hanukkah. Fai clic destro per girare e vincere Shekel!",
+  "item.israel_simulator.dreidel.desc": "Tradizionale trottola di Hanukkah. Fai clic destro per puntare 3 Shekel e girarla (gioco equo, attesa 10 s).",
   "item.israel_simulator.shofar.desc": "Sacro corno d'ariete musicale. Fai clic destro per suonarlo e ricevere una benedizione di Capodanno.",
   "message.israel_simulator.dreidel_spin": "Hai fatto girare il Dreidel: %s! (%s)",
-  "message.israel_simulator.dreidel_win": "Miracolo! Hai vinto %d Shekel dal montepremi di Hanukkah!",
+  "message.israel_simulator.dreidel_win": "Hai vinto %d Shekel dal montepremi di Hanukkah!",
   "message.israel_simulator.shofar_blast": "Teki'ah Gedolah! Il potente squillo dello Shofar risveglia lo spirito!",
   "message.israel_simulator.blessed_trader_greeting": "Shalom! La luce sacra di un viaggiatore benedetto risplende su di te. Ammira le mie merci sacre!",
   "faction.israel_simulator.merchant": "Mercanti del Bazar",
@@ -347,5 +347,7 @@
   "district.israel_simulator.startup_district": "Distretto delle Startup e Tecnologia",
   "district.israel_simulator.startup_district.desc": "Grattacieli Moderni ad Alta Tecnologia",
   "district.israel_simulator.tayelet_beach": "Tayelet e Lungomare",
-  "district.israel_simulator.tayelet_beach.desc": "Lungomare Costiero Mediterraneo"
+  "district.israel_simulator.tayelet_beach.desc": "Lungomare Costiero Mediterraneo",
+  "message.israel_simulator.dreidel_lose": "Shin! I tuoi %d Shekel finiscono nel montepremi.",
+  "message.israel_simulator.dreidel_need_shekels": "Ti servono %d Shekel per girare il Dreidel."
 }

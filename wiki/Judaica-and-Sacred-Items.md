@@ -54,7 +54,7 @@ La cultura e gli oggetti cerimoniali ebraici sono riprodotti nel gioco come equi
 - **Mezuzah (`mezuzah`)**: Può essere appesa allo stipite destro della porta d'ingresso delle case per proteggere la dimora.
 - **Menorah (`menorah`)**: Candelabro a sette bracci posizionabile, emette luce calda e può essere acceso con candele rituali.
 - **Shofar (`shofar`)**: Corno d'ariete suonabile che emette un suono profondo in grado di allontanare entità ostili e richiamare i compagni.
-- **Dreidel (`dreidel`)**: Trottola tradizionale di Hanukkah con le quattro lettere ebraiche (Nun, Gimel, Hei, Shin) per giochi festivi.
+- **Dreidel (`dreidel`)**: Trottola tradizionale di Hanukkah con le quattro lettere ebraiche (Nun, Gimel, Hei, Shin) per giochi festivi. Ogni giro punta 3 Shekel (Nun 0, Gimel +2, Hei +1, Shin -3, gioco equo) con 10 s di attesa.
 - **Frammento dei Rotoli del Mar Morto (`dead_sea_scroll_fragment`)**: Pergamena antichissima ricercata dagli storici.
 
 
