@@ -343,3 +343,11 @@ Problema riscontrato: in `TransportStopBlock.java`, l'interazione con la fermata
 Funzionamento aspettato: la fermata determina la propria posizione nello spazio, identifica la fermata più vicina (`TransportNetwork.getNearestStop(pos)`) e calcola la fermata successiva nel circuito regionale.
 
 Come è stato risolto: implementato `TransportNetwork.getNearestStop(BlockPos pos)` basato sulla distanza euclidea minima rispetto alle fermate registrate, e aggiornato `TransportStopBlock.handleInteraction` per prelevare la fermata corrente e instradare alla successiva. Aggiunto test di verifica routing in `TransportationTest`.
+
+## Tel Aviv come città jigsaw
+
+Problema riscontrato: `tel_aviv_city` era un unico blocco 48x48 (`beard_box`), una scatola piatta senza strade vere né quartieri.
+
+Funzionamento aspettato: una città jigsaw come `jerusalem_city`, con strade che seguono il terreno ed edifici rigidi, solo nel bioma `urban_area`.
+
+Come è stato risolto: nuovo `scripts/worldgen/gen_tel_aviv_city.py` → `structure/tel_aviv/*`. Pezzi: piazza Dizengoff (start, fontana Agam), strade in asfalto con marciapiedi (dritta, incrocio, curva, T), viale Rothschild con chiosco, 3 palazzi Bauhaus con balconi arrotondati, loft di Florentin con graffiti, casa templare di Sarona, 2 grattacieli in vetro, Tayelet sulla spiaggia. Interni minimi con loot (`tel_aviv_apartment`, `tel_aviv_tech_office`, nuova `tel_aviv_kiosk`). `beard_thin` e fondazione interrata di 4 blocchi sotto gli edifici. Test: `TelAvivCityStructureTest`. Verifica headless (seed 424242): 39 pezzi, 0 celle flottanti sotto gli edifici. Non testato in gioco dal client.
