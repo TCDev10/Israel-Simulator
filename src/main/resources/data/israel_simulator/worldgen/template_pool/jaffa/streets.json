@@ -1,0 +1,59 @@
+{
+  "fallback": "israel_simulator:jaffa/terminators",
+  "elements": [
+    {
+      "weight": 10,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:jaffa/alley_straight",
+        "processors": "minecraft:empty",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:jaffa/alley_crossroad",
+        "processors": "minecraft:empty",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 4,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:jaffa/alley_corner",
+        "processors": "minecraft:empty",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 4,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:jaffa/alley_t",
+        "processors": "minecraft:empty",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:jaffa/alley_arch",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:jaffa/alley_stairs",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      }
+    }
+  ]
+}

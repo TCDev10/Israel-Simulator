@@ -17,49 +17,6 @@ def slab(name="oak_slab", t="bottom"):
 def stair(name="oak_stairs", f="east"):
     return blk(f"minecraft:{name}", facing=f, half="bottom", shape="straight", waterlogged="false")
 
-def gen_jaffa():
-    SX,SY,SZ=40,12,36; fy=1
-    s=Structure(SX,SY,SZ)
-    s.fills(0,0,0,SX-1,fy-1,SZ-1, blk("minecraft:sand"))
-    for x in range(SX):
-        for z in range(SZ):
-            if z < 10:
-                s.set(x,fy,z, blk("minecraft:water", level="0"))
-            elif z < 14:
-                s.set(x,fy,z, blk("minecraft:sand"))
-            else:
-                s.set(x,fy,z, blk("minecraft:smooth_sandstone") if (x+z)%3==0 else blk("minecraft:sandstone"))
-    # Pier into water
-    for x in range(16,24):
-        for z in range(2,14):
-            s.set(x,fy,z, blk("minecraft:oak_planks"))
-            if z < 10:
-                s.set(x,0,z, blk("minecraft:oak_log", axis="y"))
-    for z in (2,6,10):
-        s.set(16,fy+1,z, fence()); s.set(23,fy+1,z, fence())
-    # Warehouse
-    s.fills(8,fy,18,20,fy,30, blk("minecraft:stone_bricks"))
-    for y in range(fy+1, fy+4):
-        for x in range(8,21):
-            s.set(x,y,18, blk("minecraft:stone_bricks")); s.set(x,y,30, blk("minecraft:stone_bricks"))
-        for z in range(18,31):
-            s.set(8,y,z, blk("minecraft:stone_bricks")); s.set(20,y,z, blk("minecraft:stone_bricks"))
-    s.set(14,fy+1,18, blk("minecraft:air")); s.set(14,fy+2,18, blk("minecraft:air"))
-    s.fills(8,fy+4,18,20,fy+4,30, slab("stone_brick_slab"))
-    s.set(10,fy+1,28, chest(facing="south", loot="israel_simulator:chests/jaffa_flea_market"))
-    s.set(18,fy+1,28, blk("minecraft:barrel", facing="up", open="false"))
-    # Market stalls
-    for x0 in (24, 30):
-        s.fills(x0,fy,20,x0+4,fy,26, blk("minecraft:oak_planks"))
-        for y in range(fy+1, fy+3):
-            s.set(x0,y,20, fence()); s.set(x0+4,y,20, fence())
-            s.set(x0,y,26, fence()); s.set(x0+4,y,26, fence())
-        s.fills(x0,fy+3,20,x0+4,fy+3,26, slab())
-        s.set(x0+2,fy+1,23, chest(facing="south", loot="israel_simulator:chests/jaffa_flea_market"))
-    s.set(1,fy+1,1, blk("minecraft:prismarine_bricks"))
-    write_jigsaw("jaffa_port", "israel_simulator:mediterranean_coast", salt=771122)
-    s.save(ROOT/"src/main/resources/data/israel_simulator/structure/jaffa_port.nbt")
-
 def gen_village():
     SX,SY,SZ=48,10,40; fy=1
     s=Structure(SX,SY,SZ)
@@ -237,4 +194,4 @@ def gen_tel_aviv():
     s.save(ROOT / "src/main/resources/data/israel_simulator/structure/tel_aviv_city.nbt")
 
 if __name__ == "__main__":
-    gen_jaffa(); gen_village(); gen_tel_aviv()
+    gen_village(); gen_tel_aviv()  # jaffa_port: gen_jaffa_port.py

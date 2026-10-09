@@ -45,6 +45,8 @@ class StructureFrameworkTest {
                 "tel_aviv_apartment",
                 "ein_gedi_oasis",
                 "jaffa_flea_market",
+                "jaffa_house",
+                "jaffa_harbour",
                 "jerusalem_bazaar",
                 "western_wall_treasury"
         );
@@ -117,6 +119,9 @@ class StructureFrameworkTest {
             if ("jerusalem_city".equals(name)) {
                 assertEquals("israel_simulator:jerusalem/plaza", location,
                         "jerusalem_city must start from the plaza piece");
+            } else if ("jaffa_port".equals(name)) {
+                assertEquals("israel_simulator:jaffa/clock_square", location,
+                        "jaffa_port must start from the clock tower square");
             } else {
                 assertEquals("israel_simulator:" + name, location,
                         name + " pool must place this mod's structure template");
@@ -125,9 +130,12 @@ class StructureFrameworkTest {
             // Marker NBT: single-piece templates use structure/<name>.nbt.
             // Jerusalem also keeps a small root marker file for the yellow terracotta check,
             // and the live plaza piece carries the same marker.
-            String nbtPath = "jerusalem_city".equals(name)
-                    ? "data/israel_simulator/structure/jerusalem/plaza.nbt"
-                    : "data/israel_simulator/structure/" + name + ".nbt";
+            // Multi-piece towns keep their marker in the start piece.
+            String nbtPath = switch (name) {
+                case "jerusalem_city" -> "data/israel_simulator/structure/jerusalem/plaza.nbt";
+                case "jaffa_port" -> "data/israel_simulator/structure/jaffa/clock_square.nbt";
+                default -> "data/israel_simulator/structure/" + name + ".nbt";
+            };
             InputStream nbtStream = getClass().getClassLoader().getResourceAsStream(nbtPath);
             assertNotNull(nbtStream, "Missing structure template NBT: " + nbtPath);
             byte[] nbt = new GZIPInputStream(nbtStream).readAllBytes();

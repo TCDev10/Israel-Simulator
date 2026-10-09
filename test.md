@@ -343,3 +343,11 @@ Problema riscontrato: in `TransportStopBlock.java`, l'interazione con la fermata
 Funzionamento aspettato: la fermata determina la propria posizione nello spazio, identifica la fermata più vicina (`TransportNetwork.getNearestStop(pos)`) e calcola la fermata successiva nel circuito regionale.
 
 Come è stato risolto: implementato `TransportNetwork.getNearestStop(BlockPos pos)` basato sulla distanza euclidea minima rispetto alle fermate registrate, e aggiornato `TransportStopBlock.handleInteraction` per prelevare la fermata corrente e instradare alla successiva. Aggiunto test di verifica routing in `TransportationTest`.
+
+## Porto di Giaffa come città jigsaw
+
+Problema riscontrato: `jaffa_port` era un singolo pezzo rettangolare (`beard_box`), senza vicoli, torre dell'orologio né porto vero.
+
+Funzionamento aspettato: la vecchia Giaffa come città jigsaw: vicoli in pietra con scale, torre dell'orologio ottomana, mercato delle pulci, porto con barche, faro e molo, solo nel bioma `mediterranean_coast`.
+
+Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure/jaffa/*`. Piazza della torre dell'orologio con sabil (start), porto garantito sul lato nord (banchina, bacino d'acqua, molo in legno, 2 barche da pesca, frangiflutti e faro), vicoli in pietra (dritto, incrocio, curva, T) più arco e scalinata rigidi, 4 case in pietra (una con cupola, una galleria d'arte), mercato delle pulci con portico ad archi. Loot `jaffa_flea_market` più le nuove `jaffa_house` e `jaffa_harbour`. `beard_thin` e fondazione interrata di 4 blocchi. Test: `JaffaPortStructureTest`. Verifica headless (seed 424242): 33 pezzi, 0 celle flottanti sotto gli edifici (a parte molo e barche sull'acqua del bacino). Non testato in gioco dal client.
