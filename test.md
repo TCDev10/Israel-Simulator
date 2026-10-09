@@ -371,3 +371,7 @@ Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure
 ## grand_market jigsaw (Mahane Yehuda)
 - `/locate structure israel_simulator:grand_market` in un bioma jerusalem: piazza d'ingresso con arco e insegna rossa, chiosco dei succhi, vicoli lastricati (coperti con tetto di vetro o aperti con luci), negozi (spezie, frutta, panetteria, pesce, halva, caffè), casa del mercato a 2 piani e la sala coperta del mercato sul lato nord.
 - Controllare: negozi appoggiati sul terreno (fondazione di 4 blocchi), vicoli che seguono il terreno, barili/casse con loot `grand_market`/`grand_market_food`.
+
+## desert_ruins jigsaw (insediamento antico stile Qumran)
+- `/locate structure israel_simulator:desert_ruins` nel deserto della Giudea: cortile con cisterna asciutta e colonne spezzate, rovina del tempio a nord, sentieri di sabbia/ghiaia, case in rovina, scriptorium con giare, laboratorio di ceramica, torre di guardia, mikveh.
+- Controllare: rovine appoggiate sul terreno (fondazione di 4 blocchi) anche sui pendii, loot `desert_ruins`/`desert_ruins_scriptorium`.
