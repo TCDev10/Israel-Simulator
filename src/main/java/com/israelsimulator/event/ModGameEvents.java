@@ -21,6 +21,7 @@ public final class ModGameEvents {
     @SubscribeEvent
     public static void onRegisterCommands(net.neoforged.neoforge.event.RegisterCommandsEvent event) {
         com.israelsimulator.event.world.speech.SpeechCommands.register(event.getDispatcher());
+        com.israelsimulator.mossad.MossadCommands.register(event.getDispatcher());
     }
 
     @SubscribeEvent
@@ -43,6 +44,12 @@ public final class ModGameEvents {
     public static void onLevelTick(net.neoforged.neoforge.event.tick.LevelTickEvent.Post event) {
         if (event.getLevel() instanceof net.minecraft.server.level.ServerLevel speechLevel) {
             com.israelsimulator.event.world.speech.PublicSpeechEvent.tick(speechLevel);
+            com.israelsimulator.mossad.MossadAgentSpawner.tick(speechLevel);
+            if (speechLevel.getGameTime() % 20 == 0) {
+                for (net.minecraft.server.level.ServerPlayer p : speechLevel.players()) {
+                    com.israelsimulator.mossad.MossadMissions.tickPlayer(p);
+                }
+            }
         }
         if (event.getLevel() instanceof net.minecraft.server.level.ServerLevel level
                 && level.getGameTime() % com.israelsimulator.entity.boss.ArenaRestoreRules.ORPHAN_CHECK_INTERVAL == 0) {
@@ -105,6 +112,15 @@ public final class ModGameEvents {
         if (com.israelsimulator.synagogue.SynagogueManager.tryArkPray(event.getEntity(), event.getHand(), event.getPos())) {
             event.setCanceled(true);
             event.setCancellationResult(net.minecraft.world.InteractionResult.SUCCESS);
+        }
+    }
+
+    /** Kills of hostile Mossad agents count for elimination missions. */
+    @SubscribeEvent
+    public static void onMossadAgentDeath(net.neoforged.neoforge.event.entity.living.LivingDeathEvent event) {
+        if (event.getEntity() instanceof com.israelsimulator.entity.mossad.MossadAgentEntity agent
+                && event.getSource().getEntity() instanceof net.minecraft.server.level.ServerPlayer player) {
+            com.israelsimulator.mossad.MossadMissions.onAgentKilled(player, agent);
         }
     }
 }

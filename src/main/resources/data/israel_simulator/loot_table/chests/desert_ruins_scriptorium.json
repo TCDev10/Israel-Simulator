@@ -127,6 +127,11 @@
               }
             }
           ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "israel_simulator:sealed_dossier",
+          "weight": 8
         }
       ]
     }

@@ -106,6 +106,14 @@ public final class ModItems {
             ITEMS.registerItem("money_changer_spawn_egg",
                     p -> new SpawnEggItem(p.spawnEgg(ModEntities.MONEY_CHANGER.get())));
 
+    public static final DeferredHolder<Item, SpawnEggItem> MOSSAD_AGENT_SPAWN_EGG =
+            ITEMS.registerItem("mossad_agent_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.MOSSAD_AGENT.get())));
+    public static final DeferredHolder<Item, SpawnEggItem> MOSSAD_HANDLER_SPAWN_EGG =
+            ITEMS.registerItem("mossad_handler_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.MOSSAD_HANDLER.get())));
+
+    /** Mission item for the Mossad Handler's RETRIEVE mission, found in Judean desert ruins chests. */
+    public static final DeferredHolder<Item, Item> SEALED_DOSSIER = ITEMS.registerSimpleItem("sealed_dossier", p -> p.stacksTo(16));
+
     private ModItems() {}
 
     public static void register(IEventBus modEventBus) {
