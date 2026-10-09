@@ -409,3 +409,11 @@ Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure
 - Struttura `israel_simulator:island_temple` solo nel bioma mediterranean_coast (spacing 32/12, beard_thin): padiglione 13x13 a righe bianche/blu, pilastri blu agli angoli, parapetto a zigzag, cupola d'oro a gradoni con guglia, portone ad arco in legno scuro, pannello ad arco color sabbia sul lato, scala in quarzo, due statue d'oro, piazza a chevron rosso/bianco/rosa, 4 palme, erba secca e scala a pioli sul lato est. Una cassa con loot `island_temple`.
 - `/locate structure israel_simulator:island_temple` (seed 20261005: ~7400 blocchi) oppure `/place template israel_simulator:island_temple ~ ~ ~`.
 - Arena: portare Epstein sotto il 30% di vita. Deve comparire lo stesso padiglione dentro una cupola di vetro (un solo strato) con Epstein sulla piazza davanti alla scala e i giocatori vicini spostati sulla piazza (non dentro i muri). Controllare che nessuno resti incastrato e che la cupola contenga tutto il padiglione.
+
+## Olivo, palma da datteri, agrumi ed erbe mediterranee: raccolto e texture
+- Prima: click destro infinito su olive/datteri/agrumi = cibo infinito; foglie di palma ed erbe grigie (texture vanilla `jungle_leaves`/`fern` senza tinta), olivo e agrumi con texture vanilla dell'azalea.
+- Ora foglie e erbe hanno `age` 0-3 (foglie → fiori → frutto acerbo → maturo) con texture 16x16 proprie a colori fissi (`scripts/textures/gen_crop_textures.py`), più nuove texture degli oggetti datteri, olive, agrumi ed erbe.
+- Test in gioco: click destro su foglie mature → 1-2 frutti, poi tornano a `age=1` (fiori) e un secondo click non dà niente. Su foglie/erbe non mature il click destro non fa niente. Farina d'ossa su foglie o erbe non mature → avanzano di uno stadio. Lasciate stare ricrescono da sole (tick casuali, qualche minuto per stadio).
+- Rompere le foglie senza cesoie dà il frutto solo se mature; con le cesoie dà il blocco. Le erbe rotte danno sé stesse (non più semi di grano); mature si raccolgono col click destro.
+- Nuovo mondo: gli alberi generati e le erbe hanno stadi misti, quindi alcuni frutti sono subito raccoglibili.
+- Test: `CropHarvestTest`. Non testato in gioco dal client.

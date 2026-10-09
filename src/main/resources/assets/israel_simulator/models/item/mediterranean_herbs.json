@@ -1,7 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minecraft:block/fern"
+    "layer0": "israel_simulator:item/mediterranean_herbs"
   }
 }
-
