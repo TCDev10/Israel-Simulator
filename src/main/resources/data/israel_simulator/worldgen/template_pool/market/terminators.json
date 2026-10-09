@@ -5,9 +5,9 @@
       "weight": 1,
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "israel_simulator:market/market_gate",
+        "location": "israel_simulator:market/terminator",
         "processors": "minecraft:empty",
-        "projection": "rigid"
+        "projection": "terrain_matching"
       }
     }
   ]
