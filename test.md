@@ -459,3 +459,11 @@ Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure
 - Test in gioco: in prima persona la pistola sta in basso a destra e punta verso il mirino; in terza persona (F5) la canna punta in avanti e l'impugnatura è nel pugno; a terra, in una cornice e in mano sinistra deve apparire dritta.
 - Guardie di Bibi: senza bersaglio tengono la pistola come un giocatore (braccio leggermente avanti); quando ti prendono di mira alzano le braccia e la canna punta dove guardano (non più verso il cielo o all'indietro).
 - Test: `PistolModelTest`. `runClient` fino al menu principale senza errori di modelli o texture. Non testato in gioco dal client.
+
+## Discorso pubblico in piazza (evento)
+- Da op: `/israelsim event speech start` (o `start <x y z>`), `/israelsim event speech status`, `/israelsim event speech stop`. L'evento parte anche da solo: ogni minuto, se sei dentro Tel Aviv o Jerusalem e non c'è stato un evento negli ultimi 10 minuti (config `eventCooldownTicks`), c'è il 35% di probabilità che compaia un palco nella piazza centrale.
+- Compare un gazebo con palco in legno, tetto blu, casse (jukebox + note block), microfono (end rod su sbarre di ferro), due file di sedie e due cartelli "Foro Pubblico". Sul palco c'è "L'Oratore" (personaggio inventato) che ogni 12 s dice una frase in chat; i 6 abitanti del pubblico applaudono (particelle verdi, salto, suono) o fischiano (particelle arrabbiate, scuotono la testa).
+- Resta entro 16 blocchi per 60 secondi di fila: nella barra azioni vedi "x / 60 s"; se ti allontani riparte da zero. A 60 s ricevi il Primo Emendamento (una sola volta per evento) e la quest "Civic Voice". In alto c'è la barra dell'evento con il tempo rimasto (2 minuti).
+- A fine evento (o con `stop`, o `/kill` dell'Oratore) palco, Oratore e pubblico spariscono e la piazza torna com'era. Se esci a metà evento, al rientro l'Oratore se ne va e la piazza viene ripristinata.
+- Skin dell'Oratore: `src/main/resources/assets/israel_simulator/textures/entity/orator.png` (skin 64x64 standard, segnaposto da sostituire).
+- Test: `PublicSpeechEventTest`. Provato con `runServer` da console (palco, Oratore, pubblico, fine evento e ripristino); non testato in gioco dal client.

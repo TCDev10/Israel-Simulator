@@ -58,6 +58,10 @@ public final class ModEntities {
             ENTITY_TYPES.registerEntityType(MoneyChangerEntity.TRADE_SET_ID, MoneyChangerEntity::new, MobCategory.CREATURE,
                     b -> b.sized(0.6F, 1.95F).clientTrackingRange(10));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<com.israelsimulator.entity.npc.OratorEntity>> ORATOR =
+            ENTITY_TYPES.registerEntityType("orator", com.israelsimulator.entity.npc.OratorEntity::new, MobCategory.MISC,
+                    b -> b.sized(0.6F, 1.8F).clientTrackingRange(10));
+
     private ModEntities() {}
 
     public static void register(IEventBus modEventBus) {
@@ -75,6 +79,7 @@ public final class ModEntities {
         event.put(JEFFREY_EPSTEIN.get(), com.israelsimulator.entity.boss.JeffreyEpsteinEntity.createAttributes().build());
         event.put(CHILD_ZOMBIE_MINION.get(), com.israelsimulator.entity.boss.ChildZombieMinionEntity.createAttributes().build());
         event.put(MONEY_CHANGER.get(), MoneyChangerEntity.createAttributes().build());
+        event.put(ORATOR.get(), com.israelsimulator.entity.npc.OratorEntity.createAttributes().build());
     }
 
     /**

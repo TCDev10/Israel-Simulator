@@ -18,9 +18,32 @@ public final class ModGameEvents {
         IsraelSimulator.LOGGER.info("Israel-Simulator server starting");
     }
 
+    @SubscribeEvent
+    public static void onRegisterCommands(net.neoforged.neoforge.event.RegisterCommandsEvent event) {
+        com.israelsimulator.event.world.speech.SpeechCommands.register(event.getDispatcher());
+    }
+
+    @SubscribeEvent
+    public static void onServerStopping(net.neoforged.neoforge.event.server.ServerStoppingEvent event) {
+        com.israelsimulator.event.world.speech.PublicSpeechEvent.reset();
+    }
+
+    /** Crowd villagers left over from a previous session (event state is not saved) leave on load. */
+    @SubscribeEvent
+    public static void onEntityJoin(net.neoforged.neoforge.event.entity.EntityJoinLevelEvent event) {
+        if (!event.getLevel().isClientSide()
+                && event.getEntity().entityTags().contains(com.israelsimulator.event.world.speech.PublicSpeechEvent.CROWD_TAG)
+                && !com.israelsimulator.event.world.speech.PublicSpeechEvent.isCrowdMember(event.getEntity().getUUID())) {
+            event.setCanceled(true);
+        }
+    }
+
     /** Restores Epstein arenas whose boss vanished (died unloaded, other dimension, deleted). */
     @SubscribeEvent
     public static void onLevelTick(net.neoforged.neoforge.event.tick.LevelTickEvent.Post event) {
+        if (event.getLevel() instanceof net.minecraft.server.level.ServerLevel speechLevel) {
+            com.israelsimulator.event.world.speech.PublicSpeechEvent.tick(speechLevel);
+        }
         if (event.getLevel() instanceof net.minecraft.server.level.ServerLevel level
                 && level.getGameTime() % com.israelsimulator.entity.boss.ArenaRestoreRules.ORPHAN_CHECK_INTERVAL == 0) {
             com.israelsimulator.entity.boss.EpsteinArenaSnapshots.tickOrphans(level);

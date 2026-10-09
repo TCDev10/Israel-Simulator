@@ -52,6 +52,7 @@ public class IsraelSimulatorClient {
         event.registerEntityRenderer(ModEntities.JEFFREY_EPSTEIN.get(), com.israelsimulator.client.renderer.JeffreyEpsteinRenderer::new);
         event.registerEntityRenderer(ModEntities.CHILD_ZOMBIE_MINION.get(), com.israelsimulator.client.renderer.ChildZombieMinionRenderer::new);
         event.registerEntityRenderer(ModEntities.MONEY_CHANGER.get(), com.israelsimulator.client.renderer.MoneyChangerRenderer::new);
+        event.registerEntityRenderer(ModEntities.ORATOR.get(), com.israelsimulator.client.renderer.OratorRenderer::new);
     }
 
     @SubscribeEvent

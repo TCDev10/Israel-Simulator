@@ -31,7 +31,7 @@ import net.minecraft.world.phys.AABB;
 /**
  * Per-dimension snapshot of the blocks the Epstein arena (glass dome + pavilion) replaced,
  * keyed by the boss UUID, so the world can be put back exactly when the fight ends, even
- * after a save/reload.
+ * after a save/reload. Also used for the Public Speech stage, keyed by the Orator UUID.
  */
 public final class EpsteinArenaSnapshots extends SavedData {
     /** Restore flags: send to clients, no neighbour shape updates, no drops, no container spill. */
@@ -164,7 +164,7 @@ public final class EpsteinArenaSnapshots extends SavedData {
         data.arenas.remove(boss);
         data.missingChecks.remove(boss);
         data.setDirty();
-        IsraelSimulator.LOGGER.info("Restored Epstein arena for {}: {} blocks restored, {} left as changed by players",
+        IsraelSimulator.LOGGER.info("Restored arena/stage for {}: {} blocks restored, {} left as changed by players",
                 boss, plan.restore().size(), plan.skipped().size());
         return true;
     }
@@ -178,7 +178,7 @@ public final class EpsteinArenaSnapshots extends SavedData {
             BlockPos max = BlockPos.of(arena.max());
             BlockPos center = new BlockPos((min.getX() + max.getX()) / 2, min.getY(), (min.getZ() + max.getZ()) / 2);
             boolean loaded = level.hasChunksAt(min, max) && level.areEntitiesLoaded(ChunkPos.pack(center));
-            boolean present = level.getEntity(arena.boss()) instanceof JeffreyEpsteinEntity e && e.isAlive();
+            boolean present = level.getEntity(arena.boss()) instanceof net.minecraft.world.entity.LivingEntity e && e.isAlive();
             int missing = ArenaRestoreRules.nextMissingCount(data.missingChecks.getOrDefault(arena.boss(), 0), present, loaded);
             data.missingChecks.put(arena.boss(), missing);
             if (ArenaRestoreRules.shouldRestoreOrphan(missing)) {
