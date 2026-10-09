@@ -27,47 +27,6 @@ SALT = lambda: blk("israel_simulator:salt_block") if False else blk("minecraft:w
 def salt():
     return blk("israel_simulator:salt_block") if True else CALC()
 
-def gen_desert_ruins():
-    SX,SY,SZ=36,12,36; fy=1
-    s=Structure(SX,SY,SZ)
-    s.fills(0,0,0,SX-1,fy-1,SZ-1,SAND())
-    for x in range(SX):
-        for z in range(SZ):
-            s.set(x,fy,z, SAND() if (x+z)%5 else RED_SAND())
-    # Broken arch colonnade
-    for i,x in enumerate(range(6,30,4)):
-        for z in (8, 28):
-            for y in range(fy+1, fy+5):
-                s.set(x,y,z, SS() if y<fy+4 else CH())
-        # lintel
-        if i < 5:
-            for dx in range(4):
-                s.set(x+dx, fy+5, 8, CS())
-                s.set(x+dx, fy+5, 28, CS())
-    # Ruined chamber
-    s.fills(12,fy,12,24,fy,24, SSS())
-    for y in range(fy+1, fy+4):
-        for x in range(12,25):
-            s.set(x,y,12, SS()); s.set(x,y,24, SS())
-        for z in range(12,25):
-            s.set(12,y,z, SS()); s.set(24,y,z, SS())
-    # gaps / collapse
-    for x,z in [(14,12),(15,12),(18,24),(20,24),(12,16),(24,18)]:
-        s.set(x,fy+1,z, blk("minecraft:air")); s.set(x,fy+2,z, blk("minecraft:air"))
-    s.set(18,fy+1,18, chest(facing="south", loot="israel_simulator:chests/desert_ruins"))
-    s.set(20,fy+1,18, CH())
-    # rubble + bushes
-    for x,z in [(5,15),(8,20),(28,10),(30,22),(10,30)]:
-        s.set(x,fy+1,z, DEAD_BUSH() if x%2 else CACTUS())
-        s.set(x,fy,z, SAND())
-    # perimeter low wall fragments
-    for x in range(4,32):
-        if x%3: s.set(x,fy+1,4, WALL())
-    # Framework test marker
-    s.set(1, fy+1, 1, blk("minecraft:cracked_stone_bricks"))
-    write_jigsaw("desert_ruins", "israel_simulator:judean_desert", salt=441122)
-    s.save(ROOT/"src/main/resources/data/israel_simulator/structure/desert_ruins.nbt")
-
 def gen_ein_gedi():
     SX,SY,SZ=32,14,32; fy=1
     s=Structure(SX,SY,SZ)
@@ -166,6 +125,5 @@ def gen_dead_sea_resort():
     s.save(ROOT/"src/main/resources/data/israel_simulator/structure/dead_sea_resort.nbt")
 
 if __name__ == "__main__":
-    gen_desert_ruins()
     gen_ein_gedi()
     gen_dead_sea_resort()
