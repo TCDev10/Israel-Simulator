@@ -31,7 +31,7 @@ import net.minecraft.world.phys.AABB;
 /**
  * Per-dimension snapshot of the blocks the Epstein arena (glass dome + pavilion) replaced,
  * keyed by the boss UUID, so the world can be put back exactly when the fight ends, even
- * after a save/reload. Also used for the Public Speech stage, keyed by the Orator UUID.
+ * after a save/reload. Also used for the Public Speech stage, keyed by Charlie Kirk UUID.
  */
 public final class EpsteinArenaSnapshots extends SavedData {
     /** Restore flags: send to clients, no neighbour shape updates, no drops, no container spill. */

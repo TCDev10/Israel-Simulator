@@ -49,6 +49,14 @@ public final class IsraelSimulatorConfig {
     private static final ModConfigSpec.DoubleValue MUSIC_VOLUME_MULTIPLIER;
     private static final ModConfigSpec.BooleanValue CITY_AMBIENCE_ENABLED;
 
+    // Weapons
+    private static final ModConfigSpec.DoubleValue WEAPON_DAMAGE_MULTIPLIER;
+    private static final ModConfigSpec.BooleanValue GRENADE_BREAKS_BLOCKS;
+    private static final ModConfigSpec.DoubleValue GRENADE_EXPLOSION_POWER;
+    private static final ModConfigSpec.IntValue GRENADE_FUSE_TICKS;
+    private static final ModConfigSpec.BooleanValue DRONE_BREAKS_BLOCKS;
+    private static final ModConfigSpec.DoubleValue DRONE_EXPLOSION_POWER;
+
     // Debug (§56)
     private static final ModConfigSpec.BooleanValue DEBUG_LOGGING_ENABLED;
 
@@ -174,6 +182,33 @@ public final class IsraelSimulatorConfig {
                 .comment("Enable regional ambient city soundscapes.")
                 .translation("israel_simulator.configuration.cityAmbienceEnabled")
                 .define("cityAmbienceEnabled", true);
+        builder.pop();
+
+        builder.push("weapons");
+        WEAPON_DAMAGE_MULTIPLIER = builder
+                .comment("Multiplier applied to the damage of the assault rifle, SMG and sniper rifle.")
+                .translation("israel_simulator.configuration.weaponDamageMultiplier")
+                .defineInRange("weaponDamageMultiplier", 1.0, 0.0, 10.0);
+        GRENADE_BREAKS_BLOCKS = builder
+                .comment("Whether frag grenade explosions break blocks (default false: they only hurt entities).")
+                .translation("israel_simulator.configuration.grenadeBreaksBlocks")
+                .define("grenadeBreaksBlocks", false);
+        GRENADE_EXPLOSION_POWER = builder
+                .comment("Frag grenade explosion power (creeper = 3.0, TNT = 4.0).")
+                .translation("israel_simulator.configuration.grenadeExplosionPower")
+                .defineInRange("grenadeExplosionPower", 2.5, 0.5, 6.0);
+        GRENADE_FUSE_TICKS = builder
+                .comment("Frag grenade fuse in ticks from the throw (20 ticks = 1 second).")
+                .translation("israel_simulator.configuration.grenadeFuseTicks")
+                .defineInRange("grenadeFuseTicks", 50, 10, 200);
+        DRONE_BREAKS_BLOCKS = builder
+                .comment("Whether the Palantrio Drone's explosion breaks blocks (default false).")
+                .translation("israel_simulator.configuration.droneBreaksBlocks")
+                .define("droneBreaksBlocks", false);
+        DRONE_EXPLOSION_POWER = builder
+                .comment("Palantrio Drone explosion power (TNT = 4.0; default 2.0 is a small TNT).")
+                .translation("israel_simulator.configuration.droneExplosionPower")
+                .defineInRange("droneExplosionPower", 2.0, 0.5, 6.0);
         builder.pop();
 
         builder.push("debug");
@@ -355,6 +390,54 @@ public final class IsraelSimulatorConfig {
             return DEBUG_LOGGING_ENABLED != null && DEBUG_LOGGING_ENABLED.get();
         } catch (Exception ignored) {
             return false;
+        }
+    }
+
+    public static double weaponDamageMultiplier() {
+        try {
+            return WEAPON_DAMAGE_MULTIPLIER != null ? WEAPON_DAMAGE_MULTIPLIER.get() : 1.0;
+        } catch (Exception ignored) {
+            return 1.0;
+        }
+    }
+
+    public static boolean grenadeBreaksBlocks() {
+        try {
+            return GRENADE_BREAKS_BLOCKS != null && GRENADE_BREAKS_BLOCKS.get();
+        } catch (Exception ignored) {
+            return false;
+        }
+    }
+
+    public static double grenadeExplosionPower() {
+        try {
+            return GRENADE_EXPLOSION_POWER != null ? GRENADE_EXPLOSION_POWER.get() : 2.5;
+        } catch (Exception ignored) {
+            return 2.5;
+        }
+    }
+
+    public static int grenadeFuseTicks() {
+        try {
+            return GRENADE_FUSE_TICKS != null ? GRENADE_FUSE_TICKS.get() : 50;
+        } catch (Exception ignored) {
+            return 50;
+        }
+    }
+
+    public static boolean droneBreaksBlocks() {
+        try {
+            return DRONE_BREAKS_BLOCKS != null && DRONE_BREAKS_BLOCKS.get();
+        } catch (Exception ignored) {
+            return false;
+        }
+    }
+
+    public static double droneExplosionPower() {
+        try {
+            return DRONE_EXPLOSION_POWER != null ? DRONE_EXPLOSION_POWER.get() : 2.0;
+        } catch (Exception ignored) {
+            return 2.0;
         }
     }
 }

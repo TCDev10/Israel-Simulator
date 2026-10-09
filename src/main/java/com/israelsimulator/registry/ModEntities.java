@@ -62,6 +62,29 @@ public final class ModEntities {
             ENTITY_TYPES.registerEntityType("orator", com.israelsimulator.entity.npc.OratorEntity::new, MobCategory.MISC,
                     b -> b.sized(0.6F, 1.8F).clientTrackingRange(10));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<com.israelsimulator.entity.projectile.FragGrenadeEntity>> FRAG_GRENADE =
+            ENTITY_TYPES.registerEntityType("frag_grenade", com.israelsimulator.entity.projectile.FragGrenadeEntity::new, MobCategory.MISC,
+                    b -> b.sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<com.israelsimulator.entity.projectile.PalantrioDroneEntity>> PALANTRIO_DRONE =
+            ENTITY_TYPES.registerEntityType("palantrio_drone", com.israelsimulator.entity.projectile.PalantrioDroneEntity::new, MobCategory.MISC,
+                    b -> b.sized(0.7F, 0.35F).clientTrackingRange(8).updateInterval(2));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<com.israelsimulator.entity.projectile.BibiPoisonBreathEntity>> BIBI_POISON_BREATH =
+            ENTITY_TYPES.registerEntityType("bibi_poison_breath", com.israelsimulator.entity.projectile.BibiPoisonBreathEntity::new, MobCategory.MISC,
+                    b -> b.sized(1.0F, 1.0F).clientTrackingRange(4).updateInterval(10));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.israelsimulator.entity.mossad.MossadAgentEntity>> MOSSAD_AGENT =
+            ENTITY_TYPES.registerEntityType("mossad_agent", com.israelsimulator.entity.mossad.MossadAgentEntity::new, MobCategory.MONSTER,
+                    b -> b.sized(0.6F, 1.95F).clientTrackingRange(8));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<com.israelsimulator.entity.mossad.MossadHandlerEntity>> MOSSAD_HANDLER =
+            ENTITY_TYPES.registerEntityType("mossad_handler", com.israelsimulator.entity.mossad.MossadHandlerEntity::new, MobCategory.MISC,
+                    b -> b.sized(0.6F, 1.95F).clientTrackingRange(10));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<com.israelsimulator.entity.mossad.MossadInformantEntity>> MOSSAD_INFORMANT =
+            ENTITY_TYPES.registerEntityType("mossad_informant", com.israelsimulator.entity.mossad.MossadInformantEntity::new, MobCategory.MISC,
+                    b -> b.sized(0.6F, 1.95F).clientTrackingRange(10));
+
     private ModEntities() {}
 
     public static void register(IEventBus modEventBus) {
@@ -79,6 +102,10 @@ public final class ModEntities {
         event.put(JEFFREY_EPSTEIN.get(), com.israelsimulator.entity.boss.JeffreyEpsteinEntity.createAttributes().build());
         event.put(CHILD_ZOMBIE_MINION.get(), com.israelsimulator.entity.boss.ChildZombieMinionEntity.createAttributes().build());
         event.put(MONEY_CHANGER.get(), MoneyChangerEntity.createAttributes().build());
+        event.put(PALANTRIO_DRONE.get(), com.israelsimulator.entity.projectile.PalantrioDroneEntity.createAttributes().build());
+        event.put(MOSSAD_AGENT.get(), com.israelsimulator.entity.mossad.MossadAgentEntity.createAttributes().build());
+        event.put(MOSSAD_HANDLER.get(), com.israelsimulator.entity.mossad.MossadHandlerEntity.createAttributes().build());
+        event.put(MOSSAD_INFORMANT.get(), com.israelsimulator.entity.mossad.MossadInformantEntity.createAttributes().build());
         event.put(ORATOR.get(), com.israelsimulator.entity.npc.OratorEntity.createAttributes().build());
     }
 

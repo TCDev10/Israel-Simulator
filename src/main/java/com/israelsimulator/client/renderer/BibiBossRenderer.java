@@ -14,7 +14,7 @@ import net.minecraft.resources.Identifier;
  */
 public class BibiBossRenderer extends HumanoidMobRenderer<BibiBossEntity, HumanoidRenderState, HumanoidModel<HumanoidRenderState>> {
 
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "textures/entity/bibi_boss.png");
+    public static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "textures/entity/bibi_boss.png");
 
     public BibiBossRenderer(EntityRendererProvider.Context context) {
         super(context, new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER)), 0.6F);

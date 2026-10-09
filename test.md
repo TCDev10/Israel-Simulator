@@ -463,7 +463,8 @@ Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure
 ## Discorso pubblico in piazza (evento)
 - Da op: `/israelsim event speech start` (o `start <x y z>`), `/israelsim event speech status`, `/israelsim event speech stop`. L'evento parte anche da solo: ogni minuto, se sei dentro Tel Aviv o Jerusalem e non c'è stato un evento negli ultimi 10 minuti (config `eventCooldownTicks`), c'è il 35% di probabilità che compaia un palco nella piazza centrale.
 - Compare un gazebo con palco in legno, tetto blu, casse (jukebox + note block), microfono (end rod su sbarre di ferro), due file di sedie e due cartelli "Foro Pubblico". Sul palco c'è "L'Oratore" (personaggio inventato) che ogni 12 s dice una frase in chat; i 6 abitanti del pubblico applaudono (particelle verdi, salto, suono) o fischiano (particelle arrabbiate, scuotono la testa).
-- Resta entro 16 blocchi per 60 secondi di fila: nella barra azioni vedi "x / 60 s"; se ti allontani riparte da zero. A 60 s ricevi il Primo Emendamento (una sola volta per evento) e la quest "Civic Voice". In alto c'è la barra dell'evento con il tempo rimasto (2 minuti).
+- L'evento dura esattamente 60 secondi (1200 tick): nella barra azioni vedi i secondi mancanti e in alto la barra dell'evento.
+- Allo scadere l'Oratore "muore" con un'esplosione solo visiva (particelle + suono di esplosione): nessun blocco rotto, nessun danno a giocatori o abitanti. Sul palco cade un solo Primo Emendamento, raccoglibile da chiunque; chi è entro 16 blocchi riceve il messaggio e la quest "Civic Voice". Con `stop` o `/kill` dell'Oratore non cade niente, quindi non si può farmare.
 - A fine evento (o con `stop`, o `/kill` dell'Oratore) palco, Oratore e pubblico spariscono e la piazza torna com'era. Se esci a metà evento, al rientro l'Oratore se ne va e la piazza viene ripristinata.
 - Skin dell'Oratore: `src/main/resources/assets/israel_simulator/textures/entity/orator.png` (skin 64x64 standard, segnaposto da sostituire).
 - Test: `PublicSpeechEventTest`. Provato con `runServer` da console (palco, Oratore, pubblico, fine evento e ripristino); non testato in gioco dal client.
@@ -474,3 +475,56 @@ Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure
 - L'isola può essere ruotata (rotazione casuale della struttura).
 - Test in gioco: `/locate structure israel_simulator:tropical_island` (seed 20261005: ~3600 blocchi), teletrasportarsi e controllare che l'isola sia intera, niente blocchi sospesi, casse con loot.
 - Test: `TropicalIslandTest`, `IslandTempleStructureTest`. Non testato in gioco dal client.
+## Armi: fucile d'assalto, Uzi, fucile di precisione, granate e munizioni
+- Nuove armi 3D (modello a cuboidi in mano/a terra, icona piatta nell'inventario), generate da `scripts/textures/gen_weapon_models.py`: Fucile d'Assalto Bullpup (stile Tavor), Mitraglietta Uzi, Fucile di Precisione a Otturatore con cannocchiale, Granata a Frammentazione.
+- Munizioni craftabili: `rifle_ammo` (pepita di ferro + polvere da sparo + lingotto di rame → 12), `smg_ammo` (2 pepite, polvere, rame → 16), `sniper_ammo` (lingotto di ferro + polvere + rame → 4). Granate: TNT + 4 lingotti di ferro + pepita → 4.
+- Ricette armi (3x3): fucile d'assalto con lingotto di netherite, parte di drone, ferro e gancio; Uzi con blocco di ferro, parte di drone, ferro e gancio; fucile di precisione con cannocchiale, 2 netherite, tronco di quercia scura, parte di drone, ferro e gancio.
+- Le armi si craftano scariche. Usa con il caricatore vuoto, oppure accovacciato + usa, oppure il tasto R (Controlli → "Israel Simulator: Armi") per ricaricare: il caricatore si riempie con le munizioni dell'inventario e l'arma resta in cooldown per il tempo di ricarica. In creativa la ricarica non consuma munizioni.
+- Fucile d'assalto e Uzi: tieni premuto il tasto destro per il fuoco automatico. Fucile di precisione: tieni premuto per mirare (zoom e mirino del cannocchiale come la lente), rilascia per sparare; dopo mezzo secondo di mira il colpo va dritto al centro.
+- I proiettili si fermano sui blocchi e ignorano la mezza secondo di invulnerabilità dei mob (ogni colpo conta). Nella barra azioni si vede "Munizioni: x / y".
+- Granata: si lancia, rimbalza e dopo 2,5 s esplode. Di default non rompe blocchi (config `weapons.grenadeBreaksBlocks`); potenza e spoletta configurabili, e `weaponDamageMultiplier` per il danno delle armi.
+- Test: `FirearmsTest`. `runClient` fino al menu principale senza errori di modelli o texture. Non testato in gioco dal client.
+
+## Palantrio Drone
+- Ricetta: 4 lingotti di ferro, 2 polvere di redstone e 2 parti di drone (`IRI / DRD / I I`) → 2 Palantrio Drone.
+- Usa: il drone parte davanti a te (oggetto consumato, 5 s di cooldown), cerca il mob ostile più vicino entro 32 blocchi (mai te, gli animali addomesticati o altri droni), lo raggiunge in volo ed esplode al contatto (potenza 2,0, mezza TNT). Di default non rompe blocchi (config `weapons.droneBreaksBlocks`, potenza `droneExplosionPower`). Senza bersaglio resta in hovering e si autodistrugge dopo 20 s.
+- Modello 3D: quadricottero con corpo, batteria, telecamera, bracci a croce, 4 motori e 4 eliche che girano.
+- Test: `PalantrioDroneTest`. Provato con `runServer` (datapack di prova): il drone raggiunge e uccide uno zombie a 6 blocchi; `runClient` fino al menu senza errori. Non testato in gioco dal client.
+## Cambiavalute: prezzi da benedetto
+- Con l'effetto Benedetto (o Mercante Benedetto, o la Corona del Rabbino) i prezzi del Cambiavalute scendono del 15% (almeno 1 in meno, mai sotto 1). Lo sconto vale solo mentre commerci e sparisce quando chiudi la schermata.
+- Test in gioco: apri il Cambiavalute senza effetto e annota i prezzi, poi `/effect give @s israel_simulator:blessed 120` e riaprilo: i prezzi devono essere barrati e più bassi. Tolto l'effetto (`/effect clear @s`) tornano normali.
+- Test: `MoneyChangerBlessedPricingTest`. Non testato in gioco dal client.
+
+## Musica del boss Bibi
+- Quando Bibi è vivo entro 64 blocchi parte in loop la canzone del boss (categoria Musica, cursore "Musica"). La musica vanilla si ferma e non riparte finché suona. Quando Bibi muore, sparisce o ti allontani oltre 64 blocchi la canzone sfuma in 2 secondi.
+- Il file è un SEGNAPOSTO silenzioso: `src/main/resources/assets/israel_simulator/sounds/music/bibi_boss_theme.ogg`. Sostituiscilo con un OGG Vorbis mono con lo stesso nome (la canzone di YouTube è protetta da copyright e non è inclusa).
+- Test in gioco: evoca Bibi, verifica che la musica vanilla si fermi e la canzone parta; allontanati di 70 blocchi e torna; uccidi Bibi.
+- Test: `BibiBossMusicTest`. Non testato in gioco dal client.
+
+## Bibi: soffio velenoso dall'alto (dopo Palm Beach Pete)
+- Si sblocca solo quando muore l'Epstein / Palm Beach Pete evocato da quel Bibi (flag `EpsteinDefeated` salvato nell'entità, sopravvive a salvataggio e riavvio). Prima non succede mai.
+- Da quel momento, ogni 15-25 s (casuale) Bibi sceglie un giocatore vicino (entro 32 blocchi, non in creativa/spettatore): ruggito del drago, 1,5 s di particelle viola/verdi sopra la testa come avviso, poi dall'alto (14 blocchi) cade una sfera tipo palla di fuoco del drago con suono di lancio.
+- All'impatto lascia una nube come il soffio del drago (particelle viola, sbuffo verde, raggio 3, dura 6 s) che dà Veleno II per 5 s invece di danno istantaneo. Non rompe né modifica blocchi.
+- Bibi ora è immune a fuoco e lava (nessun danno, le fiamme si spengono): prova con `/summon` vicino alla lava o con un accendino.
+- Test: `BibiPoisonBreathTest`, `BibiFireImmunityTest`. Prova in gioco: evoca Bibi, uccidi Epstein dopo che diventa Palm Beach Pete, resta vicino a Bibi in survival e controlla avviso, caduta e veleno; esci e rientra e verifica che l'attacco continui. Non testato in gioco dal client.
+
+
+## Mossad: agenti ostili e Referente con incarichi (contenuto di fantasia)
+- **Agente del Mossad** (ostile, modello giocatore in completo scuro, skin segnaposto `textures/entity/mossad_agent.png`): armato con Uzi (60%) o pistola, mira con le braccia alzate come le guardie di Bibi. Mentre ti segue da più di 10 blocchi è invisibile e accovacciato (si vede solo l'arma); si rivela quando si avvicina, spara o viene colpito. 26 cuori/2, spara ogni 1-1,75 s (Uzi: 2 colpi da 2,5; pistola: 1 da 5). Drop: munizioni Uzi (60%), 1-4 shekel, a volte munizioni da fucile.
+- Spawn: di notte, ogni 20 s per giocatore in un bioma israeliano, 4% di probabilità di 1-2 agenti a 24-36 blocchi (massimo 3 vicini). La reputazione Mossad abbassa la probabilità (a 50 è la metà, a 90+ il 10%); da 60 in su gli agenti non ti attaccano se non li colpisci tu. Non c'è un sistema di "ricercato" nella mod, quindi non reagiscono ai crimini.
+- **Rifugio del Mossad**: nuova casa piccola nei pool degli edifici di Tel Aviv e Jerusalem (peso 1), con il **Referente del Mossad** dentro (invulnerabile, non sparisce), radio, mappa, leggio e una cassa con munizioni/shekel.
+- Click destro sul Referente: menu in chat cliccabile con 3 incarichi (oppure `/mossad accept <eliminate|retrieve|escort>` vicino al Referente, `/mossad status`, `/mossad abandon` (-5 reputazione)):
+  - **Cellula Deviata**: 3 agenti compaiono a 30-45 blocchi; uccidili. Premio 16 shekel + 32 munizioni Uzi (+ Uzi carica la prima volta), +10 reputazione.
+  - **Fascicolo Perduto**: trova un Fascicolo Sigillato nelle casse delle rovine nel deserto (anche lo scriptorium) e portalo al Referente. Premio 24 shekel + 4 granate + 8 munizioni da cecchino, +15 reputazione.
+  - **Passaggio Sicuro**: un informatore ti segue (se resta indietro di 24 blocchi ti raggiunge); portalo al punto a 120-180 blocchi (scintille verdi), dove aspettano 2 agenti. Se muore l'incarico fallisce (-10). Premio 32 shekel + 30 munizioni da fucile (+ fucile d'assalto carico la prima volta), +20 reputazione.
+- Da op: `/mossad spawn_agents [n]`, `/mossad reputation <valore>`. Uova generatrici per agente e Referente nella scheda creativa.
+- Test: `MossadTest`. Provato con `runServer` (datapack di prova): agenti con l'Uzi, informatore, e `place template` di entrambi i rifugi con il Referente dentro; `runClient` fino al menu senza errori. Non testato in gioco dal client (menu in chat, invisibilità e incarichi non provati con un giocatore).
+
+## Rabbi's Crown: modello 3D stile Blockbench (feat/rabbi-crown-3d)
+
+Problema: la corona era un'icona piatta (`item/generated`) e in testa usava una texture equipment piatta. Come è stato risolto: nuovo modello a cuboidi `models/item/rabbis_crown.json` (55 elementi: fascia d'oro con filigrana e bordi, 7 punte a tre stadi con gemme blu/bianche/rosse, 8 gemme incastonate nella fascia, calotta di velluto blu scuro con pomolo, Stella di David sul davanti) e texture 64x64 generata da `tools/gen_rabbis_crown.py` (PIL), con display per gui, ground, fixed, head, mani e on_shelf. Rimossi `equipment/rabbis_crown.json`, le due texture equipment e `RABBIS_CROWN_ASSET`: senza asset, il `CustomHeadLayer` vanilla disegna lo stesso modello 3D sulla testa (giocatore e mob umanoidi come Bibi), seguendo rotazione della testa e sneak. Slot testa, +20 armatura, Blessed/Blessed Trader invariati. Test aggiornati (`ClientRenderingValidationTest`, `RabbisCrownAndBlessedTraderTest`): verificano modello a cuboidi, parti, limiti coordinate/rotazioni, display e assenza dell'equipment asset. `./gradlew test`: 358/358. `runClient` (DISPLAY=:12): nessun errore di modello o texture nel log. Anteprima generata con `tools/preview_model.py` (renderer software, non il gioco). Non provato in gioco con la corona indossata.
+
+## Skin dei mob con modello giocatore (fix Steve)
+- Causa: le texture di Oratore, agenti/Referente/informatore del Mossad, Bibi, Epstein, Trump, money changer e bambino zombie erano copie della skin vanilla di Steve (in tutto o almeno nella testa). I renderer puntavano già al file giusto (`israel_simulator:textures/entity/<nome>.png`), quindi in gioco si vedeva Steve.
+- Ora ognuno ha una skin originale 64×64 (generata da `tools/gen_skins.py`). Per la skin dell'Oratore basta sostituire `textures/entity/orator.png` con una skin 64×64 classica (non slim). Tolto `kirk.png` inutilizzato.
+- Test: `EntitySkinTextureTest` (percorso texture di ogni renderer, PNG 64×64 presente, faccia diversa da Steve). `runClient` fino al menu senza errori di texture; non provato evocando i mob in un mondo.

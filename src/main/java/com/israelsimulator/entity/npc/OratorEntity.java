@@ -17,7 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 /**
- * The Orator: a fictional, generic speaker who hosts the Public Speech event from the stage.
+ * Charlie Kirk: a fictional, generic speaker who hosts the Public Speech event from the stage.
  * Not based on any real person. Stands still, looks at the audience, and is removed (with the
  * stage restored) when the event ends.
  */

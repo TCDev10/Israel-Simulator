@@ -85,12 +85,34 @@ public final class ModItems {
 
     // Combat items (§41–44)
     public static final DeferredHolder<Item, com.israelsimulator.item.combat.SecurityPistolItem> PISTOL = ITEMS.registerItem("pistol", p -> new com.israelsimulator.item.combat.SecurityPistolItem(p.stacksTo(1)));
+    // Firearms, grenades and ammunition
+    public static final DeferredHolder<Item, Item> RIFLE_AMMO = ITEMS.registerSimpleItem("rifle_ammo");
+    public static final DeferredHolder<Item, Item> SMG_AMMO = ITEMS.registerSimpleItem("smg_ammo");
+    public static final DeferredHolder<Item, Item> SNIPER_AMMO = ITEMS.registerSimpleItem("sniper_ammo");
+    public static final DeferredHolder<Item, com.israelsimulator.item.combat.FirearmItem> ASSAULT_RIFLE = ITEMS.registerItem("assault_rifle",
+            p -> new com.israelsimulator.item.combat.FirearmItem(p, com.israelsimulator.item.combat.FirearmStats.ASSAULT_RIFLE, RIFLE_AMMO, false));
+    public static final DeferredHolder<Item, com.israelsimulator.item.combat.FirearmItem> SMG = ITEMS.registerItem("smg",
+            p -> new com.israelsimulator.item.combat.FirearmItem(p, com.israelsimulator.item.combat.FirearmStats.SMG, SMG_AMMO, false));
+    public static final DeferredHolder<Item, com.israelsimulator.item.combat.FirearmItem> SNIPER_RIFLE = ITEMS.registerItem("sniper_rifle",
+            p -> new com.israelsimulator.item.combat.FirearmItem(p, com.israelsimulator.item.combat.FirearmStats.SNIPER_RIFLE, SNIPER_AMMO, true));
+    public static final DeferredHolder<Item, com.israelsimulator.item.combat.FragGrenadeItem> FRAG_GRENADE = ITEMS.registerItem("frag_grenade",
+            com.israelsimulator.item.combat.FragGrenadeItem::new);
+    public static final DeferredHolder<Item, com.israelsimulator.item.combat.PalantrioDroneItem> PALANTRIO_DRONE = ITEMS.registerItem("palantrio_drone",
+            com.israelsimulator.item.combat.PalantrioDroneItem::new);
     public static final DeferredHolder<Item, com.israelsimulator.item.combat.MissileItem> MISSILE = ITEMS.registerItem("missile", p -> new com.israelsimulator.item.combat.MissileItem(p.stacksTo(16)));
 
     // Spawn eggs (§26, §29): debug/testing access to the Money Changer trader entity.
     public static final DeferredHolder<Item, SpawnEggItem> MONEY_CHANGER_SPAWN_EGG =
             ITEMS.registerItem("money_changer_spawn_egg",
                     p -> new SpawnEggItem(p.spawnEgg(ModEntities.MONEY_CHANGER.get())));
+
+    public static final DeferredHolder<Item, SpawnEggItem> MOSSAD_AGENT_SPAWN_EGG =
+            ITEMS.registerItem("mossad_agent_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.MOSSAD_AGENT.get())));
+    public static final DeferredHolder<Item, SpawnEggItem> MOSSAD_HANDLER_SPAWN_EGG =
+            ITEMS.registerItem("mossad_handler_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.MOSSAD_HANDLER.get())));
+
+    /** Mission item for the Mossad Handler's RETRIEVE mission, found in Judean desert ruins chests. */
+    public static final DeferredHolder<Item, Item> SEALED_DOSSIER = ITEMS.registerSimpleItem("sealed_dossier", p -> p.stacksTo(16));
 
     private ModItems() {}
 

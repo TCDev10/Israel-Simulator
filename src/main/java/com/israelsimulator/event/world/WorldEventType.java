@@ -7,7 +7,7 @@ public enum WorldEventType {
     PUBLIC_SPEECH(
             "public_speech", "Public Speech & Civic Gathering",
             "A civic gathering for open, democratic discourse and free expression.",
-            2400L, 1200L // 2 min total duration, 60s minimum participation
+            1200L, 1200L // exactly 60 s; ends with Charlie Kirk dropping the First Amendment
     ),
     MARKET_DAY(
             "market_day", "Shuk Market Day",

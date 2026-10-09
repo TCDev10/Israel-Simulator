@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "n",
+    "G",
+    "C"
+  ],
+  "key": {
+    "n": "minecraft:iron_nugget",
+    "G": "minecraft:gunpowder",
+    "C": "minecraft:copper_ingot"
+  },
+  "result": {
+    "count": 12,
+    "id": "israel_simulator:rifle_ammo"
+  }
+}

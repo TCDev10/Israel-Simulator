@@ -31,61 +31,33 @@ class RabbisCrownAndBlessedTraderTest {
     }
 
     @Test
-    @DisplayName("Verify Rabbi's Crown equipment asset key and configuration")
-    void testRabbisCrownEquipmentAssetKey() {
-        assertNotNull(CulturalItems.RABBIS_CROWN_ASSET);
-        assertEquals("israel_simulator:rabbis_crown", CulturalItems.RABBIS_CROWN_ASSET.identifier().toString());
+    @DisplayName("Verify Rabbi's Crown is worn as its 3D item model (no flat equipment asset)")
+    void testRabbisCrownWornAs3DModel() {
+        assertNull(getClass().getResourceAsStream("/assets/israel_simulator/equipment/rabbis_crown.json"),
+                "an equipment asset would make HumanoidArmorLayer draw a flat texture instead of the 3D crown");
+        assertNull(getClass().getResourceAsStream("/assets/israel_simulator/textures/entity/equipment/humanoid/rabbis_crown.png"),
+                "the flat humanoid equipment texture must be gone");
+        assertNotNull(getClass().getResourceAsStream("/assets/israel_simulator/textures/item/rabbis_crown.png"),
+                "textures/item/rabbis_crown.png must exist");
     }
 
     @Test
-    @DisplayName("Verify Rabbi's Crown item definition and flat item model")
-    void testRabbisCrownItemModelJson() {
-        // The worn hat/payot/beard comes from equipment/rabbis_crown.json (see
-        // testRabbisCrownEquipmentAssetJson); in hand and GUI the crown is a flat model.
-        InputStream def = getClass().getResourceAsStream("/assets/israel_simulator/items/rabbis_crown.json");
-        assertNotNull(def, "items/rabbis_crown.json must exist in assets");
-        try {
-            String json = new String(def.readAllBytes(), StandardCharsets.UTF_8);
-            assertTrue(json.contains("israel_simulator:item/rabbis_crown"),
+    @DisplayName("Verify Rabbi's Crown item definition and 3D cuboid item model")
+    void testRabbisCrownItemModelJson() throws Exception {
+        try (InputStream def = getClass().getResourceAsStream("/assets/israel_simulator/items/rabbis_crown.json")) {
+            assertNotNull(def, "items/rabbis_crown.json must exist in assets");
+            assertTrue(new String(def.readAllBytes(), StandardCharsets.UTF_8).contains("israel_simulator:item/rabbis_crown"),
                     "item definition must point at the crown model");
-        } catch (Exception e) {
-            fail("Failed reading item definition JSON: " + e.getMessage());
         }
-
-        InputStream stream = getClass().getResourceAsStream("/assets/israel_simulator/models/item/rabbis_crown.json");
-        assertNotNull(stream, "models/item/rabbis_crown.json must exist in assets");
-        try {
-            String json = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
-            assertTrue(json.contains("minecraft:item/generated"), "inventory model is a flat generated item");
-            assertTrue(json.contains("israel_simulator:item/rabbis_crown"),
-                    "flat model must use the crown item texture");
-        } catch (Exception e) {
-            fail("Failed reading item model JSON: " + e.getMessage());
+        try (InputStream stream = getClass().getResourceAsStream("/assets/israel_simulator/models/item/rabbis_crown.json")) {
+            assertNotNull(stream, "models/item/rabbis_crown.json must exist in assets");
+            com.google.gson.JsonObject model = com.google.gson.JsonParser.parseString(
+                    new String(stream.readAllBytes(), StandardCharsets.UTF_8)).getAsJsonObject();
+            assertFalse(model.has("parent") && model.get("parent").getAsString().contains("generated"),
+                    "the crown must no longer be a flat generated item");
+            assertTrue(model.getAsJsonArray("elements").size() >= 30, "crown must be a detailed cuboid model");
+            assertTrue(model.getAsJsonObject("display").has("head"), "crown must define the head display transform");
         }
-    }
-
-    @Test
-    @DisplayName("Verify Rabbi's Crown equipment asset JSON exists and references humanoid texture")
-    void testRabbisCrownEquipmentAssetJson() {
-        InputStream stream = getClass().getResourceAsStream("/assets/israel_simulator/equipment/rabbis_crown.json");
-        assertNotNull(stream, "equipment/rabbis_crown.json must exist in assets");
-        try {
-            String json = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
-            assertTrue(json.contains("israel_simulator:rabbis_crown"), "Equipment asset must define rabbis_crown texture");
-            assertTrue(json.contains("humanoid"), "Equipment asset must support humanoid layer");
-        } catch (Exception e) {
-            fail("Failed reading equipment asset JSON: " + e.getMessage());
-        }
-    }
-
-    @Test
-    @DisplayName("Verify Rabbi's Crown item and humanoid equipment textures exist")
-    void testRabbisCrownTextures() {
-        InputStream itemStream = getClass().getResourceAsStream("/assets/israel_simulator/textures/item/rabbis_crown.png");
-        assertNotNull(itemStream, "textures/item/rabbis_crown.png must exist");
-
-        InputStream equipStream = getClass().getResourceAsStream("/assets/israel_simulator/textures/entity/equipment/humanoid/rabbis_crown.png");
-        assertNotNull(equipStream, "textures/entity/equipment/humanoid/rabbis_crown.png must exist");
     }
 
     @Test

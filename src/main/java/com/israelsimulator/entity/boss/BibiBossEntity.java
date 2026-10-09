@@ -1,6 +1,7 @@
 package com.israelsimulator.entity.boss;
 
 import com.israelsimulator.config.IsraelSimulatorConfig;
+import com.israelsimulator.entity.projectile.BibiPoisonBreathEntity;
 import com.israelsimulator.registry.ModEntities;
 import com.israelsimulator.registry.ModItems;
 import com.israelsimulator.registry.ModSoundEvents;
@@ -79,6 +80,11 @@ public class BibiBossEntity extends Monster implements RangedAttackMob {
 
     private UUID trumpMinibossUuid = null;
     private UUID epsteinBossUuid = null;
+    /** Set when the Epstein / Palm Beach Pete summoned by this Bibi dies; unlocks the poison breath. Persisted. */
+    private boolean epsteinDefeated = false;
+    private int poisonBreathCooldown = BibiPoisonBreathRules.MIN_INTERVAL_TICKS;
+    private UUID poisonBreathTargetUuid = null;
+    private int poisonBreathWarningTicks = 0;
     private final Set<UUID> participatingPlayerUuids = new HashSet<>();
     private final List<UUID> aliveGuardUuids = new ArrayList<>();
 
@@ -220,6 +226,9 @@ public class BibiBossEntity extends Monster implements RangedAttackMob {
                 handleCombatRoutines(serverLevel);
             }
 
+            // Late-fight poison breath (only after Epstein / Palm Beach Pete has died)
+            tickPoisonBreath(serverLevel);
+
             // Visual effects for ENRAGED and DESPERATE phases
             if (this.bossState == BibiBossState.ENRAGED && this.tickCount % 5 == 0) {
                 serverLevel.sendParticles(ParticleTypes.SOUL_FIRE_FLAME,
@@ -235,6 +244,78 @@ public class BibiBossEntity extends Monster implements RangedAttackMob {
                         3, 0.1, 0.1, 0.1, 0.03);
             }
         }
+    }
+
+    /** True for fire, lava, magma and other fire-tagged damage that Bibi ignores. */
+    public static boolean isFireOrLavaDamage(DamageSource source) {
+        return source.is(net.minecraft.tags.DamageTypeTags.IS_FIRE)
+                || source.is(net.minecraft.world.damagesource.DamageTypes.LAVA)
+                || source.is(net.minecraft.world.damagesource.DamageTypes.HOT_FLOOR);
+    }
+
+    public boolean isEpsteinDefeated() {
+        return this.epsteinDefeated;
+    }
+
+    /** Called by the Epstein summoned by this Bibi when it dies. */
+    public void onEpsteinDefeated() {
+        if (!this.epsteinDefeated) {
+            this.epsteinDefeated = true;
+            this.epsteinBossUuid = null;
+            this.poisonBreathCooldown = BibiPoisonBreathRules.nextInterval(new java.util.Random(this.random.nextLong()));
+        }
+    }
+
+    private void tickPoisonBreath(ServerLevel serverLevel) {
+        boolean bibiDefeated = this.bossState == BibiBossState.DEFEATED || !this.isAlive();
+        if (!BibiPoisonBreathRules.isUnlocked(this.epsteinDefeated, bibiDefeated)) {
+            this.poisonBreathTargetUuid = null;
+            return;
+        }
+        if (this.poisonBreathTargetUuid != null) {
+            net.minecraft.world.entity.Entity e = serverLevel.getEntity(this.poisonBreathTargetUuid);
+            if (!(e instanceof Player target) || !target.isAlive() || target.isSpectator()) {
+                this.poisonBreathTargetUuid = null;
+                return;
+            }
+            double topY = target.getY() + BibiPoisonBreathRules.DROP_HEIGHT;
+            if (this.poisonBreathWarningTicks % 3 == 0) {
+                serverLevel.sendParticles(ParticleTypes.WITCH, target.getX(), target.getY() + 3.0, target.getZ(),
+                        6, 0.6, 0.2, 0.6, 0.01);
+                serverLevel.sendParticles(ParticleTypes.SNEEZE, target.getX(), topY, target.getZ(),
+                        8, 0.5, 0.5, 0.5, 0.02);
+            }
+            if (--this.poisonBreathWarningTicks <= 0) {
+                BibiPoisonBreathEntity orb = ModEntities.BIBI_POISON_BREATH.get().create(serverLevel, EntitySpawnReason.TRIGGERED);
+                if (orb != null) {
+                    orb.setOwner(this);
+                    orb.setPos(target.getX(), topY, target.getZ());
+                    orb.accelerationPower = 0.05;
+                    orb.setDeltaMovement(0.0, -0.6, 0.0);
+                    serverLevel.addFreshEntity(orb);
+                    serverLevel.playSound(null, target.getX(), topY, target.getZ(),
+                            SoundEvents.ENDER_DRAGON_SHOOT, SoundSource.HOSTILE, 2.0F, 0.9F);
+                }
+                this.poisonBreathTargetUuid = null;
+            }
+            return;
+        }
+        if (this.poisonBreathCooldown > 0) this.poisonBreathCooldown--;
+        if (!BibiPoisonBreathRules.shouldLaunch(this.epsteinDefeated, bibiDefeated, this.poisonBreathCooldown)) {
+            return;
+        }
+        List<Player> candidates = serverLevel.getEntitiesOfClass(Player.class,
+                this.getBoundingBox().inflate(BibiPoisonBreathRules.TARGET_RANGE),
+                p -> p.isAlive() && !p.isSpectator() && !p.isCreative());
+        this.poisonBreathCooldown = BibiPoisonBreathRules.nextInterval(new java.util.Random(this.random.nextLong()));
+        if (candidates.isEmpty()) {
+            return;
+        }
+        Player target = candidates.get(this.random.nextInt(candidates.size()));
+        this.poisonBreathTargetUuid = target.getUUID();
+        this.poisonBreathWarningTicks = BibiPoisonBreathRules.WARNING_TICKS;
+        serverLevel.playSound(null, target.getX(), target.getY(), target.getZ(),
+                SoundEvents.ENDER_DRAGON_GROWL, SoundSource.HOSTILE, 1.2F, 1.4F);
     }
 
     private void handleCombatRoutines(ServerLevel serverLevel) {
@@ -536,6 +617,11 @@ public class BibiBossEntity extends Monster implements RangedAttackMob {
 
     @Override
     public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float amount) {
+        // Fire and lava immunity (also fireImmune() on the EntityType)
+        if (isFireOrLavaDamage(damageSource)) {
+            this.clearFire();
+            return false;
+        }
         // Complete explosion immunity (GAME_DESIGN requirement)
         if (damageSource.is(net.minecraft.tags.DamageTypeTags.IS_EXPLOSION)) {
             return false;
@@ -722,6 +808,8 @@ public class BibiBossEntity extends Monster implements RangedAttackMob {
         output.putInt("BossState", this.bossState.ordinal());
         output.putBoolean("RewardDropped", this.rewardDropped);
         output.putInt("MissileBarrageCooldown", this.missileBarrageCooldown);
+        output.putBoolean("EpsteinDefeated", this.epsteinDefeated);
+        output.putInt("PoisonBreathCooldown", this.poisonBreathCooldown);
         if (this.trumpMinibossUuid != null) {
             output.putString("TrumpMinibossUUID", this.trumpMinibossUuid.toString());
         }
@@ -744,6 +832,8 @@ public class BibiBossEntity extends Monster implements RangedAttackMob {
         }
         this.rewardDropped = input.getBooleanOr("RewardDropped", false);
         this.missileBarrageCooldown = input.getIntOr("MissileBarrageCooldown", 180);
+        this.epsteinDefeated = input.getBooleanOr("EpsteinDefeated", false);
+        this.poisonBreathCooldown = input.getIntOr("PoisonBreathCooldown", BibiPoisonBreathRules.MIN_INTERVAL_TICKS);
         String trumpStr = input.getStringOr("TrumpMinibossUUID", "");
         if (!trumpStr.isEmpty()) {
             try {
