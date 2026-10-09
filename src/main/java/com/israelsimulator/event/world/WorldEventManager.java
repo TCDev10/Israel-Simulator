@@ -62,6 +62,10 @@ public final class WorldEventManager {
             participationTicks.merge(playerId, deltaTicks, Integer::sum);
         }
 
+        public void setTicks(UUID playerId, int ticks) {
+            participationTicks.put(playerId, ticks);
+        }
+
         public int getTicks(UUID playerId) {
             return participationTicks.getOrDefault(playerId, 0);
         }
