@@ -367,3 +367,7 @@ Problema riscontrato: `jaffa_port` era un singolo pezzo rettangolare (`beard_box
 Funzionamento aspettato: la vecchia Giaffa come città jigsaw: vicoli in pietra con scale, torre dell'orologio ottomana, mercato delle pulci, porto con barche, faro e molo, solo nel bioma `mediterranean_coast`.
 
 Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure/jaffa/*`. Piazza della torre dell'orologio con sabil (start), porto garantito sul lato nord (banchina, bacino d'acqua, molo in legno, 2 barche da pesca, frangiflutti e faro), vicoli in pietra (dritto, incrocio, curva, T) più arco e scalinata rigidi, 4 case in pietra (una con cupola, una galleria d'arte), mercato delle pulci con portico ad archi. Loot `jaffa_flea_market` più le nuove `jaffa_house` e `jaffa_harbour`. `beard_thin` e fondazione interrata di 4 blocchi. Test: `JaffaPortStructureTest`. Verifica headless (seed 424242): 33 pezzi, 0 celle flottanti sotto gli edifici (a parte molo e barche sull'acqua del bacino). Non testato in gioco dal client.
+
+## grand_market jigsaw (Mahane Yehuda)
+- `/locate structure israel_simulator:grand_market` in un bioma jerusalem: piazza d'ingresso con arco e insegna rossa, chiosco dei succhi, vicoli lastricati (coperti con tetto di vetro o aperti con luci), negozi (spezie, frutta, panetteria, pesce, halva, caffè), casa del mercato a 2 piani e la sala coperta del mercato sul lato nord.
+- Controllare: negozi appoggiati sul terreno (fondazione di 4 blocchi), vicoli che seguono il terreno, barili/casse con loot `grand_market`/`grand_market_food`.
