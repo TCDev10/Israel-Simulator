@@ -400,3 +400,7 @@ Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure
 ## Biomi israeliani molto più comuni
 - I 6 biomi ora prendono il posto di deserto/savana/badlands secchi (prima perdevano sempre contro i biomi vanilla ed erano rarissimi).
 - Nuovo mondo: `/locate biome israel_simulator:jerusalem` (e gli altri 5) deve rispondere in pochi secondi, di solito entro ~2000 blocchi. Controllare che la sequenza costa → città/campi → Gerusalemme → deserto/Mar Morto sia sensata e che il deserto vanilla esista ancora.
+
+## Biomi israeliani accanto a deserto/savana/badlands
+- I biomi israeliani non sostituiscono più deserto, savana e badlands: condividono la zona calda (metà per uno), come chiazze vicine.
+- Nuovo mondo: `/locate biome` dei 6 biomi israeliani e di `minecraft:desert`, `minecraft:savanna`, `minecraft:badlands` deve rispondere in pochi secondi. Controllare in volo che i biomi vanilla e israeliani si alternino in modo sensato.
