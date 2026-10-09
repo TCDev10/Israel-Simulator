@@ -12,7 +12,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.animal.feline.Cat;
-import net.minecraft.world.entity.npc.villager.Villager;
+import net.minecraft.world.entity.npc.villager.AbstractVillager;
 import net.minecraft.world.item.ItemStack;
 
 /**
@@ -65,9 +65,10 @@ public final class EasterEggManager {
     }
 
     /**
-     * Attempts to trigger a random procedural easter-egg dialogue when conversing with a villager.
+     * Attempts to trigger a random procedural easter-egg dialogue when conversing with a mod trader
+     * (Money Changer). Villagers are never touched: their vanilla trading GUI must always open.
      */
-    public static boolean triggerVillagerEasterEgg(ServerPlayer player, Villager villager) {
+    public static boolean triggerTraderEasterEgg(ServerPlayer player, AbstractVillager trader) {
         if (!(player.level() instanceof ServerLevel serverLevel)) {
             return false;
         }
@@ -81,11 +82,11 @@ public final class EasterEggManager {
         if (RNG.nextDouble() < 0.15) {
             recordInteraction(cooldowns, player.getUUID(), now);
             String line = ABSURD_DIALOGUES.get(RNG.nextInt(ABSURD_DIALOGUES.size()));
-            player.sendSystemMessage(Component.literal("[Citizen] ").withStyle(ChatFormatting.GOLD)
+            player.sendSystemMessage(Component.literal("[Money Changer] ").withStyle(ChatFormatting.GOLD)
                     .append(Component.literal("\"" + line + "\"").withStyle(ChatFormatting.ITALIC, ChatFormatting.WHITE)));
 
             serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER,
-                    villager.getX(), villager.getY() + 1.8, villager.getZ(),
+                    trader.getX(), trader.getY() + 1.8, trader.getZ(),
                     5, 0.3, 0.3, 0.3, 0.05);
             return true;
         }

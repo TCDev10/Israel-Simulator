@@ -14,7 +14,6 @@ class RemainingStructuresTest {
 
     private static final Map<String, String> EXPECTED_MARKERS = Map.of(
             "government_building", "minecraft:polished_deepslate",
-            "grand_market", "minecraft:red_terracotta",
             "startup_office", "minecraft:iron_block",
             "historical_house", "minecraft:bricks",
             "synagogue", "minecraft:purple_stained_glass",
@@ -24,7 +23,6 @@ class RemainingStructuresTest {
 
     private static final Map<String, String> EXPECTED_LOOT_TABLES = Map.of(
             "government_building", "israel_simulator:chests/government_building",
-            "grand_market", "israel_simulator:chests/grand_market",
             "startup_office", "israel_simulator:chests/startup_office",
             "historical_house", "israel_simulator:chests/historical_house",
             "synagogue", "israel_simulator:chests/synagogue",

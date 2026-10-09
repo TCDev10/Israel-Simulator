@@ -1,0 +1,5 @@
+{
+  "trades": "#israel_simulator:money_changer",
+  "amount": 8.0,
+  "random_sequence": "israel_simulator:trade_set/money_changer"
+}

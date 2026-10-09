@@ -1,0 +1,11 @@
+{
+  "wants": {
+    "count": 40,
+    "id": "israel_simulator:shekel"
+  },
+  "gives": {
+    "id": "israel_simulator:drone_part"
+  },
+  "max_uses": 4,
+  "xp": 8
+}

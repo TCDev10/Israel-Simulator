@@ -1,9 +1,16 @@
 package com.israelsimulator.world.map;
 
-import net.minecraft.core.BlockPos;
+import com.israelsimulator.world.structure.ModStructures;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * Key historical, cultural, and geographic landmarks in Israel (GAME_DESIGN.md §8–10, §43, TODO §48).
+ * Landmarks that exist in the world as real generated structures (GAME_DESIGN.md §8–10, TODO §48).
+ *
+ * <p>Each landmark is bound to a structure, and optionally to one template piece of a jigsaw
+ * structure; {@link PlayerLandmarkTracker} discovers it when the player stands inside that
+ * structure/piece. There are no hard-coded coordinates.
  */
 public enum Landmark {
     WESTERN_WALL(
@@ -11,84 +18,49 @@ public enum Landmark {
             "Western Wall (Kotel)",
             "Ancient sacred limestone retaining wall of the Temple Mount",
             IsraelRegion.JERUSALEM,
-            new BlockPos(850, 80, 850)
+            ModStructures.WESTERN_WALL,
+            null
     ),
     JAFFA_CLOCK_TOWER(
             "jaffa_clock_tower",
             "Jaffa Clock Tower",
             "Iconic Ottoman limestone clock tower at the historic entrance to Old Jaffa",
             IsraelRegion.JAFFA,
-            new BlockPos(150, 70, 500)
-    ),
-    TEL_AVIV_PROMENADE(
-            "tel_aviv_promenade",
-            "Tayelet Coastal Promenade",
-            "Scenic pedestrian boardwalk along the Mediterranean shoreline",
-            IsraelRegion.TEL_AVIV,
-            new BlockPos(50, 65, 80)
-    ),
-    DEAD_SEA_SALT_PILLARS(
-            "dead_sea_salt_pillars",
-            "Dead Sea Salt Formations",
-            "Crystalline mineral salt columns on the hyper-saline waters of Ein Gedi",
-            IsraelRegion.DEAD_SEA,
-            new BlockPos(1500, 40, 1200)
-    ),
-    KNESSET(
-            "knesset",
-            "The Knesset Building",
-            "Seat of Israel's parliament overlooking the Rose Garden",
-            IsraelRegion.JERUSALEM,
-            new BlockPos(750, 95, 750)
-    ),
-    CARMEL_MARKET(
-            "carmel_market",
-            "Shuk HaCarmel",
-            "Famous bustling open-air market filled with spices, street food and halva",
-            IsraelRegion.TEL_AVIV,
-            new BlockPos(120, 68, 180)
+            ModStructures.JAFFA_PORT,
+            "israel_simulator:jaffa/clock_square"
     ),
     FLEA_MARKET(
             "flea_market",
             "Old Jaffa Flea Market (Shuk HaPishpeshim)",
             "Charming historic bazaar of antique shops, cafes, and copper crafts",
             IsraelRegion.JAFFA,
-            new BlockPos(180, 68, 520)
+            ModStructures.JAFFA_PORT,
+            "israel_simulator:jaffa/flea_market"
     ),
-    MASADA_FORTRESS(
-            "masada_fortress",
-            "Masada Plateau Fortress",
-            "Ancient desert stronghold atop an isolated rock plateau",
-            IsraelRegion.DEAD_SEA,
-            new BlockPos(1650, 120, 1400)
-    ),
-    BAHAI_GARDENS(
-            "bahai_gardens",
-            "Hanging Terraces of Mount Carmel",
-            "Magnificent symmetrical garden terraces cascading towards the sea",
-            IsraelRegion.MEDITERRANEAN_COAST,
-            new BlockPos(-300, 90, -400)
-    ),
-    ANCIENT_SYNAGOGUE(
-            "ancient_synagogue",
-            "Ancient Galilee Synagogue",
-            "Historic stone sanctuary decorated with carved menorahs and pillars",
-            IsraelRegion.GALILEE_GOLAN,
-            new BlockPos(-700, 85, -900)
+    TEL_AVIV_PROMENADE(
+            "tel_aviv_promenade",
+            "Tayelet Coastal Promenade",
+            "Scenic pedestrian boardwalk along the Mediterranean shoreline",
+            IsraelRegion.TEL_AVIV,
+            ModStructures.TEL_AVIV_CITY,
+            "israel_simulator:tel_aviv/tayelet"
     );
 
     private final String id;
     private final String displayName;
     private final String description;
     private final IsraelRegion region;
-    private final BlockPos defaultPos;
+    private final ResourceKey<Structure> structure;
+    private final @Nullable String piece;
 
-    Landmark(String id, String displayName, String description, IsraelRegion region, BlockPos defaultPos) {
+    Landmark(String id, String displayName, String description, IsraelRegion region,
+             ResourceKey<Structure> structure, @Nullable String piece) {
         this.id = id;
         this.displayName = displayName;
         this.description = description;
         this.region = region;
-        this.defaultPos = defaultPos;
+        this.structure = structure;
+        this.piece = piece;
     }
 
     public String getId() {
@@ -107,7 +79,13 @@ public enum Landmark {
         return region;
     }
 
-    public BlockPos getDefaultPos() {
-        return defaultPos;
+    /** The generated structure this landmark belongs to. */
+    public ResourceKey<Structure> getStructure() {
+        return structure;
+    }
+
+    /** Template id of the jigsaw piece that is the landmark, or null for the whole structure. */
+    public @Nullable String getPiece() {
+        return piece;
     }
 }

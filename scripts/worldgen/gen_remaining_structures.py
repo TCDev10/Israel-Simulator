@@ -15,6 +15,7 @@ from pathlib import Path
 # Add scripts/worldgen to path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from structure_lib import Structure, blk, chest, write_jigsaw, ROOT
+import exteriors
 
 def slab(name="smooth_stone_slab", t="bottom"):
     return blk(f"minecraft:{name}", type=t, waterlogged="false")
@@ -139,124 +140,12 @@ def gen_government_building():
     s.save(ROOT / "src/main/resources/data/israel_simulator/structure/government_building.nbt")
 
 
-def gen_grand_market():
-    """Grand covered Shuk / bazaar (Jerusalem Machane Yehuda style).
-    Marker: minecraft:red_terracotta
-    Loot: israel_simulator:chests/grand_market
-    """
-    SX, SY, SZ = 32, 12, 30
-    fy = 1
-    s = Structure(SX, SY, SZ)
-    s.fills(0, 0, 0, SX - 1, fy - 1, SZ - 1, blk("minecraft:sandstone"))
-
-    # Stone and terracotta floor with decorative pavement
-    for x in range(SX):
-        for z in range(SZ):
-            if (x in (15, 16) or z in (14, 15)):
-                s.set(x, fy, z, blk("minecraft:smooth_sandstone"))
-            elif (x + z) % 4 == 0:
-                s.set(x, fy, z, blk("minecraft:terracotta"))
-            elif (x + z) % 4 == 2:
-                s.set(x, fy, z, blk("minecraft:yellow_terracotta"))
-            else:
-                s.set(x, fy, z, blk("minecraft:cut_sandstone"))
-
-    # Outer perimeter walls with wide arched openings
-    for y in range(fy + 1, fy + 6):
-        for x in range(SX):
-            s.set(x, y, 0, blk("minecraft:sandstone"))
-            s.set(x, y, SZ - 1, blk("minecraft:sandstone"))
-        for z in range(SZ):
-            s.set(0, y, z, blk("minecraft:sandstone"))
-            s.set(SX - 1, y, z, blk("minecraft:sandstone"))
-
-    # Entry arches at all 4 axes
-    for y in (fy + 1, fy + 2, fy + 3):
-        for d in (-1, 0, 1, 2):
-            s.set(15 + d, y, 0, blk("minecraft:air"))
-            s.set(15 + d, y, SZ - 1, blk("minecraft:air"))
-            s.set(0, y, 14 + d, blk("minecraft:air"))
-            s.set(SX - 1, y, 14 + d, blk("minecraft:air"))
-
-    # Roof structure: arched iron/wooden beams across z-axis
-    for x in range(2, SX - 2):
-        for z in range(1, SZ - 1):
-            if z % 6 == 0:
-                s.set(x, fy + 7, z, blk("minecraft:dark_oak_slab", type="bottom", waterlogged="false"))
-    # Overhead roof panels
-    s.fills(2, fy + 8, 2, SX - 3, fy + 8, SZ - 3, blk("minecraft:acacia_slab", type="bottom", waterlogged="false"))
-    # Skylight along main concourse
-    for x in range(14, 18):
-        for z in range(3, SZ - 3):
-            s.set(x, fy + 8, z, blk("minecraft:glass"))
-
-    # Market stalls (4 quadrants)
-    def make_stall(x0, z0, canopy_color, produce_blk):
-        # Counter tables
-        for dx in range(5):
-            s.set(x0 + dx, fy + 1, z0, blk("minecraft:oak_planks"))
-            s.set(x0 + dx, fy + 1, z0 + 3, blk("minecraft:oak_planks"))
-        for dz in range(4):
-            s.set(x0, fy + 1, z0 + dz, blk("minecraft:oak_planks"))
-            s.set(x0 + 4, fy + 1, z0 + dz, blk("minecraft:oak_planks"))
-        # Canopy corner posts
-        for cx in (x0, x0 + 4):
-            for cz in (z0, z0 + 3):
-                s.set(cx, fy + 2, cz, fence("oak_fence"))
-                s.set(cx, fy + 3, cz, fence("oak_fence"))
-        # Striped fabric canopy
-        for dx in range(5):
-            for dz in range(4):
-                col = canopy_color if (dx + dz) % 2 == 0 else "white_wool"
-                s.set(x0 + dx, fy + 4, z0 + dz, blk(f"minecraft:{col}"))
-        # Produce inside/on stall
-        s.set(x0 + 1, fy + 2, z0 + 1, blk(f"minecraft:{produce_blk}"))
-        s.set(x0 + 2, fy + 2, z0 + 1, blk(f"minecraft:{produce_blk}"))
-        s.set(x0 + 1, fy + 1, z0 + 1, barrel("up"))
-        s.set(x0 + 3, fy + 1, z0 + 2, chest(facing="south", loot="israel_simulator:chests/grand_market"))
-
-    # Quadrant 1: Spices & Dates (Red & Yellow)
-    make_stall(4, 4, "red_wool", "orange_terracotta")
-    make_stall(4, 9, "yellow_wool", "yellow_concrete")
-    # Quadrant 2: Produce & Fruits (Green & Lime)
-    make_stall(4, 18, "lime_wool", "melon")
-    make_stall(4, 23, "green_wool", "hay_block")
-    # Quadrant 3: Bakery & Falafel (Orange & Brown)
-    make_stall(23, 4, "orange_wool", "dried_kelp_block")
-    make_stall(23, 9, "brown_wool", "carved_pumpkin")
-    # Quadrant 4: Pottery & Artifacts (Cyan & Blue)
-    make_stall(23, 18, "cyan_wool", "decorated_pot")
-    make_stall(23, 23, "blue_wool", "chiseled_bookshelf")
-
-    # Central fountain / meeting spot
-    for fx in range(14, 18):
-        for fz in range(13, 17):
-            s.set(fx, fy + 1, fz, wall("sandstone_wall"))
-    s.set(15, fy + 1, 14, blk("minecraft:water", level="0"))
-    s.set(16, fy + 1, 14, blk("minecraft:water", level="0"))
-    s.set(15, fy + 1, 15, blk("minecraft:water", level="0"))
-    s.set(16, fy + 1, 15, blk("minecraft:water", level="0"))
-    s.set(15, fy + 2, 14, wall("sandstone_wall"))
-    s.set(15, fy + 3, 14, lantern())
-
-    # Hanging market lanterns
-    for lx in (8, 24):
-        for lz in (7, 14, 21):
-            s.set(lx, fy + 6, lz, lantern(hanging="true"))
-
-    # Required Framework Marker Block
-    s.set(1, fy + 1, 1, blk("minecraft:red_terracotta"))
-
-    write_jigsaw("grand_market", "israel_simulator:jerusalem", salt=223344)
-    s.save(ROOT / "src/main/resources/data/israel_simulator/structure/grand_market.nbt")
-
-
 def gen_startup_office():
     """High-tech startup venture office (Tel Aviv Silicon Alley).
     Marker: minecraft:iron_block
     Loot: israel_simulator:chests/startup_office
     """
-    SX, SY, SZ = 26, 14, 26
+    SX, SY, SZ = 26, 17, 26
     fy = 1
     s = Structure(SX, SY, SZ)
     s.fills(0, 0, 0, SX - 1, fy - 1, SZ - 1, blk("minecraft:stone"))
@@ -356,6 +245,7 @@ def gen_startup_office():
     s.set(1, fy + 1, 1, blk("minecraft:iron_block"))
 
     write_jigsaw("startup_office", "israel_simulator:urban_area", salt=334455)
+    exteriors.startup_office(s, fy)
     s.save(ROOT / "src/main/resources/data/israel_simulator/structure/startup_office.nbt")
 
 
@@ -364,7 +254,7 @@ def gen_historical_house():
     Marker: minecraft:bricks
     Loot: israel_simulator:chests/historical_house
     """
-    SX, SY, SZ = 24, 11, 24
+    SX, SY, SZ = 24, 14, 24
     fy = 1
     s = Structure(SX, SY, SZ)
     s.fills(0, 0, 0, SX - 1, fy - 1, SZ - 1, blk("minecraft:dirt"))
@@ -444,15 +334,15 @@ def gen_historical_house():
     # Dining table & chairs
     s.set(14, fy + 1, 14, fence("oak_fence"))
     s.set(15, fy + 1, 14, fence("oak_fence"))
-    s.set(14, fy + 2, 14, blk("minecraft:oak_pressure_plate", power="0"))
-    s.set(15, fy + 2, 14, blk("minecraft:oak_pressure_plate", power="0"))
+    s.set(14, fy + 2, 14, blk("minecraft:oak_pressure_plate", powered="false"))
+    s.set(15, fy + 2, 14, blk("minecraft:oak_pressure_plate", powered="false"))
     s.set(13, fy + 1, 14, stair("oak_stairs", f="east"))
     s.set(16, fy + 1, 14, stair("oak_stairs", f="west"))
 
     # Hearth / Fireplace (x=20, z=14..15)
     s.set(20, fy + 1, 14, blk("minecraft:bricks"))
     s.set(20, fy + 1, 15, blk("minecraft:bricks"))
-    s.set(20, fy + 2, 14, blk("minecraft:campfire", extinguished="false", facing="west", lit="true", signal_fire="false", waterlogged="false"))
+    s.set(20, fy + 2, 14, blk("minecraft:campfire", facing="west", lit="true", signal_fire="false", waterlogged="false"))
 
     # Kitchen pantry: barrels & crafting table
     s.set(19, fy + 1, 18, blk("minecraft:crafting_table"))
@@ -475,6 +365,7 @@ def gen_historical_house():
     s.set(1, fy + 1, 1, blk("minecraft:bricks"))
 
     write_jigsaw("historical_house", "israel_simulator:jerusalem", salt=445566)
+    exteriors.historical_house(s, fy)
     s.save(ROOT / "src/main/resources/data/israel_simulator/structure/historical_house.nbt")
 
 
@@ -483,7 +374,7 @@ def gen_synagogue():
     Marker: minecraft:purple_stained_glass
     Loot: israel_simulator:chests/synagogue & israel_simulator:chests/synagogue_ark
     """
-    SX, SY, SZ = 26, 13, 26
+    SX, SY, SZ = 26, 24, 26
     fy = 1
     s = Structure(SX, SY, SZ)
     s.fills(0, 0, 0, SX - 1, fy - 1, SZ - 1, blk("minecraft:smooth_sandstone"))
@@ -584,6 +475,7 @@ def gen_synagogue():
     s.set(1, fy + 1, 1, blk("minecraft:purple_stained_glass"))
 
     write_jigsaw("synagogue", "israel_simulator:jerusalem", salt=556677)
+    exteriors.synagogue(s, fy)
     s.save(ROOT / "src/main/resources/data/israel_simulator/structure/synagogue.nbt")
 
 
@@ -618,8 +510,8 @@ def gen_ancient_sanctuary():
         for az in range(22, 26):
             s.set(ax, fy + 1, az, blk("minecraft:basalt", axis="y"))
             s.set(ax, fy + 2, az, blk("minecraft:cut_sandstone"))
-    s.set(14, fy + 2, 23, blk("minecraft:campfire", extinguished="false", facing="north", lit="true", signal_fire="false", waterlogged="false"))
-    s.set(15, fy + 2, 23, blk("minecraft:campfire", extinguished="false", facing="north", lit="true", signal_fire="false", waterlogged="false"))
+    s.set(14, fy + 2, 23, blk("minecraft:campfire", facing="north", lit="true", signal_fire="false", waterlogged="false"))
+    s.set(15, fy + 2, 23, blk("minecraft:campfire", facing="north", lit="true", signal_fire="false", waterlogged="false"))
     for hx in (13, 16):
         for hz in (22, 25):
             s.set(hx, fy + 3, hz, wall("sandstone_wall"))  # Horns of the altar
@@ -699,7 +591,7 @@ def gen_great_synagogue():
     Marker: minecraft:blue_stained_glass
     Loot: israel_simulator:chests/synagogue_ark & israel_simulator:chests/synagogue
     """
-    SX, SY, SZ = 36, 18, 36
+    SX, SY, SZ = 36, 31, 36
     fy = 1
     s = Structure(SX, SY, SZ)
     s.fills(0, 0, 0, SX - 1, fy - 1, SZ - 1, blk("minecraft:stone"))
@@ -811,13 +703,13 @@ def gen_great_synagogue():
     s.set(1, fy + 1, 1, blk("minecraft:blue_stained_glass"))
 
     write_jigsaw("great_synagogue", "israel_simulator:jerusalem", salt=778899)
+    exteriors.great_synagogue(s, fy)
     s.save(ROOT / "src/main/resources/data/israel_simulator/structure/great_synagogue.nbt")
 
 
 if __name__ == "__main__":
     print("Generating remaining structures...")
     gen_government_building()
-    gen_grand_market()
     gen_startup_office()
     gen_historical_house()
     gen_synagogue()

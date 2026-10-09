@@ -37,32 +37,40 @@ public class ClientRenderingValidationTest {
     private static final Path ASSETS_PATH = Paths.get("src", "main", "resources", "assets", IsraelSimulator.MOD_ID);
 
     @Test
-    @DisplayName("Verify Rabbi's Crown 3D model contains Payot and Beard elements")
-    void testRabbisCrown3DModelElements() throws IOException {
-        Path crownModelPath = ASSETS_PATH.resolve(Paths.get("models", "item", "rabbis_crown.json"));
-        assertTrue(Files.exists(crownModelPath), "Rabbi's Crown 3D model must exist");
+    @DisplayName("Verify Rabbi's Crown item definition, flat model and equipment assets")
+    void testRabbisCrownItemModelAndEquipmentAssets() throws IOException {
+        // The crown renders as a flat generated item in hand/GUI; the worn appearance
+        // (hat, payot, beard) comes from the humanoid equipment asset layers.
+        Path itemDefPath = ASSETS_PATH.resolve(Paths.get("items", "rabbis_crown.json"));
+        assertTrue(Files.exists(itemDefPath), "Rabbi's Crown item definition must exist");
+        JsonObject itemDef = GSON.fromJson(Files.readString(itemDefPath), JsonObject.class);
+        JsonObject modelRef = itemDef.getAsJsonObject("model");
+        assertNotNull(modelRef, "item definition must reference a model");
+        assertEquals("israel_simulator:item/rabbis_crown", modelRef.get("model").getAsString(),
+                "item definition must point at the crown model");
 
-        try (FileReader reader = new FileReader(crownModelPath.toFile())) {
-            JsonObject model = GSON.fromJson(reader, JsonObject.class);
-            assertTrue(model.has("elements"), "Rabbi's Crown model must contain 3D elements array");
+        Path modelPath = ASSETS_PATH.resolve(Paths.get("models", "item", "rabbis_crown.json"));
+        assertTrue(Files.exists(modelPath), "Rabbi's Crown model must exist");
+        JsonObject model = GSON.fromJson(Files.readString(modelPath), JsonObject.class);
+        assertEquals("minecraft:item/generated", model.get("parent").getAsString(),
+                "the inventory/hand model is a flat generated item");
+        JsonObject textures = model.getAsJsonObject("textures");
+        assertNotNull(textures, "model must reference its texture");
+        assertEquals("israel_simulator:item/rabbis_crown", textures.get("layer0").getAsString(),
+                "the flat model must use the crown item texture");
 
-            JsonArray elements = model.getAsJsonArray("elements");
-            List<String> elementNames = new ArrayList<>();
-            elements.forEach(e -> elementNames.add(e.getAsJsonObject().get("name").getAsString()));
+        Path equipmentPath = ASSETS_PATH.resolve(Paths.get("equipment", "rabbis_crown.json"));
+        assertTrue(Files.exists(equipmentPath), "the worn appearance must come from the equipment asset");
+        JsonObject equipment = GSON.fromJson(Files.readString(equipmentPath), JsonObject.class);
+        JsonObject layers = equipment.getAsJsonObject("layers");
+        assertNotNull(layers, "equipment asset must define layers");
+        assertTrue(layers.has("humanoid"), "equipment asset must define the humanoid layer");
+        assertTrue(layers.has("humanoid_baby"), "equipment asset must define the humanoid_baby layer");
 
-            assertTrue(elementNames.contains("hat_brim"), "Crown must have hat_brim element");
-            assertTrue(elementNames.contains("hat_top"), "Crown must have hat_top element");
-            assertTrue(elementNames.contains("payot_left"), "Crown must have payot_left element");
-            assertTrue(elementNames.contains("payot_right"), "Crown must have payot_right element");
-            assertTrue(elementNames.contains("beard"), "Crown must have beard element");
-
-            // Verify display transform definitions for third-person, first-person, and head
-            assertTrue(model.has("display"), "Must define display transform matrix");
-            JsonObject display = model.getAsJsonObject("display");
-            assertTrue(display.has("head"), "Must specify head display transform");
-            assertTrue(display.has("thirdperson_righthand"), "Must specify third-person display transform");
-            assertTrue(display.has("gui"), "Must specify inventory GUI display transform");
-        }
+        assertTrue(Files.exists(ASSETS_PATH.resolve(Paths.get("textures", "entity", "equipment", "humanoid", "rabbis_crown.png"))),
+                "humanoid equipment texture must exist");
+        assertTrue(Files.exists(ASSETS_PATH.resolve(Paths.get("textures", "entity", "equipment", "humanoid_baby", "rabbis_crown.png"))),
+                "humanoid_baby equipment texture must exist");
     }
 
     @Test

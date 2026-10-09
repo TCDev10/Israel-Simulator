@@ -1,5 +1,13 @@
 # Test log
 
+## I villager non aprivano più la GUI e parlavano in chat
+
+Problema riscontrato: al click destro su un villager la GUI vanilla non si apriva e arrivavano messaggi in chat (battuta easter egg "[Citizen]" e dialoghi/hijack dei trade regionali). `ModGameEvents.onEntityInteract` intercettava ogni `AbstractVillager`: easter egg, catena di trade regionali (agricoltura, Mar Morto, deserto, Tel Aviv, Jaffa, Jerusalem, sinagoga rurale), dialogo NPC e cancel dell'evento tramite `VillagerInteractGate`. Anche fuori dal bioma giusto il click non era mai "pulito".
+
+Funzionamento aspettato: i villager si comportano come villager vanilla in ogni caso. Lo scambio di valuta (shekel, agorot, monete antiche ↔ oggetti di valore) vive su un'entità separata, il Cambista (Money Changer), non sui villager.
+
+Come è stato risolto: rimosso l'intero ramo `AbstractVillager` da `onEntityInteract` (resta solo l'easter egg del gatto con la kippah) e cancellato `VillagerInteractGate`. Il saluto easter egg è diventato `EasterEggManager.triggerTraderEasterEgg` e ora lo manda il Cambista quando apre la schermata di scambio (server-side, cooldown condiviso, 15%). Nuova entità `MoneyChangerEntity` (`entity/npc/`), estende `AbstractVillager`: GUI merchant vanilla, trade interamente data-driven (`trade_set/money_changer.json` + tag `villager_trade/money_changer` con 11 trade: agorot → lingotto d'oro, shekel → smeraldo/diamante/ametista/mezuzah/intaglio in legno d'ulivo/shofar/drone_part, moneta antica → diamanti/mela d'oro incantata, diamante → 12 shekel con prezzo d'acquisto 16 ≥ vendita 12 per evitare loop), restock giornaliero (`LastRestockDay` salvato in NBT), spawn naturale nei biomi città via biome modifier `add_money_changer_spawns`, uovo generatore `money_changer_spawn_egg` (tab creative Spawn Eggs), texture procedurali originali. Registrazione in `ModEntities` (CREATURE, spawn placement su `ANIMALS_SPAWNABLE_ON`), renderer `MoneyChangerRenderer`, lang en/it. Nome scelto per funzione di gioco (AGENTS.md §23), non per l'appartenenza etnica richiesta in origine. `VillagerTradeHijackTest` ora fallisce se `onEntityInteract` tocca un villager in qualunque modo e verifica i dati del Cambista (niente item rari endgame nei trade, anti-loop diamante). `./gradlew test`: 253/253 dopo aver allineato i due test della Rabbi's Crown al nuovo approccio flat + equipment asset (commit "rabbi v5"): `ClientRenderingValidationTest` e `RabbisCrownAndBlessedTraderTest` prima cercavano gli elementi 3D `hat_brim`/`payot`/`beard` rimossi dal modello; ora verificano la item definition `items/rabbis_crown.json`, il modello flat `minecraft:item/generated` con `layer0`, l'equipment asset `equipment/rabbis_crown.json` con i layer `humanoid` e `humanoid_baby` e le due texture equipment. Server dedicato avviato con `runServer`: il datapack carica senza errori, `summon israel_simulator:money_changer` spawna l'entità (20 HP, NBT `LastRestockDay` presente). L'apertura della GUI in gioco non è stata verificata: nessun client interattivo in questo ambiente.
+
 ## Città che spawnavano come villaggi vanilla
 
 Problema riscontrato: Tel Aviv, Jaffa, Jerusalem e il Western Wall usavano come `start_pool` i villaggi vanilla (`minecraft:village/plains/town_centers` o `minecraft:village/desert/town_centers`). In mondo sarebbero comparsi villaggi normali, non strutture del mod. I quartieri di Tel Aviv (Rothschild, Florentin, Sarona, White City, Bauhaus, startup) restano solo nomi nel codice, senza edifici propri.
@@ -335,3 +343,56 @@ Problema riscontrato: in `TransportStopBlock.java`, l'interazione con la fermata
 Funzionamento aspettato: la fermata determina la propria posizione nello spazio, identifica la fermata più vicina (`TransportNetwork.getNearestStop(pos)`) e calcola la fermata successiva nel circuito regionale.
 
 Come è stato risolto: implementato `TransportNetwork.getNearestStop(BlockPos pos)` basato sulla distanza euclidea minima rispetto alle fermate registrate, e aggiornato `TransportStopBlock.handleInteraction` per prelevare la fermata corrente e instradare alla successiva. Aggiunto test di verifica routing in `TransportationTest`.
+
+## Tel Aviv come città jigsaw
+
+Problema riscontrato: `tel_aviv_city` era un unico blocco 48x48 (`beard_box`), una scatola piatta senza strade vere né quartieri.
+
+Funzionamento aspettato: una città jigsaw come `jerusalem_city`, con strade che seguono il terreno ed edifici rigidi, solo nel bioma `urban_area`.
+
+Come è stato risolto: nuovo `scripts/worldgen/gen_tel_aviv_city.py` → `structure/tel_aviv/*`. Pezzi: piazza Dizengoff (start, fontana Agam), strade in asfalto con marciapiedi (dritta, incrocio, curva, T), viale Rothschild con chiosco, 3 palazzi Bauhaus con balconi arrotondati, loft di Florentin con graffiti, casa templare di Sarona, 2 grattacieli in vetro, Tayelet sulla spiaggia. Interni minimi con loot (`tel_aviv_apartment`, `tel_aviv_tech_office`, nuova `tel_aviv_kiosk`). `beard_thin` e fondazione interrata di 4 blocchi sotto gli edifici. Test: `TelAvivCityStructureTest`. Verifica headless (seed 424242): 39 pezzi, 0 celle flottanti sotto gli edifici. Non testato in gioco dal client.
+
+## Villaggio mediterraneo come villaggio jigsaw
+
+Problema riscontrato: `mediterranean_village` era un singolo pezzo rettangolare (`beard_box`), non un villaggio.
+
+Funzionamento aspettato: un villaggio jigsaw come quelli vanilla, con sentieri che seguono il terreno, piazza centrale e case varie, solo nel bioma `mediterranean_coast`.
+
+Come è stato risolto: nuovo `scripts/worldgen/gen_mediterranean_village.py` → `structure/mediterranean/*`. Piazza con pozzo e ulivi (start), cappella con cupola blu (landmark), sentieri in terra/ghiaia/ciottoli (dritto, incrocio, curva, T) che sull'acqua diventano passerella in legno, 6 case bianche/calcare diverse (1-2 piani, tetti piani con terrazze, porte e persiane blu, rampicanti e bouganville), panetteria con forno, capanna del pescatore con barca, bancarella del mercato, uliveto. Loot `mediterranean_village` più le nuove `mediterranean_bakery` e `mediterranean_fisherman`. `beard_thin` e fondazione interrata di 4 blocchi. Test: `MediterraneanVillageStructureTest`. Verifica headless (seed 424242): 61 pezzi, 0 celle flottanti sotto gli edifici. Non testato in gioco dal client.
+
+## Porto di Giaffa come città jigsaw
+
+Problema riscontrato: `jaffa_port` era un singolo pezzo rettangolare (`beard_box`), senza vicoli, torre dell'orologio né porto vero.
+
+Funzionamento aspettato: la vecchia Giaffa come città jigsaw: vicoli in pietra con scale, torre dell'orologio ottomana, mercato delle pulci, porto con barche, faro e molo, solo nel bioma `mediterranean_coast`.
+
+Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure/jaffa/*`. Piazza della torre dell'orologio con sabil (start), porto garantito sul lato nord (banchina, bacino d'acqua, molo in legno, 2 barche da pesca, frangiflutti e faro), vicoli in pietra (dritto, incrocio, curva, T) più arco e scalinata rigidi, 4 case in pietra (una con cupola, una galleria d'arte), mercato delle pulci con portico ad archi. Loot `jaffa_flea_market` più le nuove `jaffa_house` e `jaffa_harbour`. `beard_thin` e fondazione interrata di 4 blocchi. Test: `JaffaPortStructureTest`. Verifica headless (seed 424242): 33 pezzi, 0 celle flottanti sotto gli edifici (a parte molo e barche sull'acqua del bacino). Non testato in gioco dal client.
+
+## grand_market jigsaw (Mahane Yehuda)
+- `/locate structure israel_simulator:grand_market` in un bioma jerusalem: piazza d'ingresso con arco e insegna rossa, chiosco dei succhi, vicoli lastricati (coperti con tetto di vetro o aperti con luci), negozi (spezie, frutta, panetteria, pesce, halva, caffè), casa del mercato a 2 piani e la sala coperta del mercato sul lato nord.
+- Controllare: negozi appoggiati sul terreno (fondazione di 4 blocchi), vicoli che seguono il terreno, barili/casse con loot `grand_market`/`grand_market_food`.
+
+## desert_ruins jigsaw (insediamento antico stile Qumran)
+- `/locate structure israel_simulator:desert_ruins` nel deserto della Giudea: cortile con cisterna asciutta e colonne spezzate, rovina del tempio a nord, sentieri di sabbia/ghiaia, case in rovina, scriptorium con giare, laboratorio di ceramica, torre di guardia, mikveh.
+- Controllare: rovine appoggiate sul terreno (fondazione di 4 blocchi) anche sui pendii, loot `desert_ruins`/`desert_ruins_scriptorium`.
+
+## dead_sea_resort jigsaw (stile Ein Bokek)
+- `/locate structure israel_simulator:dead_sea_resort` nel bioma dead_sea: piazza con fontana-spa di fango (packed_mud) e palme, hotel a 4 piani a nord, lungomare di arenaria (diventa passerella di betulla sull'acqua), spa di fango, piscina, beach bar, negozio di sale, spiaggia con ombrelloni e formazioni di sale, pensione.
+- Controllare: edifici appoggiati sul terreno, piscina piena d'acqua, loot `dead_sea_resort`.
+
+## jerusalem_city: varianti di case
+- 6 nuove case nel pool `jerusalem/buildings` (con fondazione di 4 blocchi): casa a corte con olivo, casa con cupola (Città Vecchia), casa a terrazza (Nachlaot), casa templare con tetto rosso (German Colony), palazzina a 3 piani con balconi (Rehavia), casa stretta con porta ad arco e grate.
+- `/place structure israel_simulator:jerusalem_city` in un bioma jerusalem: controllare che le nuove case compaiano accanto alle vecchie, con porta sulla strada e loot `jerusalem_house`/`jerusalem_pantry`.
+
+## Esterni: sinagoga, grande sinagoga, casa storica, startup office
+- `/place structure israel_simulator:synagogue` (e `great_synagogue`, `historical_house` nel bioma jerusalem, `startup_office` in urban_area).
+- Sinagoga: cornicione, parapetto merlato, torrette angolari, tamburo con finestre e cupola bianca, portico a ovest, rosone. Grande sinagoga: cupola di rame su tamburo, due torri frontali con cupolette, portico con frontone e tavole della legge. Casa storica: cupola vera, archi sopra le finestre, persiane verdi, scala esterna al tetto, bouganville. Startup office: pensilina con insegna luminosa, frangisole, fioriere, rastrelliera bici, terrazza sul tetto con ombrelloni e antenna.
+- Controllare che interni, marker e loot (anche `synagogue_ark`) siano invariati.
+
+## Landmark reali e pulizia wiki/README
+- Rimossi i landmark finti con coordinate fisse (Knesset, Masada, giardini Baha'i, sinagoga della Galilea, formazioni di sale, Shuk HaCarmel). Restano Muro Occidentale (`western_wall`), Torre dell'Orologio e Mercato delle Pulci (pezzi `jaffa/clock_square`, `jaffa/flea_market` di `jaffa_port`) e Tayelet (pezzo `tel_aviv/tayelet` di `tel_aviv_city`).
+- Test in gioco: entrare in una di queste strutture/pezzi deve dare il messaggio "landmark scoperto" (+100 XP); usare la Mappa d'Israele per vedere il conteggio (x / 4).
+- Wiki/README: tolti biomi e strutture inesistenti (golan_heights, Monte Hermon, Masada, tende beduine, grotte di Qumran, tunnel della Città di David), corretti gli id dei biomi e la tabella delle strutture.
+
+## Controllo finale: ricetta Stella di David
+- La ricetta `star_of_david` non veniva caricata (pattern di 5 colonne); ora è 3x3: N S N / D * D / C S C (N lingotto di netherite, S frammento di rotolo, D blocco di diamante, * stella del Nether, C moneta antica). Verificare che sia craftabile nel banco da lavoro.

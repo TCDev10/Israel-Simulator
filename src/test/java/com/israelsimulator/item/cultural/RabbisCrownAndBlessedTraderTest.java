@@ -38,22 +38,29 @@ class RabbisCrownAndBlessedTraderTest {
     }
 
     @Test
-    @DisplayName("Verify Rabbi's Crown 3D model JSON has hat, payot, and beard elements")
-    void testRabbisCrown3DModelJson() {
+    @DisplayName("Verify Rabbi's Crown item definition and flat item model")
+    void testRabbisCrownItemModelJson() {
+        // The worn hat/payot/beard comes from equipment/rabbis_crown.json (see
+        // testRabbisCrownEquipmentAssetJson); in hand and GUI the crown is a flat model.
+        InputStream def = getClass().getResourceAsStream("/assets/israel_simulator/items/rabbis_crown.json");
+        assertNotNull(def, "items/rabbis_crown.json must exist in assets");
+        try {
+            String json = new String(def.readAllBytes(), StandardCharsets.UTF_8);
+            assertTrue(json.contains("israel_simulator:item/rabbis_crown"),
+                    "item definition must point at the crown model");
+        } catch (Exception e) {
+            fail("Failed reading item definition JSON: " + e.getMessage());
+        }
+
         InputStream stream = getClass().getResourceAsStream("/assets/israel_simulator/models/item/rabbis_crown.json");
         assertNotNull(stream, "models/item/rabbis_crown.json must exist in assets");
         try {
             String json = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
-            assertTrue(json.contains("hat_brim"), "3D model must contain hat_brim element");
-            assertTrue(json.contains("hat_top"), "3D model must contain hat_top element");
-            assertTrue(json.contains("ornament_trim"), "3D model must contain ornament_trim element");
-            assertTrue(json.contains("payot_left"), "3D model must contain payot_left element");
-            assertTrue(json.contains("payot_right"), "3D model must contain payot_right element");
-            assertTrue(json.contains("beard"), "3D model must contain beard element");
-            assertTrue(json.contains("thirdperson_righthand"), "3D model must contain thirdperson display config");
-            assertTrue(json.contains("head"), "3D model must contain head display config");
+            assertTrue(json.contains("minecraft:item/generated"), "inventory model is a flat generated item");
+            assertTrue(json.contains("israel_simulator:item/rabbis_crown"),
+                    "flat model must use the crown item texture");
         } catch (Exception e) {
-            fail("Failed reading 3D model JSON: " + e.getMessage());
+            fail("Failed reading item model JSON: " + e.getMessage());
         }
     }
 

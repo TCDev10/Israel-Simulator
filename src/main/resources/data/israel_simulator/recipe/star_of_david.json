@@ -2,9 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "N S N",
-    "D * D",
-    "C S C"
+    "NSN",
+    "D*D",
+    "CSC"
   ],
   "key": {
     "*": "minecraft:nether_star",

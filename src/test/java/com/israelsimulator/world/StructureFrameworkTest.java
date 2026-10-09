@@ -36,6 +36,8 @@ class StructureFrameworkTest {
     void testChestLootTablesExist() {
         List<String> lootTables = List.of(
                 "mediterranean_village",
+                "mediterranean_bakery",
+                "mediterranean_fisherman",
                 "agricultural_farm",
                 "dead_sea_resort",
                 "desert_ruins",
@@ -43,8 +45,11 @@ class StructureFrameworkTest {
                 "synagogue_ark",
                 "tel_aviv_tech_office",
                 "tel_aviv_apartment",
+                "tel_aviv_kiosk",
                 "ein_gedi_oasis",
                 "jaffa_flea_market",
+                "jaffa_house",
+                "jaffa_harbour",
                 "jerusalem_bazaar",
                 "western_wall_treasury"
         );
@@ -117,6 +122,24 @@ class StructureFrameworkTest {
             if ("jerusalem_city".equals(name)) {
                 assertEquals("israel_simulator:jerusalem/plaza", location,
                         "jerusalem_city must start from the plaza piece");
+            } else if ("mediterranean_village".equals(name)) {
+                assertEquals("israel_simulator:mediterranean/square", location,
+                        "mediterranean_village must start from the village square piece");
+            } else if ("jaffa_port".equals(name)) {
+                assertEquals("israel_simulator:jaffa/clock_square", location,
+                        "jaffa_port must start from the clock tower square");
+            } else if ("dead_sea_resort".equals(name)) {
+                assertEquals("israel_simulator:dsr/resort_plaza", location,
+                        "dead_sea_resort must start from the resort plaza piece");
+            } else if ("desert_ruins".equals(name)) {
+                assertEquals("israel_simulator:ruins/courtyard", location,
+                        "desert_ruins must start from the ruined courtyard piece");
+            } else if ("grand_market".equals(name)) {
+                assertEquals("israel_simulator:market/market_gate", location,
+                        "grand_market must start from the market gate piece");
+            } else if ("tel_aviv_city".equals(name)) {
+                assertEquals("israel_simulator:tel_aviv/square", location,
+                        "tel_aviv_city must start from the Dizengoff square piece");
             } else {
                 assertEquals("israel_simulator:" + name, location,
                         name + " pool must place this mod's structure template");
@@ -125,9 +148,17 @@ class StructureFrameworkTest {
             // Marker NBT: single-piece templates use structure/<name>.nbt.
             // Jerusalem also keeps a small root marker file for the yellow terracotta check,
             // and the live plaza piece carries the same marker.
-            String nbtPath = "jerusalem_city".equals(name)
-                    ? "data/israel_simulator/structure/jerusalem/plaza.nbt"
-                    : "data/israel_simulator/structure/" + name + ".nbt";
+            // Tel Aviv is multi-piece too; its marker lives in the start square's fountain.
+            String nbtPath = switch (name) {
+                case "jerusalem_city" -> "data/israel_simulator/structure/jerusalem/plaza.nbt";
+                case "tel_aviv_city" -> "data/israel_simulator/structure/tel_aviv/square.nbt";
+                case "grand_market" -> "data/israel_simulator/structure/market/market_gate.nbt";
+                case "desert_ruins" -> "data/israel_simulator/structure/ruins/courtyard.nbt";
+                case "dead_sea_resort" -> "data/israel_simulator/structure/dsr/resort_plaza.nbt";
+                case "jaffa_port" -> "data/israel_simulator/structure/jaffa/clock_square.nbt";
+                case "mediterranean_village" -> "data/israel_simulator/structure/mediterranean/square.nbt";
+                default -> "data/israel_simulator/structure/" + name + ".nbt";
+            };
             InputStream nbtStream = getClass().getClassLoader().getResourceAsStream(nbtPath);
             assertNotNull(nbtStream, "Missing structure template NBT: " + nbtPath);
             byte[] nbt = new GZIPInputStream(nbtStream).readAllBytes();

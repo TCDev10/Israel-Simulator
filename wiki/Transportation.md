@@ -35,6 +35,6 @@ La **Carta Rav-Kav** (`israel_simulator:rav_kav`) è la tessera di viaggio multi
 
 Le **Scarpe da Camminata** (`israel_simulator:walking_shoes`) sono calzature da trekking resistenti progettate per le lunghe traversate a piedi:
 - **Effetto Passivo**: Quando equipaggiate negli slot attivi o tenute a portata di mano, conferiscono un incremento continuo della velocità di movimento (`Speed I`).
-- **Scopo**: Perfette per esplorare le vaste alture della Giudea, il Sentiero del Serpente verso Masada o gli altipiani del Golan senza affaticarsi.
+- **Scopo**: Perfette per esplorare le alture di Gerusalemme e il deserto della Giudea fino al Mar Morto senza affaticarsi.
 
 

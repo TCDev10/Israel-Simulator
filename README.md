@@ -73,26 +73,26 @@ The mod organizes Israeli biomes into an intuitive West-to-East geographic strip
 
 ### 🏛️ 16 Procedural Real Structures
 
-All 16 registered structures feature complete, hand-tuned procedural NBT architectures with furnished interiors, functional block entities, and dedicated chest/barrel loot tables:
+All 16 registered structures have furnished interiors, functional block entities and dedicated chest/barrel loot tables. Six are multi-piece jigsaw settlements that follow the terrain (streets bend with the ground, buildings sit on buried footings); the rest are single hand-built pieces:
 
 | Structure | Dimensions | Key Highlights |
 | :--- | :--- | :--- |
 | `western_wall` | 54×19×18 | Sacred limestone plaza, underground prayer tunnels, note crevices |
-| `tel_aviv_city` | 48×18×48 | Multi-district urban complex with high-rises and boulevards |
-| `jerusalem_city` | Jigsaw Assembly | Dynamic 12-piece Old City (bazaars, houses, arches, alleys, walls) |
-| `great_synagogue` | 36×18×36 | Stained glass halls, central bimah, Torah Ark, vaulted ceiling |
+| `tel_aviv_city` | Jigsaw city | Dizengoff square, Bauhaus blocks, Florentin lofts, Sarona houses, high-rises, Rothschild kiosks, Tayelet |
+| `jerusalem_city` | Jigsaw city | Old City plaza, stone streets, shuk stalls, well, wall gates, synagogue, six house styles (courtyard, domed, Nachlaot, Templer, Rehavia, arched) |
+| `great_synagogue` | 36×31×36 | Stained glass hall, central bimah, Torah Ark; copper dome, twin towers, pedimented portico |
 | `ancient_sanctuary` | 30×12×34 | Hidden desert temple guarding the Mythic Rabbi's Crown |
-| `grand_market` | 32×12×30 | Lively covered shuk stalls, spice crates, produce barrels |
+| `grand_market` | Jigsaw market | Mahane Yehuda-style gate plaza, covered and open lanes, spice/fruit/bakery/fish/halva shops, cafe, covered market hall |
 | `government_building` | 28×14×26 | Civic halls, debating chambers, executive offices |
-| `startup_office` | 26×14×26 | Modern tech hub with laptops, monitors, server racks |
-| `synagogue` | 26×13×26 | Traditional neighbourhood house of prayer and study |
-| `historical_house` | 24×11×24 | Heritage limestone multi-floor residential home |
+| `startup_office` | 26×17×26 | Modern tech hub with workstations and server racks; lit canopy sign, rooftop terrace |
+| `synagogue` | 26×24×26 | Neighbourhood house of prayer and study; dome on a windowed drum, turrets, portico, rose window |
+| `historical_house` | 24×14×24 | Heritage limestone home with olive courtyard, dome, green shutters, external roof stair |
 | `agricultural_farm` | 32×12×32 | Modern greenhouses, irrigated crop plots, barn storage |
-| `dead_sea_resort` | 36×10×32 | Seaside spa pavilions, mineral mud pools, tourist lounges |
-| `desert_ruins` | 28×14×28 | Weathered sandstone arches, colonnades, buried treasure vault |
+| `dead_sea_resort` | Jigsaw resort | Mud-spa plaza, hotel tower, promenade/boardwalk, mud spa, pool club, beach bar, salt shop, salt-formation beach |
+| `desert_ruins` | Jigsaw ruins | Qumran-style courtyard and cistern, temple ruin, scriptorium with scroll jars, pottery workshop, watchtower, mikveh |
 | `ein_gedi_oasis` | 32×16×32 | Natural mountain waterfall, lush palm pools, hidden cavern loot |
-| `jaffa_port` | 40×14×36 | Sea docks, fishing warehouses, maritime cargo crates |
-| `mediterranean_village` | 40×14×40 | Coastal village square, stone homes, coastal clock tower |
+| `jaffa_port` | Jigsaw town | Ottoman clock tower square, harbour with boats, pier and lighthouse, stone alleys and stairs, flea market |
+| `mediterranean_village` | Jigsaw village | Square with well, whitewashed houses, chapel, bakery, fisherman's hut, olive grove, market stall |
 
 *Structure set placement and spacing are optimized for lightning-fast `/locate` searches without freezing chunk generation.*
 

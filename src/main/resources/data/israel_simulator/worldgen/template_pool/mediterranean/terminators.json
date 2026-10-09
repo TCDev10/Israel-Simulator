@@ -1,0 +1,14 @@
+{
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:mediterranean/terminator",
+        "processors": "israel_simulator:mediterranean_street",
+        "projection": "terrain_matching"
+      }
+    }
+  ]
+}

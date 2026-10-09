@@ -252,6 +252,8 @@
   "entity.israel_simulator.ice_agent": "Federal ICE Agent",
   "entity.israel_simulator.jeffrey_epstein": "Jeffrey Epstein - The Shadow Financier",
   "entity.israel_simulator.child_zombie_minion": "Child Zombie Minion",
+  "entity.israel_simulator.money_changer": "Money Changer",
+  "item.israel_simulator.money_changer_spawn_egg": "Money Changer Spawn Egg",
   "item.israel_simulator.pistol": "Security Pistol",
   "item.israel_simulator.pistol.desc": "Standard sidearm issued to diplomatic security guards.",
   "item.israel_simulator.missile": "Tactical Missile",

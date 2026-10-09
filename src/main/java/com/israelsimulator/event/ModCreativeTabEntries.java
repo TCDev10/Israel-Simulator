@@ -28,6 +28,8 @@ public final class ModCreativeTabEntries {
             event.accept(ModItems.GRAPES.get());
             event.accept(ModItems.OLIVES.get());
             event.accept(ModItems.CITRUS.get());
+        } else if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
+            event.accept(ModItems.MONEY_CHANGER_SPAWN_EGG.get());
         }
     }
 }

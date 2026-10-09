@@ -27,47 +27,6 @@ SALT = lambda: blk("israel_simulator:salt_block") if False else blk("minecraft:w
 def salt():
     return blk("israel_simulator:salt_block") if True else CALC()
 
-def gen_desert_ruins():
-    SX,SY,SZ=36,12,36; fy=1
-    s=Structure(SX,SY,SZ)
-    s.fills(0,0,0,SX-1,fy-1,SZ-1,SAND())
-    for x in range(SX):
-        for z in range(SZ):
-            s.set(x,fy,z, SAND() if (x+z)%5 else RED_SAND())
-    # Broken arch colonnade
-    for i,x in enumerate(range(6,30,4)):
-        for z in (8, 28):
-            for y in range(fy+1, fy+5):
-                s.set(x,y,z, SS() if y<fy+4 else CH())
-        # lintel
-        if i < 5:
-            for dx in range(4):
-                s.set(x+dx, fy+5, 8, CS())
-                s.set(x+dx, fy+5, 28, CS())
-    # Ruined chamber
-    s.fills(12,fy,12,24,fy,24, SSS())
-    for y in range(fy+1, fy+4):
-        for x in range(12,25):
-            s.set(x,y,12, SS()); s.set(x,y,24, SS())
-        for z in range(12,25):
-            s.set(12,y,z, SS()); s.set(24,y,z, SS())
-    # gaps / collapse
-    for x,z in [(14,12),(15,12),(18,24),(20,24),(12,16),(24,18)]:
-        s.set(x,fy+1,z, blk("minecraft:air")); s.set(x,fy+2,z, blk("minecraft:air"))
-    s.set(18,fy+1,18, chest(facing="south", loot="israel_simulator:chests/desert_ruins"))
-    s.set(20,fy+1,18, CH())
-    # rubble + bushes
-    for x,z in [(5,15),(8,20),(28,10),(30,22),(10,30)]:
-        s.set(x,fy+1,z, DEAD_BUSH() if x%2 else CACTUS())
-        s.set(x,fy,z, SAND())
-    # perimeter low wall fragments
-    for x in range(4,32):
-        if x%3: s.set(x,fy+1,4, WALL())
-    # Framework test marker
-    s.set(1, fy+1, 1, blk("minecraft:cracked_stone_bricks"))
-    write_jigsaw("desert_ruins", "israel_simulator:judean_desert", salt=441122)
-    s.save(ROOT/"src/main/resources/data/israel_simulator/structure/desert_ruins.nbt")
-
 def gen_ein_gedi():
     SX,SY,SZ=32,14,32; fy=1
     s=Structure(SX,SY,SZ)
@@ -115,57 +74,5 @@ def gen_ein_gedi():
     write_jigsaw("ein_gedi_oasis", "israel_simulator:judean_desert", salt=552233)
     s.save(ROOT/"src/main/resources/data/israel_simulator/structure/ein_gedi_oasis.nbt")
 
-def gen_dead_sea_resort():
-    SX,SY,SZ=40,10,36; fy=1
-    s=Structure(SX,SY,SZ)
-    s.fills(0,0,0,SX-1,fy-1,SZ-1,SAND())
-    for x in range(SX):
-        for z in range(SZ):
-            # salt flats toward -Z, sand toward +Z
-            if z < 12:
-                try:
-                    s.set(x,fy,z, salt())
-                except Exception:
-                    s.set(x,fy,z, CALC())
-            else:
-                s.set(x,fy,z, SAND() if (x+z)%4 else SSS())
-    # Main lodge
-    s.fills(12,fy,16,28,fy,30, SSS())
-    for y in range(fy+1, fy+4):
-        for x in range(12,29):
-            s.set(x,y,16, SS()); s.set(x,y,30, SS())
-        for z in range(16,31):
-            s.set(12,y,z, SS()); s.set(28,y,z, SS())
-    # windows / door
-    s.set(20,fy+1,16, blk("minecraft:air")); s.set(20,fy+2,16, blk("minecraft:air"))
-    for x in (14,16,24,26):
-        s.set(x,fy+2,16, blk("minecraft:glass_pane", north="false",south="false",east="false",west="false",waterlogged="false"))
-    s.fills(12,fy+4,16,28,fy+4,30, SLAB())
-    # Interior
-    s.set(14,fy+1,28, chest(facing="south", loot="israel_simulator:chests/dead_sea_resort"))
-    s.set(26,fy+1,28, chest(facing="south", loot="israel_simulator:chests/dead_sea_resort"))
-    s.set(20,fy+1,25, LANTERN())
-    # Pool deck
-    for x in range(14,26):
-        for z in range(8,14):
-            s.set(x,fy,z, SSS())
-    for x in range(16,24):
-        for z in range(9,13):
-            s.set(x,fy,z, WATER())
-    # Fence around pool
-    for x in range(14,26):
-        s.set(x,fy+1,8, FENCE()); s.set(x,fy+1,13, FENCE())
-    for z in range(8,14):
-        s.set(14,fy+1,z, FENCE()); s.set(25,fy+1,z, FENCE())
-    s.set(20,fy+1,8, blk("minecraft:air"))  # gate gap
-    # Cabana posts
-    for x,z in [(6,20),(34,20),(6,28),(34,28)]:
-        s.set(x,fy+1,z, FENCE()); s.set(x,fy+2,z, FENCE()); s.set(x,fy+3,z, LANTERN())
-    s.set(1, fy+1, 1, blk("minecraft:packed_mud"))
-    write_jigsaw("dead_sea_resort", "israel_simulator:dead_sea", salt=663344)
-    s.save(ROOT/"src/main/resources/data/israel_simulator/structure/dead_sea_resort.nbt")
-
 if __name__ == "__main__":
-    gen_desert_ruins()
     gen_ein_gedi()
-    gen_dead_sea_resort()

@@ -1,0 +1,11 @@
+{
+  "wants": {
+    "id": "minecraft:diamond"
+  },
+  "gives": {
+    "count": 12,
+    "id": "israel_simulator:shekel"
+  },
+  "max_uses": 10,
+  "xp": 2
+}

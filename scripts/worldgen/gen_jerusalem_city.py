@@ -671,6 +671,9 @@ def main() -> None:
     synagogue()
     well()
     wall_gate()
+    # house variants on the shared 4-block footing (gen_jerusalem_houses.py)
+    from gen_jerusalem_houses import build as build_house_variants
+    variants = build_house_variants()
     update_structure_json()
 
     start_pool = (
@@ -707,6 +710,7 @@ def main() -> None:
             ("israel_simulator:jerusalem/house_c", 3, "rigid"),
             ("israel_simulator:jerusalem/shuk_stalls", 3, "rigid"),
             ("israel_simulator:jerusalem/well", 1, "rigid"),  # was weight 2 (~9 wells/city)
+            *variants,
         ],
         "minecraft:empty",
     )
