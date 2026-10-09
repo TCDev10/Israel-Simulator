@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * The Israeli strip takes over the dry half of vanilla's hot climate. Vanilla's OverworldBiomeBuilder
+ * The Israeli strip shares vanilla's hot climate (upper weirdness half of each hot entry). Vanilla's OverworldBiomeBuilder
  * needs a running FML loader, so these tests feed vanilla-shaped boxes (same band edges) through wrap().
  */
 class IsraelBiomeClimateTest {
@@ -61,14 +61,14 @@ class IsraelBiomeClimateTest {
     }
 
     @Test
-    @DisplayName("All six Israeli biomes take climate space; humid desert and other biomes stay vanilla")
+    @DisplayName("All six Israeli biomes take climate space; vanilla hot biomes keep half of theirs")
     void allSixPresentAndVanillaKept() {
         Map<ResourceKey<Biome>, Double> v = new HashMap<>();
         for (var p : wrapped()) v.merge(p.getSecond(), vol(p.getFirst()), Double::sum);
         for (ResourceKey<Biome> key : ModBiomes.all()) {
             assertTrue(v.getOrDefault(key, 0.0) > 0, "no climate space for " + key.identifier());
         }
-        assertTrue(v.getOrDefault(Biomes.DESERT, 0.0) > 0, "humid hot climate must stay vanilla");
+        assertTrue(v.getOrDefault(Biomes.DESERT, 0.0) > 0, "vanilla desert must stay");
         assertTrue(v.getOrDefault(Biomes.PLAINS, 0.0) > 0, "non-hot biomes untouched");
         double isr = ModBiomes.all().stream().mapToDouble(k -> v.getOrDefault(k, 0.0)).sum();
         for (ResourceKey<Biome> key : ModBiomes.all()) {
@@ -77,21 +77,31 @@ class IsraelBiomeClimateTest {
     }
 
     @Test
-    @DisplayName("Replacement sub-boxes partition exactly the taken vanilla boxes")
-    void replacementIsExactPartition() {
+    @DisplayName("Each hot entry is split exactly in half: vanilla keeps one weirdness half, Israel the other")
+    void sharedPartition() {
         for (var pair : vanillaGrid()) {
             var repl = IsraelBiomeClimateParams.remap(pair.getFirst(), pair.getSecond());
-            boolean taken = IsraelBiomeClimateParams.TAKEN.contains(pair.getSecond())
-                    && pair.getFirst().humidity().max() <= Climate.quantizeCoord(IsraelBiomeClimateParams.HUMIDITY_SPLIT);
-            assertEquals(taken, repl != null, "unexpected take decision for " + pair);
+            assertEquals(IsraelBiomeClimateParams.TAKEN.contains(pair.getSecond()), repl != null, "take decision for " + pair);
             if (repl == null) continue;
-            assertEquals(vol(pair.getFirst()), repl.stream().mapToDouble(r -> vol(r.getFirst())).sum(), 1e-9);
+            double total = vol(pair.getFirst()), vanilla = 0, israel = 0;
             for (var r : repl) {
-                assertTrue(ModBiomes.all().contains(r.getSecond()));
                 assertEquals(pair.getFirst().temperature(), r.getFirst().temperature());
-                assertEquals(pair.getFirst().weirdness(), r.getFirst().weirdness());
                 assertEquals(pair.getFirst().depth(), r.getFirst().depth());
+                if (r.getSecond().equals(pair.getSecond())) {
+                    vanilla += vol(r.getFirst());
+                    assertTrue(r.getFirst().weirdness().max() <= r.getFirst().weirdness().min() + (pair.getFirst().weirdness().max() - pair.getFirst().weirdness().min()) / 2 + 1);
+                } else {
+                    assertTrue(ModBiomes.all().contains(r.getSecond()));
+                    israel += vol(r.getFirst());
+                }
             }
+            assertEquals(total, vanilla + israel, total * 1e-9);
+            assertEquals(0.5, vanilla / total, 0.01, "vanilla keeps half");
+        }
+        Map<ResourceKey<Biome>, Double> v = new HashMap<>();
+        for (var p : wrapped()) v.merge(p.getSecond(), vol(p.getFirst()), Double::sum);
+        for (ResourceKey<Biome> k : List.of(Biomes.DESERT, Biomes.BADLANDS, Biomes.SAVANNA, Biomes.ERODED_BADLANDS)) {
+            assertTrue(v.getOrDefault(k, 0.0) > 0, k.identifier() + " must remain");
         }
     }
 

@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 /**
  * Puts the Israel-Simulator biomes into the Overworld multi-noise generator by wrapping the
- * biome consumer: the dry half of vanilla's hot climate (desert/savanna/badlands entries) is
+ * biome consumer: half (by weirdness) of every vanilla hot-climate entry (desert/savanna/badlands) is
  * re-assigned to the Israeli West→East strip (see {@link IsraelBiomeClimateParams}).
  */
 @Mixin(OverworldBiomeBuilder.class)
