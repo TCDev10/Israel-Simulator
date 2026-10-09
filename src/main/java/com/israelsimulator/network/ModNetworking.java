@@ -2,7 +2,6 @@ package com.israelsimulator.network;
 
 import com.israelsimulator.IsraelSimulator;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 

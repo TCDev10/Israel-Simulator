@@ -1,5 +1,13 @@
 # Test log
 
+## Avviso "runtime member-stripping behaviour, no longer present" a ogni avvio
+
+Problema riscontrato: a ogni avvio, prima del menu principale, NeoForge 26.2 mostrava l'avviso sul comportamento di member-stripping a runtime non più presente. La causa era l'annotazione deprecata `@OnlyIn(Dist.CLIENT)` su 7 classi client (`DollarBillParticle` e il suo `Provider`, `BicycleModel`, `BicycleRenderer`, `ChildZombieMinionRenderer`, `IceAgentRenderer`, `JeffreyEpsteinRenderer`, `TrumpMinibossRenderer`).
+
+Funzionamento aspettato: nessun `@OnlyIn` nel codice; il codice solo-client resta nel package `client`, registrato da `IsraelSimulatorClient` (`@Mod(dist = Dist.CLIENT)` / `@EventBusSubscriber(value = Dist.CLIENT)`) e mai referenziato dal codice comune o server.
+
+Come è stato risolto: tolti tutti gli `@OnlyIn` e i relativi import, e l'import inutilizzato di `RegisterClientPayloadHandlersEvent` da `ModNetworking` (il payload client si registra già in `IsraelSimulatorClient`). Nuovo `ClientSideSeparationTest`: fallisce se un sorgente contiene `@OnlyIn` o se una classe fuori dai package `client` referenzia `com.israelsimulator.client`, `net.minecraft.client` o `net.neoforged.neoforge.client`. `./gradlew build`: 312/312 test. `runServer` headless: "Done" in 3 s senza errori di class loading. `runClient` fino alla schermata iniziale: l'avviso non compare più nei log e non ci sono errori nuovi (solo quelli dell'ambiente senza audio). Non provato dall'utente in gioco.
+
 ## I villager non aprivano più la GUI e parlavano in chat
 
 Problema riscontrato: al click destro su un villager la GUI vanilla non si apriva e arrivavano messaggi in chat (battuta easter egg "[Citizen]" e dialoghi/hijack dei trade regionali). `ModGameEvents.onEntityInteract` intercettava ogni `AbstractVillager`: easter egg, catena di trade regionali (agricoltura, Mar Morto, deserto, Tel Aviv, Jaffa, Jerusalem, sinagoga rurale), dialogo NPC e cancel dell'evento tramite `VillagerInteractGate`. Anche fuori dal bioma giusto il click non era mai "pulito".

@@ -8,13 +8,10 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.resources.Identifier;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 /**
  * Client-side renderer for Donald Trump satirical miniboss (GAME_DESIGN.md §41–44).
  */
-@OnlyIn(Dist.CLIENT)
 public class TrumpMinibossRenderer extends HumanoidMobRenderer<TrumpMinibossEntity, HumanoidRenderState, HumanoidModel<HumanoidRenderState>> {
 
     private static final Identifier TEXTURE =
