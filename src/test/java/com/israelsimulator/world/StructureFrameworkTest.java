@@ -45,6 +45,7 @@ class StructureFrameworkTest {
                 "synagogue_ark",
                 "tel_aviv_tech_office",
                 "tel_aviv_apartment",
+                "tel_aviv_kiosk",
                 "ein_gedi_oasis",
                 "jaffa_flea_market",
                 "jerusalem_bazaar",
@@ -122,6 +123,9 @@ class StructureFrameworkTest {
             } else if ("mediterranean_village".equals(name)) {
                 assertEquals("israel_simulator:mediterranean/square", location,
                         "mediterranean_village must start from the village square piece");
+            } else if ("tel_aviv_city".equals(name)) {
+                assertEquals("israel_simulator:tel_aviv/square", location,
+                        "tel_aviv_city must start from the Dizengoff square piece");
             } else {
                 assertEquals("israel_simulator:" + name, location,
                         name + " pool must place this mod's structure template");
@@ -130,9 +134,10 @@ class StructureFrameworkTest {
             // Marker NBT: single-piece templates use structure/<name>.nbt.
             // Jerusalem also keeps a small root marker file for the yellow terracotta check,
             // and the live plaza piece carries the same marker.
-            // Multi-piece villages keep their marker in the start piece.
+            // Tel Aviv is multi-piece too; its marker lives in the start square's fountain.
             String nbtPath = switch (name) {
                 case "jerusalem_city" -> "data/israel_simulator/structure/jerusalem/plaza.nbt";
+                case "tel_aviv_city" -> "data/israel_simulator/structure/tel_aviv/square.nbt";
                 case "mediterranean_village" -> "data/israel_simulator/structure/mediterranean/square.nbt";
                 default -> "data/israel_simulator/structure/" + name + ".nbt";
             };

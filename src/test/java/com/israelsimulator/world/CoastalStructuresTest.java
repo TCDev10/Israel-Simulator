@@ -8,9 +8,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CoastalStructuresTest {
     @Test
-    @DisplayName("jaffa_port, tel_aviv_city are no longer tiny placeholders")
+    @DisplayName("jaffa_port is no longer a tiny placeholder")
     void notPlaceholders() throws Exception {
-        for (String name : new String[]{"jaffa_port", "tel_aviv_city"}) {
+        for (String name : new String[]{"jaffa_port"}) {
             String path = "data/israel_simulator/structure/" + name + ".nbt";
             try (InputStream in = getClass().getClassLoader().getResourceAsStream(path)) {
                 assertNotNull(in, path);
