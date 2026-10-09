@@ -2,6 +2,8 @@
 
 Il mondo di **Israel-Simulator** modella il variegato clima della regione attraverso 6 biomi personalizzati (uno dei quali urbano).
 
+I biomi sostituiscono la metà secca dei climi caldi vanilla (deserto, savana, badlands con umidità bassa): da ovest a est costa mediterranea, area urbana/agricoltura, Gerusalemme sulle alture e deserto della Giudea con la sacca del Mar Morto nelle zone pianeggianti. Il deserto vanilla resta nella metà umida, quindi si trovano facilmente (di solito entro 1000-2000 blocchi dallo spawn).
+
 ---
 
 ## 1. I Biomi Regionali
