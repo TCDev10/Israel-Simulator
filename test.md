@@ -379,3 +379,7 @@ Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure
 ## dead_sea_resort jigsaw (stile Ein Bokek)
 - `/locate structure israel_simulator:dead_sea_resort` nel bioma dead_sea: piazza con fontana-spa di fango (packed_mud) e palme, hotel a 4 piani a nord, lungomare di arenaria (diventa passerella di betulla sull'acqua), spa di fango, piscina, beach bar, negozio di sale, spiaggia con ombrelloni e formazioni di sale, pensione.
 - Controllare: edifici appoggiati sul terreno, piscina piena d'acqua, loot `dead_sea_resort`.
+
+## jerusalem_city: varianti di case
+- 6 nuove case nel pool `jerusalem/buildings` (con fondazione di 4 blocchi): casa a corte con olivo, casa con cupola (Città Vecchia), casa a terrazza (Nachlaot), casa templare con tetto rosso (German Colony), palazzina a 3 piani con balconi (Rehavia), casa stretta con porta ad arco e grate.
+- `/place structure israel_simulator:jerusalem_city` in un bioma jerusalem: controllare che le nuove case compaiano accanto alle vecchie, con porta sulla strada e loot `jerusalem_house`/`jerusalem_pantry`.
