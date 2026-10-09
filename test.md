@@ -408,7 +408,7 @@ Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure
 ## Padiglione a strisce con cupola d'oro (island_temple + arena di Epstein)
 - Struttura `israel_simulator:island_temple` solo nel bioma mediterranean_coast (spacing 32/12, beard_thin): padiglione 13x13 a righe bianche/blu, pilastri blu agli angoli, parapetto a zigzag, cupola d'oro a gradoni con guglia, portone ad arco in legno scuro, pannello ad arco color sabbia sul lato, scala in quarzo, due statue d'oro, piazza a chevron rosso/bianco/rosa, 4 palme, erba secca e scala a pioli sul lato est. Una cassa con loot `island_temple`.
 - `/locate structure israel_simulator:island_temple` (seed 20261005: ~7400 blocchi) oppure `/place template israel_simulator:island_temple ~ ~ ~`.
-- Arena: portare Epstein sotto il 30% di vita. Deve comparire lo stesso padiglione dentro una cupola di vetro (un solo strato) con Epstein sulla piazza davanti alla scala e i giocatori vicini spostati sulla piazza (non dentro i muri). Controllare che nessuno resti incastrato e che la cupola contenga tutto il padiglione.
+- Arena: portare Epstein al 50% di vita. Deve comparire lo stesso padiglione dentro una cupola di vetro (un solo strato) con Epstein sulla piazza davanti alla scala e i giocatori vicini spostati sulla piazza (non dentro i muri). Controllare che nessuno resti incastrato e che la cupola contenga tutto il padiglione.
 
 ## Olivo, palma da datteri, agrumi ed erbe mediterranee: raccolto e texture
 - Prima: click destro infinito su olive/datteri/agrumi = cibo infinito; foglie di palma ed erbe grigie (texture vanilla `jungle_leaves`/`fern` senza tinta), olivo e agrumi con texture vanilla dell'azalea.
@@ -427,3 +427,13 @@ Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure
 - Cooldown (overlay grigio sullo slot, solo dopo un uso riuscito): Dreidel 10 s, Primo Emendamento 120 s (l'effetto Libertà dura 60 s), disco Hava Nagila 5 s, Mappa d'Israele e Rav-Kav 2 s. Durante il cooldown il click destro non fa niente.
 - Dreidel: ogni giro punta 3 Shekel (servono nell'inventario, altrimenti messaggio rosso e niente cooldown). Nun = riprendi la puntata (0), Gimel = +2, Hei = +1, Shin = perdi i 3 Shekel. Valore atteso 0: niente più Shekel infiniti gratis. In creativa non costa e non paga.
 - Test: `ItemCooldownTest`, `FestivalsAndCalendarTest`. Non testato in gioco dal client.
+
+## Epstein: arena al 50% e "Palm Beach Pete" al 33%
+- La cupola di vetro con il padiglione compare ora al 50% di vita (prima al 30%), una sola volta.
+- Al 33% di vita il boss cambia nome in "Palm Beach Pete" (nome sopra la testa e barra del boss), una sola volta.
+- Test in gioco: uscire e rientrare nel mondo dopo il 33%: la barra deve ancora dire "Palm Beach Pete" e la cupola non deve ricomparire. Rientrando tra il 50% e il 33% la cupola non si ricostruisce.
+- Test: `EpsteinPhaseTriggersTest`. Non testato in gioco dal client.
+
+## Traduzioni mancanti (scudo di Bibi)
+- Colpendo Bibi mentre Epstein è vivo, in chat compariva la chiave grezza `message.israel_simulator.bibi_shielded_by_epstein`. Ora: "Bibi è protetto da Epstein! Sconfiggilo prima." (en: "Bibi is shielded by Epstein! Defeat him first.").
+- Aggiunte anche le 5 chiavi `category.israel_simulator.*` delle categorie di prodotti. Il nuovo test `TranslationKeysInCodeTest` controlla che ogni chiave usata nel codice esista in en_us e it_it.
