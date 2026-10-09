@@ -344,6 +344,22 @@ Funzionamento aspettato: la fermata determina la propria posizione nello spazio,
 
 Come è stato risolto: implementato `TransportNetwork.getNearestStop(BlockPos pos)` basato sulla distanza euclidea minima rispetto alle fermate registrate, e aggiornato `TransportStopBlock.handleInteraction` per prelevare la fermata corrente e instradare alla successiva. Aggiunto test di verifica routing in `TransportationTest`.
 
+## Tel Aviv come città jigsaw
+
+Problema riscontrato: `tel_aviv_city` era un unico blocco 48x48 (`beard_box`), una scatola piatta senza strade vere né quartieri.
+
+Funzionamento aspettato: una città jigsaw come `jerusalem_city`, con strade che seguono il terreno ed edifici rigidi, solo nel bioma `urban_area`.
+
+Come è stato risolto: nuovo `scripts/worldgen/gen_tel_aviv_city.py` → `structure/tel_aviv/*`. Pezzi: piazza Dizengoff (start, fontana Agam), strade in asfalto con marciapiedi (dritta, incrocio, curva, T), viale Rothschild con chiosco, 3 palazzi Bauhaus con balconi arrotondati, loft di Florentin con graffiti, casa templare di Sarona, 2 grattacieli in vetro, Tayelet sulla spiaggia. Interni minimi con loot (`tel_aviv_apartment`, `tel_aviv_tech_office`, nuova `tel_aviv_kiosk`). `beard_thin` e fondazione interrata di 4 blocchi sotto gli edifici. Test: `TelAvivCityStructureTest`. Verifica headless (seed 424242): 39 pezzi, 0 celle flottanti sotto gli edifici. Non testato in gioco dal client.
+
+## Villaggio mediterraneo come villaggio jigsaw
+
+Problema riscontrato: `mediterranean_village` era un singolo pezzo rettangolare (`beard_box`), non un villaggio.
+
+Funzionamento aspettato: un villaggio jigsaw come quelli vanilla, con sentieri che seguono il terreno, piazza centrale e case varie, solo nel bioma `mediterranean_coast`.
+
+Come è stato risolto: nuovo `scripts/worldgen/gen_mediterranean_village.py` → `structure/mediterranean/*`. Piazza con pozzo e ulivi (start), cappella con cupola blu (landmark), sentieri in terra/ghiaia/ciottoli (dritto, incrocio, curva, T) che sull'acqua diventano passerella in legno, 6 case bianche/calcare diverse (1-2 piani, tetti piani con terrazze, porte e persiane blu, rampicanti e bouganville), panetteria con forno, capanna del pescatore con barca, bancarella del mercato, uliveto. Loot `mediterranean_village` più le nuove `mediterranean_bakery` e `mediterranean_fisherman`. `beard_thin` e fondazione interrata di 4 blocchi. Test: `MediterraneanVillageStructureTest`. Verifica headless (seed 424242): 61 pezzi, 0 celle flottanti sotto gli edifici. Non testato in gioco dal client.
+
 ## Porto di Giaffa come città jigsaw
 
 Problema riscontrato: `jaffa_port` era un singolo pezzo rettangolare (`beard_box`), senza vicoli, torre dell'orologio né porto vero.

@@ -1,0 +1,41 @@
+{
+  "fallback": "israel_simulator:mediterranean/terminators",
+  "elements": [
+    {
+      "weight": 10,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:mediterranean/path_straight",
+        "processors": "israel_simulator:mediterranean_street",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:mediterranean/path_crossroad",
+        "processors": "israel_simulator:mediterranean_street",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 4,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:mediterranean/path_corner",
+        "processors": "israel_simulator:mediterranean_street",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 4,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:mediterranean/path_t",
+        "processors": "israel_simulator:mediterranean_street",
+        "projection": "terrain_matching"
+      }
+    }
+  ]
+}
