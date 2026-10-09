@@ -388,3 +388,8 @@ Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure
 - `/place structure israel_simulator:synagogue` (e `great_synagogue`, `historical_house` nel bioma jerusalem, `startup_office` in urban_area).
 - Sinagoga: cornicione, parapetto merlato, torrette angolari, tamburo con finestre e cupola bianca, portico a ovest, rosone. Grande sinagoga: cupola di rame su tamburo, due torri frontali con cupolette, portico con frontone e tavole della legge. Casa storica: cupola vera, archi sopra le finestre, persiane verdi, scala esterna al tetto, bouganville. Startup office: pensilina con insegna luminosa, frangisole, fioriere, rastrelliera bici, terrazza sul tetto con ombrelloni e antenna.
 - Controllare che interni, marker e loot (anche `synagogue_ark`) siano invariati.
+
+## Landmark reali e pulizia wiki/README
+- Rimossi i landmark finti con coordinate fisse (Knesset, Masada, giardini Baha'i, sinagoga della Galilea, formazioni di sale, Shuk HaCarmel). Restano Muro Occidentale (`western_wall`), Torre dell'Orologio e Mercato delle Pulci (pezzi `jaffa/clock_square`, `jaffa/flea_market` di `jaffa_port`) e Tayelet (pezzo `tel_aviv/tayelet` di `tel_aviv_city`).
+- Test in gioco: entrare in una di queste strutture/pezzi deve dare il messaggio "landmark scoperto" (+100 XP); usare la Mappa d'Israele per vedere il conteggio (x / 4).
+- Wiki/README: tolti biomi e strutture inesistenti (golan_heights, Monte Hermon, Masada, tende beduine, grotte di Qumran, tunnel della Città di David), corretti gli id dei biomi e la tabella delle strutture.

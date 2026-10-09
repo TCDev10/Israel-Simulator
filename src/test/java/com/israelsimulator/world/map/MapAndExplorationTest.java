@@ -25,24 +25,44 @@ class MapAndExplorationTest {
     }
 
     @Test
-    @DisplayName("Verify Landmark enum defines the required cultural and historical sites")
+    @DisplayName("Landmarks are bound to real generated structures, not hard-coded coordinates")
     void testLandmarks() {
-        assertTrue(Landmark.values().length >= 8, "Must define at least 8 prominent landmarks");
-        assertNotNull(Landmark.WESTERN_WALL);
+        assertEquals(java.util.EnumSet.of(Landmark.WESTERN_WALL, Landmark.JAFFA_CLOCK_TOWER, Landmark.FLEA_MARKET,
+                Landmark.TEL_AVIV_PROMENADE), java.util.EnumSet.allOf(Landmark.class));
         assertEquals(IsraelRegion.JERUSALEM, Landmark.WESTERN_WALL.getRegion());
-
-        assertNotNull(Landmark.JAFFA_CLOCK_TOWER);
         assertEquals(IsraelRegion.JAFFA, Landmark.JAFFA_CLOCK_TOWER.getRegion());
-
-        assertNotNull(Landmark.DEAD_SEA_SALT_PILLARS);
-        assertEquals(IsraelRegion.DEAD_SEA, Landmark.DEAD_SEA_SALT_PILLARS.getRegion());
-
-        assertNotNull(Landmark.TEL_AVIV_PROMENADE);
         assertEquals(IsraelRegion.TEL_AVIV, Landmark.TEL_AVIV_PROMENADE.getRegion());
+        assertEquals(com.israelsimulator.world.structure.ModStructures.WESTERN_WALL, Landmark.WESTERN_WALL.getStructure());
+        assertEquals(com.israelsimulator.world.structure.ModStructures.JAFFA_PORT, Landmark.JAFFA_CLOCK_TOWER.getStructure());
+        assertEquals(com.israelsimulator.world.structure.ModStructures.TEL_AVIV_CITY, Landmark.TEL_AVIV_PROMENADE.getStructure());
+        for (Landmark lm : Landmark.values()) {
+            assertNotNull(lm.getStructure(), lm + " must point at a structure");
+            String structureJson = "data/israel_simulator/worldgen/structure/"
+                    + lm.getStructure().identifier().getPath() + ".json";
+            assertNotNull(getClass().getClassLoader().getResource(structureJson), lm + ": missing " + structureJson);
+            if (lm.getPiece() != null) {
+                String nbt = "data/israel_simulator/structure/" + lm.getPiece().substring("israel_simulator:".length()) + ".nbt";
+                assertNotNull(getClass().getClassLoader().getResource(nbt), lm + ": missing piece " + nbt);
+                String pools = String.join("\n", readPools(lm.getStructure().identifier().getPath()));
+                assertTrue(pools.contains(lm.getPiece()), lm + ": piece is not in any pool of its structure");
+            }
+        }
+    }
 
-        assertNotNull(Landmark.KNESSET);
-        assertNotNull(Landmark.CARMEL_MARKET);
-        assertNotNull(Landmark.FLEA_MARKET);
+    private java.util.List<String> readPools(String structure) {
+        java.util.List<String> out = new java.util.ArrayList<>();
+        try {
+            java.nio.file.Path root = java.nio.file.Path.of(getClass().getClassLoader()
+                    .getResource("data/israel_simulator/worldgen/template_pool").toURI());
+            try (var files = java.nio.file.Files.walk(root)) {
+                for (java.nio.file.Path f : files.filter(p -> p.toString().endsWith(".json")).toList()) {
+                    out.add(java.nio.file.Files.readString(f));
+                }
+            }
+        } catch (Exception e) {
+            throw new AssertionError(e);
+        }
+        return out;
     }
 
     @Test

@@ -8,8 +8,8 @@ L'esplorazione premia i viaggiatori curiosi con scoperte storiche, oggetti rari 
 
 La **Mappa d'Israele** (`israel_simulator:israel_map`) è lo strumento principe per tracciare i progressi delle proprie avventure geografiche e storiche:
 - **Tracciamento Interattivo**: Cliccando con il tasto destro, la mappa consulta il registro server-authoritative (`PlayerLandmarkTracker`) e stampa nella chat del giocatore il log dettagliato delle scoperte:
-  - **Regioni Visitate** (es. Costa Mediterranea, Colline di Gerusalemme, Deserto della Giudea, Valle del Mar Morto, Campi della Galilea, Alture del Golan).
-  - **Landmark Storici Scoperti** (Città Vecchia, Western Wall, Porto di Giaffa, Shuk HaPishpeshim, Rothschild Boulevard, Ein Gedi Oasis, Rovine di Masada, Grotte di Qumran, Monte Hermon).
+  - **Regioni Visitate**: la regione di ogni landmark scoperto (Gerusalemme, Giaffa, Tel Aviv).
+  - **Landmark Scoperti**: un landmark si scopre entrando nella struttura reale che lo contiene: il Muro Occidentale (`western_wall`), la Torre dell'Orologio e il Mercato delle Pulci di Giaffa (pezzi di `jaffa_port`) e il Lungomare (Tayelet) di Tel Aviv (pezzo di `tel_aviv_city`).
 - **Titolo Master Explorer**: Raggiungendo e scoprendo tutti i punti cardinali e monumenti del paese, il giocatore riceve il titolo onorifico di *Master Explorer*.
 
 ---
@@ -17,7 +17,7 @@ La **Mappa d'Israele** (`israel_simulator:israel_map`) è lo strumento principe 
 ## 2. Collezionabili Leggendari
 
 - **Frammenti dei Rotoli del Mar Morto (`dead_sea_scroll_fragment`)**:
-  - Trovati nascosti nelle giare di terracotta all'interno delle grotte di Qumran.
+  - Trovati nelle casse delle rovine nel deserto (soprattutto nello scriptorium) e del resort del Mar Morto.
   - Consegnali allo Storico della Città Vecchia di Gerusalemme per svelare frammenti di saggezza e cospicue ricompense in Shekel.
 - **Scultura in Legno d'Ulivo (`olive_wood_carving`)**:
   - Manufatti artigianali intagliati a mano dai mastri ebanisti di Giaffa e Betlemme, molto richiesti dagli antiquari.
@@ -30,9 +30,9 @@ La **Mappa d'Israele** (`israel_simulator:israel_map`) è lo strumento principe 
 
 ## 3. Punti di Interesse per Esploratori
 
-- **Oasi di Ein Gedi**: Una cascata d'acqua dolce nel mezzo del deserto con stambecchi e vegetazione lussureggiante.
-- **La Fortezza di Masada**: Accessibile tramite il suggestivo Sentiero del Serpente (Snake Path).
-- **I Sotterranei della Città di David**: Tunnel scavati nella roccia con canali d'acqua percorribili a piedi.
-- **Le Grotte di Qumran**: Anfratti rocciosi a picco sul bacino salato del Mar Morto.
+- **Oasi di Ein Gedi**: Una cascata d'acqua dolce nel mezzo del deserto con vegetazione lussureggiante.
+- **Rovine nel Deserto**: Insediamento antico in stile Qumran con scriptorium e giare dei rotoli.
+- **Santuario Antico**: Tempio nel deserto che custodisce la Corona del Rabbino.
+- **Mercato Mahane Yehuda**: Il grande shuk di Gerusalemme.
 
 

@@ -16,7 +16,7 @@ import net.minecraft.world.level.biome.Biome;
  *   <li>{@link #MEDITERRANEAN_COAST}: Coastal terrain, azure waters, beaches and sea life</li>
  *   <li>{@link #ISRAELI_AGRICULTURE}: Fertile agricultural valley, olive and date trees, farmlands</li>
  *   <li>{@link #JUDEAN_DESERT}: Arid desert, sandstone canyons, rocky outcrops and desert life</li>
- *   <li>{@link #DEAD_SEA}: Hypersaline mineral lake, unique turquoise water, salt formations</li>
+ *   <li>{@link #DEAD_SEA}: Hypersaline mineral lake with unique turquoise water</li>
  *   <li>{@link #URBAN_AREA}: Mediterranean urban foundation, prepared for cities and districts</li>
  * </ul>
  * </p>

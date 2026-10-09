@@ -1,6 +1,6 @@
 # Il Mar Morto e i Pericoli Ambientali (Dead Sea & Hazards)
 
-Il bacino del **Mar Morto** è l'ambiente naturale più estremo e affascinante della mappa, situato a profondità record sotto il livello del mare.
+Il bacino del **Mar Morto** è l'ambiente naturale più estremo e affascinante della mappa, un lago ipersalino dalle acque turchesi.
 
 ---
 
@@ -19,7 +19,7 @@ Il bacino del **Mar Morto** è l'ambiente naturale più estremo e affascinante d
 - **Fango del Mar Morto (`dead_sea_mud`)**:
   - Raccolto lungo le rive argillose.
   - Applicandolo sulla pelle, rimuove gli effetti di veleno e rigenera i punti salute conferendo una pelle nutrita e rinfrescata.
-- **Blocchi di Sale Naturale (`dead_sea_salt_block`)**:
+- **Blocchi di Sale (`salt_block`)**:
   - Utilizzabili per la conservazione dei cibi e decorazione minerale cristallina.
 
 ---
@@ -28,5 +28,5 @@ Il bacino del **Mar Morto** è l'ambiente naturale più estremo e affascinante d
 
 - **Colpo di Calore (Heatstroke)**:
   - Esporsi al sole rovente del mezzogiorno nel deserto senza cappello (o Kippah) aumenta rapidamente la sete e riduce la velocità di movimento.
-  - Cerca l'ombra delle palme da dattero, oasi d'acqua dolce ad Ein Gedi o entra nelle tende beduine per rinfrescarti.
+  - Cerca l'ombra delle palme da dattero, oasi d'acqua dolce ad Ein Gedi o entra in un edificio per rinfrescarti.
 
