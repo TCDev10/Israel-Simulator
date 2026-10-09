@@ -53,6 +53,8 @@ import net.minecraft.world.phys.AABB;
  * Summons waves of easy-to-defeat child-skinned baby zombies ("Private Island Call").
  * At 50% HP the glass dome + pavilion arena appears once; at 33% HP the boss is renamed
  * "Palm Beach Pete" once (custom name and boss bar, persisted across save/load).
+ * The arena's replaced blocks are snapshotted ({@link EpsteinArenaSnapshots}) and restored when
+ * the fight ends.
  */
 public class JeffreyEpsteinEntity extends Monster {
 
@@ -286,7 +288,29 @@ public class JeffreyEpsteinEntity extends Monster {
         AABB arena = new AABB(domeCenter).inflate(DOME_RADIUS + 1, DOME_HEIGHT, DOME_RADIUS + 1);
         List<ServerPlayer> players = serverLevel.getEntitiesOfClass(ServerPlayer.class, arena, p -> p.isAlive() && !p.isSpectator());
 
-        template.ifPresent(t -> t.placeInWorld(serverLevel, origin, origin, new StructurePlaceSettings(),
+        // Snapshot every position the arena can touch (pavilion box + dome shell) so the world
+        // can be restored exactly when the fight ends.
+        List<BlockPos> touched = new ArrayList<>();
+        for (BlockPos p : BlockPos.betweenClosed(origin, origin.offset(size.getX() - 1, size.getY() - 1, size.getZ() - 1))) {
+            touched.add(p.immutable());
+        }
+        for (int dy = 0; dy <= DOME_HEIGHT; dy++) {
+            for (int dx = -DOME_RADIUS; dx <= DOME_RADIUS; dx++) {
+                for (int dz = -DOME_RADIUS; dz <= DOME_RADIUS; dz++) {
+                    if (isDomeShell(dx, dy, dz)) {
+                        touched.add(domeCenter.offset(dx, dy, dz));
+                    }
+                }
+            }
+        }
+        BlockPos snapMin = new BlockPos(Math.min(origin.getX(), domeCenter.getX() - DOME_RADIUS), origin.getY(),
+                Math.min(origin.getZ(), domeCenter.getZ() - DOME_RADIUS));
+        BlockPos snapMax = new BlockPos(Math.max(origin.getX() + size.getX() - 1, domeCenter.getX() + DOME_RADIUS),
+                Math.max(origin.getY() + size.getY() - 1, domeCenter.getY() + DOME_HEIGHT),
+                Math.max(origin.getZ() + size.getZ() - 1, domeCenter.getZ() + DOME_RADIUS));
+        List<EpsteinArenaSnapshots.Before> before = EpsteinArenaSnapshots.capture(serverLevel, touched);
+
+        template.ifPresent(t -> t.placeInWorld(serverLevel, origin, origin, new StructurePlaceSettings().setIgnoreEntities(true),
                 serverLevel.getRandom(), Block.UPDATE_CLIENTS));
 
         // Single-layer glass dome (ellipsoid shell) around the pavilion, only in air.
@@ -303,6 +327,8 @@ public class JeffreyEpsteinEntity extends Monster {
                 }
             }
         }
+
+        EpsteinArenaSnapshots.record(serverLevel, this.getUUID(), before, snapMin, snapMax);
 
         // Nobody ends up inside a wall: Epstein on the plaza, players facing him.
         double plazaY = origin.getY() + TEMPLE_FOOTING + 1;
@@ -351,6 +377,9 @@ public class JeffreyEpsteinEntity extends Monster {
         this.bossEvent.removeAllPlayers();
 
         if (this.level() instanceof ServerLevel serverLevel) {
+            // Fight over: remove the dome + pavilion and put the world back.
+            EpsteinArenaSnapshots.restore(serverLevel, this.getUUID());
+
             // Dismiss remaining active child zombie minions
             for (UUID uuid : this.aliveMinionUuids) {
                 Entity minion = serverLevel.getEntity(uuid);
@@ -368,6 +397,15 @@ public class JeffreyEpsteinEntity extends Monster {
                     new ItemStack(Items.EMERALD, 8)));
             serverLevel.addFreshEntity(new ItemEntity(serverLevel, this.getX(), this.getY() + 0.5, this.getZ(),
                     new ItemStack(Items.GOLD_INGOT, 10)));
+        }
+    }
+
+    @Override
+    public void onRemoval(Entity.RemovalReason reason) {
+        super.onRemoval(reason);
+        // Killed or discarded (despawn, /kill, peaceful): the fight is over. Unloading keeps the arena.
+        if (ArenaRestoreRules.restoresOnRemoval(reason.shouldDestroy()) && this.level() instanceof ServerLevel serverLevel) {
+            EpsteinArenaSnapshots.restore(serverLevel, this.getUUID());
         }
     }
 

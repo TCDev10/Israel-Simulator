@@ -437,3 +437,10 @@ Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure
 ## Traduzioni mancanti (scudo di Bibi)
 - Colpendo Bibi mentre Epstein è vivo, in chat compariva la chiave grezza `message.israel_simulator.bibi_shielded_by_epstein`. Ora: "Bibi è protetto da Epstein! Sconfiggilo prima." (en: "Bibi is shielded by Epstein! Defeat him first.").
 - Aggiunte anche le 5 chiavi `category.israel_simulator.*` delle categorie di prodotti. Il nuovo test `TranslationKeysInCodeTest` controlla che ogni chiave usata nel codice esista in en_us e it_it.
+
+## Epstein: l'arena sparisce a fine scontro
+- Quando compare la cupola con il padiglione, tutte le posizioni toccate vengono salvate (blocco originale + dati di casse/cartelli) nei dati del mondo (`epstein_arena_snapshots`).
+- Test in gioco: uccidere Epstein → cupola e padiglione spariscono e il terreno torna com'era, senza oggetti della cassa del padiglione per terra. Anche con `/kill` o se sparisce (peaceful) il mondo viene ripristinato.
+- Salvare ed uscire durante lo scontro, rientrare: l'arena resta finché Epstein è vivo. Se Epstein non c'è più (es. `/kill` da lontano, altra dimensione) l'arena viene ripristinata entro ~10 s da quando la zona è caricata.
+- I blocchi del padiglione modificati da un giocatore non vengono sovrascritti. Chi è dentro un blocco ripristinato viene spostato in superficie.
+- Test: `EpsteinArenaRestoreTest`. Non testato in gioco dal client.
