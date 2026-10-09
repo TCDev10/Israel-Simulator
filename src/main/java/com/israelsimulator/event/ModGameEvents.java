@@ -18,6 +18,15 @@ public final class ModGameEvents {
         IsraelSimulator.LOGGER.info("Israel-Simulator server starting");
     }
 
+    /** Restores Epstein arenas whose boss vanished (died unloaded, other dimension, deleted). */
+    @SubscribeEvent
+    public static void onLevelTick(net.neoforged.neoforge.event.tick.LevelTickEvent.Post event) {
+        if (event.getLevel() instanceof net.minecraft.server.level.ServerLevel level
+                && level.getGameTime() % com.israelsimulator.entity.boss.ArenaRestoreRules.ORPHAN_CHECK_INTERVAL == 0) {
+            com.israelsimulator.entity.boss.EpsteinArenaSnapshots.tickOrphans(level);
+        }
+    }
+
     @SubscribeEvent
     public static void onEntityTick(net.neoforged.neoforge.event.tick.EntityTickEvent.Post event) {
         if (event.getEntity() instanceof net.minecraft.world.entity.LivingEntity entity) {
