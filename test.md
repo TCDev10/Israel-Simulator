@@ -405,6 +405,11 @@ Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure
 - I biomi israeliani non sostituiscono più deserto, savana e badlands: condividono la zona calda (metà per uno), come chiazze vicine.
 - Nuovo mondo: `/locate biome` dei 6 biomi israeliani e di `minecraft:desert`, `minecraft:savanna`, `minecraft:badlands` deve rispondere in pochi secondi. Controllare in volo che i biomi vanilla e israeliani si alternino in modo sensato.
 
+## Padiglione a strisce con cupola d'oro (island_temple + arena di Epstein)
+- Struttura `israel_simulator:island_temple` solo nel bioma mediterranean_coast (spacing 32/12, beard_thin): padiglione 13x13 a righe bianche/blu, pilastri blu agli angoli, parapetto a zigzag, cupola d'oro a gradoni con guglia, portone ad arco in legno scuro, pannello ad arco color sabbia sul lato, scala in quarzo, due statue d'oro, piazza a chevron rosso/bianco/rosa, 4 palme, erba secca e scala a pioli sul lato est. Una cassa con loot `island_temple`.
+- `/locate structure israel_simulator:island_temple` (seed 20261005: ~7400 blocchi) oppure `/place template israel_simulator:island_temple ~ ~ ~`.
+- Arena: portare Epstein sotto il 30% di vita. Deve comparire lo stesso padiglione dentro una cupola di vetro (un solo strato) con Epstein sulla piazza davanti alla scala e i giocatori vicini spostati sulla piazza (non dentro i muri). Controllare che nessuno resti incastrato e che la cupola contenga tutto il padiglione.
+
 ## Olivo, palma da datteri, agrumi ed erbe mediterranee: raccolto e texture
 - Prima: click destro infinito su olive/datteri/agrumi = cibo infinito; foglie di palma ed erbe grigie (texture vanilla `jungle_leaves`/`fern` senza tinta), olivo e agrumi con texture vanilla dell'azalea.
 - Ora foglie e erbe hanno `age` 0-3 (foglie → fiori → frutto acerbo → maturo) con texture 16x16 proprie a colori fissi (`scripts/textures/gen_crop_textures.py`), più nuove texture degli oggetti datteri, olive, agrumi ed erbe.

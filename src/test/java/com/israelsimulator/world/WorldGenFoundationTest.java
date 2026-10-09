@@ -55,7 +55,7 @@ class WorldGenFoundationTest {
     @Test
     @DisplayName("Verify structure and structure set keys")
     void testStructures() {
-        assertEquals(16, ModStructures.allStructures().size());
+        assertEquals(17, ModStructures.allStructures().size());
         for (var key : ModStructures.allStructures()) {
             assertEquals(Registries.STRUCTURE, key.registryKey());
             assertEquals("israel_simulator", key.identifier().getNamespace());
@@ -116,7 +116,7 @@ class WorldGenFoundationTest {
     }
 
     @Test
-    @DisplayName("Verify all 16 structure JSONs specify valid biomes including fallback biomes")
+    @DisplayName("Verify all 17 structure JSONs specify valid biomes including fallback biomes")
     void testOverworldStructuresAvailability() throws Exception {
         com.google.gson.Gson gson = new com.google.gson.Gson();
         for (var key : ModStructures.allStructures()) {

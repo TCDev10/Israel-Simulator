@@ -1,15 +1,24 @@
 package com.israelsimulator.entity.boss;
 
+import com.israelsimulator.IsraelSimulator;
 import com.israelsimulator.registry.ModEntities;
 import com.israelsimulator.registry.ModItems;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -225,34 +234,81 @@ public class JeffreyEpsteinEntity extends Monster {
         }
     }
 
+    /** Pavilion template shared with the island_temple worldgen structure. */
+    public static final Identifier ISLAND_TEMPLE_TEMPLATE =
+            Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "island_temple");
+    /** Sandstone footing rows under the template floor (Rigid.FOOTING in the generator). */
+    public static final int TEMPLE_FOOTING = 4;
+    /** Plaza spot (template x/z) where Epstein stands; players are moved next to it. */
+    public static final int ARENA_SPAWN_X = 13;
+    public static final int ARENA_SPAWN_Z = 3;
+    public static final int ARENA_PLAYER_Z = 1;
+    /** Single-layer glass shell: horizontal / vertical radius, big enough for the pavilion. */
+    public static final int DOME_RADIUS = 21;
+    public static final int DOME_HEIGHT = 27;
+
     private void spawnEpsteinIslandDome(ServerLevel serverLevel) {
-            // Create a single-layer glass dome (empty inside, just one glass layer)
-            int radius = 12;
-            int height = 16;
-            BlockPos center = new BlockPos((int)Math.floor(this.getX()), (int)Math.floor(this.getY()) - 2, (int)Math.floor(this.getZ()));
-            // Single layer glass dome - only the outermost surface blocks
-            for (int y = 0; y < height; y++) {
-                int r = (int) Math.sqrt(Math.max(0, radius * radius - y));
-                for (int x = -r; x <= r; x++) {
-                    int z = (int) Math.sqrt(Math.max(0, r * r - x * x));
-                    // Place glass at the four symmetric surface positions
-                    BlockPos pos1 = center.offset(x, y, z);
-                    BlockPos pos2 = center.offset(x, y, -z);
-                    BlockPos pos3 = center.offset(-x, y, z);
-                    BlockPos pos4 = center.offset(-x, y, -z);
-                    if (serverLevel.getBlockState(pos1).isAir()) serverLevel.setBlock(pos1, Blocks.GLASS.defaultBlockState(), 3);
-                    if (serverLevel.getBlockState(pos2).isAir()) serverLevel.setBlock(pos2, Blocks.GLASS.defaultBlockState(), 3);
-                    if (serverLevel.getBlockState(pos3).isAir()) serverLevel.setBlock(pos3, Blocks.GLASS.defaultBlockState(), 3);
-                    if (serverLevel.getBlockState(pos4).isAir()) serverLevel.setBlock(pos4, Blocks.GLASS.defaultBlockState(), 3);
+        BlockPos feet = this.blockPosition();
+        int groundY = feet.getY() - 1;
+        Optional<StructureTemplate> template = serverLevel.getStructureManager().get(ISLAND_TEMPLE_TEMPLATE);
+        Vec3i size = template.map(StructureTemplate::getSize).orElse(new Vec3i(27, 28, 28));
+        // The plaza floor (template y = footing) lands on the ground Epstein stands on,
+        // with Epstein on the plaza in front of the stairs.
+        BlockPos origin = new BlockPos(feet.getX() - ARENA_SPAWN_X, groundY - TEMPLE_FOOTING, feet.getZ() - ARENA_SPAWN_Z);
+        BlockPos domeCenter = new BlockPos(origin.getX() + size.getX() / 2, groundY, origin.getZ() + size.getZ() / 2);
+
+        // Players inside the future dome, collected before the blocks change.
+        AABB arena = new AABB(domeCenter).inflate(DOME_RADIUS + 1, DOME_HEIGHT, DOME_RADIUS + 1);
+        List<ServerPlayer> players = serverLevel.getEntitiesOfClass(ServerPlayer.class, arena, p -> p.isAlive() && !p.isSpectator());
+
+        template.ifPresent(t -> t.placeInWorld(serverLevel, origin, origin, new StructurePlaceSettings(),
+                serverLevel.getRandom(), Block.UPDATE_CLIENTS));
+
+        // Single-layer glass dome (ellipsoid shell) around the pavilion, only in air.
+        BlockState glass = Blocks.GLASS.defaultBlockState();
+        BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
+        for (int dy = 0; dy <= DOME_HEIGHT; dy++) {
+            for (int dx = -DOME_RADIUS; dx <= DOME_RADIUS; dx++) {
+                for (int dz = -DOME_RADIUS; dz <= DOME_RADIUS; dz++) {
+                    if (!isDomeShell(dx, dy, dz)) continue;
+                    cursor.set(domeCenter.getX() + dx, domeCenter.getY() + dy, domeCenter.getZ() + dz);
+                    if (serverLevel.getBlockState(cursor).isAir()) {
+                        serverLevel.setBlock(cursor, glass, Block.UPDATE_ALL);
+                    }
                 }
             }
-            // No golden temple core - dome is empty inside
-            // Visual and audio cue
-            serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
-                    SoundEvents.BEACON_ACTIVATE, SoundSource.HOSTILE, 2.0F, 0.8F);
-            serverLevel.sendParticles(ParticleTypes.TOTEM_OF_UNDYING, this.getX(), this.getY() + 1, this.getZ(),
-                    100, 4, 4, 4, 0.1);
         }
+
+        // Nobody ends up inside a wall: Epstein on the plaza, players facing him.
+        double plazaY = origin.getY() + TEMPLE_FOOTING + 1;
+        this.teleportTo(origin.getX() + ARENA_SPAWN_X + 0.5, plazaY, origin.getZ() + ARENA_SPAWN_Z + 0.5);
+        int i = 0;
+        for (ServerPlayer player : players) {
+            int dx = (i % 2 == 0 ? -1 : 1) * (2 + 2 * (i / 2 % 4));
+            player.teleportTo(serverLevel, origin.getX() + ARENA_SPAWN_X + dx + 0.5, plazaY,
+                    origin.getZ() + ARENA_PLAYER_Z + 0.5, Set.of(), 0.0F, 0.0F, true);
+            i++;
+        }
+
+        // Visual and audio cue
+        serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                SoundEvents.BEACON_ACTIVATE, SoundSource.HOSTILE, 2.0F, 0.8F);
+        serverLevel.sendParticles(ParticleTypes.TOTEM_OF_UNDYING, this.getX(), this.getY() + 1, this.getZ(),
+                100, 4, 4, 4, 0.1);
+    }
+
+    /** True when (dx,dy,dz) is inside the dome ellipsoid and touches the outside. */
+    static boolean isDomeShell(int dx, int dy, int dz) {
+        if (!insideDome(dx, dy, dz)) return false;
+        return !insideDome(dx + 1, dy, dz) || !insideDome(dx - 1, dy, dz)
+                || !insideDome(dx, dy + 1, dz) || !insideDome(dx, dy, dz + 1) || !insideDome(dx, dy, dz - 1);
+    }
+
+    private static boolean insideDome(int dx, int dy, int dz) {
+        double h = (dx * dx + dz * dz) / (double) (DOME_RADIUS * DOME_RADIUS);
+        double v = (dy * dy) / (double) (DOME_HEIGHT * DOME_HEIGHT);
+        return h + v <= 1.0;
+    }
 
     private void broadcastEpsteinSpeech(ServerLevel serverLevel) {
         int quoteIndex = this.random.nextInt(3);
