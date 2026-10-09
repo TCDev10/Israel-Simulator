@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -49,6 +51,7 @@ public class JeffreyEpsteinEntity extends Monster {
 
     private int summonMinionsCooldown = 180;
     private int speechCooldown = 200;
+    private boolean domeSpawned = false;
 
     public JeffreyEpsteinEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
@@ -111,12 +114,16 @@ public class JeffreyEpsteinEntity extends Monster {
         if (damageSource.is(net.minecraft.tags.DamageTypeTags.IS_EXPLOSION)) {
             return false;
         }
-        // Friendly fire protection with Bibi and allies
-        if (BibiBossEntity.isAlly(damageSource.getEntity())) {
+            // Immune to drowning
+            if (damageSource.is(net.minecraft.tags.DamageTypeTags.IS_DROWNING)) {
             return false;
         }
-        return super.hurtServer(serverLevel, damageSource, amount);
-    }
+            // Friendly fire protection with Bibi and allies
+            if (BibiBossEntity.isAlly(damageSource.getEntity())) {
+                return false;
+            }
+            return super.hurtServer(serverLevel, damageSource, amount);
+        }
 
     @Override
     public boolean canAttack(LivingEntity target) {
@@ -138,9 +145,20 @@ public class JeffreyEpsteinEntity extends Monster {
     public void aiStep() {
         super.aiStep();
 
+        // Water immunity and buoyancy: float out of water
+                if (!this.level().isClientSide() && this.isInWater()) {
+                    this.setDeltaMovement(this.getDeltaMovement().x, 0.08, this.getDeltaMovement().z);
+                }
+
         if (!this.level().isClientSide() && this.level() instanceof ServerLevel serverLevel) {
             float progress = Math.max(0.0F, Math.min(1.0F, this.getHealth() / this.getMaxHealth()));
             this.bossEvent.setProgress(progress);
+
+            // Spawn dome at 30% health
+            if (!this.domeSpawned && progress <= 0.3F) {
+                spawnEpsteinIslandDome(serverLevel);
+                this.domeSpawned = true;
+            }
 
             if (summonMinionsCooldown > 0) summonMinionsCooldown--;
             if (speechCooldown > 0) speechCooldown--;
@@ -205,6 +223,45 @@ public class JeffreyEpsteinEntity extends Monster {
                         15, 0.3, 0.3, 0.3, 0.05);
             }
         }
+    }
+
+    private void spawnEpsteinIslandDome(ServerLevel serverLevel) {
+        // Create a dome replicating Epstein's private island with golden temple
+        int radius = 12;
+        int height = 16;
+        BlockPos center = new BlockPos((int)Math.floor(this.getX()), (int)Math.floor(this.getY()) - 2, (int)Math.floor(this.getZ()));
+        // Glass dome
+        for (int y = 0; y < height; y++) {
+            for (int x = -radius; x <= radius; x++) {
+                for (int z = -radius; z <= radius; z++) {
+                    int distSq = x*x + z*z;
+                    if (distSq > radius*radius - y) continue;
+                    BlockPos pos = center.offset(x, y, z);
+                    if (serverLevel.getBlockState(pos).isAir()) {
+                        serverLevel.setBlock(pos, Blocks.GLASS.defaultBlockState(), 3);
+                    }
+                }
+            }
+        }
+        // Golden temple core
+        BlockPos templeCenter = center.offset(0, 2, 0);
+        for (int x = -4; x <= 4; x++) {
+            for (int z = -4; z <= 4; z++) {
+                for (int y = 0; y < 6; y++) {
+                    BlockPos p = templeCenter.offset(x, y, z);
+                    if (Math.abs(x) == 4 || Math.abs(z) == 4 || y == 5) {
+                        serverLevel.setBlock(p, Blocks.GOLD_BLOCK.defaultBlockState(), 3);
+                    } else {
+                        serverLevel.setBlock(p, Blocks.GOLD_BLOCK.defaultBlockState(), 3);
+                    }
+                }
+            }
+        }
+        // Visual and audio cue
+        serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                SoundEvents.BEACON_ACTIVATE, SoundSource.HOSTILE, 2.0F, 0.8F);
+        serverLevel.sendParticles(ParticleTypes.TOTEM_OF_UNDYING, this.getX(), this.getY() + 1, this.getZ(),
+                100, 4, 4, 4, 0.1);
     }
 
     private void broadcastEpsteinSpeech(ServerLevel serverLevel) {

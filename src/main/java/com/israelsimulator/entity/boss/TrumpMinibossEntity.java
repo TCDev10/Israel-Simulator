@@ -113,6 +113,11 @@ public class TrumpMinibossEntity extends Monster {
     public void aiStep() {
         super.aiStep();
 
+        // Water immunity and buoyancy: float out of water
+                if (!this.level().isClientSide() && this.isInWater()) {
+                    this.setDeltaMovement(this.getDeltaMovement().x, 0.08, this.getDeltaMovement().z);
+                }
+
         if (!this.level().isClientSide() && this.level() instanceof ServerLevel serverLevel) {
             float progress = Math.max(0.0F, Math.min(1.0F, this.getHealth() / this.getMaxHealth()));
             this.bossEvent.setProgress(progress);
@@ -220,6 +225,10 @@ public class TrumpMinibossEntity extends Monster {
     public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float amount) {
         // Complete explosion immunity (GAME_DESIGN requirement)
         if (damageSource.is(net.minecraft.tags.DamageTypeTags.IS_EXPLOSION)) {
+            return false;
+        }
+        // Immune to drowning
+        if (damageSource.is(net.minecraft.tags.DamageTypeTags.IS_DROWNING)) {
             return false;
         }
         // Friendly fire protection with Bibi and coalition allies

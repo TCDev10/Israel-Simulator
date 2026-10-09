@@ -2,26 +2,7 @@
   "type": "minecraft:entity",
   "pools": [
     {
-      "rolls": 1.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "israel_simulator:hava_nagila_disc",
-          "weight": 1
-        }
-      ]
-    },
-    {
-      "rolls": 1.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "israel_simulator:rabbis_crown",
-          "weight": 1
-        }
-      ]
-    },
-    {
+
       "rolls": {
         "type": "minecraft:uniform",
         "min": 2.0,

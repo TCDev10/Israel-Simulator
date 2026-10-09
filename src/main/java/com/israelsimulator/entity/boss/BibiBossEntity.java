@@ -175,7 +175,12 @@ public class BibiBossEntity extends Monster implements RangedAttackMob {
     public void aiStep() {
         super.aiStep();
 
-        if (this.arenaCenter == null) {
+            // Water immunity and buoyancy: float out of water
+                        if (!this.level().isClientSide() && this.isInWater()) {
+                            this.setDeltaMovement(this.getDeltaMovement().x, 0.08, this.getDeltaMovement().z);
+                        }
+
+            if (this.arenaCenter == null) {
             this.arenaCenter = this.blockPosition();
         }
 
@@ -428,6 +433,18 @@ public class BibiBossEntity extends Monster implements RangedAttackMob {
         return false;
     }
 
+    public boolean isEpsteinShieldActive(ServerLevel serverLevel) {
+            if (this.epsteinBossUuid == null) {
+            return false;
+        }
+            net.minecraft.world.entity.Entity entity = serverLevel.getEntity(this.epsteinBossUuid);
+            if (entity instanceof JeffreyEpsteinEntity epstein && epstein.isAlive()) {
+            return true;
+        }
+            this.epsteinBossUuid = null;
+        return false;
+    }
+
     public void onTrumpDefeated(ServerLevel serverLevel) {
         this.trumpMinibossUuid = null;
         serverLevel.sendParticles(ParticleTypes.ITEM_SLIME, this.getX(), this.getY() + 1.0, this.getZ(), 30, 0.5, 0.5, 0.5, 0.1);
@@ -523,6 +540,10 @@ public class BibiBossEntity extends Monster implements RangedAttackMob {
         if (damageSource.is(net.minecraft.tags.DamageTypeTags.IS_EXPLOSION)) {
             return false;
         }
+            // Immune to drowning
+            if (damageSource.is(net.minecraft.tags.DamageTypeTags.IS_DROWNING)) {
+                return false;
+            }
 
         // Friendly fire protection with Trump and coalition allies
         if (isAlly(damageSource.getEntity())) {
@@ -542,6 +563,19 @@ public class BibiBossEntity extends Monster implements RangedAttackMob {
                     SoundEvents.SHIELD_BLOCK.value(), SoundSource.HOSTILE, 1.5F, 1.2F);
             if (damageSource.getEntity() instanceof Player player) {
                 player.sendSystemMessage(Component.translatable("message.israel_simulator.bibi_shielded_by_trump")
+                        .withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
+            }
+            return false;
+        }
+
+        // Complete diplomatic immunity while Epstein Miniboss is alive
+        if (isEpsteinShieldActive(serverLevel)) {
+            serverLevel.sendParticles(ParticleTypes.TOTEM_OF_UNDYING, this.getX(), this.getY() + 1.2, this.getZ(),
+                    20, 0.4, 0.6, 0.4, 0.1);
+            serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                    SoundEvents.SHIELD_BLOCK.value(), SoundSource.HOSTILE, 1.5F, 1.2F);
+            if (damageSource.getEntity() instanceof Player player) {
+                player.sendSystemMessage(Component.translatable("message.israel_simulator.bibi_shielded_by_epstein")
                         .withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
             }
             return false;
@@ -728,6 +762,14 @@ public class BibiBossEntity extends Monster implements RangedAttackMob {
         if (ay > 0) {
             this.arenaCenter = new BlockPos(ax, ay, az);
         }
+    }
+
+    public boolean canDrown() {
+        return false;
+    }
+
+    public boolean isPushedByFluid() {
+        return false;
     }
 
     public static boolean isAlly(net.minecraft.world.entity.Entity entity) {
