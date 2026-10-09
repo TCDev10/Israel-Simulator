@@ -24,6 +24,12 @@ class JerusalemChestLootTest {
             "jerusalem/house_a",
             "jerusalem/house_b",
             "jerusalem/house_c",
+            "jerusalem/house_courtyard",
+            "jerusalem/house_domed",
+            "jerusalem/house_terrace",
+            "jerusalem/house_templer",
+            "jerusalem/house_rehavia",
+            "jerusalem/house_arched",
             "jerusalem/shuk_stalls",
             "jerusalem/synagogue_small"
     );
