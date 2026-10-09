@@ -452,3 +452,10 @@ Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure
 - Salvare ed uscire durante lo scontro, rientrare: l'arena resta finché Epstein è vivo. Se Epstein non c'è più (es. `/kill` da lontano, altra dimensione) l'arena viene ripristinata entro ~10 s da quando la zona è caricata.
 - I blocchi del padiglione modificati da un giocatore non vengono sovrascritti. Chi è dentro un blocco ripristinato viene spostato in superficie.
 - Test: `EpsteinArenaRestoreTest`. Non testato in gioco dal client.
+
+## Pistola 3D e guardie che la impugnano bene
+- La Pistola di Sicurezza ora ha un modello 3D a cuboidi (16 elementi: carrello con zigrinature, canna, fusto, slitta, ponticello, grilletto, impugnatura inclinata, coda di castoro, fondello del caricatore, mirino e tacca di mira) con atlante 32x32 (`textures/item/pistol_model.png`, grigio canna di fucile, fusto nero, impugnatura più calda). Generati da `scripts/textures/gen_pistol_model.py`.
+- Nell'inventario e sugli scaffali resta l'icona piatta (`items/pistol.json` usa `select` su `display_context`: `gui`/`on_shelf` → `pistol_icon`, il resto → modello 3D).
+- Test in gioco: in prima persona la pistola sta in basso a destra e punta verso il mirino; in terza persona (F5) la canna punta in avanti e l'impugnatura è nel pugno; a terra, in una cornice e in mano sinistra deve apparire dritta.
+- Guardie di Bibi: senza bersaglio tengono la pistola come un giocatore (braccio leggermente avanti); quando ti prendono di mira alzano le braccia e la canna punta dove guardano (non più verso il cielo o all'indietro).
+- Test: `PistolModelTest`. `runClient` fino al menu principale senza errori di modelli o texture. Non testato in gioco dal client.

@@ -1,6 +1,19 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "israel_simulator:item/pistol"
+    "type": "minecraft:select",
+    "property": "minecraft:display_context",
+    "cases": [
+      {
+        "when": [ "gui", "on_shelf" ],
+        "model": {
+          "type": "minecraft:model",
+          "model": "israel_simulator:item/pistol_icon"
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "israel_simulator:item/pistol"
+    }
   }
 }
