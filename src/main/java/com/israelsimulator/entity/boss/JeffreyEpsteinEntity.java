@@ -226,43 +226,33 @@ public class JeffreyEpsteinEntity extends Monster {
     }
 
     private void spawnEpsteinIslandDome(ServerLevel serverLevel) {
-        // Create a dome replicating Epstein's private island with golden temple
-        int radius = 12;
-        int height = 16;
-        BlockPos center = new BlockPos((int)Math.floor(this.getX()), (int)Math.floor(this.getY()) - 2, (int)Math.floor(this.getZ()));
-        // Glass dome
-        for (int y = 0; y < height; y++) {
-            for (int x = -radius; x <= radius; x++) {
-                for (int z = -radius; z <= radius; z++) {
-                    int distSq = x*x + z*z;
-                    if (distSq > radius*radius - y) continue;
-                    BlockPos pos = center.offset(x, y, z);
-                    if (serverLevel.getBlockState(pos).isAir()) {
-                        serverLevel.setBlock(pos, Blocks.GLASS.defaultBlockState(), 3);
-                    }
+            // Create a single-layer glass dome (empty inside, just one glass layer)
+            int radius = 12;
+            int height = 16;
+            BlockPos center = new BlockPos((int)Math.floor(this.getX()), (int)Math.floor(this.getY()) - 2, (int)Math.floor(this.getZ()));
+            // Single layer glass dome - only the outermost surface blocks
+            for (int y = 0; y < height; y++) {
+                int r = (int) Math.sqrt(Math.max(0, radius * radius - y));
+                for (int x = -r; x <= r; x++) {
+                    int z = (int) Math.sqrt(Math.max(0, r * r - x * x));
+                    // Place glass at the four symmetric surface positions
+                    BlockPos pos1 = center.offset(x, y, z);
+                    BlockPos pos2 = center.offset(x, y, -z);
+                    BlockPos pos3 = center.offset(-x, y, z);
+                    BlockPos pos4 = center.offset(-x, y, -z);
+                    if (serverLevel.getBlockState(pos1).isAir()) serverLevel.setBlock(pos1, Blocks.GLASS.defaultBlockState(), 3);
+                    if (serverLevel.getBlockState(pos2).isAir()) serverLevel.setBlock(pos2, Blocks.GLASS.defaultBlockState(), 3);
+                    if (serverLevel.getBlockState(pos3).isAir()) serverLevel.setBlock(pos3, Blocks.GLASS.defaultBlockState(), 3);
+                    if (serverLevel.getBlockState(pos4).isAir()) serverLevel.setBlock(pos4, Blocks.GLASS.defaultBlockState(), 3);
                 }
             }
+            // No golden temple core - dome is empty inside
+            // Visual and audio cue
+            serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                    SoundEvents.BEACON_ACTIVATE, SoundSource.HOSTILE, 2.0F, 0.8F);
+            serverLevel.sendParticles(ParticleTypes.TOTEM_OF_UNDYING, this.getX(), this.getY() + 1, this.getZ(),
+                    100, 4, 4, 4, 0.1);
         }
-        // Golden temple core
-        BlockPos templeCenter = center.offset(0, 2, 0);
-        for (int x = -4; x <= 4; x++) {
-            for (int z = -4; z <= 4; z++) {
-                for (int y = 0; y < 6; y++) {
-                    BlockPos p = templeCenter.offset(x, y, z);
-                    if (Math.abs(x) == 4 || Math.abs(z) == 4 || y == 5) {
-                        serverLevel.setBlock(p, Blocks.GOLD_BLOCK.defaultBlockState(), 3);
-                    } else {
-                        serverLevel.setBlock(p, Blocks.GOLD_BLOCK.defaultBlockState(), 3);
-                    }
-                }
-            }
-        }
-        // Visual and audio cue
-        serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
-                SoundEvents.BEACON_ACTIVATE, SoundSource.HOSTILE, 2.0F, 0.8F);
-        serverLevel.sendParticles(ParticleTypes.TOTEM_OF_UNDYING, this.getX(), this.getY() + 1, this.getZ(),
-                100, 4, 4, 4, 0.1);
-    }
 
     private void broadcastEpsteinSpeech(ServerLevel serverLevel) {
         int quoteIndex = this.random.nextInt(3);
