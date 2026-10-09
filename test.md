@@ -467,3 +467,19 @@ Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure
 - A fine evento (o con `stop`, o `/kill` dell'Oratore) palco, Oratore e pubblico spariscono e la piazza torna com'era. Se esci a metà evento, al rientro l'Oratore se ne va e la piazza viene ripristinata.
 - Skin dell'Oratore: `src/main/resources/assets/israel_simulator/textures/entity/orator.png` (skin 64x64 standard, segnaposto da sostituire).
 - Test: `PublicSpeechEventTest`. Provato con `runServer` da console (palco, Oratore, pubblico, fine evento e ripristino); non testato in gioco dal client.
+
+## Armi: fucile d'assalto, Uzi, fucile di precisione, granate e munizioni
+- Nuove armi 3D (modello a cuboidi in mano/a terra, icona piatta nell'inventario), generate da `scripts/textures/gen_weapon_models.py`: Fucile d'Assalto Bullpup (stile Tavor), Mitraglietta Uzi, Fucile di Precisione a Otturatore con cannocchiale, Granata a Frammentazione.
+- Munizioni craftabili: `rifle_ammo` (pepita di ferro + polvere da sparo + lingotto di rame → 12), `smg_ammo` (2 pepite, polvere, rame → 16), `sniper_ammo` (lingotto di ferro + polvere + rame → 4). Granate: TNT + 4 lingotti di ferro + pepita → 4.
+- Ricette armi (3x3): fucile d'assalto con lingotto di netherite, parte di drone, ferro e gancio; Uzi con blocco di ferro, parte di drone, ferro e gancio; fucile di precisione con cannocchiale, 2 netherite, tronco di quercia scura, parte di drone, ferro e gancio.
+- Le armi si craftano scariche. Usa con il caricatore vuoto, oppure accovacciato + usa, oppure il tasto R (Controlli → "Israel Simulator: Armi") per ricaricare: il caricatore si riempie con le munizioni dell'inventario e l'arma resta in cooldown per il tempo di ricarica. In creativa la ricarica non consuma munizioni.
+- Fucile d'assalto e Uzi: tieni premuto il tasto destro per il fuoco automatico. Fucile di precisione: tieni premuto per mirare (zoom e mirino del cannocchiale come la lente), rilascia per sparare; dopo mezzo secondo di mira il colpo va dritto al centro.
+- I proiettili si fermano sui blocchi e ignorano la mezza secondo di invulnerabilità dei mob (ogni colpo conta). Nella barra azioni si vede "Munizioni: x / y".
+- Granata: si lancia, rimbalza e dopo 2,5 s esplode. Di default non rompe blocchi (config `weapons.grenadeBreaksBlocks`); potenza e spoletta configurabili, e `weaponDamageMultiplier` per il danno delle armi.
+- Test: `FirearmsTest`. `runClient` fino al menu principale senza errori di modelli o texture. Non testato in gioco dal client.
+
+## Palantrio Drone
+- Ricetta: 4 lingotti di ferro, 2 polvere di redstone e 2 parti di drone (`IRI / DRD / I I`) → 2 Palantrio Drone.
+- Usa: il drone parte davanti a te (oggetto consumato, 5 s di cooldown), cerca il mob ostile più vicino entro 32 blocchi (mai te, gli animali addomesticati o altri droni), lo raggiunge in volo ed esplode al contatto (potenza 2,0, mezza TNT). Di default non rompe blocchi (config `weapons.droneBreaksBlocks`, potenza `droneExplosionPower`). Senza bersaglio resta in hovering e si autodistrugge dopo 20 s.
+- Modello 3D: quadricottero con corpo, batteria, telecamera, bracci a croce, 4 motori e 4 eliche che girano.
+- Test: `PalantrioDroneTest`. Provato con `runServer` (datapack di prova): il drone raggiunge e uccide uno zombie a 6 blocchi; `runClient` fino al menu senza errori. Non testato in gioco dal client.

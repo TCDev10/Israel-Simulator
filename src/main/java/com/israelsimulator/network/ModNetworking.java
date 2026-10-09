@@ -18,6 +18,7 @@ public final class ModNetworking {
         PayloadRegistrar registrar = event.registrar(PROTOCOL_VERSION);
         // Client handler registered via RegisterClientPayloadHandlersEvent (client-only class)
         registrar.playToClient(WesternWallPrayingPayload.TYPE, WesternWallPrayingPayload.STREAM_CODEC);
+        registrar.playToServer(ReloadWeaponPayload.TYPE, ReloadWeaponPayload.STREAM_CODEC, ReloadWeaponPayload::handle);
         IsraelSimulator.LOGGER.debug("Israel-Simulator network protocol {} registered", PROTOCOL_VERSION);
     }
 }

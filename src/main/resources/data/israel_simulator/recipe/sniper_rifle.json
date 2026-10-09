@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "S  ",
+    "NIN",
+    "LDT"
+  ],
+  "key": {
+    "S": "minecraft:spyglass",
+    "N": "minecraft:netherite_ingot",
+    "I": "minecraft:iron_ingot",
+    "L": "minecraft:dark_oak_log",
+    "D": "israel_simulator:drone_part",
+    "T": "minecraft:tripwire_hook"
+  },
+  "result": {
+    "count": 1,
+    "id": "israel_simulator:sniper_rifle"
+  }
+}

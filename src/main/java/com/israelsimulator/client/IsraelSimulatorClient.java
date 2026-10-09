@@ -24,6 +24,7 @@ public class IsraelSimulatorClient {
     public IsraelSimulatorClient(IEventBus modEventBus, ModContainer container) {
         container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
         modEventBus.addListener(IsraelSimulatorClient::registerClientPayloads);
+        modEventBus.addListener(WeaponKeys::register);
         modEventBus.addListener(com.israelsimulator.client.westernwall.WesternWallPrayerClientEvents::registerRenderStateModifiers);
     }
 
@@ -39,6 +40,7 @@ public class IsraelSimulatorClient {
     @SubscribeEvent
     static void onRegisterLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(com.israelsimulator.client.renderer.BicycleModel.LAYER_LOCATION, com.israelsimulator.client.renderer.BicycleModel::createBodyLayer);
+        event.registerLayerDefinition(com.israelsimulator.client.renderer.PalantrioDroneModel.LAYER_LOCATION, com.israelsimulator.client.renderer.PalantrioDroneModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -53,6 +55,8 @@ public class IsraelSimulatorClient {
         event.registerEntityRenderer(ModEntities.CHILD_ZOMBIE_MINION.get(), com.israelsimulator.client.renderer.ChildZombieMinionRenderer::new);
         event.registerEntityRenderer(ModEntities.MONEY_CHANGER.get(), com.israelsimulator.client.renderer.MoneyChangerRenderer::new);
         event.registerEntityRenderer(ModEntities.ORATOR.get(), com.israelsimulator.client.renderer.OratorRenderer::new);
+        event.registerEntityRenderer(ModEntities.PALANTRIO_DRONE.get(), com.israelsimulator.client.renderer.PalantrioDroneRenderer::new);
+        event.registerEntityRenderer(ModEntities.FRAG_GRENADE.get(), net.minecraft.client.renderer.entity.ThrownItemRenderer::new);
     }
 
     @SubscribeEvent
