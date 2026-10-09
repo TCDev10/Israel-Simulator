@@ -111,10 +111,31 @@ public class MoneyChangerEntity extends AbstractVillager {
             if (this.getOffers().isEmpty()) {
                 return InteractionResult.CONSUME;
             }
+            this.applyBlessedPrices(player);
             this.setTradingPlayer(player);
             this.openTradingScreen(player, this.getDisplayName(), 1);
         }
         return InteractionResult.SUCCESS;
+    }
+
+    /**
+     * Blessed Trader discount (PLAN.md Phase 37): temporary special price for the trading player,
+     * validated server-side, reset in {@link #stopTrading()} so it never sticks to the offer.
+     */
+    private void applyBlessedPrices(Player player) {
+        boolean blessed = com.israelsimulator.trading.IsraelVillagerTrades.isBlessedTraderEligible(player);
+        for (MerchantOffer offer : this.getOffers()) {
+            offer.setSpecialPriceDiff(com.israelsimulator.trading.BlessedTradePricing.specialPriceDiff(
+                    offer.getBaseCostA().getCount(), blessed));
+        }
+    }
+
+    @Override
+    protected void stopTrading() {
+        super.stopTrading();
+        for (MerchantOffer offer : this.getOffers()) {
+            offer.resetSpecialPriceDiff();
+        }
     }
 
     @Override

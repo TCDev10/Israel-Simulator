@@ -484,3 +484,13 @@ Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure
 - Usa: il drone parte davanti a te (oggetto consumato, 5 s di cooldown), cerca il mob ostile più vicino entro 32 blocchi (mai te, gli animali addomesticati o altri droni), lo raggiunge in volo ed esplode al contatto (potenza 2,0, mezza TNT). Di default non rompe blocchi (config `weapons.droneBreaksBlocks`, potenza `droneExplosionPower`). Senza bersaglio resta in hovering e si autodistrugge dopo 20 s.
 - Modello 3D: quadricottero con corpo, batteria, telecamera, bracci a croce, 4 motori e 4 eliche che girano.
 - Test: `PalantrioDroneTest`. Provato con `runServer` (datapack di prova): il drone raggiunge e uccide uno zombie a 6 blocchi; `runClient` fino al menu senza errori. Non testato in gioco dal client.
+## Cambiavalute: prezzi da benedetto
+- Con l'effetto Benedetto (o Mercante Benedetto, o la Corona del Rabbino) i prezzi del Cambiavalute scendono del 15% (almeno 1 in meno, mai sotto 1). Lo sconto vale solo mentre commerci e sparisce quando chiudi la schermata.
+- Test in gioco: apri il Cambiavalute senza effetto e annota i prezzi, poi `/effect give @s israel_simulator:blessed 120` e riaprilo: i prezzi devono essere barrati e più bassi. Tolto l'effetto (`/effect clear @s`) tornano normali.
+- Test: `MoneyChangerBlessedPricingTest`. Non testato in gioco dal client.
+
+## Musica del boss Bibi
+- Quando Bibi è vivo entro 64 blocchi parte in loop la canzone del boss (categoria Musica, cursore "Musica"). La musica vanilla si ferma e non riparte finché suona. Quando Bibi muore, sparisce o ti allontani oltre 64 blocchi la canzone sfuma in 2 secondi.
+- Il file è un SEGNAPOSTO silenzioso: `src/main/resources/assets/israel_simulator/sounds/music/bibi_boss_theme.ogg`. Sostituiscilo con un OGG Vorbis mono con lo stesso nome (la canzone di YouTube è protetta da copyright e non è inclusa).
+- Test in gioco: evoca Bibi, verifica che la musica vanilla si fermi e la canzone parta; allontanati di 70 blocchi e torna; uccidi Bibi.
+- Test: `BibiBossMusicTest`. Non testato in gioco dal client.
