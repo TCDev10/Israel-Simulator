@@ -79,6 +79,14 @@ public final class ModCreativeTabs {
                         // Combat (§41–44)
                         output.accept(ModItems.PISTOL.get());
                         output.accept(ModItems.MISSILE.get());
+                        output.accept(ModItems.ASSAULT_RIFLE.get());
+                        output.accept(ModItems.SMG.get());
+                        output.accept(ModItems.SNIPER_RIFLE.get());
+                        output.accept(ModItems.FRAG_GRENADE.get());
+                        output.accept(ModItems.PALANTRIO_DRONE.get());
+                        output.accept(ModItems.RIFLE_AMMO.get());
+                        output.accept(ModItems.SMG_AMMO.get());
+                        output.accept(ModItems.SNIPER_AMMO.get());
 
                         // Transportation & Exploration (§47-48)
                         output.accept(ModBlocks.PAVED_ROAD_ITEM.get());

@@ -14,6 +14,7 @@ public final class ModRegistries {
     private ModRegistries() {}
 
     public static void register(IEventBus modEventBus) {
+        ModDataComponents.register(modEventBus);
         ModBlocks.register(modEventBus);
         ModItems.register(modEventBus);
         ModCreativeTabs.register(modEventBus);

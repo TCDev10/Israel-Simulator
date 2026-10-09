@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "  N",
+    "IDI",
+    "TI "
+  ],
+  "key": {
+    "N": "minecraft:netherite_ingot",
+    "I": "minecraft:iron_ingot",
+    "D": "israel_simulator:drone_part",
+    "T": "minecraft:tripwire_hook"
+  },
+  "result": {
+    "count": 1,
+    "id": "israel_simulator:assault_rifle"
+  }
+}
