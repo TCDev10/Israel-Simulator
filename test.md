@@ -359,3 +359,11 @@ Problema riscontrato: `mediterranean_village` era un singolo pezzo rettangolare 
 Funzionamento aspettato: un villaggio jigsaw come quelli vanilla, con sentieri che seguono il terreno, piazza centrale e case varie, solo nel bioma `mediterranean_coast`.
 
 Come è stato risolto: nuovo `scripts/worldgen/gen_mediterranean_village.py` → `structure/mediterranean/*`. Piazza con pozzo e ulivi (start), cappella con cupola blu (landmark), sentieri in terra/ghiaia/ciottoli (dritto, incrocio, curva, T) che sull'acqua diventano passerella in legno, 6 case bianche/calcare diverse (1-2 piani, tetti piani con terrazze, porte e persiane blu, rampicanti e bouganville), panetteria con forno, capanna del pescatore con barca, bancarella del mercato, uliveto. Loot `mediterranean_village` più le nuove `mediterranean_bakery` e `mediterranean_fisherman`. `beard_thin` e fondazione interrata di 4 blocchi. Test: `MediterraneanVillageStructureTest`. Verifica headless (seed 424242): 61 pezzi, 0 celle flottanti sotto gli edifici. Non testato in gioco dal client.
+
+## Porto di Giaffa come città jigsaw
+
+Problema riscontrato: `jaffa_port` era un singolo pezzo rettangolare (`beard_box`), senza vicoli, torre dell'orologio né porto vero.
+
+Funzionamento aspettato: la vecchia Giaffa come città jigsaw: vicoli in pietra con scale, torre dell'orologio ottomana, mercato delle pulci, porto con barche, faro e molo, solo nel bioma `mediterranean_coast`.
+
+Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure/jaffa/*`. Piazza della torre dell'orologio con sabil (start), porto garantito sul lato nord (banchina, bacino d'acqua, molo in legno, 2 barche da pesca, frangiflutti e faro), vicoli in pietra (dritto, incrocio, curva, T) più arco e scalinata rigidi, 4 case in pietra (una con cupola, una galleria d'arte), mercato delle pulci con portico ad archi. Loot `jaffa_flea_market` più le nuove `jaffa_house` e `jaffa_harbour`. `beard_thin` e fondazione interrata di 4 blocchi. Test: `JaffaPortStructureTest`. Verifica headless (seed 424242): 33 pezzi, 0 celle flottanti sotto gli edifici (a parte molo e barche sull'acqua del bacino). Non testato in gioco dal client.

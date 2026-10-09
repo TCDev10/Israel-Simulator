@@ -5,9 +5,9 @@
       "weight": 1,
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "israel_simulator:jaffa/clock_square",
+        "location": "israel_simulator:jaffa/terminator",
         "processors": "minecraft:empty",
-        "projection": "rigid"
+        "projection": "terrain_matching"
       }
     }
   ]
