@@ -13,7 +13,7 @@ public final class SpeechStageLayout {
     public static final int MIN_Z = -6, MAX_Z = 4;
     public static final int MIN_Y = -3, MAX_Y = 6;
 
-    /** Where the Orator stands (on top of the stage platform), relative to the centre. */
+    /** Where Charlie Kirk stands (on top of the stage platform), relative to the centre. */
     public static final int ORATOR_X = 0, ORATOR_Y = 1, ORATOR_Z = -4;
 
     public enum Kind { AIR, FLOOR, SUPPORT, STAGE, STAGE_STEP, POST, ROOF, SPEAKER, SPEAKER_TOP, MIC_STAND, MIC, CHAIR, SIGN }
@@ -67,7 +67,7 @@ public final class SpeechStageLayout {
         p.add(new Placement(-3, 2, -5, Kind.SPEAKER_TOP));
         p.add(new Placement(3, 1, -5, Kind.SPEAKER));
         p.add(new Placement(3, 2, -5, Kind.SPEAKER_TOP));
-        // Microphone on a stand in front of the Orator.
+        // Microphone on a stand in front of Charlie Kirk.
         p.add(new Placement(ORATOR_X, 1, ORATOR_Z + 1, Kind.MIC_STAND));
         p.add(new Placement(ORATOR_X, 2, ORATOR_Z + 1, Kind.MIC));
         // Two rows of chairs facing the stage, with a central aisle.

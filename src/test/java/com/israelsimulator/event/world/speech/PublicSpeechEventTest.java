@@ -96,7 +96,7 @@ class PublicSpeechEventTest {
         ArenaRestoreRules.Plan<String> plan = ArenaRestoreRules.plan(entries, world);
         assertEquals(4, plan.restore().size());
         assertEquals(1, plan.skipped().size());
-        assertTrue(ArenaRestoreRules.restoresOnRemoval(true), "event end discards the Orator, which restores");
+        assertTrue(ArenaRestoreRules.restoresOnRemoval(true), "event end discards Charlie Kirk, which restores");
         assertFalse(ArenaRestoreRules.restoresOnRemoval(false), "chunk unload keeps the stage");
     }
 

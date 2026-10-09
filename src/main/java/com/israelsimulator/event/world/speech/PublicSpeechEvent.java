@@ -37,9 +37,9 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 
 /**
  * Server-side runtime of the Public Speech event (GAME_DESIGN.md §34, PLAN.md phase 33):
- * builds the temporary stage in a city plaza, spawns the Orator and a small crowd, and after
- * exactly 60 s ends with a harmless explosion effect on the Orator, who drops one First Amendment.
- * The stage is snapshotted through {@link EpsteinArenaSnapshots} (keyed by the Orator UUID)
+ * builds the temporary stage in a city plaza, spawns Charlie Kirk and a small crowd, and after
+ * exactly 60 s ends with a harmless explosion effect on Charlie Kirk, who drops one First Amendment.
+ * The stage is snapshotted through {@link EpsteinArenaSnapshots} (keyed by Charlie Kirk UUID)
  * and the world is put back when the event ends.
  */
 public final class PublicSpeechEvent {
@@ -179,7 +179,7 @@ public final class PublicSpeechEvent {
         IsraelSimulator.LOGGER.info("Public Speech ended");
     }
 
-    /** Server stop: forget runtime state (the Orator restores the plaza on the next load). */
+    /** Server stop: forget runtime state (Charlie Kirk restores the plaza on the next load). */
     public static void reset() {
         oratorId = null;
         crowd.clear();
@@ -258,7 +258,7 @@ public final class PublicSpeechEvent {
     }
 
     /**
-     * Natural end of the speech: the Orator goes out with a purely visual explosion (particles and
+     * Natural end of the speech: Charlie Kirk goes out with a purely visual explosion (particles and
      * the generic explode sound, no block or entity damage) and drops exactly one First Amendment
      * on the stage. Guarded by {@link #rewardDropped} so an event can never drop twice.
      */
@@ -287,7 +287,7 @@ public final class PublicSpeechEvent {
         }
     }
 
-    /** Keeps the crowd near the stage and facing the Orator; small idle shuffles come from vanilla AI. */
+    /** Keeps the crowd near the stage and facing Charlie Kirk; small idle shuffles come from vanilla AI. */
     private static void tickCrowd(ServerLevel level) {
         Entity orator = level.getEntity(oratorId);
         int i = 0;
