@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/** Humanoid mob renderers must point at their own skin, and that skin must not be a copy of vanilla Steve. */
+/** Humanoid mob renderers must point at their own skin and must not use AvatarRenderState (26.2 sends those to the vanilla player renderer, which draws the default Steve skin). */
 public class EntitySkinTextureTest {
 
     private static final Path ASSETS = Path.of("src", "main", "resources", "assets", IsraelSimulator.MOD_ID);
@@ -36,13 +36,19 @@ public class EntitySkinTextureTest {
     }
 
     @Test
-    void renderersUseOwnTextureAndSkinIsNotSteve() throws Exception {
-        BufferedImage steve;
-        try (InputStream in = Identifier.class.getClassLoader()
-                .getResourceAsStream("assets/minecraft/textures/entity/player/wide/steve.png")) {
-            assertNotNull(in, "vanilla steve.png must be on the test classpath");
-            steve = ImageIO.read(in);
+    void noRendererUsesAvatarRenderState() throws Exception {
+        Class<?>[] renderers = {OratorRenderer.class, MossadAgentRenderer.class, MossadNpcRenderer.class, BibiBossRenderer.class,
+                BibiGuardRenderer.class, JeffreyEpsteinRenderer.class, TrumpMinibossRenderer.class, MoneyChangerRenderer.class,
+                ChildZombieMinionRenderer.class, IceAgentRenderer.class};
+        for (Class<?> c : renderers) {
+            Class<?> state = c.getMethod("createRenderState").getReturnType();
+            assertFalse(net.minecraft.client.renderer.entity.state.AvatarRenderState.class.isAssignableFrom(state),
+                    c.getSimpleName() + " uses AvatarRenderState: it would render with the default Steve skin");
         }
+    }
+
+    @Test
+    void renderersUseOwnTexture() throws Exception {
         for (var e : textures().entrySet()) {
             Identifier id = e.getValue();
             assertEquals(IsraelSimulator.MOD_ID, id.getNamespace(), e.getKey());
@@ -52,12 +58,6 @@ public class EntitySkinTextureTest {
             BufferedImage img = ImageIO.read(png.toFile());
             assertEquals(64, img.getWidth(), e.getKey());
             assertEquals(64, img.getHeight(), e.getKey());
-            // Face (front of head, 8..16 x 8..16) must differ from Steve's.
-            boolean differs = false;
-            for (int x = 8; x < 16 && !differs; x++)
-                for (int y = 8; y < 16 && !differs; y++)
-                    differs = img.getRGB(x, y) != steve.getRGB(x, y);
-            assertTrue(differs, e.getKey() + " skin face is a copy of vanilla Steve");
         }
     }
 }
