@@ -81,25 +81,25 @@ class FestivalsAndCalendarTest {
     @Test
     @DisplayName("Verify Dreidel mechanics and payouts for all four letters")
     void testDreidelSpin() {
-        // Nun (Nes - Miracle): Payout 0
+        // Net payouts on a 3-Shekel stake. Nun (Nes - Miracle): stake back, net 0
         DreidelManager.SpinResult nunResult = DreidelManager.spinDeterministic(0);
         assertEquals(DreidelManager.DreidelLetter.NUN, nunResult.letter());
         assertEquals(0, nunResult.payout());
 
-        // Gimel (Gadol - Great): Payout 5 Shekels
+        // Gimel (Gadol - Great): net +2 Shekels
         DreidelManager.SpinResult gimelResult = DreidelManager.spinDeterministic(1);
         assertEquals(DreidelManager.DreidelLetter.GIMEL, gimelResult.letter());
-        assertEquals(5, gimelResult.payout());
+        assertEquals(2, gimelResult.payout());
 
-        // Hei (Haya - Happened): Payout 2 Shekels
+        // Hei (Haya - Happened): net +1 Shekel
         DreidelManager.SpinResult heiResult = DreidelManager.spinDeterministic(2);
         assertEquals(DreidelManager.DreidelLetter.HEI, heiResult.letter());
-        assertEquals(2, heiResult.payout());
+        assertEquals(1, heiResult.payout());
 
-        // Shin (Sham - There): Payout -1 Shekel
+        // Shin (Sham - There): the whole stake is lost
         DreidelManager.SpinResult shinResult = DreidelManager.spinDeterministic(3);
         assertEquals(DreidelManager.DreidelLetter.SHIN, shinResult.letter());
-        assertEquals(-1, shinResult.payout());
+        assertEquals(-3, shinResult.payout());
     }
 
     @Test

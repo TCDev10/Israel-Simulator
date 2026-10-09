@@ -18,6 +18,9 @@ import java.util.function.Consumer;
  * Discovery-oriented map item displaying discovered landmarks, regions, and travel hubs (GAME_DESIGN.md §8–10, §32, TODO §48).
  */
 public class IsraelMapItem extends Item {
+    /** Right-click cooldown: 2 s. */
+    public static final int COOLDOWN_TICKS = 40;
+
 
     public IsraelMapItem(Properties properties) {
         super(properties);
@@ -71,6 +74,7 @@ public class IsraelMapItem extends Item {
                                 .withStyle(ChatFormatting.AQUA, ChatFormatting.BOLD)
                 );
             }
+            serverPlayer.getCooldowns().addCooldown(player.getItemInHand(hand), COOLDOWN_TICKS);
         }
         return InteractionResult.SUCCESS;
     }

@@ -16,6 +16,9 @@ import java.util.function.Consumer;
  * Rav-Kav public transit pass card for buses, trains, and light rail (GAME_DESIGN.md §32, TODO §47).
  */
 public class RavKavItem extends Item {
+    /** Right-click cooldown: 2 s. */
+    public static final int COOLDOWN_TICKS = 40;
+
 
     public RavKavItem(Properties properties) {
         super(properties);
@@ -28,6 +31,7 @@ public class RavKavItem extends Item {
                     Component.translatable("item.israel_simulator.rav_kav.status")
                             .withStyle(ChatFormatting.AQUA)
             );
+            player.getCooldowns().addCooldown(player.getItemInHand(hand), COOLDOWN_TICKS);
         }
         return InteractionResult.SUCCESS;
     }

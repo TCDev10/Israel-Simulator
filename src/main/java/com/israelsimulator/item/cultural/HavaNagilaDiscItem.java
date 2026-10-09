@@ -21,6 +21,9 @@ import net.minecraft.world.level.Level;
  * Playable in Jukeboxes with JukeboxSong registry integration.
  */
 public class HavaNagilaDiscItem extends Item {
+    /** Right-click cooldown: 5 s. */
+    public static final int COOLDOWN_TICKS = 100;
+
 
     public HavaNagilaDiscItem(Properties properties) {
         super(properties);
@@ -41,6 +44,7 @@ public class HavaNagilaDiscItem extends Item {
                     SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 0.8F, 1.2F);
         }
 
+        player.getCooldowns().addCooldown(player.getItemInHand(hand), COOLDOWN_TICKS);
         return InteractionResult.SUCCESS;
     }
 

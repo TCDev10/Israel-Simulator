@@ -20,7 +20,7 @@ Lo Shabbat si attiva ciclicamente ogni 7 giorni di gioco, dal venerdì sera al t
 
 - **Hanukkah (Festa delle Luci)**:
   - Le Menorah nelle case e nelle piazze vengono accese sera dopo sera.
-  - È possibile far girare il **Dreidel** (`dreidel`) per vincere monete e dolci tipici come la **Sufganiyah** con marmellata.
+  - È possibile far girare il **Dreidel** (`dreidel`) puntando 3 Shekel (gioco equo) e gustare dolci tipici come la **Sufganiyah** con marmellata.
 - **Purim**:
   - Sfilate in maschera ad Holon e Tel Aviv, consumo di **Hamantash** triangolari e clima festoso.
 - **Pesach (Pasqua Ebraica)**:
