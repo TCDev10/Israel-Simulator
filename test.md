@@ -343,3 +343,11 @@ Problema riscontrato: in `TransportStopBlock.java`, l'interazione con la fermata
 Funzionamento aspettato: la fermata determina la propria posizione nello spazio, identifica la fermata più vicina (`TransportNetwork.getNearestStop(pos)`) e calcola la fermata successiva nel circuito regionale.
 
 Come è stato risolto: implementato `TransportNetwork.getNearestStop(BlockPos pos)` basato sulla distanza euclidea minima rispetto alle fermate registrate, e aggiornato `TransportStopBlock.handleInteraction` per prelevare la fermata corrente e instradare alla successiva. Aggiunto test di verifica routing in `TransportationTest`.
+
+## Villaggio mediterraneo come villaggio jigsaw
+
+Problema riscontrato: `mediterranean_village` era un singolo pezzo rettangolare (`beard_box`), non un villaggio.
+
+Funzionamento aspettato: un villaggio jigsaw come quelli vanilla, con sentieri che seguono il terreno, piazza centrale e case varie, solo nel bioma `mediterranean_coast`.
+
+Come è stato risolto: nuovo `scripts/worldgen/gen_mediterranean_village.py` → `structure/mediterranean/*`. Piazza con pozzo e ulivi (start), cappella con cupola blu (landmark), sentieri in terra/ghiaia/ciottoli (dritto, incrocio, curva, T) che sull'acqua diventano passerella in legno, 6 case bianche/calcare diverse (1-2 piani, tetti piani con terrazze, porte e persiane blu, rampicanti e bouganville), panetteria con forno, capanna del pescatore con barca, bancarella del mercato, uliveto. Loot `mediterranean_village` più le nuove `mediterranean_bakery` e `mediterranean_fisherman`. `beard_thin` e fondazione interrata di 4 blocchi. Test: `MediterraneanVillageStructureTest`. Verifica headless (seed 424242): 61 pezzi, 0 celle flottanti sotto gli edifici. Non testato in gioco dal client.

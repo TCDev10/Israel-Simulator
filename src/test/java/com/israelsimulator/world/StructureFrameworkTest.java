@@ -36,6 +36,8 @@ class StructureFrameworkTest {
     void testChestLootTablesExist() {
         List<String> lootTables = List.of(
                 "mediterranean_village",
+                "mediterranean_bakery",
+                "mediterranean_fisherman",
                 "agricultural_farm",
                 "dead_sea_resort",
                 "desert_ruins",
@@ -117,6 +119,9 @@ class StructureFrameworkTest {
             if ("jerusalem_city".equals(name)) {
                 assertEquals("israel_simulator:jerusalem/plaza", location,
                         "jerusalem_city must start from the plaza piece");
+            } else if ("mediterranean_village".equals(name)) {
+                assertEquals("israel_simulator:mediterranean/square", location,
+                        "mediterranean_village must start from the village square piece");
             } else {
                 assertEquals("israel_simulator:" + name, location,
                         name + " pool must place this mod's structure template");
@@ -125,9 +130,12 @@ class StructureFrameworkTest {
             // Marker NBT: single-piece templates use structure/<name>.nbt.
             // Jerusalem also keeps a small root marker file for the yellow terracotta check,
             // and the live plaza piece carries the same marker.
-            String nbtPath = "jerusalem_city".equals(name)
-                    ? "data/israel_simulator/structure/jerusalem/plaza.nbt"
-                    : "data/israel_simulator/structure/" + name + ".nbt";
+            // Multi-piece villages keep their marker in the start piece.
+            String nbtPath = switch (name) {
+                case "jerusalem_city" -> "data/israel_simulator/structure/jerusalem/plaza.nbt";
+                case "mediterranean_village" -> "data/israel_simulator/structure/mediterranean/square.nbt";
+                default -> "data/israel_simulator/structure/" + name + ".nbt";
+            };
             InputStream nbtStream = getClass().getClassLoader().getResourceAsStream(nbtPath);
             assertNotNull(nbtStream, "Missing structure template NBT: " + nbtPath);
             byte[] nbt = new GZIPInputStream(nbtStream).readAllBytes();

@@ -60,46 +60,6 @@ def gen_jaffa():
     write_jigsaw("jaffa_port", "israel_simulator:mediterranean_coast", salt=771122)
     s.save(ROOT/"src/main/resources/data/israel_simulator/structure/jaffa_port.nbt")
 
-def gen_village():
-    SX,SY,SZ=48,10,40; fy=1
-    s=Structure(SX,SY,SZ)
-    s.fills(0,0,0,SX-1,fy-1,SZ-1, blk("minecraft:dirt"))
-    for x in range(SX):
-        for z in range(SZ):
-            s.set(x,fy,z, blk("minecraft:grass_block", snowy="false") if (x+z)%7 else blk("minecraft:dirt_path"))
-    # Central path
-    for x in range(SX):
-        s.set(x,fy,19, blk("minecraft:dirt_path")); s.set(x,fy,20, blk("minecraft:dirt_path"))
-    # Houses
-    def house(x0,z0,loot):
-        s.fills(x0,fy,z0,x0+6,fy,z0+6, blk("minecraft:cobblestone"))
-        for y in range(fy+1, fy+4):
-            for x in range(x0,x0+7):
-                s.set(x,y,z0, blk("minecraft:oak_planks")); s.set(x,y,z0+6, blk("minecraft:oak_planks"))
-            for z in range(z0,z0+7):
-                s.set(x0,y,z, blk("minecraft:oak_planks")); s.set(x0+6,y,z, blk("minecraft:oak_planks"))
-        s.set(x0+3,fy+1,z0, blk("minecraft:air")); s.set(x0+3,fy+2,z0, blk("minecraft:air"))
-        s.fills(x0,fy+4,z0,x0+6,fy+4,z0+6, slab())
-        s.set(x0+1,fy+1,z0+4, chest(facing="south", loot=loot))
-        s.set(x0+5,fy+1,z0+4, lantern())
-    house(4,4, "israel_simulator:chests/mediterranean_village")
-    house(14,4, "israel_simulator:chests/mediterranean_village")
-    house(28,4, "israel_simulator:chests/mediterranean_village")
-    house(8,24, "israel_simulator:chests/mediterranean_village")
-    house(22,24, "israel_simulator:chests/mediterranean_village")
-    # Well
-    for dx,dz in [(-1,0),(1,0),(0,-1),(0,1)]:
-        s.set(24+dx,fy+1,20+dz, wall())
-    s.set(24,fy,20, blk("minecraft:water", level="0"))
-    # Fence perimeter
-    for x in range(SX):
-        s.set(x,fy+1,0, fence()); s.set(x,fy+1,SZ-1, fence())
-    for z in range(SZ):
-        s.set(0,fy+1,z, fence()); s.set(SX-1,fy+1,z, fence())
-    s.set(1,fy+1,1, blk("minecraft:light_gray_terracotta"))
-    write_jigsaw("mediterranean_village", "israel_simulator:mediterranean_coast", salt=882233)
-    s.save(ROOT/"src/main/resources/data/israel_simulator/structure/mediterranean_village.nbt")
-
 def gen_tel_aviv():
     SX, SY, SZ = 48, 18, 48
     fy = 1
@@ -237,4 +197,4 @@ def gen_tel_aviv():
     s.save(ROOT / "src/main/resources/data/israel_simulator/structure/tel_aviv_city.nbt")
 
 if __name__ == "__main__":
-    gen_jaffa(); gen_village(); gen_tel_aviv()
+    gen_jaffa(); gen_tel_aviv()  # mediterranean_village: gen_mediterranean_village.py
