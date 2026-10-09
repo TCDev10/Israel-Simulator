@@ -34,7 +34,7 @@ All assets in Israel-Simulator follow strict licensing, originality, and provena
 | `entity.bibi_boss.death` | Bibi Boss defeat | Entity defeat audio | Mojang EULA | Built-in vanilla fallback |
 | `entity.bibi_boss.speech` | Bibi Boss podium proclamation | Dramatic summoner invocation | Mojang EULA | Built-in vanilla fallback |
 | `entity.bibi_boss.enrage` | Bibi Boss enraged state | Powerful boss phase audio | Mojang EULA | Built-in vanilla fallback |
-| `music.boss.bibi_theme` | Bibi Boss encounter theme | Dramatic battle music stream | Mojang EULA | Built-in vanilla fallback |
+| `music.boss.bibi_theme` | Bibi Boss encounter theme (looping, music category) | `sounds/music/bibi_boss_theme.ogg`. PLACEHOLDER: 2 s of silence, mono Ogg Vorbis. Intended song: "netanyahu song trap remix - full version" by twoby4, https://www.youtube.com/watch?v=yYm_3kvFQok . No Creative Commons or public-domain licence found (standard YouTube licence), so it is NOT bundled. | Placeholder: original silence, AGPL-3.0. Song: copyrighted, all rights reserved by its owner. | Drop a mono OGG Vorbis at the same path, only with permission from the rights holder. |
 | `entity.bicycle.bell` | Bicycle handlebar bell | Bell chime audio | Mojang EULA | Built-in vanilla fallback |
 | `entity.bus.horn` | Egged transit bus horn | Deep horn resonance | Mojang EULA | Built-in vanilla fallback |
 | `entity.train.whistle` | Railway transit whistle | Steam/air whistle resonance | Mojang EULA | Built-in vanilla fallback |

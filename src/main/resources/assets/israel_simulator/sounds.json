@@ -88,7 +88,7 @@
   "music.boss.bibi_theme": {
     "sounds": [
       {
-        "name": "minecraft:music/game/end",
+        "name": "israel_simulator:music/bibi_boss_theme",
         "stream": true
       }
     ]
