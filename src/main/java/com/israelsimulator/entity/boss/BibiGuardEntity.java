@@ -97,6 +97,10 @@ public class BibiGuardEntity extends Monster implements RangedAttackMob {
                 this.setDropChance(EquipmentSlot.MAINHAND, 0.015F);
             }
 
+            // Synced to the client: BibiGuardRenderer raises the arms into an aiming pose while true.
+            LivingEntity target = this.getTarget();
+            this.setAggressive(target != null && target.isAlive());
+
             lifeTicksRemaining--;
             if (lifeTicksRemaining <= 0) {
                 if (this.level() instanceof ServerLevel serverLevel) {
