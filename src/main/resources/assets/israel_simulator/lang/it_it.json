@@ -411,6 +411,7 @@
   "item.israel_simulator.palantrio_drone": "Palantrio Drone",
   "item.israel_simulator.palantrio_drone.desc": "Cerca il mob ostile più vicino entro 32 blocchi ed esplode al contatto. Si autodistrugge dopo 20 s.",
   "entity.israel_simulator.palantrio_drone": "Palantrio Drone",
+  "entity.israel_simulator.bibi_poison_breath": "Soffio Velenoso",
   "israel_simulator.configuration.droneBreaksBlocks": "Il Drone Rompe i Blocchi",
   "israel_simulator.configuration.droneBreaksBlocks.tooltip": "Se l'esplosione del Palantrio Drone rompe i blocchi (disattivato di default).",
   "israel_simulator.configuration.droneExplosionPower": "Potenza Esplosione Drone",

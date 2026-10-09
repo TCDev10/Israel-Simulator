@@ -380,6 +380,11 @@ public class JeffreyEpsteinEntity extends Monster {
             // Fight over: remove the dome + pavilion and put the world back.
             EpsteinArenaSnapshots.restore(serverLevel, this.getUUID());
 
+            // Unlock Bibi's late-fight poison breath (only the Bibi that summoned this Epstein).
+            if (this.bibiBossUuid != null && serverLevel.getEntity(this.bibiBossUuid) instanceof BibiBossEntity bibi) {
+                bibi.onEpsteinDefeated();
+            }
+
             // Dismiss remaining active child zombie minions
             for (UUID uuid : this.aliveMinionUuids) {
                 Entity minion = serverLevel.getEntity(uuid);

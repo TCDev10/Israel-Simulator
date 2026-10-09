@@ -56,6 +56,7 @@ public class IsraelSimulatorClient {
         event.registerEntityRenderer(ModEntities.MONEY_CHANGER.get(), com.israelsimulator.client.renderer.MoneyChangerRenderer::new);
         event.registerEntityRenderer(ModEntities.ORATOR.get(), com.israelsimulator.client.renderer.OratorRenderer::new);
         event.registerEntityRenderer(ModEntities.PALANTRIO_DRONE.get(), com.israelsimulator.client.renderer.PalantrioDroneRenderer::new);
+        event.registerEntityRenderer(ModEntities.BIBI_POISON_BREATH.get(), net.minecraft.client.renderer.entity.DragonFireballRenderer::new);
         event.registerEntityRenderer(ModEntities.FRAG_GRENADE.get(), net.minecraft.client.renderer.entity.ThrownItemRenderer::new);
     }
 

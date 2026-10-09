@@ -494,3 +494,9 @@ Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure
 - Il file è un SEGNAPOSTO silenzioso: `src/main/resources/assets/israel_simulator/sounds/music/bibi_boss_theme.ogg`. Sostituiscilo con un OGG Vorbis mono con lo stesso nome (la canzone di YouTube è protetta da copyright e non è inclusa).
 - Test in gioco: evoca Bibi, verifica che la musica vanilla si fermi e la canzone parta; allontanati di 70 blocchi e torna; uccidi Bibi.
 - Test: `BibiBossMusicTest`. Non testato in gioco dal client.
+
+## Bibi: soffio velenoso dall'alto (dopo Palm Beach Pete)
+- Si sblocca solo quando muore l'Epstein / Palm Beach Pete evocato da quel Bibi (flag `EpsteinDefeated` salvato nell'entità, sopravvive a salvataggio e riavvio). Prima non succede mai.
+- Da quel momento, ogni 15-25 s (casuale) Bibi sceglie un giocatore vicino (entro 32 blocchi, non in creativa/spettatore): ruggito del drago, 1,5 s di particelle viola/verdi sopra la testa come avviso, poi dall'alto (14 blocchi) cade una sfera tipo palla di fuoco del drago con suono di lancio.
+- All'impatto lascia una nube come il soffio del drago (particelle viola, sbuffo verde, raggio 3, dura 6 s) che dà Veleno II per 5 s invece di danno istantaneo. Non rompe né modifica blocchi.
+- Test: `BibiPoisonBreathTest`. Prova in gioco: evoca Bibi, uccidi Epstein dopo che diventa Palm Beach Pete, resta vicino a Bibi in survival e controlla avviso, caduta e veleno; esci e rientra e verifica che l'attacco continui. Non testato in gioco dal client.
