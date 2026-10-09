@@ -15,7 +15,7 @@ import net.minecraft.resources.Identifier;
  */
 public class ChildZombieMinionRenderer extends HumanoidMobRenderer<ChildZombieMinionEntity, HumanoidRenderState, HumanoidModel<HumanoidRenderState>> {
 
-    private static final Identifier TEXTURE =
+    public static final Identifier TEXTURE =
             Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "textures/entity/child_zombie.png");
 
     public ChildZombieMinionRenderer(EntityRendererProvider.Context context) {

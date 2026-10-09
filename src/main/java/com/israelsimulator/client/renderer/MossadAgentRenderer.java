@@ -17,7 +17,7 @@ import net.minecraft.world.item.Item;
  * raised arms (same grip correction as {@link BibiGuardModel}; every firearm shares the pistol's grip).
  */
 public class MossadAgentRenderer extends HumanoidMobRenderer<MossadAgentEntity, BibiGuardRenderState, BibiGuardModel> {
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "textures/entity/mossad_agent.png");
+    public static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "textures/entity/mossad_agent.png");
 
     public MossadAgentRenderer(EntityRendererProvider.Context context) {
         super(context, new BibiGuardModel(context.bakeLayer(ModelLayers.PLAYER)), 0.5F);

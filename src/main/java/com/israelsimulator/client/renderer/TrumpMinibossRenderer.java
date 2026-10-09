@@ -14,7 +14,7 @@ import net.minecraft.resources.Identifier;
  */
 public class TrumpMinibossRenderer extends HumanoidMobRenderer<TrumpMinibossEntity, HumanoidRenderState, HumanoidModel<HumanoidRenderState>> {
 
-    private static final Identifier TEXTURE =
+    public static final Identifier TEXTURE =
             Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "textures/entity/trump_miniboss.png");
 
     public TrumpMinibossRenderer(EntityRendererProvider.Context context) {
