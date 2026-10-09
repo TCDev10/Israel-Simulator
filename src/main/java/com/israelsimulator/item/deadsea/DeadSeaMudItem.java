@@ -15,9 +15,13 @@ import net.minecraft.world.level.Level;
 
 /**
  * Mineral-rich therapeutic mud harvested from the shores of the Dead Sea (GAME_DESIGN.md §20).
- * Cleanses negative physical debuffs and applies temporary absorption and regeneration.
+ * Cleanses negative physical debuffs and applies temporary absorption and regeneration,
+ * then goes on a {@link #COOLDOWN_TICKS} (30 s) cooldown.
  */
 public class DeadSeaMudItem extends Item {
+    /** Cooldown after a successful application: 30 s (600 ticks), shown as the hotbar overlay. */
+    public static final int COOLDOWN_TICKS = 600;
+
     public DeadSeaMudItem(Properties properties) {
         super(properties);
     }
@@ -25,6 +29,13 @@ public class DeadSeaMudItem extends Item {
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
+        if (player.getCooldowns().isOnCooldown(itemStack)) {
+            return InteractionResult.FAIL;
+        }
+
+        // Applied on both sides (like ender pearls) so the overlay shows immediately;
+        // set before shrinking so the cooldown group is read from the real stack.
+        player.getCooldowns().addCooldown(itemStack, COOLDOWN_TICKS);
 
         if (!level.isClientSide()) {
             // Therapeutic cleanse of negative ailments
