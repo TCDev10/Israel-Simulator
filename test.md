@@ -375,3 +375,7 @@ Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure
 ## desert_ruins jigsaw (insediamento antico stile Qumran)
 - `/locate structure israel_simulator:desert_ruins` nel deserto della Giudea: cortile con cisterna asciutta e colonne spezzate, rovina del tempio a nord, sentieri di sabbia/ghiaia, case in rovina, scriptorium con giare, laboratorio di ceramica, torre di guardia, mikveh.
 - Controllare: rovine appoggiate sul terreno (fondazione di 4 blocchi) anche sui pendii, loot `desert_ruins`/`desert_ruins_scriptorium`.
+
+## dead_sea_resort jigsaw (stile Ein Bokek)
+- `/locate structure israel_simulator:dead_sea_resort` nel bioma dead_sea: piazza con fontana-spa di fango (packed_mud) e palme, hotel a 4 piani a nord, lungomare di arenaria (diventa passerella di betulla sull'acqua), spa di fango, piscina, beach bar, negozio di sale, spiaggia con ombrelloni e formazioni di sale, pensione.
+- Controllare: edifici appoggiati sul terreno, piscina piena d'acqua, loot `dead_sea_resort`.

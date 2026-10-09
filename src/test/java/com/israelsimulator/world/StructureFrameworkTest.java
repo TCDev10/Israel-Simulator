@@ -128,6 +128,9 @@ class StructureFrameworkTest {
             } else if ("jaffa_port".equals(name)) {
                 assertEquals("israel_simulator:jaffa/clock_square", location,
                         "jaffa_port must start from the clock tower square");
+            } else if ("dead_sea_resort".equals(name)) {
+                assertEquals("israel_simulator:dsr/resort_plaza", location,
+                        "dead_sea_resort must start from the resort plaza piece");
             } else if ("desert_ruins".equals(name)) {
                 assertEquals("israel_simulator:ruins/courtyard", location,
                         "desert_ruins must start from the ruined courtyard piece");
@@ -151,6 +154,7 @@ class StructureFrameworkTest {
                 case "tel_aviv_city" -> "data/israel_simulator/structure/tel_aviv/square.nbt";
                 case "grand_market" -> "data/israel_simulator/structure/market/market_gate.nbt";
                 case "desert_ruins" -> "data/israel_simulator/structure/ruins/courtyard.nbt";
+                case "dead_sea_resort" -> "data/israel_simulator/structure/dsr/resort_plaza.nbt";
                 case "jaffa_port" -> "data/israel_simulator/structure/jaffa/clock_square.nbt";
                 case "mediterranean_village" -> "data/israel_simulator/structure/mediterranean/square.nbt";
                 default -> "data/israel_simulator/structure/" + name + ".nbt";
