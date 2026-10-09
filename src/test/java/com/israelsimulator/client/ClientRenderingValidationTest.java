@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -37,40 +38,48 @@ public class ClientRenderingValidationTest {
     private static final Path ASSETS_PATH = Paths.get("src", "main", "resources", "assets", IsraelSimulator.MOD_ID);
 
     @Test
-    @DisplayName("Verify Rabbi's Crown item definition, flat model and equipment assets")
+    @DisplayName("Verify Rabbi's Crown 3D cuboid model, texture, display transforms and worn rendering")
     void testRabbisCrownItemModelAndEquipmentAssets() throws IOException {
-        // The crown renders as a flat generated item in hand/GUI; the worn appearance
-        // (hat, payot, beard) comes from the humanoid equipment asset layers.
+        // The crown is a Blockbench-style cuboid model; with no equipment asset the vanilla
+        // CustomHeadLayer draws this same model on the wearer's head (players and Bibi).
         Path itemDefPath = ASSETS_PATH.resolve(Paths.get("items", "rabbis_crown.json"));
         assertTrue(Files.exists(itemDefPath), "Rabbi's Crown item definition must exist");
         JsonObject itemDef = GSON.fromJson(Files.readString(itemDefPath), JsonObject.class);
-        JsonObject modelRef = itemDef.getAsJsonObject("model");
-        assertNotNull(modelRef, "item definition must reference a model");
-        assertEquals("israel_simulator:item/rabbis_crown", modelRef.get("model").getAsString(),
+        assertEquals("israel_simulator:item/rabbis_crown", itemDef.getAsJsonObject("model").get("model").getAsString(),
                 "item definition must point at the crown model");
 
         Path modelPath = ASSETS_PATH.resolve(Paths.get("models", "item", "rabbis_crown.json"));
-        assertTrue(Files.exists(modelPath), "Rabbi's Crown model must exist");
         JsonObject model = GSON.fromJson(Files.readString(modelPath), JsonObject.class);
-        assertEquals("minecraft:item/generated", model.get("parent").getAsString(),
-                "the inventory/hand model is a flat generated item");
-        JsonObject textures = model.getAsJsonObject("textures");
-        assertNotNull(textures, "model must reference its texture");
-        assertEquals("israel_simulator:item/rabbis_crown", textures.get("layer0").getAsString(),
-                "the flat model must use the crown item texture");
+        assertFalse(model.has("parent"), "the crown is a standalone cuboid model, not item/generated");
+        assertEquals("israel_simulator:item/rabbis_crown", model.getAsJsonObject("textures").get("0").getAsString());
+        var elements = model.getAsJsonArray("elements");
+        assertTrue(elements.size() >= 30 && elements.size() <= 120, "crown must have a detailed set of cuboids");
+        java.util.Set<String> names = new java.util.HashSet<>();
+        for (var el : elements) {
+            JsonObject e = el.getAsJsonObject();
+            names.add(e.get("name").getAsString().replaceAll("_.*", ""));
+            for (String k : new String[]{"from", "to"}) {
+                for (var v : e.getAsJsonArray(k)) {
+                    float f = v.getAsFloat();
+                    assertTrue(f >= -16 && f <= 32, "element coordinates must stay within -16..32");
+                }
+            }
+            if (e.has("rotation")) {
+                float angle = Math.abs(e.getAsJsonObject("rotation").get("angle").getAsFloat());
+                assertTrue(angle <= 45, "element rotation must be within 45 degrees");
+            }
+        }
+        for (String part : new String[]{"band", "point", "gem", "cap", "star"}) {
+            assertTrue(names.contains(part), "crown must contain part: " + part);
+        }
+        JsonObject display = model.getAsJsonObject("display");
+        for (String ctx : new String[]{"gui", "ground", "fixed", "head", "thirdperson_righthand", "firstperson_righthand"}) {
+            assertTrue(display.has(ctx), "crown must define display transform: " + ctx);
+        }
 
-        Path equipmentPath = ASSETS_PATH.resolve(Paths.get("equipment", "rabbis_crown.json"));
-        assertTrue(Files.exists(equipmentPath), "the worn appearance must come from the equipment asset");
-        JsonObject equipment = GSON.fromJson(Files.readString(equipmentPath), JsonObject.class);
-        JsonObject layers = equipment.getAsJsonObject("layers");
-        assertNotNull(layers, "equipment asset must define layers");
-        assertTrue(layers.has("humanoid"), "equipment asset must define the humanoid layer");
-        assertTrue(layers.has("humanoid_baby"), "equipment asset must define the humanoid_baby layer");
-
-        assertTrue(Files.exists(ASSETS_PATH.resolve(Paths.get("textures", "entity", "equipment", "humanoid", "rabbis_crown.png"))),
-                "humanoid equipment texture must exist");
-        assertTrue(Files.exists(ASSETS_PATH.resolve(Paths.get("textures", "entity", "equipment", "humanoid_baby", "rabbis_crown.png"))),
-                "humanoid_baby equipment texture must exist");
+        assertTrue(Files.exists(ASSETS_PATH.resolve(Paths.get("textures", "item", "rabbis_crown.png"))));
+        assertFalse(Files.exists(ASSETS_PATH.resolve(Paths.get("equipment", "rabbis_crown.json"))),
+                "an equipment asset would replace the 3D head model with a flat armor texture");
     }
 
     @Test
@@ -112,9 +121,9 @@ public class ClientRenderingValidationTest {
     }
 
     @Test
-    @DisplayName("Verify equipment definitions exist for Kippah, Talit, Tefillin, and Rabbi's Crown")
+    @DisplayName("Verify equipment definitions exist for Kippah, Talit and Tefillin")
     void testEquipmentDefinitions() throws IOException {
-        String[] equipments = {"kippah", "talit", "tefillin", "rabbis_crown"};
+        String[] equipments = {"kippah", "talit", "tefillin"};
 
         for (String eq : equipments) {
             Path eqPath = ASSETS_PATH.resolve(Paths.get("equipment", eq + ".json"));
@@ -138,8 +147,6 @@ public class ClientRenderingValidationTest {
         assertNotNull(CulturalItems.TALIT_ASSET);
         assertEquals("israel_simulator:talit", CulturalItems.TALIT_ASSET.identifier().toString());
 
-        assertNotNull(CulturalItems.RABBIS_CROWN_ASSET);
-        assertEquals("israel_simulator:rabbis_crown", CulturalItems.RABBIS_CROWN_ASSET.identifier().toString());
 
         assertNotNull(KippahItem.class);
         assertNotNull(TalitItem.class);

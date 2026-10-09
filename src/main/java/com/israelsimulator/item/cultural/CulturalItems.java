@@ -30,9 +30,6 @@ public final class CulturalItems {
     public static final ResourceKey<EquipmentAsset> TALIT_ASSET =
             ResourceKey.create(EquipmentAssets.ROOT_ID, Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "talit"));
 
-    public static final ResourceKey<EquipmentAsset> RABBIS_CROWN_ASSET =
-            ResourceKey.create(EquipmentAssets.ROOT_ID, Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "rabbis_crown"));
-
     public static final ResourceKey<net.minecraft.world.item.JukeboxSong> HAVA_NAGILA_SONG =
             ResourceKey.create(net.minecraft.core.registries.Registries.JUKEBOX_SONG, Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "hava_nagila"));
 
@@ -71,11 +68,15 @@ public final class CulturalItems {
         return p.stacksTo(1).rarity(RarityLevel.RARE.vanilla());
     }
 
-    /** Rabbi's Crown — MYTHIC head item, +20 Armor, unstackable, fire-resistant, swappable. */
+    /**
+     * Rabbi's Crown — MYTHIC head item, +20 Armor, unstackable, fire-resistant, swappable.
+     * Deliberately has no equipment asset: without one, vanilla's CustomHeadLayer renders the
+     * 3D item model (models/item/rabbis_crown.json, "head" display) on the wearer's head, so the
+     * crown follows head rotation and sneaking on players and on humanoid mobs such as Bibi.
+     */
     public static Item.Properties rabbisCrown(Item.Properties p) {
         Equippable equippable = Equippable.builder(EquipmentSlot.HEAD)
                 .setEquipSound(SoundEvents.ARMOR_EQUIP_NETHERITE)
-                .setAsset(RABBIS_CROWN_ASSET)
                 .setSwappable(true)
                 .setDamageOnHurt(true)
                 .build();
