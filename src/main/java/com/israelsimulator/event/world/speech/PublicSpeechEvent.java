@@ -28,6 +28,7 @@ import net.minecraft.world.BossEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -36,8 +37,8 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 
 /**
  * Server-side runtime of the Public Speech event (GAME_DESIGN.md §34, PLAN.md phase 33):
- * builds the temporary stage in a city plaza, spawns the Orator and a small crowd, tracks
- * continuous participation and hands out the First Amendment once per player per event.
+ * builds the temporary stage in a city plaza, spawns the Orator and a small crowd, and after
+ * exactly 60 s ends with a harmless explosion effect on the Orator, who drops one First Amendment.
  * The stage is snapshotted through {@link EpsteinArenaSnapshots} (keyed by the Orator UUID)
  * and the world is put back when the event ends.
  */
@@ -60,6 +61,7 @@ public final class PublicSpeechEvent {
     private static final List<UUID> crowd = new ArrayList<>();
     private static ServerBossEvent bar;
     private static long lastEndTick = -1L;
+    private static boolean rewardDropped;
 
     private PublicSpeechEvent() {}
 
@@ -112,6 +114,7 @@ public final class PublicSpeechEvent {
         endTick = now + WorldEventType.PUBLIC_SPEECH.getDurationTicks();
         nextLineTick = now + 60;
         lineIndex = 0;
+        rewardDropped = false;
 
         orator.snapTo(ground.getX() + SpeechStageLayout.ORATOR_X + 0.5, ground.getY() + SpeechStageLayout.ORATOR_Y,
                 ground.getZ() + SpeechStageLayout.ORATOR_Z + 0.5, 0.0F, 0.0F);
@@ -194,6 +197,7 @@ public final class PublicSpeechEvent {
         }
         if (level.dimension() != dimension) return;
         if (now >= endTick) {
+            finale(level);
             end(level, true);
             return;
         }
@@ -239,9 +243,6 @@ public final class PublicSpeechEvent {
     }
 
     private static void tickParticipation(ServerLevel level, long now) {
-        WorldEventManager.ActiveEventData data = WorldEventManager.getEventData(WorldEventType.PUBLIC_SPEECH);
-        if (data == null) return;
-        int required = requiredTicks();
         float remaining = (endTick - now) / (float) WorldEventType.PUBLIC_SPEECH.getDurationTicks();
         if (bar != null) bar.setProgress(Math.max(0.0F, Math.min(1.0F, remaining)));
         for (ServerPlayer p : level.players()) {
@@ -249,30 +250,41 @@ public final class PublicSpeechEvent {
             if (bar != null) {
                 if (d <= BAR_RADIUS * BAR_RADIUS) bar.addPlayer(p); else bar.removePlayer(p);
             }
-            if (p.isSpectator() || data.hasBeenRewarded(p.getUUID())) continue;
-            boolean in = SpeechParticipation.inRange(d);
-            int before = data.getTicks(p.getUUID());
-            int ticks = SpeechParticipation.nextTicks(before, in, 20);
-            data.setTicks(p.getUUID(), ticks);
-            if (in) {
+            if (!p.isSpectator() && SpeechParticipation.inRange(d)) {
                 p.sendOverlayMessage(Component.translatable("message.israel_simulator.public_speech_progress",
-                        Math.min(ticks, required) / 20, required / 20).withStyle(ChatFormatting.YELLOW));
-            } else if (before > 0) {
-                p.sendOverlayMessage(Component.translatable("message.israel_simulator.public_speech_left").withStyle(ChatFormatting.RED));
-            }
-            if (SpeechParticipation.shouldReward(ticks, required, false)) {
-                data.markRewarded(p.getUUID());
-                reward(p);
+                        Math.max(0, (endTick - now) / 20)).withStyle(ChatFormatting.YELLOW));
             }
         }
     }
 
-    private static void reward(ServerPlayer p) {
-        ItemStack stack = new ItemStack(ModItems.FIRST_AMENDMENT.get());
-        if (!p.getInventory().add(stack)) p.drop(stack, false);
-        p.sendSystemMessage(Component.translatable("message.israel_simulator.public_speech_reward").withStyle(ChatFormatting.GREEN));
-        QuestManager.completeQuest(p, DiscoveryQuest.CIVIC_VOICE);
-        p.level().playSound(null, p.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 1.0F, 1.0F);
+    /**
+     * Natural end of the speech: the Orator goes out with a purely visual explosion (particles and
+     * the generic explode sound, no block or entity damage) and drops exactly one First Amendment
+     * on the stage. Guarded by {@link #rewardDropped} so an event can never drop twice.
+     */
+    private static void finale(ServerLevel level) {
+        if (!SpeechParticipation.shouldDropReward(rewardDropped, true)) return;
+        rewardDropped = true;
+        Entity orator = level.getEntity(oratorId);
+        double x = orator != null ? orator.getX() : center.getX() + SpeechStageLayout.ORATOR_X + 0.5;
+        double y = orator != null ? orator.getY() : center.getY() + SpeechStageLayout.ORATOR_Y;
+        double z = orator != null ? orator.getZ() : center.getZ() + SpeechStageLayout.ORATOR_Z + 0.5;
+        level.sendParticles(ParticleTypes.EXPLOSION_EMITTER, x, y + 1.0, z, 1, 0.0, 0.0, 0.0, 0.0);
+        level.sendParticles(ParticleTypes.EXPLOSION, x, y + 1.0, z, 12, 1.0, 0.8, 1.0, 0.0);
+        level.sendParticles(ParticleTypes.LARGE_SMOKE, x, y + 1.0, z, 20, 0.6, 0.6, 0.6, 0.02);
+        level.playSound(null, x, y, z, SoundEvents.GENERIC_EXPLODE.value(), SoundSource.NEUTRAL, 4.0F, 1.0F);
+        ItemEntity drop = new ItemEntity(level, x, y + 0.5, z, new ItemStack(ModItems.FIRST_AMENDMENT.get(), 1));
+        drop.setDeltaMovement(0.0, 0.2, 0.0);
+        drop.setDefaultPickUpDelay();
+        drop.setUnlimitedLifetime();
+        level.addFreshEntity(drop);
+        Component msg = Component.translatable("message.israel_simulator.public_speech_reward").withStyle(ChatFormatting.GREEN);
+        for (ServerPlayer p : level.players()) {
+            if (SpeechParticipation.inRange(p.distanceToSqr(x, y, z)) && !p.isSpectator()) {
+                p.sendSystemMessage(msg);
+                QuestManager.completeQuest(p, DiscoveryQuest.CIVIC_VOICE);
+            }
+        }
     }
 
     /** Keeps the crowd near the stage and facing the Orator; small idle shuffles come from vanilla AI. */

@@ -62,6 +62,14 @@ public final class ModEntities {
             ENTITY_TYPES.registerEntityType("orator", com.israelsimulator.entity.npc.OratorEntity::new, MobCategory.MISC,
                     b -> b.sized(0.6F, 1.8F).clientTrackingRange(10));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<com.israelsimulator.entity.projectile.FragGrenadeEntity>> FRAG_GRENADE =
+            ENTITY_TYPES.registerEntityType("frag_grenade", com.israelsimulator.entity.projectile.FragGrenadeEntity::new, MobCategory.MISC,
+                    b -> b.sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<com.israelsimulator.entity.projectile.PalantrioDroneEntity>> PALANTRIO_DRONE =
+            ENTITY_TYPES.registerEntityType("palantrio_drone", com.israelsimulator.entity.projectile.PalantrioDroneEntity::new, MobCategory.MISC,
+                    b -> b.sized(0.7F, 0.35F).clientTrackingRange(8).updateInterval(2));
+
     private ModEntities() {}
 
     public static void register(IEventBus modEventBus) {
@@ -79,6 +87,7 @@ public final class ModEntities {
         event.put(JEFFREY_EPSTEIN.get(), com.israelsimulator.entity.boss.JeffreyEpsteinEntity.createAttributes().build());
         event.put(CHILD_ZOMBIE_MINION.get(), com.israelsimulator.entity.boss.ChildZombieMinionEntity.createAttributes().build());
         event.put(MONEY_CHANGER.get(), MoneyChangerEntity.createAttributes().build());
+        event.put(PALANTRIO_DRONE.get(), com.israelsimulator.entity.projectile.PalantrioDroneEntity.createAttributes().build());
         event.put(ORATOR.get(), com.israelsimulator.entity.npc.OratorEntity.createAttributes().build());
     }
 

@@ -1,0 +1,22 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "minecraft:display_context",
+    "cases": [
+      {
+        "when": [
+          "gui",
+          "on_shelf"
+        ],
+        "model": {
+          "type": "minecraft:model",
+          "model": "israel_simulator:item/sniper_rifle_icon"
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "israel_simulator:item/sniper_rifle"
+    }
+  }
+}

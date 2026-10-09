@@ -33,4 +33,9 @@ public final class SpeechParticipation {
     public static boolean canSchedule(long now, long lastEnd, long cooldown, boolean active) {
         return !active && (lastEnd < 0 || now - lastEnd >= cooldown);
     }
+
+    /** One First Amendment per event, and only when the speech runs to its natural end. */
+    public static boolean shouldDropReward(boolean alreadyDropped, boolean naturalEnd) {
+        return naturalEnd && !alreadyDropped;
+    }
 }
