@@ -417,3 +417,8 @@ Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure
 - Rompere le foglie senza cesoie dà il frutto solo se mature; con le cesoie dà il blocco. Le erbe rotte danno sé stesse (non più semi di grano); mature si raccolgono col click destro.
 - Nuovo mondo: gli alberi generati e le erbe hanno stadi misti, quindi alcuni frutti sono subito raccoglibili.
 - Test: `CropHarvestTest`. Non testato in gioco dal client.
+
+## Fango del Mar Morto: texture e cooldown
+- Nuova texture 16x16 per `dead_sea_mud` (fango grigio-marrone scuro con cristalli di sale e venature minerali, `scripts/textures/gen_dead_sea_mud_texture.py`) al posto della palla d'argilla vanilla.
+- Test in gioco: click destro col fango → effetti (rimuove lentezza/debolezza/veleno, assorbimento + rigenerazione), se ne consuma uno e lo slot mostra l'overlay grigio del cooldown per 30 secondi. Durante il cooldown il click destro non fa niente e non consuma fango.
+- Test: `DeadSeaMudItemTest`. Non testato in gioco dal client.
