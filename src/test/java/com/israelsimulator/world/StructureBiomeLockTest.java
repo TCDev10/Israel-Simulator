@@ -38,11 +38,11 @@ class StructureBiomeLockTest {
         EXPECTED.put("desert_ruins", "israel_simulator:judean_desert");
         EXPECTED.put("ein_gedi_oasis", "israel_simulator:judean_desert");
         EXPECTED.put("ancient_sanctuary", "israel_simulator:judean_desert");
-        EXPECTED.put("island_temple", "israel_simulator:mediterranean_coast");
+        EXPECTED.put("tropical_island", "israel_simulator:tropical_island");
     }
 
     @Test
-    @DisplayName("Each of the 17 structures is locked to exactly one Israeli biome")
+    @DisplayName("Each of the 17 structures is locked to exactly one mod biome")
     void eachStructureSingleIsraeliBiome() throws Exception {
         Gson gson = new Gson();
         assertEquals(17, EXPECTED.size());

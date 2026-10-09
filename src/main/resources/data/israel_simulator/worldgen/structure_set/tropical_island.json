@@ -1,14 +1,14 @@
 {
   "structures": [
     {
-      "structure": "israel_simulator:island_temple",
+      "structure": "israel_simulator:tropical_island",
       "weight": 1
     }
   ],
   "placement": {
     "type": "minecraft:random_spread",
-    "spacing": 32,
-    "separation": 12,
+    "spacing": 40,
+    "separation": 16,
     "salt": 734120985
   }
 }

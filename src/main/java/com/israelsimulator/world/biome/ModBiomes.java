@@ -35,6 +35,10 @@ public final class ModBiomes {
     public static final ResourceKey<Biome> JERUSALEM =
             key("jerusalem");
 
+    /** Rare warm deep-ocean patch that carries the tropical_island structure (not an Israeli region biome). */
+    public static final ResourceKey<Biome> TROPICAL_ISLAND =
+            key("tropical_island");
+
     private static final List<ResourceKey<Biome>> ALL_BIOMES = List.of(
             MEDITERRANEAN_COAST,
             ISRAELI_AGRICULTURE,

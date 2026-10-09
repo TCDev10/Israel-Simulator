@@ -37,6 +37,7 @@ class IsraelBiomeSurfaceRulesTest {
             "judean_desert",
             "dead_sea",
             "mediterranean_coast",
+            "tropical_island",
             "urban_area"
     );
 
@@ -163,7 +164,7 @@ class IsraelBiomeSurfaceRulesTest {
         }
         assertEquals(
                 List.of("dead_sea", "israeli_agriculture", "jerusalem",
-                        "judean_desert", "mediterranean_coast", "urban_area"),
+                        "judean_desert", "mediterranean_coast", "tropical_island", "urban_area"),
                 biomes);
         for (String biome : biomes) {
             if (AGRICULTURE.equals(biome)) {

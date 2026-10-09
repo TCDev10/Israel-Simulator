@@ -45,9 +45,9 @@ public final class ModStructures {
             structureKey("government_building");
     public static final ResourceKey<Structure> ANCIENT_SANCTUARY =
             structureKey("ancient_sanctuary");
-    /** Striped pavilion with a gold dome; also the Epstein boss arena (same template). */
-    public static final ResourceKey<Structure> ISLAND_TEMPLE =
-            structureKey("island_temple");
+    /** Whole tropical island estate (includes the striped gold-dome pavilion, also the Epstein arena template). */
+    public static final ResourceKey<Structure> TROPICAL_ISLAND =
+            structureKey("tropical_island");
 
     // Structure Sets
     public static final ResourceKey<StructureSet> MEDITERRANEAN_VILLAGES =
@@ -82,8 +82,8 @@ public final class ModStructures {
             structureSetKey("government_buildings");
     public static final ResourceKey<StructureSet> ANCIENT_SANCTUARIES =
             structureSetKey("ancient_sanctuaries");
-    public static final ResourceKey<StructureSet> ISLAND_TEMPLES =
-            structureSetKey("island_temples");
+    public static final ResourceKey<StructureSet> TROPICAL_ISLANDS =
+            structureSetKey("tropical_island");
 
     // Processor Lists
     public static final ResourceKey<net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList> ANCIENT_RUINS_WEATHERING =
@@ -106,7 +106,7 @@ public final class ModStructures {
             STARTUP_OFFICE,
             GOVERNMENT_BUILDING,
             ANCIENT_SANCTUARY,
-            ISLAND_TEMPLE
+            TROPICAL_ISLAND
     );
 
     private ModStructures() {}
