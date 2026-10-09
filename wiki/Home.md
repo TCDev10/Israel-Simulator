@@ -6,7 +6,7 @@
 
 ## Indice delle Guide
 
-- [Biomi e Generazione del Mondo](Biomes-and-World-Generation) — Dalla costa mediterranea al deserto della Giudea e alle vette del Monte Hermon.
+- [Biomi e Generazione del Mondo](Biomes-and-World-Generation) — Dalla costa mediterranea al deserto della Giudea e al Mar Morto.
 - [Strutture e Città](Structures-and-Cities) — Gerusalemme, Tel Aviv, Giaffa e siti archeologici.
 - [Judaica e Oggetti Sacri](Judaica-and-Sacred-Items) — Kippah, Talit, Tefillin, Mezuzah, First Amendment e la leggendaria Corona del Rabbino.
 - [Muro Occidentale e Preghiere](Western-Wall-and-Prayers) — Il Kotel, biglietti di preghiera, benedizioni e minyan.

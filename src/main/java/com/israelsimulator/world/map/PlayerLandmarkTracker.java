@@ -4,7 +4,13 @@ import com.israelsimulator.audio.ModAudioManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.levelgen.structure.PoolElementStructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
@@ -14,17 +20,19 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Server-authoritative landmark discovery tracking system (GAME_DESIGN.md §8–10, TODO §48).
+ * Landmarks are discovered by standing inside their generated structure, not by coordinates.
  */
 public final class PlayerLandmarkTracker {
 
     private static final Map<UUID, Set<String>> DISCOVERED_LANDMARKS = new ConcurrentHashMap<>();
     private static final Map<UUID, Set<IsraelRegion>> VISITED_REGIONS = new ConcurrentHashMap<>();
-    public static final double DISCOVERY_RADIUS_SQUARED = 48.0 * 48.0; // 48 blocks detection radius
+    /** Blocks around a landmark piece's bounding box that still count as "at" the landmark. */
+    public static final int PIECE_MARGIN = 4;
 
     private PlayerLandmarkTracker() {}
 
     /**
-     * Checks if player is within range of any undiscovered landmark.
+     * Discovers every undiscovered landmark whose structure (or landmark piece) the player is in.
      */
     public static void checkProximityAndDiscover(ServerPlayer player) {
         if (player == null || !player.isAlive()) return;
@@ -34,14 +42,16 @@ public final class PlayerLandmarkTracker {
         Set<String> discovered = DISCOVERED_LANDMARKS.computeIfAbsent(uuid, k -> Collections.synchronizedSet(new HashSet<>()));
         Set<IsraelRegion> visited = VISITED_REGIONS.computeIfAbsent(uuid, k -> Collections.synchronizedSet(new HashSet<>()));
 
+        if (!(player.level() instanceof ServerLevel level)) return;
+        StructureManager structures = level.structureManager();
+
         for (Landmark landmark : Landmark.values()) {
             if (discovered.contains(landmark.getId())) {
                 continue;
             }
 
-            BlockPos target = landmark.getDefaultPos();
-            double distSq = playerPos.distSqr(target);
-            if (distSq <= DISCOVERY_RADIUS_SQUARED) {
+            StructureStart start = structures.getStructureWithPieceAt(playerPos, h -> h.is(landmark.getStructure()));
+            if (start.isValid() && (landmark.getPiece() == null || isInsidePiece(start, landmark.getPiece(), playerPos))) {
                 // Discovered landmark!
                 discovered.add(landmark.getId());
                 visited.add(landmark.getRegion());
@@ -74,6 +84,19 @@ public final class PlayerLandmarkTracker {
                 );
             }
         }
+    }
+
+    /** True when pos is within {@link #PIECE_MARGIN} of a piece of the start built from the given template. */
+    static boolean isInsidePiece(StructureStart start, String template, BlockPos pos) {
+        for (StructurePiece piece : start.getPieces()) {
+            if (piece instanceof PoolElementStructurePiece poolPiece
+                    && poolPiece.getElement() instanceof SinglePoolElement single
+                    && template.equals(single.getTemplateLocation().toString())
+                    && poolPiece.getBoundingBox().inflatedBy(PIECE_MARGIN).isInside(pos)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static boolean isDiscovered(UUID playerUuid, Landmark landmark) {

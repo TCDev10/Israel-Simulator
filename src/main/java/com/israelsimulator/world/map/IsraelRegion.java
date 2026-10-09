@@ -6,8 +6,8 @@ package com.israelsimulator.world.map;
 public enum IsraelRegion {
     TEL_AVIV("Tel Aviv", "Mediterranean metropolis, financial center and coastal promenade", 0, 0),
     JAFFA("Old Jaffa", "Ancient port city with historic clock tower, flea market and stone alleys", 150, 500),
-    JERUSALEM("Jerusalem", "Holy City, Western Wall, historic quarters and Knesset", 800, 800),
-    DEAD_SEA("Dead Sea", "Lowest point on Earth, mineral mud, salt pillars and resorts", 1500, 1200),
+    JERUSALEM("Jerusalem", "Holy City, Western Wall, Old City quarters and the Mahane Yehuda market", 800, 800),
+    DEAD_SEA("Dead Sea", "Lowest point on Earth, mineral mud and spa resorts", 1500, 1200),
     NEGEV_DESERT("Negev Desert", "Southern desert expanse, rocky craters, dunes and camel tracks", 1000, 2000),
     MEDITERRANEAN_COAST("Mediterranean Coast", "Sandy beaches, dunes, and coastal trade routes", -200, 200),
     GALILEE_GOLAN("Galilee & Golan", "Fertile northern hills, olive groves, vineyards and orchards", -600, -800),

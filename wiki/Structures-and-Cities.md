@@ -8,9 +8,10 @@ Le città e le strutture storiche di **Israel-Simulator** possiedono identità a
 - **Stile Architettonico**: Costruita con la caratteristica **pietra di Gerusalemme** (Jerusalem Stone), archi romanici, cortili lastricati e mura monumentali.
 - **Punti di Riferimento**:
   - **Il Muro Occidentale (Kotel)**: Luogo di preghiera e meditazione.
-  - **La Città Vecchia**: Vicoli lastricati con botteghe di spezie, stoffe e Judaica.
-  - **Sinagoghe Storiche**: Centri comunitari con Aron HaKodesh e Menorah.
-  - **Porta di Giaffa e Torri di Guardia**.
+  - **La Città Vecchia** (`jerusalem_city`): Piazza centrale, vie lastricate, bancarelle del shuk, pozzo, porte nelle mura e case in pietra (a corte con ulivo, con cupola, a terrazza di Nachlaot, templari della German Colony, palazzine di Rehavia, case ad arco).
+  - **Sinagoghe** (`synagogue`, `great_synagogue`): Aron HaKodesh e bimah all'interno; cupole, torri e portici all'esterno.
+  - **Mercato Mahane Yehuda** (`grand_market`): Porta d'ingresso, vicoli coperti e aperti, botteghe di spezie, frutta, pane, pesce e halva, caffè e sala coperta del mercato.
+  - **Casa Storica** (`historical_house`): Casa in pietra con cortile, cupola, persiane verdi e scala esterna al tetto.
 
 ---
 
@@ -33,8 +34,14 @@ Le città e le strutture storiche di **Israel-Simulator** possiedono identità a
 ---
 
 ## 4. Siti Archeologici e Strutture nel Deserto
-- **Tende dei Nomadi Beduini**: Accampamenti di lana nera e tappeti con vendita di montature per cammelli, datteri e tè.
-- **Santuario Antico nel Deserto**: Templi di pietra dorata con forzieri segreti contenenti **Ancient Coins** e tesori rari.
-- **Rovine di Masada**: Fortezza eretta su un plateau roccioso con vista sul Mar Morto.
-- **Grotte di Qumran**: Grotte rupestri dove sono custoditi i frammenti dei Rotoli del Mar Morto.
+- **Santuario Antico nel Deserto** (`ancient_sanctuary`): Templi di pietra dorata con forzieri segreti contenenti **Ancient Coins** e tesori rari.
+- **Rovine nel Deserto** (`desert_ruins`): Insediamento antico in stile Qumran con cisterna, rovina del tempio, scriptorium con giare dei rotoli, laboratorio di ceramica, torre di guardia e mikveh.
+- **Oasi di Ein Gedi** (`ein_gedi_oasis`): Cascata e pozze d'acqua dolce tra le palme.
+- **Resort del Mar Morto** (`dead_sea_resort`): Hotel, spa di fango, piscina, beach bar, negozio di sale e spiaggia con formazioni di sale.
+
+---
+
+## 5. Costa e Campagna
+- **Villaggio Mediterraneo** (`mediterranean_village`): Case bianche, piazza con pozzo, cappella, forno, capanna del pescatore e uliveto.
+- **Fattoria Agricola** (`agricultural_farm`): Serre, campi irrigati e fienile.
 
