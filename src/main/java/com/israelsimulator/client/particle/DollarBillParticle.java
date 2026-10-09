@@ -8,13 +8,10 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.RandomSource;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 /**
  * Drifting green banknote particle emitted during Donald Trump miniboss attacks.
  */
-@OnlyIn(Dist.CLIENT)
 public class DollarBillParticle extends SingleQuadParticle {
 
     private final SpriteSet sprites;
@@ -48,7 +45,6 @@ public class DollarBillParticle extends SingleQuadParticle {
         this.setSpriteFromAge(this.sprites);
     }
 
-    @OnlyIn(Dist.CLIENT)
     public record Provider(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level,

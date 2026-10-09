@@ -11,14 +11,11 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.Identifier;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 /**
  * Custom 3D entity model for the rideable bicycle (GAME_DESIGN.md §32).
  * Includes frame, spinning wheels, handlebars with bell, saddle, and pedals.
  */
-@OnlyIn(Dist.CLIENT)
 public class BicycleModel extends EntityModel<LivingEntityRenderState> {
 
     public static final ModelLayerLocation LAYER_LOCATION =
