@@ -120,13 +120,17 @@ class BibiBossAndCombatTest {
     }
 
     @Test
-    @DisplayName("Verify Bibi Boss entity loot table JSON exists and drops Hava Nagila disc")
+    @DisplayName("Bibi Boss drops the Hava Nagila disc once (in code) and the loot table has the currency")
     void testBossLootTableJson() {
         InputStream stream = getClass().getResourceAsStream("/data/israel_simulator/loot_table/entities/bibi_boss.json");
         assertNotNull(stream, "data/israel_simulator/loot_table/entities/bibi_boss.json must exist");
         try {
             String json = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
-            assertTrue(json.contains("israel_simulator:hava_nagila_disc"), "Loot table must drop Hava Nagila disc");
+            // The disc (and the crown) are guaranteed drops from BibiBossEntity#dropBossRewards; listing them
+            // in the loot table too would drop them twice.
+            assertFalse(json.contains("israel_simulator:hava_nagila_disc"), "Hava Nagila disc must not be duplicated in the loot table");
+            String entity = java.nio.file.Files.readString(java.nio.file.Path.of("src/main/java/com/israelsimulator/entity/boss/BibiBossEntity.java"));
+            assertTrue(entity.contains("ModItems.HAVA_NAGILA_DISC.get()"), "Bibi Boss must drop the Hava Nagila disc on death");
             assertTrue(json.contains("israel_simulator:shekel"), "Loot table must include Shekels");
             assertTrue(json.contains("israel_simulator:ancient_coin"), "Loot table must include Ancient Coins");
         } catch (Exception e) {

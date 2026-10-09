@@ -113,14 +113,16 @@ class RareStructuresTest {
             fail("Failed reading synagogue_ark.json: " + e.getMessage());
         }
 
-        // 3. Bibi Boss loot table must contain Rabbi's Crown
+        // 3. Bibi Boss drops Rabbi's Crown exactly once, from BibiBossEntity#dropBossRewards (not the loot table)
         InputStream bibiStream = getClass().getResourceAsStream("/data/israel_simulator/loot_table/entities/bibi_boss.json");
         assertNotNull(bibiStream, "bibi_boss.json must exist");
         try {
             String json = new String(bibiStream.readAllBytes(), StandardCharsets.UTF_8);
-            assertTrue(json.contains("israel_simulator:rabbis_crown"), "Bibi Boss must drop Rabbi's Crown exclusively");
+            assertFalse(json.contains("israel_simulator:rabbis_crown"), "Rabbi's Crown must not be duplicated in the loot table");
+            String entity = java.nio.file.Files.readString(java.nio.file.Path.of("src/main/java/com/israelsimulator/entity/boss/BibiBossEntity.java"));
+            assertTrue(entity.contains("ModItems.RABBIS_CROWN.get()"), "Bibi Boss must drop Rabbi's Crown on death");
         } catch (Exception e) {
-            fail("Failed reading bibi_boss.json: " + e.getMessage());
+            fail("Failed reading Bibi Boss drops: " + e.getMessage());
         }
     }
 
