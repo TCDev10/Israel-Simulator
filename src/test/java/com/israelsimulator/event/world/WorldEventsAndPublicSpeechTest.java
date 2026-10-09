@@ -50,7 +50,7 @@ class WorldEventsAndPublicSpeechTest {
     void testPublicSpeechEventRequirements() {
         WorldEventType speech = WorldEventType.PUBLIC_SPEECH;
         assertEquals("public_speech", speech.getId());
-        assertEquals(2400L, speech.getDurationTicks(), "Public speech duration should be 2400 ticks (2 min)");
+        assertEquals(1200L, speech.getDurationTicks(), "Public speech lasts exactly 1200 ticks (60 s)");
         assertEquals(1200L, speech.getMinParticipationTicks(), "Minimum participation must be 1200 ticks (60s)");
     }
 
@@ -81,7 +81,7 @@ class WorldEventsAndPublicSpeechTest {
         assertNotNull(data);
         assertEquals(speechPos, data.getCenter());
         assertEquals(startTime, data.getStartTick());
-        assertEquals(startTime + 2400L, data.getEndTick());
+        assertEquals(startTime + 1200L, data.getEndTick());
         assertEquals(WorldEventStatus.ACTIVE, data.getStatus());
 
         // Player 1 participates for 600 ticks (30s) -> insufficient for 60s reward

@@ -56,6 +56,20 @@ class PublicSpeechEventTest {
     }
 
     @Test
+    void speechLastsExactlySixtySecondsAndDropsOneFirstAmendment() {
+        assertEquals(1200L, WorldEventType.PUBLIC_SPEECH.getDurationTicks());
+        assertTrue(SpeechParticipation.shouldDropReward(false, true), "natural end drops the reward");
+        assertFalse(SpeechParticipation.shouldDropReward(true, true), "never a second drop in one event");
+        assertFalse(SpeechParticipation.shouldDropReward(false, false), "stop or /kill drop nothing");
+        boolean dropped = false;
+        int drops = 0;
+        for (int i = 0; i < 10; i++) {
+            if (SpeechParticipation.shouldDropReward(dropped, true)) { dropped = true; drops++; }
+        }
+        assertEquals(1, drops);
+    }
+
+    @Test
     void stageStaysInsideTheSnapshotFootprintAndHasAllProps() {
         Set<String> kinds = new HashSet<>();
         for (SpeechStageLayout.Placement p : SpeechStageLayout.placements()) {
