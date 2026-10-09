@@ -1,0 +1,41 @@
+{
+  "fallback": "israel_simulator:dsr/terminators",
+  "elements": [
+    {
+      "weight": 8,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:dsr/promenade_straight",
+        "processors": "israel_simulator:dead_sea_promenade",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:dsr/promenade_crossroad",
+        "processors": "israel_simulator:dead_sea_promenade",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:dsr/promenade_corner",
+        "processors": "israel_simulator:dead_sea_promenade",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:dsr/promenade_t",
+        "processors": "israel_simulator:dead_sea_promenade",
+        "projection": "terrain_matching"
+      }
+    }
+  ]
+}
