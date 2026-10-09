@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": { "type": "minecraft:uniform", "min": 2.0, "max": 4.0 },
+      "entries": [
+        { "type": "minecraft:item", "name": "israel_simulator:smg_ammo", "weight": 10,
+          "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 4.0, "max": 12.0 } } ] },
+        { "type": "minecraft:item", "name": "israel_simulator:rifle_ammo", "weight": 8,
+          "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 3.0, "max": 10.0 } } ] },
+        { "type": "minecraft:item", "name": "israel_simulator:shekel", "weight": 10,
+          "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 6.0 } } ] },
+        { "type": "minecraft:item", "name": "israel_simulator:frag_grenade", "weight": 3 },
+        { "type": "minecraft:item", "name": "israel_simulator:smartphone", "weight": 3 },
+        { "type": "minecraft:item", "name": "minecraft:spyglass", "weight": 2 },
+        { "type": "minecraft:item", "name": "israel_simulator:falafel", "weight": 6,
+          "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 } } ] }
+      ]
+    }
+  ]
+}

@@ -72,6 +72,15 @@
         "processors": "minecraft:empty",
         "projection": "rigid"
       }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:tel_aviv/mossad_safehouse",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      }
     }
   ]
 }

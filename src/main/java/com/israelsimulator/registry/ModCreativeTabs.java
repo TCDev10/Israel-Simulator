@@ -84,6 +84,9 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.SNIPER_RIFLE.get());
                         output.accept(ModItems.FRAG_GRENADE.get());
                         output.accept(ModItems.PALANTRIO_DRONE.get());
+                        output.accept(ModItems.SEALED_DOSSIER.get());
+                        output.accept(ModItems.MOSSAD_AGENT_SPAWN_EGG.get());
+                        output.accept(ModItems.MOSSAD_HANDLER_SPAWN_EGG.get());
                         output.accept(ModItems.RIFLE_AMMO.get());
                         output.accept(ModItems.SMG_AMMO.get());
                         output.accept(ModItems.SNIPER_AMMO.get());

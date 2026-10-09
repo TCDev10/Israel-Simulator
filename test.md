@@ -501,3 +501,15 @@ Come è stato risolto: nuovo `scripts/worldgen/gen_jaffa_port.py` → `structure
 - All'impatto lascia una nube come il soffio del drago (particelle viola, sbuffo verde, raggio 3, dura 6 s) che dà Veleno II per 5 s invece di danno istantaneo. Non rompe né modifica blocchi.
 - Bibi ora è immune a fuoco e lava (nessun danno, le fiamme si spengono): prova con `/summon` vicino alla lava o con un accendino.
 - Test: `BibiPoisonBreathTest`, `BibiFireImmunityTest`. Prova in gioco: evoca Bibi, uccidi Epstein dopo che diventa Palm Beach Pete, resta vicino a Bibi in survival e controlla avviso, caduta e veleno; esci e rientra e verifica che l'attacco continui. Non testato in gioco dal client.
+
+
+## Mossad: agenti ostili e Referente con incarichi (contenuto di fantasia)
+- **Agente del Mossad** (ostile, modello giocatore in completo scuro, skin segnaposto `textures/entity/mossad_agent.png`): armato con Uzi (60%) o pistola, mira con le braccia alzate come le guardie di Bibi. Mentre ti segue da più di 10 blocchi è invisibile e accovacciato (si vede solo l'arma); si rivela quando si avvicina, spara o viene colpito. 26 cuori/2, spara ogni 1-1,75 s (Uzi: 2 colpi da 2,5; pistola: 1 da 5). Drop: munizioni Uzi (60%), 1-4 shekel, a volte munizioni da fucile.
+- Spawn: di notte, ogni 20 s per giocatore in un bioma israeliano, 4% di probabilità di 1-2 agenti a 24-36 blocchi (massimo 3 vicini). La reputazione Mossad abbassa la probabilità (a 50 è la metà, a 90+ il 10%); da 60 in su gli agenti non ti attaccano se non li colpisci tu. Non c'è un sistema di "ricercato" nella mod, quindi non reagiscono ai crimini.
+- **Rifugio del Mossad**: nuova casa piccola nei pool degli edifici di Tel Aviv e Jerusalem (peso 1), con il **Referente del Mossad** dentro (invulnerabile, non sparisce), radio, mappa, leggio e una cassa con munizioni/shekel.
+- Click destro sul Referente: menu in chat cliccabile con 3 incarichi (oppure `/mossad accept <eliminate|retrieve|escort>` vicino al Referente, `/mossad status`, `/mossad abandon` (-5 reputazione)):
+  - **Cellula Deviata**: 3 agenti compaiono a 30-45 blocchi; uccidili. Premio 16 shekel + 32 munizioni Uzi (+ Uzi carica la prima volta), +10 reputazione.
+  - **Fascicolo Perduto**: trova un Fascicolo Sigillato nelle casse delle rovine nel deserto (anche lo scriptorium) e portalo al Referente. Premio 24 shekel + 4 granate + 8 munizioni da cecchino, +15 reputazione.
+  - **Passaggio Sicuro**: un informatore ti segue (se resta indietro di 24 blocchi ti raggiunge); portalo al punto a 120-180 blocchi (scintille verdi), dove aspettano 2 agenti. Se muore l'incarico fallisce (-10). Premio 32 shekel + 30 munizioni da fucile (+ fucile d'assalto carico la prima volta), +20 reputazione.
+- Da op: `/mossad spawn_agents [n]`, `/mossad reputation <valore>`. Uova generatrici per agente e Referente nella scheda creativa.
+- Test: `MossadTest`. Provato con `runServer` (datapack di prova): agenti con l'Uzi, informatore, e `place template` di entrambi i rifugi con il Referente dentro; `runClient` fino al menu senza errori. Non testato in gioco dal client (menu in chat, invisibilità e incarichi non provati con un giocatore).
