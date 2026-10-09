@@ -15,7 +15,11 @@ public class MossadNpcRenderer<T extends PathfinderMob> extends HumanoidMobRende
 
     public MossadNpcRenderer(EntityRendererProvider.Context context, String skin) {
         super(context, new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER)), 0.5F);
-        this.texture = Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "textures/entity/" + skin + ".png");
+        this.texture = textureFor(skin);
+    }
+
+    public static Identifier textureFor(String skin) {
+        return Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "textures/entity/" + skin + ".png");
     }
 
     @Override

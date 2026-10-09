@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.resources.Identifier;
 
 /**
- * Player-model renderer for Charlie Kirk. The skin is a standard 64x64 player skin at
+ * Player-model renderer for the fictional Orator. The skin is a standard 64x64 player skin at
  * {@code assets/israel_simulator/textures/entity/orator.png}: replace that file to change the look.
  */
 public class OratorRenderer extends HumanoidMobRenderer<OratorEntity, AvatarRenderState, PlayerModel> {

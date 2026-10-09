@@ -14,7 +14,7 @@ import net.minecraft.resources.Identifier;
  */
 public class MoneyChangerRenderer extends HumanoidMobRenderer<MoneyChangerEntity, HumanoidRenderState, HumanoidModel<HumanoidRenderState>> {
 
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "textures/entity/money_changer.png");
+    public static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "textures/entity/money_changer.png");
 
     public MoneyChangerRenderer(EntityRendererProvider.Context context) {
         super(context, new HumanoidModel<>(context.bakeLayer(ModelLayers.ZOMBIE)), 0.5F);

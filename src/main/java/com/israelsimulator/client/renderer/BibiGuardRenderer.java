@@ -17,7 +17,7 @@ import net.minecraft.world.entity.HumanoidArm;
  */
 public class BibiGuardRenderer extends HumanoidMobRenderer<BibiGuardEntity, BibiGuardRenderState, BibiGuardModel> {
 
-    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "textures/entity/bibi_guard.png");
+    public static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "textures/entity/bibi_guard.png");
 
     public BibiGuardRenderer(EntityRendererProvider.Context context) {
         super(context, new BibiGuardModel(context.bakeLayer(ModelLayers.ZOMBIE)), 0.5F);

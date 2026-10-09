@@ -16,7 +16,7 @@ import net.minecraft.resources.Identifier;
  */
 public class IceAgentRenderer extends HumanoidMobRenderer<IceAgentEntity, HumanoidRenderState, HumanoidModel<HumanoidRenderState>> {
 
-    private static final Identifier TEXTURE =
+    public static final Identifier TEXTURE =
             Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "textures/entity/ice_agent.png");
 
     public IceAgentRenderer(EntityRendererProvider.Context context) {
