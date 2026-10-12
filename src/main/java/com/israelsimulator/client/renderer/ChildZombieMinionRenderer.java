@@ -7,51 +7,57 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
-import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.resources.Identifier;
 
 /**
  * Client-side renderer for child-skinned baby zombie minions (GAME_DESIGN.md §41–44).
  */
-public class ChildZombieMinionRenderer extends HumanoidMobRenderer<ChildZombieMinionEntity, HumanoidRenderState, HumanoidModel<HumanoidRenderState>> {
+public class ChildZombieMinionRenderer extends HumanoidMobRenderer<ChildZombieMinionEntity, ChildZombieMinionRenderState, HumanoidModel<ChildZombieMinionRenderState>> {
 
     public static final Identifier TEXTURE =
             Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "textures/entity/child_zombie.png");
     public static final Identifier TEXTURE_1 =
-                Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "textures/entity/child_zombie_1.png");
+            Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "textures/entity/child_zombie_1.png");
     public static final Identifier TEXTURE_2 =
-                Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "textures/entity/child_zombie_2.png");
+            Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "textures/entity/child_zombie_2.png");
+    public static final Identifier TEXTURE_3 =
+            Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "textures/entity/child_zombie_3.png");
+    public static final Identifier TEXTURE_4 =
+            Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "textures/entity/child_zombie_4.png");
+    public static final Identifier TEXTURE_5 =
+            Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "textures/entity/child_zombie_5.png");
+
+    public static final Identifier[] TEXTURES = {
+            TEXTURE, TEXTURE_1, TEXTURE_2, TEXTURE_3, TEXTURE_4, TEXTURE_5
+    };
 
     public ChildZombieMinionRenderer(EntityRendererProvider.Context context) {
         super(context, new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER)), 0.25F);
     }
 
     @Override
-    public Identifier getTextureLocation(HumanoidRenderState state) {
-        // Randomize child skin based on entity UUID to add variety
-        if (state.entity != null) {
-            long seed = state.entity.getUUID().getLeastSignificantBits();
-            int choice = (int)(Math.abs(seed) % 3);
-            return switch (choice) {
-                case 1 -> TEXTURE_1;
-                case 2 -> TEXTURE_2;
-                default -> TEXTURE;
-            };
-        }
-        return TEXTURE;
+    public Identifier getTextureLocation(ChildZombieMinionRenderState state) {
+        int index = Math.floorMod(state.skinVariant, TEXTURES.length);
+        return TEXTURES[index];
     }
 
     @Override
-    public HumanoidRenderState createRenderState() {
-        HumanoidRenderState state = new HumanoidRenderState();
+    public ChildZombieMinionRenderState createRenderState() {
+        ChildZombieMinionRenderState state = new ChildZombieMinionRenderState();
         state.isBaby = true;
         return state;
     }
 
     @Override
-    protected void scale(HumanoidRenderState state, PoseStack poseStack) {
+    public void extractRenderState(ChildZombieMinionEntity entity, ChildZombieMinionRenderState state, float partialTicks) {
+        super.extractRenderState(entity, state, partialTicks);
+        long seed = entity.getUUID().getLeastSignificantBits();
+        state.skinVariant = (int) Math.abs(seed % TEXTURES.length);
+    }
+
+    @Override
+    protected void scale(ChildZombieMinionRenderState state, PoseStack poseStack) {
         super.scale(state, poseStack);
         poseStack.scale(0.5F, 0.5F, 0.5F);
     }
 }
-

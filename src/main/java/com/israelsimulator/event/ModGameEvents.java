@@ -38,8 +38,12 @@ public final class ModGameEvents {
             event.setCanceled(true);
         }
         // Replace vanilla villagers with Goyim NPCs to keep trades/professions but with custom name/skin.
-        if (!event.getLevel().isClientSide() && event.getEntity() instanceof net.minecraft.world.entity.npc.villager.Villager villager) {
-            com.israelsimulator.registry.ModEntities.GOYIM.get().create(event.getLevel()).ifPresent(goyim -> {
+        if (!event.getLevel().isClientSide()
+                && event.getEntity() instanceof net.minecraft.world.entity.npc.villager.Villager villager
+                && !(villager instanceof com.israelsimulator.entity.npc.GoyimEntity)) {
+            com.israelsimulator.entity.npc.GoyimEntity goyim = com.israelsimulator.registry.ModEntities.GOYIM.get()
+                    .create(event.getLevel(), net.minecraft.world.entity.EntitySpawnReason.EVENT);
+            if (goyim != null) {
                 goyim.copyPosition(villager);
                 goyim.setYRot(villager.getYRot());
                 goyim.setXRot(villager.getXRot());
@@ -53,7 +57,7 @@ public final class ModGameEvents {
                 goyim.setCustomNameVisible(true);
                 event.getLevel().addFreshEntity(goyim);
                 villager.discard();
-            });
+            }
         }
     }
 

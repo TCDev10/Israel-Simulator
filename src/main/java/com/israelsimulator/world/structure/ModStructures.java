@@ -112,8 +112,7 @@ public final class ModStructures {
             STARTUP_OFFICE,
             GOVERNMENT_BUILDING,
             ANCIENT_SANCTUARY,
-            TROPICAL_ISLAND,
-            GAZA_STRIP
+            TROPICAL_ISLAND
     );
 
     private ModStructures() {}
