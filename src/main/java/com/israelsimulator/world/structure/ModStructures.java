@@ -49,6 +49,9 @@ public final class ModStructures {
     public static final ResourceKey<Structure> TROPICAL_ISLAND =
             structureKey("tropical_island");
 
+    public static final ResourceKey<Structure> GAZA_STRIP =
+            structureKey("gaza_strip");
+
     // Structure Sets
     public static final ResourceKey<StructureSet> MEDITERRANEAN_VILLAGES =
             structureSetKey("mediterranean_villages");
@@ -85,6 +88,9 @@ public final class ModStructures {
     public static final ResourceKey<StructureSet> TROPICAL_ISLANDS =
             structureSetKey("tropical_island");
 
+    public static final ResourceKey<StructureSet> GAZA_STRIPS =
+            structureSetKey("gaza_strips");
+
     // Processor Lists
     public static final ResourceKey<net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList> ANCIENT_RUINS_WEATHERING =
             processorListKey("ancient_ruins_weathering");
@@ -106,7 +112,8 @@ public final class ModStructures {
             STARTUP_OFFICE,
             GOVERNMENT_BUILDING,
             ANCIENT_SANCTUARY,
-            TROPICAL_ISLAND
+            TROPICAL_ISLAND,
+            GAZA_STRIP
     );
 
     private ModStructures() {}
