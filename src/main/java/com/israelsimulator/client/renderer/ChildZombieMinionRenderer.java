@@ -17,6 +17,10 @@ public class ChildZombieMinionRenderer extends HumanoidMobRenderer<ChildZombieMi
 
     public static final Identifier TEXTURE =
             Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "textures/entity/child_zombie.png");
+    public static final Identifier TEXTURE_1 =
+                Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "textures/entity/child_zombie_1.png");
+    public static final Identifier TEXTURE_2 =
+                Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "textures/entity/child_zombie_2.png");
 
     public ChildZombieMinionRenderer(EntityRendererProvider.Context context) {
         super(context, new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER)), 0.25F);
@@ -24,6 +28,16 @@ public class ChildZombieMinionRenderer extends HumanoidMobRenderer<ChildZombieMi
 
     @Override
     public Identifier getTextureLocation(HumanoidRenderState state) {
+        // Randomize child skin based on entity UUID to add variety
+        if (state.entity != null) {
+            long seed = state.entity.getUUID().getLeastSignificantBits();
+            int choice = (int)(Math.abs(seed) % 3);
+            return switch (choice) {
+                case 1 -> TEXTURE_1;
+                case 2 -> TEXTURE_2;
+                default -> TEXTURE;
+            };
+        }
         return TEXTURE;
     }
 

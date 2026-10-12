@@ -1,6 +1,30 @@
 {
   "variants": {
-    "": {
+    "0": {
+      "model": "israel_simulator:block/menorah"
+    },
+    "1": {
+      "model": "israel_simulator:block/menorah"
+    },
+    "2": {
+      "model": "israel_simulator:block/menorah"
+    },
+    "3": {
+      "model": "israel_simulator:block/menorah"
+    },
+    "4": {
+      "model": "israel_simulator:block/menorah"
+    },
+    "5": {
+      "model": "israel_simulator:block/menorah"
+    },
+    "6": {
+      "model": "israel_simulator:block/menorah"
+    },
+    "7": {
+      "model": "israel_simulator:block/menorah"
+    },
+    "8": {
       "model": "israel_simulator:block/menorah"
     }
   }

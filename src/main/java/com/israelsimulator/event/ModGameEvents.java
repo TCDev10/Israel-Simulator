@@ -37,6 +37,24 @@ public final class ModGameEvents {
                 && !com.israelsimulator.event.world.speech.PublicSpeechEvent.isCrowdMember(event.getEntity().getUUID())) {
             event.setCanceled(true);
         }
+        // Replace vanilla villagers with Goyim NPCs to keep trades/professions but with custom name/skin.
+        if (!event.getLevel().isClientSide() && event.getEntity() instanceof net.minecraft.world.entity.npc.villager.Villager villager) {
+            com.israelsimulator.registry.ModEntities.GOYIM.get().create(event.getLevel()).ifPresent(goyim -> {
+                goyim.copyPosition(villager);
+                goyim.setYRot(villager.getYRot());
+                goyim.setXRot(villager.getXRot());
+                goyim.setHealth(villager.getHealth());
+                goyim.setInvulnerable(villager.isInvulnerable());
+                // Preserve profession and type for trades
+                goyim.setVillagerData(villager.getVillagerData());
+                goyim.setVillagerXp(villager.getVillagerXp());
+                goyim.setTradingPlayer(villager.getTradingPlayer());
+                goyim.setCustomName(net.minecraft.network.chat.Component.literal("Goy"));
+                goyim.setCustomNameVisible(true);
+                event.getLevel().addFreshEntity(goyim);
+                villager.discard();
+            });
+        }
     }
 
     /** Restores Epstein arenas whose boss vanished (died unloaded, other dimension, deleted). */
