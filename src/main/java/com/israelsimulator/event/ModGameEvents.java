@@ -36,28 +36,31 @@ public final class ModGameEvents {
                 && event.getEntity().entityTags().contains(com.israelsimulator.event.world.speech.PublicSpeechEvent.CROWD_TAG)
                 && !com.israelsimulator.event.world.speech.PublicSpeechEvent.isCrowdMember(event.getEntity().getUUID())) {
             event.setCanceled(true);
+            return;
         }
         // Replace vanilla villagers with Goyim NPCs to keep trades/professions but with custom name/skin.
         if (!event.getLevel().isClientSide()
+                && event.getLevel() instanceof net.minecraft.server.level.ServerLevel serverLevel
                 && event.getEntity() instanceof net.minecraft.world.entity.npc.villager.Villager villager
-                && !(villager instanceof com.israelsimulator.entity.npc.GoyimEntity)) {
-            com.israelsimulator.entity.npc.GoyimEntity goyim = com.israelsimulator.registry.ModEntities.GOYIM.get()
-                    .create(event.getLevel(), net.minecraft.world.entity.EntitySpawnReason.EVENT);
-            if (goyim != null) {
-                goyim.copyPosition(villager);
-                goyim.setYRot(villager.getYRot());
-                goyim.setXRot(villager.getXRot());
-                goyim.setHealth(villager.getHealth());
-                goyim.setInvulnerable(villager.isInvulnerable());
-                // Preserve profession and type for trades
-                goyim.setVillagerData(villager.getVillagerData());
-                goyim.setVillagerXp(villager.getVillagerXp());
-                goyim.setTradingPlayer(villager.getTradingPlayer());
-                goyim.setCustomName(net.minecraft.network.chat.Component.literal("Goy"));
-                goyim.setCustomNameVisible(true);
-                event.getLevel().addFreshEntity(goyim);
-                villager.discard();
-            }
+                && !(villager instanceof com.israelsimulator.entity.npc.GoyimEntity)
+                && !villager.entityTags().contains(com.israelsimulator.event.world.speech.PublicSpeechEvent.CROWD_TAG)) {
+            event.setCanceled(true);
+            serverLevel.getServer().execute(() -> {
+                com.israelsimulator.entity.npc.GoyimEntity goyim = com.israelsimulator.registry.ModEntities.GOYIM.get()
+                        .create(serverLevel, net.minecraft.world.entity.EntitySpawnReason.EVENT);
+                if (goyim != null) {
+                    goyim.copyPosition(villager);
+                    goyim.setYRot(villager.getYRot());
+                    goyim.setXRot(villager.getXRot());
+                    goyim.setHealth(villager.getHealth());
+                    goyim.setInvulnerable(villager.isInvulnerable());
+                    goyim.setVillagerData(villager.getVillagerData());
+                    goyim.setVillagerXp(villager.getVillagerXp());
+                    goyim.setCustomName(net.minecraft.network.chat.Component.literal("Goy"));
+                    goyim.setCustomNameVisible(true);
+                    serverLevel.addFreshEntity(goyim);
+                }
+            });
         }
     }
 

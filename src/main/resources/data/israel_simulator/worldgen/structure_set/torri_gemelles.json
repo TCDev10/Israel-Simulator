@@ -1,0 +1,15 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 20010911,
+    "separation": 12,
+    "spacing": 32
+  },
+  "structures": [
+    {
+      "structure": "israel_simulator:torri_gemelle",
+      "weight": 1
+    }
+  ]
+}
+
