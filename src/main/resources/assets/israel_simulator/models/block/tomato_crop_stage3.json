@@ -1,0 +1,4 @@
+{
+  "parent": "minecraft:block/crop",
+  "textures": { "crop": "israel_simulator:block/tomato_crop_stage3" }
+}

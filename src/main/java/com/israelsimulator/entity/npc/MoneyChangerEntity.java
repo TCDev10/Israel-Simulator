@@ -133,8 +133,10 @@ public class MoneyChangerEntity extends AbstractVillager {
     @Override
     protected void stopTrading() {
         super.stopTrading();
-        for (MerchantOffer offer : this.getOffers()) {
-            offer.resetSpecialPriceDiff();
+        if (!this.level().isClientSide()) {
+            for (MerchantOffer offer : this.getOffers()) {
+                offer.resetSpecialPriceDiff();
+            }
         }
     }
 

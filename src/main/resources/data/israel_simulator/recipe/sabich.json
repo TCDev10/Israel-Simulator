@@ -3,7 +3,7 @@
   "ingredients": [
     "minecraft:bread",
     "minecraft:egg",
-    "minecraft:potato",
+    "israel_simulator:eggplant",
     "israel_simulator:tahini"
   ],
   "result": {

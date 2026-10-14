@@ -117,7 +117,8 @@ public class LocalizationValidationTest {
         }
 
         // Entities
-        String[] entities = {"bibi_boss", "bibi_guard", "bicycle", "bibi_missile", "trump_miniboss", "ice_agent"};
+        String[] entities = {"bibi_boss", "bibi_guard", "bicycle", "bibi_missile", "trump_miniboss", "ice_agent",
+                "mountain_gazelle", "nubian_ibex", "cape_hyrax"};
         for (String entity : entities) {
             String key = "entity." + IsraelSimulator.MOD_ID + "." + entity;
             assertTrue(enJson.has(key), "Missing entity localization: " + key);

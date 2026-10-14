@@ -87,6 +87,9 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.SEALED_DOSSIER.get());
                         output.accept(ModItems.MOSSAD_AGENT_SPAWN_EGG.get());
                         output.accept(ModItems.MOSSAD_HANDLER_SPAWN_EGG.get());
+                        output.accept(ModItems.MOUNTAIN_GAZELLE_SPAWN_EGG.get());
+                        output.accept(ModItems.NUBIAN_IBEX_SPAWN_EGG.get());
+                        output.accept(ModItems.CAPE_HYRAX_SPAWN_EGG.get());
                         output.accept(ModItems.RIFLE_AMMO.get());
                         output.accept(ModItems.SMG_AMMO.get());
                         output.accept(ModItems.SNIPER_AMMO.get());

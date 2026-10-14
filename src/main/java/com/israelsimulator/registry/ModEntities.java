@@ -4,6 +4,9 @@ import com.israelsimulator.IsraelSimulator;
 import com.israelsimulator.entity.boss.BibiBossEntity;
 import com.israelsimulator.entity.boss.BibiGuardEntity;
 import com.israelsimulator.entity.npc.MoneyChangerEntity;
+import com.israelsimulator.entity.wildlife.CapeHyraxEntity;
+import com.israelsimulator.entity.wildlife.MountainGazelleEntity;
+import com.israelsimulator.entity.wildlife.NubianIbexEntity;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -89,6 +92,16 @@ public final class ModEntities {
             ENTITY_TYPES.registerEntityType("mossad_informant", com.israelsimulator.entity.mossad.MossadInformantEntity::new, MobCategory.MISC,
                     b -> b.sized(0.6F, 1.95F).clientTrackingRange(10));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<MountainGazelleEntity>> MOUNTAIN_GAZELLE =
+            ENTITY_TYPES.registerEntityType("mountain_gazelle", MountainGazelleEntity::new, MobCategory.CREATURE,
+                    b -> b.sized(0.8F, 1.25F).clientTrackingRange(8));
+    public static final DeferredHolder<EntityType<?>, EntityType<NubianIbexEntity>> NUBIAN_IBEX =
+            ENTITY_TYPES.registerEntityType("nubian_ibex", NubianIbexEntity::new, MobCategory.CREATURE,
+                    b -> b.sized(0.95F, 1.35F).clientTrackingRange(8));
+    public static final DeferredHolder<EntityType<?>, EntityType<CapeHyraxEntity>> CAPE_HYRAX =
+            ENTITY_TYPES.registerEntityType("cape_hyrax", CapeHyraxEntity::new, MobCategory.CREATURE,
+                    b -> b.sized(0.55F, 0.55F).clientTrackingRange(8));
+
     private ModEntities() {}
 
     public static void register(IEventBus modEventBus) {
@@ -112,6 +125,9 @@ public final class ModEntities {
         event.put(MOSSAD_HANDLER.get(), com.israelsimulator.entity.mossad.MossadHandlerEntity.createAttributes().build());
         event.put(MOSSAD_INFORMANT.get(), com.israelsimulator.entity.mossad.MossadInformantEntity.createAttributes().build());
         event.put(ORATOR.get(), com.israelsimulator.entity.npc.OratorEntity.createAttributes().build());
+        event.put(MOUNTAIN_GAZELLE.get(), MountainGazelleEntity.createAttributes().build());
+        event.put(NUBIAN_IBEX.get(), NubianIbexEntity.createAttributes().build());
+        event.put(CAPE_HYRAX.get(), CapeHyraxEntity.createAttributes().build());
     }
 
     /**
@@ -125,5 +141,27 @@ public final class ModEntities {
                 (type, level, spawnReason, pos, random) ->
                         level.getBlockState(pos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON),
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(MOUNTAIN_GAZELLE.get(), SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                (type, level, reason, pos, random) -> isRegionalWildlifeSpawnSurface(level, pos),
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(NUBIAN_IBEX.get(), SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                (type, level, reason, pos, random) -> isRegionalWildlifeSpawnSurface(level, pos),
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(CAPE_HYRAX.get(), SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                (type, level, reason, pos, random) -> isRegionalWildlifeSpawnSurface(level, pos),
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+    }
+
+    private static boolean isRegionalWildlifeSpawnSurface(net.minecraft.world.level.ServerLevelAccessor level,
+                                                           net.minecraft.core.BlockPos pos) {
+        var ground = level.getBlockState(pos.below());
+        return ground.is(BlockTags.ANIMALS_SPAWNABLE_ON)
+                || ground.is(BlockTags.SAND)
+                || ground.is(BlockTags.BASE_STONE_OVERWORLD)
+                || ground.is(ModBlocks.SALT_BLOCK.get())
+                || ground.is(ModBlocks.JERUSALEM_STONE.get());
     }
 }

@@ -1,8 +1,8 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    "minecraft:wheat_seeds",
-    "minecraft:wheat_seeds",
+    "israel_simulator:sesame_seeds",
+    "israel_simulator:sesame_seeds",
     "minecraft:bowl"
   ],
   "result": {

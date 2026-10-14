@@ -33,6 +33,18 @@ public final class IsraelFoodProperties {
     public static final FoodProperties CITRUS = new FoodProperties.Builder()
             .nutrition(2).saturationModifier(0.3F).build();
 
+    public static final FoodProperties CHICKPEAS = new FoodProperties.Builder()
+            .nutrition(2).saturationModifier(0.3F).build();
+
+    public static final FoodProperties TOMATO = new FoodProperties.Builder()
+            .nutrition(2).saturationModifier(0.3F).build();
+
+    public static final FoodProperties EGGPLANT = new FoodProperties.Builder()
+            .nutrition(1).saturationModifier(0.2F).build();
+
+    public static final FoodProperties SESAME_SEEDS = new FoodProperties.Builder()
+            .nutrition(1).saturationModifier(0.2F).build();
+
     public static final FoodProperties CHALLAH = new FoodProperties.Builder()
             .nutrition(5).saturationModifier(0.6F).build();
 

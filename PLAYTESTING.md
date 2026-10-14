@@ -42,6 +42,8 @@ Prima di iniziare il test, avviare il gioco con uno dei seguenti metodi:
 
 - [ ] Verificare che il gioco si avvii senza crash e senza errori critici nel log (`run/logs/latest.log`).
 - [ ] Verificare che la creazione di un nuovo mondo proceda fino al 100% senza blocchi o schermate di errore datapack.
+- [ ] Verificare che gazzelle di montagna e iraci compaiano con gruppi contenuti su costa/colline e che stambecchi nubiani e iraci compaiano nel deserto, sul territorio del Mar Morto e sulle colline di Gerusalemme; nessun animale terrestre deve comparire nell'acqua del Mar Morto o nell'isola tropicale.
+- [ ] Avvicinarsi agli animali e colpirli: devono fuggire senza attaccare; nutrire due adulti con grano o carote per verificare la riproduzione e controllare i drop di carne e l'uso degli spawn egg.
 
 ---
 
@@ -52,39 +54,52 @@ Verificare che la fascia climatica dei biomi israeliani si generi correttamente 
 ### 1.1 Bioma: Costa Mediterranea (`israel_simulator:mediterranean_coast`)
 * **Comando:** `/locate biome israel_simulator:mediterranean_coast`
 - [ ] La costa si genera adiacente al mare con sabbia, palme e transizioni morbide verso l'entroterra.
-- [ ] La fauna marina (tartarughe, pesci, delfini) spawna correttamente lungo la costa.
+- [ ] Tartarughe marine, merluzzi e delfini compaiono negli habitat costieri/acquatici; le creature acquatiche non appaiono sulla terraferma.
+- [ ] Le creature vanilla mantengono i propri loot table e rilasciano gli oggetti previsti una sola volta.
 - [ ] Nessuna presenza anomala di arenaria esposta fuori dai parametri previsti.
 
 ### 1.2 Bioma: Agricoltura (`israel_simulator:israeli_agriculture`)
 * **Comando:** `/locate biome israel_simulator:israeli_agriculture`
 - [ ] Campi verdi aperti con terreno fertile e vegetazione coltivabile.
 - [ ] Coltivazioni di uva, grano e ulivi si integrano naturalmente con il terreno.
+- [ ] Pecore, bovini, polli, capre e conigli compaiono come fauna/agricoltura locale; non compaiono pesci tropicali o delfini nell'entroterra.
+- [ ] Le gazzelle di montagna si incontrano raramente ai margini dei campi e fuggono quando minacciate.
+- [ ] Ceci, pomodori, melanzane e sesamo crescono su terreno zappato, mostrano fasi di crescita e rilasciano raccolti piantabili.
+- [ ] I forzieri di fattoria e mercato possono fornire i raccolti iniziali da ripiantare.
 
 ### 1.3 Bioma: Deserto Giudaico (`israel_simulator:judean_desert`)
 * **Comando:** `/locate biome israel_simulator:judean_desert`
 - [ ] Terreno caratteristico in sabbia rossa (`red_sand`) e arenaria rossa (`red_sandstone`).
 - [ ] Formazioni rocciose e colline tipiche dell'ambiente desertico.
+- [ ] Cammelli, conigli, volpi e capre compaiono con gruppi contenuti.
+- [ ] Stambecchi nubiani e iraci del Capo compaiono in gruppi piccoli tra aree rocciose e terreno desertico.
 
 ### 1.4 Bioma: Mar Morto (`israel_simulator:dead_sea`)
 * **Comando:** `/locate biome israel_simulator:dead_sea`
 - [ ] Acqua ad altissima salinità con formazioni e croste saline lungo la riva (`israel_simulator:salt_block`).
 - [ ] Il nuoto nel Mar Morto applica l'effetto di galleggiamento accentuato e resistenza.
 - [ ] Nessun albero convenzionale presente nelle immediate vicinanze dell'acqua salata.
+- [ ] Volpi e capre possono comparire sulle sponde; nessun pesce, delfino o altra fauna acquatica compare nell'acqua ipersalina.
+- [ ] Stambecchi nubiani e iraci del Capo si limitano alla terraferma rocciosa e non compaiono nell'acqua.
 
 ### 1.5 Bioma: Area Urbana (`israel_simulator:urban_area`)
 * **Comando:** `/locate biome israel_simulator:urban_area`
 - [ ] Terreno pianeggiante con asfalto/strade lastricate (`israel_simulator:paved_road`).
 - [ ] Presenza di parchi urbani, arredo stradale e transizione graduale verso Tel Aviv.
+- [ ] Gatti e polli sono presenti nel tessuto urbano; la volpe è rara e non domina le aree costruite.
 
 ### 1.6 Bioma: Gerusalemme (`israel_simulator:jerusalem`)
 * **Comando:** `/locate biome israel_simulator:jerusalem`
 - [ ] Superficie naturale in pietra di Gerusalemme (`israel_simulator:jerusalem_stone`).
 - [ ] Colline e dislivelli che rispecchiano la topografia storica della città.
+- [ ] Pecore, gatti e capre compaiono sulle colline senza sovrappopolare le strade.
+- [ ] Gazzelle, stambecchi nubiani e iraci del Capo compaiono raramente sulle colline e scappano dai giocatori.
 
 ### 1.7 Bioma: Isola Tropicale (`israel_simulator:tropical_island`)
 * **Comando:** `/locate biome israel_simulator:tropical_island`
 - [ ] Isola remota in oceano caldo profondo con spiagge di sabbia bianca e palme tropicali.
 - [ ] Al centro sorge la tenuta con padiglione a cupola dorata a strisce.
+- [ ] Pappagalli, ocelot, tartarughe, pesci tropicali e delfini compaiono negli habitat corretti dell'isola e dell'oceano.
 
 ---
 
@@ -219,10 +234,14 @@ Verifica del sistema settimanale di riposo e preghiera.
 - [ ] Verificare che i seguenti cibi siano commestibili e conferiscano nutrizione e saturazione adeguati:
   - [ ] Falafel (`israel_simulator:falafel`)
   - [ ] Hummus (`israel_simulator:hummus`)
-  - [ ] Pita (`israel_simulator:pita`)
   - [ ] Shakshuka (`israel_simulator:shakshuka`)
+  - [ ] Sabich (`israel_simulator:sabich`)
+  - [ ] Tahina (`israel_simulator:tahini`)
   - [ ] Challah (`israel_simulator:challah`)
-  - [ ] Shawarma (`israel_simulator:shawarma`)
+  - [ ] Ceci, pomodoro, melanzana e semi di sesamo (`israel_simulator:chickpeas`, `tomato`, `eggplant`, `sesame_seeds`)
+- [ ] Raccolti e item ingredienti sono piantabili/commestibili; i blocchi coltivati rilasciano loot coerente, anche se raccolti prima della maturazione.
+- [ ] Le ricette usano ceci per hummus/falafel, pomodoro per shakshuka, melanzana per sabich e sesamo per tahina; datteri, olive e agrumi provengono dai rispettivi alberi anziché da ricette-segnaposto.
+- [ ] Semi e raccolti mostrano modello, texture e traduzione corrette in italiano e inglese.
 
 ### 7.3 Economia e Shekel
 * **Comando:** `/give @s israel_simulator:shekel`
@@ -303,4 +322,3 @@ Per eseguire questo test è consigliato collegare due client a `./gradlew.bat ru
 ---
 
 > *Checklist compilata e mantenuta per Israel-Simulator — Aggiornata a NeoForge 26.2.*
-

@@ -40,5 +40,13 @@ class MoneyChangerBlessedPricingTest {
         assertTrue(src.contains("BlessedTradePricing.specialPriceDiff"));
         assertTrue(src.contains("protected void stopTrading()") && src.contains("resetSpecialPriceDiff()"),
                 "discount must be temporary");
+        int stopTradingStart = src.indexOf("protected void stopTrading()");
+        int stopTradingEnd = src.indexOf("@Override", stopTradingStart + 1);
+        String stopTrading = src.substring(stopTradingStart, stopTradingEnd);
+        assertTrue(stopTrading.contains("if (!this.level().isClientSide())"),
+                "offer access must stay server-side because client villager offers are not loaded");
+        assertTrue(stopTrading.indexOf("if (!this.level().isClientSide())")
+                        < stopTrading.indexOf("this.getOffers()"),
+                "offers must only be accessed after the server-side guard");
     }
 }

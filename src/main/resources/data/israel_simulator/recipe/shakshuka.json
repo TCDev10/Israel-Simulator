@@ -2,7 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     "minecraft:egg",
-    "minecraft:beetroot",
+    "israel_simulator:tomato",
+    "israel_simulator:mediterranean_herbs",
     "minecraft:bowl"
   ],
   "result": {

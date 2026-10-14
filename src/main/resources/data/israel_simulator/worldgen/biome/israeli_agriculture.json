@@ -125,6 +125,24 @@
         "minCount": 1,
         "type": "minecraft:donkey",
         "weight": 4
+      },
+      {
+        "maxCount": 3,
+        "minCount": 1,
+        "type": "minecraft:goat",
+        "weight": 3
+      },
+      {
+        "maxCount": 3,
+        "minCount": 1,
+        "type": "minecraft:rabbit",
+        "weight": 3
+      },
+      {
+        "maxCount": 2,
+        "minCount": 1,
+        "type": "israel_simulator:mountain_gazelle",
+        "weight": 3
       }
     ],
     "misc": [],

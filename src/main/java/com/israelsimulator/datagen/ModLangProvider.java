@@ -34,5 +34,9 @@ public final class ModLangProvider extends LanguageProvider {
         add(ModItems.GRAPES.get(), "Grapes");
         add(ModItems.OLIVES.get(), "Olives");
         add(ModItems.CITRUS.get(), "Citrus");
+        add(ModItems.CHICKPEAS.get(), "Chickpeas");
+        add(ModItems.TOMATO.get(), "Tomato");
+        add(ModItems.EGGPLANT.get(), "Eggplant");
+        add(ModItems.SESAME_SEEDS.get(), "Sesame Seeds");
     }
 }

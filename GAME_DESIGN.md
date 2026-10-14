@@ -227,6 +227,20 @@ Primary regions:
 
 These regions should feel meaningfully different.
 
+## 5.1 Regional Fauna
+
+Peaceful wildlife should reflect each biome and use existing Minecraft animals where they are a suitable representation:
+
+* Mediterranean Coast: sea turtles, coastal fish and dolphins, with mountain gazelles and rock hyraxes in suitable coastal terrain.
+* Israeli Agriculture: sheep, cattle, chickens, goats, rabbits and mountain gazelles.
+* Judean Desert: camels, rabbits, foxes, goats, Nubian ibexes and rock hyraxes.
+* Dead Sea: sparse land wildlife such as foxes, Nubian ibexes and rock hyraxes; no fish or other aquatic wildlife in hypersaline water.
+* Urban Area: cats, chickens and occasional urban-edge wildlife.
+* Jerusalem: sheep, cats, goats, mountain gazelles, Nubian ibexes and rock hyraxes in the surrounding hills.
+* Tropical Island: parrots, turtles, tropical fish, dolphins and other suitable island wildlife.
+
+Custom regional wildlife comprises passive mountain gazelles, Nubian ibexes and rock hyraxes. They flee threats, can breed on wheat or carrots, and yield modest vanilla meat drops; their spawn rates and group sizes remain restrained to avoid runaway populations. Vanilla animal loot remains unchanged, and no custom terrestrial species should spawn in the hypersaline water or tropical island.
+
 ---
 
 # 6. Mediterranean Coast
@@ -573,6 +587,10 @@ Foods include:
 * Dates.
 * Olives.
 * Citrus.
+* Chickpeas.
+* Tomatoes.
+* Eggplant.
+* Sesame seeds.
 
 Additional foods can be added when they meaningfully contribute to the gameplay.
 
@@ -584,6 +602,8 @@ Every food should have:
 * Saturation.
 * Texture/model.
 * Optional gameplay effect.
+
+Traditional recipes should use plausible ingredients where the mod provides them. Chickpeas, tomatoes, eggplant and sesame should be edible foods and plantable agricultural crops with harvest loot.
 
 ---
 
@@ -623,6 +643,7 @@ Resources include:
 * Wheat.
 * Vegetables.
 * Grapes/vineyards.
+* Chickpeas, tomatoes, eggplant and sesame as plantable crops.
 
 Agriculture should connect to:
 

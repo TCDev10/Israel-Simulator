@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     "israel_simulator:tahini",
-    "minecraft:beetroot",
+    "israel_simulator:chickpeas",
     "minecraft:bowl"
   ],
   "result": {

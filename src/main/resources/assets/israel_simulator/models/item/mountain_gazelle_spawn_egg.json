@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "israel_simulator:item/mountain_gazelle_spawn_egg"
+  }
+}

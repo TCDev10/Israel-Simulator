@@ -95,6 +95,30 @@
         "minCount": 1,
         "type": "minecraft:cat",
         "weight": 8
+      },
+      {
+        "maxCount": 3,
+        "minCount": 1,
+        "type": "minecraft:goat",
+        "weight": 4
+      },
+      {
+        "maxCount": 2,
+        "minCount": 1,
+        "type": "israel_simulator:mountain_gazelle",
+        "weight": 2
+      },
+      {
+        "maxCount": 2,
+        "minCount": 1,
+        "type": "israel_simulator:nubian_ibex",
+        "weight": 2
+      },
+      {
+        "maxCount": 3,
+        "minCount": 2,
+        "type": "israel_simulator:cape_hyrax",
+        "weight": 3
       }
     ],
     "misc": [],

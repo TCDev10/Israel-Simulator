@@ -1,5 +1,6 @@
 package com.israelsimulator.datagen;
 
+import com.israelsimulator.registry.ModBlocks;
 import com.israelsimulator.registry.ModItems;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderGetter;
@@ -27,45 +28,46 @@ public final class ModRecipeProvider extends RecipeProvider {
 
     @Override
     protected void buildRecipes() {
-        // Tahini: no sesame crop. Wheat seeds stand in; a bowl holds the paste.
+        // Tahini is prepared from sesame seeds.
         ShapelessRecipeBuilder.shapeless(this.items, RecipeCategory.FOOD, ModItems.TAHINI.get())
-                .requires(Items.WHEAT_SEEDS, 2)
+                .requires(ModItems.SESAME_SEEDS.get(), 2)
                 .requires(Items.BOWL)
-                .unlockedBy("has_wheat_seeds", has(Items.WHEAT_SEEDS))
+                .unlockedBy("has_sesame_seeds", has(ModItems.SESAME_SEEDS.get()))
                 .save(output);
 
-        // Falafel: wheat seeds + wheat + beetroot (chickpea stand-in)
+        // Falafel: chickpeas, herbs, and wheat.
         ShapedRecipeBuilder.shaped(this.items, RecipeCategory.FOOD, ModItems.FALAFEL.get(), 3)
-                .pattern(" S ")
-                .pattern("WBW")
+                .pattern(" H ")
+                .pattern("WCW")
                 .pattern(" W ")
-                .define('S', Items.WHEAT_SEEDS)
+                .define('H', ModBlocks.MEDITERRANEAN_HERBS_ITEM.get())
                 .define('W', Items.WHEAT)
-                .define('B', Items.BEETROOT)
-                .unlockedBy("has_beetroot", has(Items.BEETROOT))
+                .define('C', ModItems.CHICKPEAS.get())
+                .unlockedBy("has_chickpeas", has(ModItems.CHICKPEAS.get()))
                 .save(output);
 
-        // Hummus: tahini, beetroot as chickpeas, served in a bowl
+        // Hummus: chickpeas and tahini, served in a bowl.
         ShapelessRecipeBuilder.shapeless(this.items, RecipeCategory.FOOD, ModItems.HUMMUS.get())
                 .requires(ModItems.TAHINI.get())
-                .requires(Items.BEETROOT)
+                .requires(ModItems.CHICKPEAS.get())
                 .requires(Items.BOWL)
                 .unlockedBy("has_tahini", has(ModItems.TAHINI.get()))
                 .save(output);
 
-        // Shakshuka: egg + beetroot (tomato stand-in) in a bowl
+        // Shakshuka: eggs, tomatoes, and Mediterranean herbs in a bowl.
         ShapelessRecipeBuilder.shapeless(this.items, RecipeCategory.FOOD, ModItems.SHAKSHUKA.get())
                 .requires(Items.EGG)
-                .requires(Items.BEETROOT)
+                .requires(ModItems.TOMATO.get())
+                .requires(ModBlocks.MEDITERRANEAN_HERBS_ITEM.get())
                 .requires(Items.BOWL)
                 .unlockedBy("has_egg", has(Items.EGG))
                 .save(output);
 
-        // Sabich: pita, egg, potato, tahini. No eggplant item; potato is the fried filling.
+        // Sabich: pita, egg, eggplant, and tahini.
         ShapelessRecipeBuilder.shapeless(this.items, RecipeCategory.FOOD, ModItems.SABICH.get())
                 .requires(Items.BREAD)
                 .requires(Items.EGG)
-                .requires(Items.POTATO)
+                .requires(ModItems.EGGPLANT.get())
                 .requires(ModItems.TAHINI.get())
                 .unlockedBy("has_tahini", has(ModItems.TAHINI.get()))
                 .save(output);
@@ -84,27 +86,6 @@ public final class ModRecipeProvider extends RecipeProvider {
                 .requires(Items.SUGAR)
                 .requires(Items.COCOA_BEANS)
                 .unlockedBy("has_cocoa_beans", has(Items.COCOA_BEANS))
-                .save(output);
-
-        // Dates: no date-craft from the palm fruit itself; berries plus sugar.
-        ShapelessRecipeBuilder.shapeless(this.items, RecipeCategory.FOOD, ModItems.DATES.get())
-                .requires(Items.SWEET_BERRIES)
-                .requires(Items.SUGAR)
-                .unlockedBy("has_sweet_berries", has(Items.SWEET_BERRIES))
-                .save(output);
-
-        // Olives: no olive crop item to press. Kelp plus seeds is the existing stand-in.
-        ShapelessRecipeBuilder.shapeless(this.items, RecipeCategory.FOOD, ModItems.OLIVES.get())
-                .requires(Items.KELP)
-                .requires(Items.WHEAT_SEEDS)
-                .unlockedBy("has_kelp", has(Items.KELP))
-                .save(output);
-
-        // Citrus: glow berries stand in for the fruit. Sugar keeps this from a one-item recipe.
-        ShapelessRecipeBuilder.shapeless(this.items, RecipeCategory.FOOD, ModItems.CITRUS.get())
-                .requires(Items.GLOW_BERRIES)
-                .requires(Items.SUGAR)
-                .unlockedBy("has_glow_berries", has(Items.GLOW_BERRIES))
                 .save(output);
 
         // Matzo: unleavened wheat and water. The bucket is returned as a crafting remainder.

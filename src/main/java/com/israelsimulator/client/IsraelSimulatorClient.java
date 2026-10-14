@@ -41,6 +41,12 @@ public class IsraelSimulatorClient {
     static void onRegisterLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(com.israelsimulator.client.renderer.BicycleModel.LAYER_LOCATION, com.israelsimulator.client.renderer.BicycleModel::createBodyLayer);
         event.registerLayerDefinition(com.israelsimulator.client.renderer.PalantrioDroneModel.LAYER_LOCATION, com.israelsimulator.client.renderer.PalantrioDroneModel::createBodyLayer);
+        event.registerLayerDefinition(com.israelsimulator.client.renderer.LocalWildlifeModel.GAZELLE_LAYER,
+                () -> com.israelsimulator.client.renderer.LocalWildlifeModel.createBodyLayer("mountain_gazelle"));
+        event.registerLayerDefinition(com.israelsimulator.client.renderer.LocalWildlifeModel.IBEX_LAYER,
+                () -> com.israelsimulator.client.renderer.LocalWildlifeModel.createBodyLayer("nubian_ibex"));
+        event.registerLayerDefinition(com.israelsimulator.client.renderer.LocalWildlifeModel.HYRAX_LAYER,
+                () -> com.israelsimulator.client.renderer.LocalWildlifeModel.createBodyLayer("cape_hyrax"));
     }
 
     @SubscribeEvent
@@ -62,6 +68,15 @@ public class IsraelSimulatorClient {
         event.registerEntityRenderer(ModEntities.MOSSAD_HANDLER.get(), ctx -> new com.israelsimulator.client.renderer.MossadNpcRenderer<>(ctx, "mossad_handler"));
         event.registerEntityRenderer(ModEntities.MOSSAD_INFORMANT.get(), ctx -> new com.israelsimulator.client.renderer.MossadNpcRenderer<>(ctx, "mossad_informant"));
         event.registerEntityRenderer(ModEntities.FRAG_GRENADE.get(), net.minecraft.client.renderer.entity.ThrownItemRenderer::new);
+        event.registerEntityRenderer(ModEntities.MOUNTAIN_GAZELLE.get(), ctx ->
+                new com.israelsimulator.client.renderer.LocalWildlifeRenderer<>(ctx,
+                        com.israelsimulator.client.renderer.LocalWildlifeModel.GAZELLE_LAYER, "mountain_gazelle", 0.35F, 1.0F));
+        event.registerEntityRenderer(ModEntities.NUBIAN_IBEX.get(), ctx ->
+                new com.israelsimulator.client.renderer.LocalWildlifeRenderer<>(ctx,
+                        com.israelsimulator.client.renderer.LocalWildlifeModel.IBEX_LAYER, "nubian_ibex", 0.4F, 1.0F));
+        event.registerEntityRenderer(ModEntities.CAPE_HYRAX.get(), ctx ->
+                new com.israelsimulator.client.renderer.LocalWildlifeRenderer<>(ctx,
+                        com.israelsimulator.client.renderer.LocalWildlifeModel.HYRAX_LAYER, "cape_hyrax", 0.25F, 0.45F));
     }
 
     @SubscribeEvent
@@ -70,4 +85,3 @@ public class IsraelSimulatorClient {
                 com.israelsimulator.client.particle.DollarBillParticle.Provider::new);
     }
 }
-

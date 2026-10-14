@@ -143,12 +143,11 @@ class RegisteredBlockAssetsTest {
             Set<String> models = modelsReferencedByBlockstate(blockstate);
             assertFalse(models.isEmpty(), id + " blockstate references no models");
 
-            // Item model should exist for placeable blocks (block items).
+            // Item models are only required for placeable blocks with a block item.
             String itemPath = "assets/israel_simulator/models/item/" + id + ".json";
-            // grapevine uses wheat models and may only have grapes item — allow missing item model
-            // only when blockstate exclusively references minecraft: models.
             boolean onlyVanillaModels = models.stream().allMatch(m -> m.startsWith("minecraft:"));
-            if (!onlyVanillaModels) {
+            boolean seedPlantedCrop = id.endsWith("_crop");
+            if (!onlyVanillaModels && !seedPlantedCrop) {
                 assertTrue(resourceExists(itemPath), id + " missing item model");
             }
 

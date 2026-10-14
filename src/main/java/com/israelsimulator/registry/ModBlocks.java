@@ -4,6 +4,7 @@ import com.israelsimulator.IsraelSimulator;
 import com.israelsimulator.block.FruitingLeavesBlock;
 import com.israelsimulator.block.GrapevineBlock;
 import com.israelsimulator.block.MediterraneanHerbBlock;
+import com.israelsimulator.block.RegionalCropBlock;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -54,6 +55,27 @@ public final class ModBlocks {
             () -> BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS).sound(SoundType.GRASS)
     );
     public static final DeferredItem<BlockItem> MEDITERRANEAN_HERBS_ITEM = ModItems.ITEMS.registerSimpleBlockItem("mediterranean_herbs", MEDITERRANEAN_HERBS);
+
+    public static final DeferredBlock<RegionalCropBlock> CHICKPEA_CROP = BLOCKS.registerBlock(
+            "chickpea_crop",
+            p -> new RegionalCropBlock(p, ModItems.CHICKPEAS),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT)
+    );
+    public static final DeferredBlock<RegionalCropBlock> TOMATO_CROP = BLOCKS.registerBlock(
+            "tomato_crop",
+            p -> new RegionalCropBlock(p, ModItems.TOMATO),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT)
+    );
+    public static final DeferredBlock<RegionalCropBlock> EGGPLANT_CROP = BLOCKS.registerBlock(
+            "eggplant_crop",
+            p -> new RegionalCropBlock(p, ModItems.EGGPLANT),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT)
+    );
+    public static final DeferredBlock<RegionalCropBlock> SESAME_CROP = BLOCKS.registerBlock(
+            "sesame_crop",
+            p -> new RegionalCropBlock(p, ModItems.SESAME_SEEDS),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT)
+    );
 
     // Minerals and environmental blocks (Dead Sea)
     public static final DeferredBlock<net.minecraft.world.level.block.Block> SALT_BLOCK = BLOCKS.registerBlock(
@@ -112,4 +134,3 @@ public final class ModBlocks {
         BLOCKS.register(modEventBus);
     }
 }
-

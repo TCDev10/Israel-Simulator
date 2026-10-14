@@ -105,6 +105,24 @@
         "minCount": 1,
         "type": "minecraft:chicken",
         "weight": 6
+      },
+      {
+        "maxCount": 2,
+        "minCount": 1,
+        "type": "minecraft:fox",
+        "weight": 3
+      },
+      {
+        "maxCount": 2,
+        "minCount": 1,
+        "type": "israel_simulator:mountain_gazelle",
+        "weight": 3
+      },
+      {
+        "maxCount": 3,
+        "minCount": 2,
+        "type": "israel_simulator:cape_hyrax",
+        "weight": 4
       }
     ],
     "misc": [],
@@ -156,10 +174,10 @@
     ],
     "water_ambient": [
       {
-        "maxCount": 8,
-        "minCount": 4,
-        "type": "minecraft:tropical_fish",
-        "weight": 25
+        "maxCount": 6,
+        "minCount": 3,
+        "type": "minecraft:cod",
+        "weight": 12
       }
     ],
     "water_creature": [

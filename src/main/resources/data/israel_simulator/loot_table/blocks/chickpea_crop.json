@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "name": "israel_simulator:chickpeas",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "israel_simulator:chickpea_crop",
+                  "properties": { "age": "7" }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:set_count",
+                  "count": { "type": "minecraft:uniform", "min": 2.0, "max": 4.0 }
+                }
+              ]
+            },
+            { "type": "minecraft:item", "name": "israel_simulator:chickpeas" }
+          ]
+        }
+      ]
+    }
+  ]
+}

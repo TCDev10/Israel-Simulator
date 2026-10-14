@@ -42,6 +42,10 @@ public final class ModItems {
     public static final DeferredItem<BlockItem> GRAPES = ITEMS.registerSimpleBlockItem("grapes", () -> ModBlocks.GRAPEVINE.get(), p -> p.food(IsraelFoodProperties.GRAPES).useItemDescriptionPrefix());
     public static final DeferredHolder<Item, Item> OLIVES = ITEMS.registerSimpleItem("olives", p -> p.food(IsraelFoodProperties.OLIVES));
     public static final DeferredHolder<Item, Item> CITRUS = ITEMS.registerSimpleItem("citrus", p -> p.food(IsraelFoodProperties.CITRUS));
+    public static final DeferredHolder<Item, Item> CHICKPEAS = ITEMS.registerSimpleItem("chickpeas", p -> p.food(IsraelFoodProperties.CHICKPEAS));
+    public static final DeferredHolder<Item, Item> TOMATO = ITEMS.registerSimpleItem("tomato", p -> p.food(IsraelFoodProperties.TOMATO));
+    public static final DeferredHolder<Item, Item> EGGPLANT = ITEMS.registerSimpleItem("eggplant", p -> p.food(IsraelFoodProperties.EGGPLANT));
+    public static final DeferredHolder<Item, Item> SESAME_SEEDS = ITEMS.registerSimpleItem("sesame_seeds", p -> p.food(IsraelFoodProperties.SESAME_SEEDS));
     public static final DeferredHolder<Item, Item> CHALLAH = ITEMS.registerSimpleItem("challah", p -> p.food(IsraelFoodProperties.CHALLAH));
     public static final DeferredHolder<Item, Item> RUGELACH = ITEMS.registerSimpleItem("rugelach", p -> p.food(IsraelFoodProperties.RUGELACH, IsraelFoodProperties.RUGELACH_CONSUMABLE));
 
@@ -110,6 +114,12 @@ public final class ModItems {
             ITEMS.registerItem("mossad_agent_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.MOSSAD_AGENT.get())));
     public static final DeferredHolder<Item, SpawnEggItem> MOSSAD_HANDLER_SPAWN_EGG =
             ITEMS.registerItem("mossad_handler_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.MOSSAD_HANDLER.get())));
+    public static final DeferredHolder<Item, SpawnEggItem> MOUNTAIN_GAZELLE_SPAWN_EGG =
+            ITEMS.registerItem("mountain_gazelle_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.MOUNTAIN_GAZELLE.get())));
+    public static final DeferredHolder<Item, SpawnEggItem> NUBIAN_IBEX_SPAWN_EGG =
+            ITEMS.registerItem("nubian_ibex_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.NUBIAN_IBEX.get())));
+    public static final DeferredHolder<Item, SpawnEggItem> CAPE_HYRAX_SPAWN_EGG =
+            ITEMS.registerItem("cape_hyrax_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.CAPE_HYRAX.get())));
 
     /** Mission item for the Mossad Handler's RETRIEVE mission, found in Judean desert ruins chests. */
     public static final DeferredHolder<Item, Item> SEALED_DOSSIER = ITEMS.registerSimpleItem("sealed_dossier", p -> p.stacksTo(16));

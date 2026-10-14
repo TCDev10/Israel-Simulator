@@ -1,13 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "B": "minecraft:beetroot",
-    "S": "minecraft:wheat_seeds",
+    "C": "israel_simulator:chickpeas",
+    "H": "israel_simulator:mediterranean_herbs",
     "W": "minecraft:wheat"
   },
   "pattern": [
-    " S ",
-    "WBW",
+    " H ",
+    "WCW",
     " W "
   ],
   "result": {

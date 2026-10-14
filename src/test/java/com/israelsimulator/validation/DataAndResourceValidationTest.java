@@ -39,7 +39,8 @@ public class DataAndResourceValidationTest {
             "olive_wood_carving", "ancient_coin", "dead_sea_scroll_fragment", "dead_sea_mud",
             "shekel", "agora", "matzo", "sufganiyah", "dreidel", "hamantash", "shofar",
             "smartphone", "laptop", "drone_part", "bicycle", "rav_kav", "walking_shoes",
-            "israel_map", "pistol", "missile"
+            "israel_map", "pistol", "missile", "mountain_gazelle_spawn_egg",
+            "nubian_ibex_spawn_egg", "cape_hyrax_spawn_egg"
     );
 
     public static final List<String> ALL_MOD_BLOCKS = List.of(
@@ -99,15 +100,12 @@ public class DataAndResourceValidationTest {
         assertTrue(recipes.length >= 10, "Should have at least 10 culinary and crafting recipes");
 
         Map<String, List<String>> shapeless = Map.ofEntries(
-                Map.entry("tahini.json", List.of("minecraft:wheat_seeds", "minecraft:wheat_seeds", "minecraft:bowl")),
-                Map.entry("hummus.json", List.of("israel_simulator:tahini", "minecraft:beetroot", "minecraft:bowl")),
-                Map.entry("shakshuka.json", List.of("minecraft:egg", "minecraft:beetroot", "minecraft:bowl")),
-                Map.entry("sabich.json", List.of("minecraft:bread", "minecraft:egg", "minecraft:potato", "israel_simulator:tahini")),
+                Map.entry("tahini.json", List.of("israel_simulator:sesame_seeds", "israel_simulator:sesame_seeds", "minecraft:bowl")),
+                Map.entry("hummus.json", List.of("israel_simulator:tahini", "israel_simulator:chickpeas", "minecraft:bowl")),
+                Map.entry("shakshuka.json", List.of("minecraft:egg", "israel_simulator:tomato", "israel_simulator:mediterranean_herbs", "minecraft:bowl")),
+                Map.entry("sabich.json", List.of("minecraft:bread", "minecraft:egg", "israel_simulator:eggplant", "israel_simulator:tahini")),
                 Map.entry("challah.json", List.of("minecraft:wheat", "minecraft:wheat", "minecraft:wheat", "minecraft:egg", "minecraft:sugar")),
                 Map.entry("rugelach.json", List.of("minecraft:wheat", "minecraft:sugar", "minecraft:cocoa_beans")),
-                Map.entry("dates.json", List.of("minecraft:sweet_berries", "minecraft:sugar")),
-                Map.entry("olives.json", List.of("minecraft:kelp", "minecraft:wheat_seeds")),
-                Map.entry("citrus.json", List.of("minecraft:glow_berries", "minecraft:sugar")),
                 Map.entry("matzo.json", List.of("minecraft:wheat", "minecraft:wheat", "minecraft:water_bucket")),
                 Map.entry("sufganiyah.json", List.of("minecraft:wheat", "minecraft:sugar", "minecraft:sweet_berries")),
                 Map.entry("hamantash.json", List.of("minecraft:wheat", "minecraft:sugar", "israel_simulator:dates"))
@@ -120,9 +118,6 @@ public class DataAndResourceValidationTest {
                 Map.entry("sabich.json", "israel_simulator:sabich"),
                 Map.entry("challah.json", "israel_simulator:challah"),
                 Map.entry("rugelach.json", "israel_simulator:rugelach"),
-                Map.entry("dates.json", "israel_simulator:dates"),
-                Map.entry("olives.json", "israel_simulator:olives"),
-                Map.entry("citrus.json", "israel_simulator:citrus"),
                 Map.entry("matzo.json", "israel_simulator:matzo"),
                 Map.entry("sufganiyah.json", "israel_simulator:sufganiyah"),
                 Map.entry("hamantash.json", "israel_simulator:hamantash")
@@ -160,27 +155,31 @@ public class DataAndResourceValidationTest {
         assertEquals("minecraft:crafting_shaped", falafel.get("type").getAsString());
         assertEquals(3, falafel.getAsJsonObject("result").get("count").getAsInt());
         JsonObject key = falafel.getAsJsonObject("key");
-        assertEquals("minecraft:beetroot", key.get("B").getAsString());
-        assertEquals("minecraft:wheat_seeds", key.get("S").getAsString());
+        assertEquals("israel_simulator:chickpeas", key.get("C").getAsString());
+        assertEquals("israel_simulator:mediterranean_herbs", key.get("H").getAsString());
         assertEquals("minecraft:wheat", key.get("W").getAsString());
-        assertTrue(ingredientIds(falafel).contains("minecraft:beetroot"));
+        assertTrue(ingredientIds(falafel).contains("israel_simulator:chickpeas"));
         assertTrue(ingredientIds(falafel).contains("minecraft:wheat"));
-        assertTrue(ingredientIds(falafel).contains("minecraft:wheat_seeds"));
+        assertTrue(ingredientIds(falafel).contains("israel_simulator:mediterranean_herbs"));
 
         String provider = Files.readString(Path.of(
                 "src/main/java/com/israelsimulator/datagen/ModRecipeProvider.java"));
-        assertTrue(provider.contains("requires(Items.WHEAT_SEEDS, 2)"));
+        assertTrue(provider.contains("requires(ModItems.SESAME_SEEDS.get(), 2)"));
         assertTrue(provider.contains("requires(Items.BOWL)"));
         assertTrue(provider.contains("requires(ModItems.TAHINI.get())"));
-        assertTrue(provider.contains("requires(Items.POTATO)"));
         assertTrue(provider.contains("requires(Items.WATER_BUCKET)"));
         assertTrue(provider.contains("ModItems.MATZO.get()"));
         assertTrue(provider.contains("ModItems.SUFGANIYAH.get()"));
         assertTrue(provider.contains("ModItems.HAMANTASH.get()"));
         assertTrue(provider.contains("requires(ModItems.DATES.get())"));
-        assertTrue(provider.contains("requires(Items.GLOW_BERRIES)"));
+        assertTrue(provider.contains("requires(ModItems.CHICKPEAS.get())"));
+        assertTrue(provider.contains("requires(ModItems.TOMATO.get())"));
+        assertTrue(provider.contains("requires(ModItems.EGGPLANT.get())"));
+        assertFalse(provider.contains("Items.BEETROOT"), "food recipes must not use beetroot as a chickpea/tomato stand-in");
+        assertFalse(provider.contains("Items.POTATO"), "sabich should use eggplant");
+        assertFalse(provider.contains("Items.GLOW_BERRIES"), "citrus comes from citrus trees");
         assertFalse(provider.contains("requires(Items.WHEAT_SEEDS, 3)"), "tahini must not be seeds alone");
-        assertFalse(provider.contains("Items.CARROT"), "sabich filling is potato, not carrot");
+        assertFalse(provider.contains("Items.CARROT"));
     }
 
     @Test

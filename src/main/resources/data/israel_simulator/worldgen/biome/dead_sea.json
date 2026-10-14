@@ -84,7 +84,32 @@
       }
     ],
     "axolotls": [],
-    "creature": [],
+    "creature": [
+      {
+        "maxCount": 3,
+        "minCount": 1,
+        "type": "minecraft:goat",
+        "weight": 3
+      },
+      {
+        "maxCount": 2,
+        "minCount": 1,
+        "type": "minecraft:fox",
+        "weight": 2
+      },
+      {
+        "maxCount": 2,
+        "minCount": 1,
+        "type": "israel_simulator:nubian_ibex",
+        "weight": 3
+      },
+      {
+        "maxCount": 3,
+        "minCount": 2,
+        "type": "israel_simulator:cape_hyrax",
+        "weight": 3
+      }
+    ],
     "misc": [],
     "monster": [
       {

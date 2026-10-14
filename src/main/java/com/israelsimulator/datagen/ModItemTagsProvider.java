@@ -29,7 +29,11 @@ public final class ModItemTagsProvider extends ItemTagsProvider {
                 .add(ModItems.DATES.getKey())
                 .add(ModItems.GRAPES.getKey())
                 .add(ModItems.OLIVES.getKey())
-                .add(ModItems.CITRUS.getKey());
+                .add(ModItems.CITRUS.getKey())
+                .add(ModItems.CHICKPEAS.getKey())
+                .add(ModItems.TOMATO.getKey())
+                .add(ModItems.EGGPLANT.getKey())
+                .add(ModItems.SESAME_SEEDS.getKey());
         tag(ModItemTags.MEAT);
         tag(ModItemTags.DAIRY);
     }
