@@ -104,7 +104,7 @@ public final class ModEntities {
 
     public static final DeferredHolder<EntityType<?>, EntityType<com.israelsimulator.entity.event.PlaneCrashEntity>> PLANE_CRASH =
             ENTITY_TYPES.registerEntityType("plane_crash", com.israelsimulator.entity.event.PlaneCrashEntity::new, MobCategory.MISC,
-                    b -> b.sized(8.0F, 4.0F).clientTrackingRange(64).updateInterval(1));
+                    b -> b.sized(16.0F, 8.0F).clientTrackingRange(20).updateInterval(1));
 
     private ModEntities() {}
 

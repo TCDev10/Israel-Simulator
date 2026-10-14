@@ -14,7 +14,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
@@ -43,6 +42,7 @@ public final class TwinTowersPlaneEvent {
     private static boolean active = false;
     private static UUID activePlaneId = null;
     private static int countdownTicks = -1;
+    private static int lastCountdownSecond = -1;
     private static BlockPos targetElevatorShaft = null;
     private static BlockPos targetTowerMin = null;
     private static BlockPos targetTowerMax = null;
@@ -67,6 +67,11 @@ public final class TwinTowersPlaneEvent {
      * Periodic tick called from ModGameEvents onLevelTick.
      */
     public static void tick(ServerLevel level) {
+        // Twin Towers are in the Overworld; prevent ticking multiple times per game tick in Nether/End
+        if (level.dimension() != Level.OVERWORLD) {
+            return;
+        }
+
         long now = level.getGameTime();
 
         if (active) {
@@ -81,15 +86,15 @@ public final class TwinTowersPlaneEvent {
     }
 
     private static void trySchedule(ServerLevel level, long now) {
-        if (now - lastTriggerTick < 6000L) { // 5 minutes cooldown
+        if (active) {
+            return;
+        }
+        if (lastTriggerTick > 0 && now - lastTriggerTick < 6000L) { // 5 minutes cooldown
             return;
         }
 
         for (ServerPlayer player : level.players()) {
-            var biomeHolder = level.getBiome(player.blockPosition());
-            boolean inPlains = biomeHolder.is(Biomes.PLAINS);
-
-            if (inPlains && isPlayerInsideTowers(level, player)) {
+            if (isPlayerInsideTowers(level, player)) {
                 if (level.getRandom().nextFloat() < SCHEDULE_CHANCE) {
                     startEvent(level, player.blockPosition());
                     lastTriggerTick = now;
@@ -102,7 +107,7 @@ public final class TwinTowersPlaneEvent {
     public static boolean isPlayerInsideTowers(ServerLevel level, ServerPlayer player) {
         BlockPos pos = player.blockPosition();
 
-        // 1. Check generated world structure if player is in one
+        // 1. Check generated world structure if player is inside it
         StructureStart start = level.structureManager().getStructureWithPieceAt(pos,
                 h -> h.is(ModStructures.TORRI_GEMELLE));
         if (start != null && start.isValid() && !start.getPieces().isEmpty()) {
@@ -111,15 +116,14 @@ public final class TwinTowersPlaneEvent {
             return true;
         }
 
-        // 2. Check manually configured origin bounding box
+        // 2. Check manually configured or cached origin bounding box
         if (towersOrigin != null) {
             return pos.getX() >= towersOrigin.getX() && pos.getX() <= towersOrigin.getX() + TOWER_WIDTH_X
                     && pos.getY() >= towersOrigin.getY() && pos.getY() <= towersOrigin.getY() + TOWER_HEIGHT
                     && pos.getZ() >= towersOrigin.getZ() && pos.getZ() <= towersOrigin.getZ() + TOWER_LENGTH_Z;
         }
 
-        // 3. Fallback: If player is high up in plains (Y >= 80)
-        return pos.getY() >= 80;
+        return false;
     }
 
     public static boolean startEvent(ServerLevel level, BlockPos nearPos) {
@@ -140,24 +144,26 @@ public final class TwinTowersPlaneEvent {
             towersOrigin = base;
         }
 
-        // Select North Tower or South Tower
+        // Randomly select North Tower or South Tower
         boolean targetNorthTower = level.getRandom().nextBoolean();
-        double impactY = Math.max(nearPos.getY(), base.getY() + 100);
+        // Random impact height between floor 25 and floor 80 of the tower
+        double impactY = base.getY() + 55.0 + level.getRandom().nextDouble() * 85.0;
 
         if (targetNorthTower) {
             targetTowerMin = base;
             targetTowerMax = base.offset(35, TOWER_HEIGHT, 35);
             targetElevatorShaft = base.offset(17, 0, 17);
-            targetImpactPos = new Vec3(targetTowerMin.getX(), impactY, targetElevatorShaft.getZ());
+            targetImpactPos = new Vec3(base.getX() + 17.5, impactY, base.getZ() + 17.5);
         } else {
             targetTowerMin = base.offset(30, 0, 35);
             targetTowerMax = base.offset(74, TOWER_HEIGHT, 71);
             targetElevatorShaft = base.offset(51, 0, 53);
-            targetImpactPos = new Vec3(targetTowerMax.getX(), impactY, targetElevatorShaft.getZ());
+            targetImpactPos = new Vec3(base.getX() + 52.0, impactY, base.getZ() + 53.0);
         }
 
         active = true;
         countdownTicks = COUNTDOWN_SECONDS * 20;
+        lastCountdownSecond = -1;
 
         // Broadcast Air Raid Warning & sound siren
         broadcastAirRaidAlert(level, base);
@@ -170,19 +176,22 @@ public final class TwinTowersPlaneEvent {
 
     private static void tickActiveEvent(ServerLevel level) {
         if (countdownTicks > 0) {
-            countdownTicks--;
+            int secs = (countdownTicks + 19) / 20;
+            if (secs != lastCountdownSecond) {
+                lastCountdownSecond = secs;
+                sendCountdownTitle(level, secs);
 
-            // Periodic Air Raid Siren sound every 2 seconds
-            if (countdownTicks % 40 == 0) {
-                BlockPos soundPos = targetTowerMin != null ? targetTowerMin.offset(17, 100, 17) : BlockPos.ZERO;
-                level.playSound(null, soundPos.getX(), soundPos.getY(), soundPos.getZ(),
-                        ModSoundEvents.AIR_RAID_SIREN.get(), SoundSource.NEUTRAL, 8.0F, 1.0F);
+                // Periodic Air Raid Siren sound every 2 seconds
+                if (secs % 2 == 0) {
+                    BlockPos soundPos = targetTowerMin != null ? targetTowerMin.offset(17, 100, 17) : BlockPos.ZERO;
+                    level.playSound(null, soundPos.getX(), soundPos.getY(), soundPos.getZ(),
+                            ModSoundEvents.AIR_RAID_SIREN.get(), SoundSource.NEUTRAL, 8.0F, 1.0F);
+                }
             }
 
-            // On-screen countdown notification every second
-            if (countdownTicks % 20 == 0) {
-                int secs = countdownTicks / 20;
-                sendCountdownTitle(level, secs);
+            countdownTicks--;
+            if (countdownTicks == 0) {
+                sendCountdownTitle(level, 0);
             }
         }
     }
@@ -192,7 +201,7 @@ public final class TwinTowersPlaneEvent {
         Component subtitle = Component.literal("§eAereo in avvicinamento alle torri! Evacuare!");
 
         for (ServerPlayer player : level.players()) {
-            player.connection.send(new ClientboundSetTitlesAnimationPacket(10, 50, 20));
+            player.connection.send(new ClientboundSetTitlesAnimationPacket(5, 40, 10));
             player.connection.send(new ClientboundSetTitleTextPacket(title));
             player.connection.send(new ClientboundSetSubtitleTextPacket(subtitle));
             player.sendSystemMessage(Component.literal("§4[EMERGENZA] §cSirena di allarme antiaereo attivata! Rilevato velivolo in rotta di collisione!"));
@@ -203,26 +212,33 @@ public final class TwinTowersPlaneEvent {
     }
 
     private static void sendCountdownTitle(ServerLevel level, int seconds) {
+        Component title = Component.literal("§c§l⚠ ALLARME ANTIAEREO ⚠");
         Component subtitle = Component.literal("§6Impatto stimato in: §e§l" + seconds + "s");
+        Component overlay = Component.literal("§c§lALLARME ANTIAEREO §7- §6Impatto in: §e§l" + seconds + "s");
         for (ServerPlayer player : level.players()) {
-            player.connection.send(new ClientboundSetTitlesAnimationPacket(0, 25, 5));
+            player.connection.send(new ClientboundSetTitlesAnimationPacket(0, 20, 0));
+            player.connection.send(new ClientboundSetTitleTextPacket(title));
             player.connection.send(new ClientboundSetSubtitleTextPacket(subtitle));
+            player.sendOverlayMessage(overlay);
         }
+        BlockPos soundCenter = targetTowerMin != null ? targetTowerMin.offset(17, 100, 17) : (towersOrigin != null ? towersOrigin : BlockPos.ZERO);
+        level.playSound(null, soundCenter.getX(), soundCenter.getY(), soundCenter.getZ(),
+                SoundEvents.NOTE_BLOCK_HAT.value(), SoundSource.PLAYERS, 2.0F, 1.4F);
     }
 
     private static void spawnIncomingPlane(ServerLevel level) {
-        // Plane spawns ~100 blocks away along X axis. Over 200 ticks (10s), speed is ~0.5 blocks/tick
-        double distance = 100.0;
-        double speed = distance / (COUNTDOWN_SECONDS * 20.0); // Exactly reaches tower at countdown 0
+        // Random spawn distance between 100 and 140 blocks away
+        double distance = 100.0 + level.getRandom().nextDouble() * 40.0;
+        double speed = distance / (COUNTDOWN_SECONDS * 20.0); // Exactly reaches tower area at countdown ~0s
 
-        Vec3 spawnPos;
-        if (targetImpactPos.x <= (towersOrigin.getX() + 35)) {
-            // Approaching from West (-X) towards North Tower
-            spawnPos = targetImpactPos.add(-distance, 0, 0);
-        } else {
-            // Approaching from East (+X) towards South Tower
-            spawnPos = targetImpactPos.add(distance, 0, 0);
-        }
+        // Completely random 360-degree approach angle around the target tower
+        double angle = level.getRandom().nextDouble() * 2.0 * Math.PI;
+        double spawnX = targetImpactPos.x + Math.cos(angle) * distance;
+        double spawnZ = targetImpactPos.z + Math.sin(angle) * distance;
+        // Slight random altitude variation (diving or climbing approach)
+        double spawnY = targetImpactPos.y + (level.getRandom().nextDouble() * 20.0 - 5.0);
+
+        Vec3 spawnPos = new Vec3(spawnX, spawnY, spawnZ);
 
         PlaneCrashEntity plane = new PlaneCrashEntity(ModEntities.PLANE_CRASH.get(), level);
         plane.initFlight(spawnPos, targetImpactPos, targetTowerMin, targetTowerMax, targetElevatorShaft, speed);
@@ -235,59 +251,30 @@ public final class TwinTowersPlaneEvent {
     }
 
     /**
-     * Called when the plane reaches 25% penetration inside the tower facade.
-     * Spawns normal PrimedTnt inside the elevator shaft at staggered heights to detonate and destroy blocks!
+     * Called when the plane crashes directly into the tower facade and detonates.
      */
-    public static void detonateElevatorShaft(ServerLevel level, BlockPos shaftPos) {
-        if (shaftPos == null) return;
-
-        int baseX = shaftPos.getX();
-        int baseZ = shaftPos.getZ();
-        int originY = towersOrigin != null ? towersOrigin.getY() : 64;
-
-        // Spawn normal TNT entities at multiple floor levels inside the elevator shaft
-        int[] floorHeights = {
-                originY + 15,
-                originY + 40,
-                originY + 70,
-                originY + 95,
-                originY + 115,
-                originY + 135,
-                originY + 160
-        };
-
-        int fuseDelay = 10;
-        for (int y : floorHeights) {
-            // Multiple TNTs per level inside the shaft
-            for (int dx = 0; dx <= 1; dx++) {
-                for (int dz = 0; dz <= 1; dz++) {
-                    PrimedTnt tnt = new PrimedTnt(level, baseX + dx + 0.5, y, baseZ + dz + 0.5, null);
-                    tnt.setFuse(fuseDelay);
-                    level.addFreshEntity(tnt);
-                }
-            }
-            fuseDelay += 12; // Cascade explosion vertically down/up the elevator shaft!
-        }
-
-        // Additional immediate massive explosion at the impact level inside the elevator
-        level.explode(null, baseX + 0.5, originY + 110, baseZ + 0.5, 6.0F, Level.ExplosionInteraction.BLOCK);
-
-        level.playSound(null, baseX, originY + 110, baseZ,
-                SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 6.0F, 0.7F);
-
-        // Alert players
+    public static void onPlaneCrashImpact(ServerLevel level, Vec3 impactPos) {
+        Component title = Component.literal("§4§l⚠ IMPATTO AVVENUTO ⚠");
+        Component subtitle = Component.literal("§cL'aereo si è schiantato contro la torre!");
         for (ServerPlayer player : level.players()) {
-            player.sendSystemMessage(Component.literal("§4§l[DISASTRO] §cEsplosioni multiple a catena nel vano ascensore!"));
+            player.connection.send(new ClientboundSetTitlesAnimationPacket(0, 40, 15));
+            player.connection.send(new ClientboundSetTitleTextPacket(title));
+            player.connection.send(new ClientboundSetSubtitleTextPacket(subtitle));
+            player.sendOverlayMessage(Component.literal("§4§lIMPATTO! §cL'aereo si è schiantato contro la torre!"));
+            player.sendSystemMessage(Component.literal("§4§l[DISASTRO] §cL'aereo si è schiantato contro la torre distruggendo la facciata e la struttura!"));
         }
 
         // Event finished
         active = false;
+        countdownTicks = -1;
+        lastCountdownSecond = -1;
         activePlaneId = null;
     }
 
     public static void stopEvent() {
         active = false;
         countdownTicks = -1;
+        lastCountdownSecond = -1;
         activePlaneId = null;
     }
 }

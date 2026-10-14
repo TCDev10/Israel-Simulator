@@ -93,6 +93,14 @@
       }
     ]
   },
+  "music.boss.kirk_theme": {
+    "sounds": [
+      {
+        "name": "israel_simulator:music/kirk_boss_theme",
+        "stream": true
+      }
+    ]
+  },
   "entity.bicycle.bell": {
     "sounds": [
       "minecraft:block/bell/use"

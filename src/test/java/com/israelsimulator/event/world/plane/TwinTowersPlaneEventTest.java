@@ -38,5 +38,12 @@ class TwinTowersPlaneEventTest {
         TwinTowersPlaneEvent.stopEvent();
         assertFalse(TwinTowersPlaneEvent.isActive());
     }
+
+    @Test
+    @DisplayName("Plane max flight duration before despawn is 30 seconds (600 ticks)")
+    void testMaxFlightDuration() {
+        assertEquals(30 * 20, PlaneCrashEntity.MAX_FLIGHT_TICKS);
+        assertEquals(600, PlaneCrashEntity.MAX_FLIGHT_TICKS);
+    }
 }
 

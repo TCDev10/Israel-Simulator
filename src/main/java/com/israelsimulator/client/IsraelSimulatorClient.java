@@ -47,7 +47,6 @@ public class IsraelSimulatorClient {
                 () -> com.israelsimulator.client.renderer.LocalWildlifeModel.createBodyLayer("nubian_ibex"));
         event.registerLayerDefinition(com.israelsimulator.client.renderer.LocalWildlifeModel.HYRAX_LAYER,
                 () -> com.israelsimulator.client.renderer.LocalWildlifeModel.createBodyLayer("cape_hyrax"));
-        event.registerLayerDefinition(com.israelsimulator.client.renderer.PlaneCrashModel.LAYER_LOCATION, com.israelsimulator.client.renderer.PlaneCrashModel::createBodyLayer);
     }
 
     @SubscribeEvent

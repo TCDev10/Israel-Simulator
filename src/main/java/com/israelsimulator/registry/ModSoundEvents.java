@@ -43,6 +43,7 @@ public final class ModSoundEvents {
     public static final DeferredHolder<SoundEvent, SoundEvent> BIBI_SPEECH = registerSound("entity.bibi_boss.speech");
     public static final DeferredHolder<SoundEvent, SoundEvent> BIBI_ENRAGE = registerSound("entity.bibi_boss.enrage");
     public static final DeferredHolder<SoundEvent, SoundEvent> BIBI_THEME = registerSound("music.boss.bibi_theme");
+    public static final DeferredHolder<SoundEvent, SoundEvent> KIRK_THEME = registerSound("music.boss.kirk_theme");
 
     // Transportation Audio (§47)
     public static final DeferredHolder<SoundEvent, SoundEvent> BICYCLE_BELL = registerSound("entity.bicycle.bell");

@@ -58,12 +58,29 @@ public final class PublicSpeechEvent {
     private static long endTick;
     private static long nextLineTick;
     private static int lineIndex;
+    private static int customDurationTicks = -1;
+    private static int currentLineInterval = LINE_INTERVAL;
     private static final List<UUID> crowd = new ArrayList<>();
     private static ServerBossEvent bar;
     private static long lastEndTick = -1L;
     private static boolean rewardDropped;
 
     private PublicSpeechEvent() {}
+
+    public static void setCustomDurationTicks(int ticks) {
+        customDurationTicks = ticks;
+    }
+
+    public static int getDurationTicks() {
+        if (customDurationTicks > 0) {
+            return customDurationTicks;
+        }
+        try {
+            return IsraelSimulatorConfig.speechDurationTicks();
+        } catch (RuntimeException e) {
+            return (int) WorldEventType.PUBLIC_SPEECH.getDurationTicks();
+        }
+    }
 
     public static boolean isActive() {
         return oratorId != null;
@@ -111,8 +128,10 @@ public final class PublicSpeechEvent {
         dimension = level.dimension();
         center = ground.immutable();
         long now = level.getGameTime();
-        endTick = now + WorldEventType.PUBLIC_SPEECH.getDurationTicks();
-        nextLineTick = now + 60;
+        int duration = getDurationTicks();
+        endTick = now + duration;
+        currentLineInterval = Math.max(40, duration / (SPEECH_LINES + 1));
+        nextLineTick = now + currentLineInterval;
         lineIndex = 0;
         rewardDropped = false;
 
@@ -203,7 +222,7 @@ public final class PublicSpeechEvent {
         }
         if (now >= nextLineTick) {
             speak(level);
-            nextLineTick = now + LINE_INTERVAL;
+            nextLineTick = now + currentLineInterval;
         }
         if (now % 20 == 0) {
             tickParticipation(level, now);
@@ -243,7 +262,7 @@ public final class PublicSpeechEvent {
     }
 
     private static void tickParticipation(ServerLevel level, long now) {
-        float remaining = (endTick - now) / (float) WorldEventType.PUBLIC_SPEECH.getDurationTicks();
+        float remaining = (endTick - now) / (float) getDurationTicks();
         if (bar != null) bar.setProgress(Math.max(0.0F, Math.min(1.0F, remaining)));
         for (ServerPlayer p : level.players()) {
             double d = p.distanceToSqr(center.getX() + 0.5, center.getY(), center.getZ() + 0.5);

@@ -24,6 +24,7 @@ class MusicAndAudioTest {
         assertNotNull(soundClass.getField("JERUSALEM_AMBIENT"));
         assertNotNull(soundClass.getField("JAFFA_AMBIENT"));
         assertNotNull(soundClass.getField("BIBI_THEME"));
+        assertNotNull(soundClass.getField("KIRK_THEME"));
         assertNotNull(soundClass.getField("BICYCLE_BELL"));
         assertNotNull(soundClass.getField("BUS_HORN"));
         assertNotNull(soundClass.getField("TRAIN_WHISTLE"));
@@ -45,6 +46,7 @@ class MusicAndAudioTest {
         assertTrue(content.contains("ambient.city.jerusalem"), "sounds.json must define jerusalem ambience");
         assertTrue(content.contains("ambient.city.jaffa"), "sounds.json must define jaffa ambience");
         assertTrue(content.contains("music.boss.bibi_theme"), "sounds.json must define bibi_theme");
+        assertTrue(content.contains("music.boss.kirk_theme"), "sounds.json must define kirk_theme");
         assertTrue(content.contains("entity.bicycle.bell"), "sounds.json must define bicycle bell");
         assertTrue(content.contains("entity.bus.horn"), "sounds.json must define bus horn");
         assertTrue(content.contains("entity.train.whistle"), "sounds.json must define train whistle");

@@ -15,25 +15,36 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 /**
  * Commercial airliner entity flying towards the target tower (GAME_DESIGN.md §41–44).
- * Spawns during the countdown so players can visibly see it approaching in the sky!
- * Detects 25% penetration into the tower facade before triggering TNT detonator in elevator shaft.
+ * Spawns during the countdown and renders the exact blocks from plane1-e1160.schem!
+ * Detects impact when hitting actual solid blocks of the tower structure, then penetrates
+ * ~25% (10.5 blocks) before triggering the cascading TNT explosion in the elevator shaft.
  */
 public class PlaneCrashEntity extends Entity {
 
     public static final double TOTAL_PLANE_LENGTH = 42.0;
     public static final double PENETRATION_THRESHOLD = TOTAL_PLANE_LENGTH * 0.25; // ~10.5 blocks
+    public static final int MAX_FLIGHT_TICKS = 30 * 20; // 30 seconds (600 ticks) max flight duration before despawn
 
     private static final EntityDataAccessor<Boolean> DATA_EMBEDDED =
             SynchedEntityData.defineId(PlaneCrashEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> DATA_VEL_X =
+            SynchedEntityData.defineId(PlaneCrashEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> DATA_VEL_Y =
+            SynchedEntityData.defineId(PlaneCrashEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> DATA_VEL_Z =
+            SynchedEntityData.defineId(PlaneCrashEntity.class, EntityDataSerializers.FLOAT);
 
     private Vec3 targetPos = Vec3.ZERO;
     private Vec3 flightVelocity = Vec3.ZERO;
@@ -45,6 +56,8 @@ public class PlaneCrashEntity extends Entity {
     private double distancePenetrated = 0.0;
     private int flightTicks = 0;
     private int embeddedTicks = 0;
+    private Vec3 previousNosePos = Vec3.ZERO;
+    private Vec3 blockImpactPos = Vec3.ZERO;
 
     public PlaneCrashEntity(EntityType<?> entityType, Level level) {
         super(entityType, level);
@@ -55,6 +68,9 @@ public class PlaneCrashEntity extends Entity {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         builder.define(DATA_EMBEDDED, false);
+        builder.define(DATA_VEL_X, 0.0F);
+        builder.define(DATA_VEL_Y, 0.0F);
+        builder.define(DATA_VEL_Z, 0.0F);
     }
 
     public void initFlight(Vec3 spawnPos, Vec3 targetPos, BlockPos towerMin, BlockPos towerMax, BlockPos elevatorShaft, double speed) {
@@ -77,6 +93,9 @@ public class PlaneCrashEntity extends Entity {
         }
 
         this.setDeltaMovement(this.flightVelocity);
+        this.entityData.set(DATA_VEL_X, (float) this.flightVelocity.x);
+        this.entityData.set(DATA_VEL_Y, (float) this.flightVelocity.y);
+        this.entityData.set(DATA_VEL_Z, (float) this.flightVelocity.z);
 
         double horizDist = Math.sqrt(flightVelocity.x * flightVelocity.x + flightVelocity.z * flightVelocity.z);
         float yRot = (float) (Math.atan2(-flightVelocity.x, flightVelocity.z) * (180.0 / Math.PI));
@@ -85,6 +104,7 @@ public class PlaneCrashEntity extends Entity {
         this.setXRot(xRot);
         this.yRotO = yRot;
         this.xRotO = xRot;
+        this.previousNosePos = getNosePosition();
     }
 
     public boolean isEmbedded() {
@@ -95,17 +115,27 @@ public class PlaneCrashEntity extends Entity {
     public void tick() {
         super.tick();
 
-        // Always apply flight velocity directly to avoid client/server desync
-        if (flightVelocity.lengthSqr() > 0.0001) {
-            this.setDeltaMovement(flightVelocity);
-        }
-
         if (this.level().isClientSide()) {
-            spawnClientParticles();
-            // Client-side smooth movement
-            this.setPos(this.getX() + this.getDeltaMovement().x,
-                    this.getY() + this.getDeltaMovement().y,
-                    this.getZ() + this.getDeltaMovement().z);
+            float vx = this.entityData.get(DATA_VEL_X);
+            float vy = this.entityData.get(DATA_VEL_Y);
+            float vz = this.entityData.get(DATA_VEL_Z);
+            Vec3 vel = new Vec3(vx, vy, vz);
+            this.setDeltaMovement(vel);
+
+            if (vel.lengthSqr() > 0.0001) {
+                double horizDist = Math.sqrt(vx * vx + vz * vz);
+                float yRot = (float) (Math.atan2(-vx, vz) * (180.0 / Math.PI));
+                float xRot = (float) (Math.atan2(-vy, horizDist) * (180.0 / Math.PI));
+                this.yRotO = this.getYRot();
+                this.xRotO = this.getXRot();
+                this.setYRot(yRot);
+                this.setXRot(xRot);
+            }
+
+            if (!isEmbedded()) {
+                this.setPos(this.getX() + vx, this.getY() + vy, this.getZ() + vz);
+                spawnClientParticles();
+            }
             return;
         }
 
@@ -114,89 +144,202 @@ public class PlaneCrashEntity extends Entity {
 
         if (isEmbedded()) {
             embeddedTicks++;
-            if (embeddedTicks > 40) {
+            if (embeddedTicks > 60) {
                 this.discard();
             }
             return;
         }
 
-        // Sound feedback every 20 ticks
+        // Sound feedback
         if (flightTicks % 20 == 0) {
             serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
                     ModSoundEvents.PLANE_JET.get(), SoundSource.NEUTRAL, 5.0F, 0.8F);
         }
 
-        // Move entity
-        this.move(MoverType.SELF, flightVelocity);
+        // Move entity directly along velocity vector
+        this.setPos(this.getX() + flightVelocity.x, this.getY() + flightVelocity.y, this.getZ() + flightVelocity.z);
+        this.setDeltaMovement(flightVelocity);
 
-        // Calculate distance to target impact point
-        Vec3 currentPos = this.position();
         Vec3 nosePos = getNosePosition();
-        double distToTarget = currentPos.distanceTo(targetPos);
 
-        // Check if nose is inside tower bounding box or reached target facade
-        boolean noseInside = isInsideTower(nosePos) || distToTarget < 8.0;
+        // Check if ANY part of the plane (nose, wings, engines, cockpit, belly) touches an ACTUAL solid block
+        Vec3 touchedPoint = checkAnyPlanePartTouchesSolidBlock(serverLevel);
 
-        if (!hitDetected && noseInside) {
+        if (!hitDetected && touchedPoint != null) {
             hitDetected = true;
-            serverLevel.playSound(null, nosePos.x, nosePos.y, nosePos.z,
-                    SoundEvents.GLASS_BREAK, SoundSource.BLOCKS, 5.0F, 0.7F);
-            serverLevel.playSound(null, nosePos.x, nosePos.y, nosePos.z,
-                    SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 3.0F, 1.2F);
+            this.blockImpactPos = touchedPoint;
+            serverLevel.playSound(null, touchedPoint.x, touchedPoint.y, touchedPoint.z,
+                    SoundEvents.GLASS_BREAK, SoundSource.BLOCKS, 6.0F, 0.7F);
+            serverLevel.playSound(null, touchedPoint.x, touchedPoint.y, touchedPoint.z,
+                    SoundEvents.ZOMBIE_BREAK_WOODEN_DOOR, SoundSource.BLOCKS, 6.0F, 0.6F);
         }
 
         if (hitDetected) {
             distancePenetrated += flightVelocity.length();
 
+            Vec3 fxPos = blockImpactPos.lengthSqr() > 0.001 ? blockImpactPos : nosePos;
             serverLevel.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE,
-                    nosePos.x, nosePos.y, nosePos.z, 10, 0.5, 0.5, 0.5, 0.05);
+                    fxPos.x, fxPos.y, fxPos.z, 25, 1.0, 1.0, 1.0, 0.08);
             serverLevel.sendParticles(ParticleTypes.FLAME,
-                    nosePos.x, nosePos.y, nosePos.z, 6, 0.3, 0.3, 0.3, 0.02);
+                    fxPos.x, fxPos.y, fxPos.z, 15, 0.6, 0.6, 0.6, 0.05);
 
-            // Reached 25% penetration!
-            if (distancePenetrated >= PENETRATION_THRESHOLD) {
-                onTwentyFivePercentPenetration(serverLevel);
+            // Penetrate into the building facade, then detonate the massive explosion!
+            if (distancePenetrated >= 5.0) {
+                detonatePlaneCrash(serverLevel);
                 return;
             }
         }
 
-        // Failsafe: if plane has flown past target or timeout (> 300 ticks = 15 seconds)
-        if (flightTicks > 260) {
-            onTwentyFivePercentPenetration(serverLevel);
+        // Timeout: if plane doesn't hit any solid block after 30 seconds (600 ticks), despawn cleanly
+        if (flightTicks >= MAX_FLIGHT_TICKS) {
+            TwinTowersPlaneEvent.stopEvent();
+            this.discard();
         }
+    }
+
+    private Vec3 checkAnyPlanePartTouchesSolidBlock(ServerLevel level) {
+        List<Vec3> points = getPlaneCollisionPoints();
+        for (Vec3 pt : points) {
+            Vec3 prev = pt.subtract(flightVelocity);
+            if (checkPointTouchesSolidBlock(level, prev, pt)) {
+                return pt;
+            }
+        }
+        return null;
+    }
+
+    private List<Vec3> getPlaneCollisionPoints() {
+        Vec3 forward = flightVelocity.lengthSqr() > 0.001 ? flightVelocity.normalize() : new Vec3(1, 0, 0);
+        double horizLen = Math.sqrt(forward.x * forward.x + forward.z * forward.z);
+        Vec3 perp = horizLen > 0.001
+                ? new Vec3(-forward.z / horizLen, 0, forward.x / horizLen)
+                : new Vec3(0, 0, 1);
+        Vec3 pos = this.position();
+
+        return List.of(
+                // 1. Nose tip (front)
+                pos.add(forward.scale(21.0)),
+                // 2. Cockpit (upper front)
+                pos.add(forward.scale(15.0)).add(0, 1.5, 0),
+                // 3. Left wingtip (far left)
+                pos.add(perp.scale(18.0)).add(forward.scale(-2.0)),
+                // 4. Right wingtip (far right)
+                pos.add(perp.scale(-18.0)).add(forward.scale(-2.0)),
+                // 5. Left wing mid
+                pos.add(perp.scale(9.0)).add(forward.scale(2.0)),
+                // 6. Right wing mid
+                pos.add(perp.scale(-9.0)).add(forward.scale(2.0)),
+                // 7. Left engine (under left wing)
+                pos.add(perp.scale(6.0)).add(forward.scale(3.0)).add(0, -2.0, 0),
+                // 8. Right engine (under right wing)
+                pos.add(perp.scale(-6.0)).add(forward.scale(3.0)).add(0, -2.0, 0),
+                // 9. Fuselage belly / center
+                pos.add(0, -1.0, 0)
+        );
+    }
+
+    private boolean checkPointTouchesSolidBlock(ServerLevel level, Vec3 from, Vec3 to) {
+        // 1. Raycast line from previous tick pos to current pos
+        BlockHitResult hit = level.clip(new ClipContext(from, to, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+        if (hit.getType() == HitResult.Type.BLOCK) {
+            BlockState s = level.getBlockState(hit.getBlockPos());
+            if (!s.isAir() && !s.canBeReplaced() && s.blocksMotion()) {
+                return true;
+            }
+        }
+
+        // 2. Direct 3x3x3 block check around current position
+        BlockPos center = BlockPos.containing(to);
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    BlockPos p = center.offset(dx, dy, dz);
+                    BlockState s = level.getBlockState(p);
+                    if (!s.isAir() && !s.canBeReplaced() && s.blocksMotion()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private Vec3 getNosePosition() {
         Vec3 dir = flightVelocity.lengthSqr() > 0.001 ? flightVelocity.normalize() : new Vec3(1, 0, 0);
-        return this.position().add(dir.scale(TOTAL_PLANE_LENGTH * 0.5));
+        // Distance from entity center to nose front in schematic is 21 blocks
+        return this.position().add(dir.scale(21.0));
     }
 
-    private boolean isInsideTower(Vec3 pos) {
-        if (towerMin.equals(BlockPos.ZERO) && towerMax.equals(BlockPos.ZERO)) {
-            return false;
-        }
-        return pos.x >= towerMin.getX() - 2 && pos.x <= towerMax.getX() + 2
-                && pos.y >= towerMin.getY() - 2 && pos.y <= towerMax.getY() + 2
-                && pos.z >= towerMin.getZ() - 2 && pos.z <= towerMax.getZ() + 2;
-    }
-
-    private void onTwentyFivePercentPenetration(ServerLevel serverLevel) {
+    private void detonatePlaneCrash(ServerLevel serverLevel) {
         if (isEmbedded()) return;
 
         this.entityData.set(DATA_EMBEDDED, true);
         this.flightVelocity = Vec3.ZERO;
         this.setDeltaMovement(Vec3.ZERO);
+        this.entityData.set(DATA_VEL_X, 0.0F);
+        this.entityData.set(DATA_VEL_Y, 0.0F);
+        this.entityData.set(DATA_VEL_Z, 0.0F);
 
         Vec3 nosePos = getNosePosition();
+        Vec3 wallImpact = blockImpactPos.lengthSqr() > 0.001 ? blockImpactPos : nosePos;
+        Vec3 midPos = wallImpact.add(nosePos).scale(0.5);
+        Vec3 dir = flightVelocity.lengthSqr() > 0.001 ? flightVelocity.normalize() : new Vec3(1, 0, 0);
+        Vec3 deepCore = nosePos.add(dir.scale(10.0));
 
-        // 1. Structural impact blast at the breach point
-        serverLevel.explode(this, nosePos.x, nosePos.y, nosePos.z, 5.0F, Level.ExplosionInteraction.BLOCK);
+        // 1. Massive 10x multi-point fuel-air airliner explosion tearing through the facade and interior
+        serverLevel.explode(this, wallImpact.x, wallImpact.y, wallImpact.z, 28.0F, true, Level.ExplosionInteraction.BLOCK);
+        serverLevel.explode(this, nosePos.x, nosePos.y, nosePos.z, 26.0F, true, Level.ExplosionInteraction.BLOCK);
+        serverLevel.explode(this, midPos.x, midPos.y, midPos.z, 25.0F, true, Level.ExplosionInteraction.BLOCK);
+        serverLevel.explode(this, deepCore.x, deepCore.y, deepCore.z, 25.0F, true, Level.ExplosionInteraction.BLOCK);
 
-        // 2. Embed wreckage blocks permanently into the tower
+        // 2. Wing-span fuel tank explosions tearing across the entire facade
+        serverLevel.explode(this, wallImpact.x, wallImpact.y, wallImpact.z + 7.0, 22.0F, true, Level.ExplosionInteraction.BLOCK);
+        serverLevel.explode(this, wallImpact.x, wallImpact.y, wallImpact.z - 7.0, 22.0F, true, Level.ExplosionInteraction.BLOCK);
+        serverLevel.explode(this, wallImpact.x, wallImpact.y, wallImpact.z + 14.0, 20.0F, true, Level.ExplosionInteraction.BLOCK);
+        serverLevel.explode(this, wallImpact.x, wallImpact.y, wallImpact.z - 14.0, 20.0F, true, Level.ExplosionInteraction.BLOCK);
+
+        // 3. Multi-floor vertical rupture (obliterating 8-10 floors above and below)
+        serverLevel.explode(this, wallImpact.x, wallImpact.y + 8.0, wallImpact.z, 22.0F, true, Level.ExplosionInteraction.BLOCK);
+        serverLevel.explode(this, wallImpact.x, wallImpact.y - 7.0, wallImpact.z, 22.0F, true, Level.ExplosionInteraction.BLOCK);
+        serverLevel.explode(this, wallImpact.x, wallImpact.y + 16.0, wallImpact.z, 20.0F, true, Level.ExplosionInteraction.BLOCK);
+        serverLevel.explode(this, wallImpact.x, wallImpact.y - 14.0, wallImpact.z, 18.0F, true, Level.ExplosionInteraction.BLOCK);
+
+        // 4. Catastrophic visual effects (massive mushroom cloud, firestorm and lava embers)
+        serverLevel.sendParticles(ParticleTypes.EXPLOSION_EMITTER, wallImpact.x, wallImpact.y, wallImpact.z, 15, 6.0, 6.0, 6.0, 0.0);
+        serverLevel.sendParticles(ParticleTypes.EXPLOSION_EMITTER, nosePos.x, nosePos.y, nosePos.z, 10, 5.0, 5.0, 5.0, 0.0);
+        serverLevel.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, wallImpact.x, wallImpact.y + 5.0, wallImpact.z, 150, 8.0, 10.0, 8.0, 0.15);
+        serverLevel.sendParticles(ParticleTypes.FLAME, wallImpact.x, wallImpact.y, wallImpact.z, 120, 10.0, 8.0, 10.0, 0.35);
+        serverLevel.sendParticles(ParticleTypes.LAVA, wallImpact.x, wallImpact.y, wallImpact.z, 60, 6.0, 6.0, 6.0, 0.2);
+
+        // 5. Embed burning wreckage blocks into the breached tower structure
         placeWreckageBlocks(serverLevel);
 
-        // 3. Trigger cascading TNT chain reaction inside the elevator shaft
-        TwinTowersPlaneEvent.detonateElevatorShaft(serverLevel, elevatorShaft);
+        // 6. Broad fire engulfment across breached floors and facade
+        BlockPos centerImpact = BlockPos.containing(wallImpact);
+        for (int ox = -10; ox <= 10; ox++) {
+            for (int oy = -6; oy <= 12; oy++) {
+                for (int oz = -10; oz <= 10; oz++) {
+                    if (serverLevel.getRandom().nextFloat() < 0.35F) {
+                        BlockPos firePos = centerImpact.offset(ox, oy, oz);
+                        if (serverLevel.getBlockState(firePos).isAir() && !serverLevel.getBlockState(firePos.below()).isAir()) {
+                            serverLevel.setBlock(firePos, Blocks.FIRE.defaultBlockState(), 3);
+                        }
+                    }
+                }
+            }
+        }
+
+        // 7. Thunderous 4-layer audio blast
+        serverLevel.playSound(null, wallImpact.x, wallImpact.y, wallImpact.z,
+                SoundEvents.GENERIC_EXPLODE.value(), SoundSource.BLOCKS, 20.0F, 0.4F);
+        serverLevel.playSound(null, wallImpact.x, wallImpact.y, wallImpact.z,
+                SoundEvents.GENERIC_EXPLODE.value(), SoundSource.BLOCKS, 20.0F, 0.65F);
+        serverLevel.playSound(null, wallImpact.x, wallImpact.y, wallImpact.z,
+                SoundEvents.GENERIC_EXPLODE.value(), SoundSource.BLOCKS, 20.0F, 0.85F);
+        serverLevel.playSound(null, wallImpact.x, wallImpact.y, wallImpact.z,
+                SoundEvents.GENERIC_EXPLODE.value(), SoundSource.BLOCKS, 20.0F, 1.1F);
+
+        TwinTowersPlaneEvent.onPlaneCrashImpact(serverLevel, nosePos);
     }
 
     @Override
@@ -209,7 +352,7 @@ public class PlaneCrashEntity extends Entity {
         BlockPos center = this.blockPosition();
         int count = 0;
         for (PlaneModelData.BlockEntry entry : blocks) {
-            if (entry.dx() <= 0 && count++ < 300) {
+            if (count++ < 500) {
                 BlockPos target = center.offset(entry.dx(), entry.dy(), entry.dz());
                 BlockState current = level.getBlockState(target);
                 if (current.isAir() || current.is(Blocks.GLASS) || current.is(Blocks.STAINED_GLASS.gray())

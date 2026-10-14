@@ -34,6 +34,7 @@ public final class IsraelSimulatorConfig {
     // Events (§56)
     private static final ModConfigSpec.IntValue EVENT_DURATION_TICKS;
     private static final ModConfigSpec.IntValue EVENT_COOLDOWN_TICKS;
+    private static final ModConfigSpec.IntValue SPEECH_DURATION_TICKS;
     private static final ModConfigSpec.IntValue SPEECH_MIN_PARTICIPATION_TICKS;
 
     // Cooldowns (§56)
@@ -141,6 +142,10 @@ public final class IsraelSimulatorConfig {
                 .comment("Cooldown period between consecutive world events in ticks (default 12000 = 10 minutes).")
                 .translation("israel_simulator.configuration.eventCooldownTicks")
                 .defineInRange("eventCooldownTicks", 12000, 2400, 72000);
+        SPEECH_DURATION_TICKS = builder
+                .comment("Duration of Public Speech event / Kirk boss music in ticks before Kirk dies (default 1200 = 60s).")
+                .translation("israel_simulator.configuration.speechDurationTicks")
+                .defineInRange("speechDurationTicks", 1200, 100, 72000);
         SPEECH_MIN_PARTICIPATION_TICKS = builder
                 .comment("Minimum active participation duration required for Public Speech rewards (default 1200 = 60s).")
                 .translation("israel_simulator.configuration.speechMinParticipationTicks")
@@ -318,6 +323,14 @@ public final class IsraelSimulatorConfig {
             return EVENT_COOLDOWN_TICKS != null ? EVENT_COOLDOWN_TICKS.get() : 12000;
         } catch (Exception ignored) {
             return 12000;
+        }
+    }
+
+    public static int speechDurationTicks() {
+        try {
+            return SPEECH_DURATION_TICKS != null ? SPEECH_DURATION_TICKS.get() : 1200;
+        } catch (Exception ignored) {
+            return 1200;
         }
     }
 

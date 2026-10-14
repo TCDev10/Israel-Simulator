@@ -12,7 +12,7 @@
   },
   "start_pool": "israel_simulator:torri_gemelle",
   "step": "surface_structures",
-  "terrain_adaptation": "none",
+  "terrain_adaptation": "beard_box",
   "use_expansion_hack": false
 }
 

@@ -45,7 +45,20 @@ public final class SpeechCommands {
                             ctx.getSource().sendSuccess(() -> Component.translatable("commands.israel_simulator.speech.status",
                                     c.getX(), c.getY(), c.getZ(), secs), false);
                             return 1;
-                        })))));
+                        }))
+                        .then(Commands.literal("duration")
+                                .executes(ctx -> {
+                                    int secs = PublicSpeechEvent.getDurationTicks() / 20;
+                                    ctx.getSource().sendSuccess(() -> Component.literal("§6Durata attuale evento e boss music di Kirk: §e" + secs + " secondi (" + (secs * 20) + " tick)"), false);
+                                    return secs;
+                                })
+                                .then(Commands.argument("seconds", com.mojang.brigadier.arguments.IntegerArgumentType.integer(5, 3600))
+                                        .executes(ctx -> {
+                                            int secs = com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(ctx, "seconds");
+                                            PublicSpeechEvent.setCustomDurationTicks(secs * 20);
+                                            ctx.getSource().sendSuccess(() -> Component.literal("§aDurata evento e boss music di Kirk impostata a " + secs + " secondi (" + (secs * 20) + " tick)."), true);
+                                            return 1;
+                                        }))))));
     }
 
     private static int start(CommandContext<CommandSourceStack> ctx, BlockPos ground) {
