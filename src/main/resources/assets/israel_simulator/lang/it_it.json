@@ -460,5 +460,9 @@
   "mossad.israel_simulator.status.active": "%s: %s / %s, obiettivo X %s Y %s Z %s. Reputazione %s.",
   "mossad.israel_simulator.unknown_mission": "Incarico sconosciuto.",
   "mossad.israel_simulator.reputation_set": "Reputazione Mossad impostata a %s.",
-  "mossad.israel_simulator.spawned": "Generati %s agenti."
+  "mossad.israel_simulator.spawned": "Generati %s agenti.",
+  "entity.israel_simulator.plane_crash": "Aereo di Linea",
+  "title.israel_simulator.air_raid_warning": "ALLARME ANTIAEREO",
+  "subtitle.israel_simulator.countdown": "Impatto tra %d secondi! Evacuare immediatamente!",
+  "message.israel_simulator.plane_impact": "Vani ascensore violati! Detonazione TNT in corso!"
 }

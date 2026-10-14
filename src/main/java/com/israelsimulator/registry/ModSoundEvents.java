@@ -53,6 +53,10 @@ public final class ModSoundEvents {
     // Exploration & Discovery Audio (§48)
     public static final DeferredHolder<SoundEvent, SoundEvent> LANDMARK_DISCOVERED = registerSound("ui.landmark_discovered");
 
+    // Plane Crash & Air Raid Event Audio
+    public static final DeferredHolder<SoundEvent, SoundEvent> AIR_RAID_SIREN = registerSound("event.air_raid_siren");
+    public static final DeferredHolder<SoundEvent, SoundEvent> PLANE_JET = registerSound("event.plane_jet");
+
     private ModSoundEvents() {}
 
     public static void register(IEventBus modEventBus) {

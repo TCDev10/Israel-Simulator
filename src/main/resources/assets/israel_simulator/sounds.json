@@ -117,5 +117,18 @@
     "sounds": [
       "minecraft:ui/toast/challenge_complete"
     ]
+  },
+  "event.air_raid_siren": {
+    "sounds": [
+      "minecraft:block/bell/resonate",
+      "minecraft:entity/warden/sonic_boom",
+      "minecraft:block/sculk_shrieker/shriek"
+    ]
+  },
+  "event.plane_jet": {
+    "sounds": [
+      "minecraft:entity/ender_dragon/growl",
+      "minecraft:ambient/underwater/loop"
+    ]
   }
 }

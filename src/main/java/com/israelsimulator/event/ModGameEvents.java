@@ -21,6 +21,7 @@ public final class ModGameEvents {
     @SubscribeEvent
     public static void onRegisterCommands(net.neoforged.neoforge.event.RegisterCommandsEvent event) {
         com.israelsimulator.event.world.speech.SpeechCommands.register(event.getDispatcher());
+        com.israelsimulator.event.world.plane.PlaneCrashCommands.register(event.getDispatcher());
         com.israelsimulator.mossad.MossadCommands.register(event.getDispatcher());
     }
 
@@ -69,6 +70,7 @@ public final class ModGameEvents {
     public static void onLevelTick(net.neoforged.neoforge.event.tick.LevelTickEvent.Post event) {
         if (event.getLevel() instanceof net.minecraft.server.level.ServerLevel speechLevel) {
             com.israelsimulator.event.world.speech.PublicSpeechEvent.tick(speechLevel);
+            com.israelsimulator.event.world.plane.TwinTowersPlaneEvent.tick(speechLevel);
             com.israelsimulator.mossad.MossadAgentSpawner.tick(speechLevel);
             if (speechLevel.getGameTime() % 20 == 0) {
                 for (net.minecraft.server.level.ServerPlayer p : speechLevel.players()) {

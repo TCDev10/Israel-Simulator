@@ -102,6 +102,10 @@ public final class ModEntities {
             ENTITY_TYPES.registerEntityType("cape_hyrax", CapeHyraxEntity::new, MobCategory.CREATURE,
                     b -> b.sized(0.55F, 0.55F).clientTrackingRange(8));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<com.israelsimulator.entity.event.PlaneCrashEntity>> PLANE_CRASH =
+            ENTITY_TYPES.registerEntityType("plane_crash", com.israelsimulator.entity.event.PlaneCrashEntity::new, MobCategory.MISC,
+                    b -> b.sized(8.0F, 4.0F).clientTrackingRange(16).updateInterval(1));
+
     private ModEntities() {}
 
     public static void register(IEventBus modEventBus) {

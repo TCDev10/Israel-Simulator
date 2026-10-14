@@ -47,6 +47,7 @@ public class IsraelSimulatorClient {
                 () -> com.israelsimulator.client.renderer.LocalWildlifeModel.createBodyLayer("nubian_ibex"));
         event.registerLayerDefinition(com.israelsimulator.client.renderer.LocalWildlifeModel.HYRAX_LAYER,
                 () -> com.israelsimulator.client.renderer.LocalWildlifeModel.createBodyLayer("cape_hyrax"));
+        event.registerLayerDefinition(com.israelsimulator.client.renderer.PlaneCrashModel.LAYER_LOCATION, com.israelsimulator.client.renderer.PlaneCrashModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -77,6 +78,7 @@ public class IsraelSimulatorClient {
         event.registerEntityRenderer(ModEntities.CAPE_HYRAX.get(), ctx ->
                 new com.israelsimulator.client.renderer.LocalWildlifeRenderer<>(ctx,
                         com.israelsimulator.client.renderer.LocalWildlifeModel.HYRAX_LAYER, "cape_hyrax", 0.25F, 0.45F));
+        event.registerEntityRenderer(ModEntities.PLANE_CRASH.get(), com.israelsimulator.client.renderer.PlaneCrashRenderer::new);
     }
 
     @SubscribeEvent

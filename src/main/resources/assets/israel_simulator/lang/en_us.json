@@ -460,5 +460,9 @@
   "mossad.israel_simulator.status.active": "%s: %s / %s, target X %s Y %s Z %s. Reputation %s.",
   "mossad.israel_simulator.unknown_mission": "Unknown mission.",
   "mossad.israel_simulator.reputation_set": "Mossad reputation set to %s.",
-  "mossad.israel_simulator.spawned": "Spawned %s agents."
+  "mossad.israel_simulator.spawned": "Spawned %s agents.",
+  "entity.israel_simulator.plane_crash": "Commercial Airplane",
+  "title.israel_simulator.air_raid_warning": "AIR RAID WARNING",
+  "subtitle.israel_simulator.countdown": "Impact in %d seconds! Evacuate immediately!",
+  "message.israel_simulator.plane_impact": "Elevator shafts breached! TNT detonation in progress!"
 }
