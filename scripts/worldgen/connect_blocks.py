@@ -270,7 +270,13 @@ def apply_connections(
     grid: dict[tuple[int, int, int], dict],
     size: tuple[int, int, int] | None = None,
 ) -> dict[tuple[int, int, int], dict]:
-    """Mutate and return grid with corrected connection properties."""
+    """Mutate and return grid with corrected connection properties.
+
+    Vegetation is made physically possible first (see vegetation.py), so no template can bake in
+    floating leaves, unsupported plants or vines hanging on nothing."""
+    from vegetation import sanitize_vegetation
+
+    sanitize_vegetation(grid, size)
     # Work on a snapshot of names so updates don't feed each other mid-pass
     # (connection depends on block identity, not on neighbor connection props).
     items = list(grid.items())
