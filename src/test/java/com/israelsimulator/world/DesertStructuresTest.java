@@ -11,7 +11,7 @@ class DesertStructuresTest {
     @DisplayName("ein_gedi_oasis NBT is no longer tiny placeholders")
     void notPlaceholders() throws Exception {
         for (String name : new String[]{"ein_gedi_oasis"}) {
-            String path = "data/israel_simulator/structure/" + name + ".nbt";
+            String path = "data/israel_simulator/structure/oasis/hidden_cave.nbt";
             try (InputStream in = getClass().getClassLoader().getResourceAsStream(path)) {
                 assertNotNull(in, path);
                 byte[] data = new GZIPInputStream(in).readAllBytes();
