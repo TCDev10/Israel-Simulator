@@ -110,6 +110,9 @@ public final class ModItems {
             ITEMS.registerItem("money_changer_spawn_egg",
                     p -> new SpawnEggItem(p.spawnEgg(ModEntities.MONEY_CHANGER.get())));
 
+    public static final DeferredHolder<Item, SpawnEggItem> SHUK_VENDOR_SPAWN_EGG =
+            ITEMS.registerItem("shuk_vendor_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.SHUK_VENDOR.get())));
+
     public static final DeferredHolder<Item, SpawnEggItem> MOSSAD_AGENT_SPAWN_EGG =
             ITEMS.registerItem("mossad_agent_spawn_egg", p -> new SpawnEggItem(p.spawnEgg(ModEntities.MOSSAD_AGENT.get())));
     public static final DeferredHolder<Item, SpawnEggItem> MOSSAD_HANDLER_SPAWN_EGG =

@@ -514,5 +514,6 @@
   "message.israel_simulator.work.no_gigs": "Qui non ci sono consegne: vai a Tel Aviv o a Gerusalemme.",
   "message.israel_simulator.work.gig": "Consegna fatta: +%s ₪.",
   "message.israel_simulator.shabbat.work": "È Shabbat e stai lavorando: niente bonus di riposo per un minuto.",
-  "message.israel_simulator.shabbat.rest": "Riposo di Shabbat: Menuchah (rigenerazione)"
+  "message.israel_simulator.shabbat.rest": "Riposo di Shabbat: Menuchah (rigenerazione)",
+  "item.israel_simulator.shuk_vendor_spawn_egg": "Uovo generatore di Venditore dello Shuk"
 }

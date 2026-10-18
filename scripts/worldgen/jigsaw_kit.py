@@ -170,13 +170,14 @@ class Kit:
         if landmarks:
             write_pool(self.pool / "landmarks.json", L(landmarks), "minecraft:empty")
 
-    def write_structure_json(self, biome: str, size: int = 6, max_distance: int = 80) -> None:
+    def write_structure_json(self, biome: str, size: int = 6, max_distance: int = 80,
+                             adaptation: str = "beard_thin") -> None:
         data = {
             "type": "minecraft:jigsaw",
             "biomes": [biome],
             "step": "surface_structures",
             "spawn_overrides": {},
-            "terrain_adaptation": "beard_thin",
+            "terrain_adaptation": adaptation,
             "start_pool": f"{NS}:{self.structure}",
             "size": size,
             # the start piece's floor (above its footing) lands on the surface

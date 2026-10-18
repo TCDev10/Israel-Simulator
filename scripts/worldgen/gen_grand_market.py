@@ -16,6 +16,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from nbtlib import Byte, Compound, String  # noqa: E402
+from gen_jerusalem_city import Structure, jigsaw, write_pool  # noqa: E402
 from jigsaw_kit import (  # noqa: E402
     AIR, B, BARREL, CHEST, CRAFT, HLANTERN, NS, PANE, SFENCE, SLAB, STAIR, Kit, Rigid, entrance_j,
     house, lamp, table,
@@ -66,7 +67,10 @@ def market_gate() -> None:
         lamp(s, x, z)
     for x, f in ((3, "west"), (11, "east")):
         s.set(x, 1, 7, STAIR(f, "spruce"))
-    s.set(7, 1, 0, kit.bld_j("north_up", "landmarks"))
+    # the hall hangs off a short terrain-following approach, so it sits on the ground
+    # instead of at the gate's height (it ended up inside a hillside on seed 777)
+    s.set(7, 1, 0, jigsaw("north_up", "minecraft:street", "minecraft:street", f"{NS}:market/approach",
+                          "minecraft:structure_void"))
     s.set(7, 1, 14, kit.street_j("south_up"))
     s.set(0, 1, 7, kit.street_j("west_up"))
     s.set(14, 1, 7, kit.street_j("east_up"))
@@ -104,6 +108,18 @@ def lane(covered: bool) -> None:
         for z in range(5):
             s.set(4, 4, z, B("white_wool")); s.set(8, 4, z, B("white_wool"))
     s.save(kit.struct / ("lane_covered.nbt" if covered else "lane_open.nbt"))
+
+
+def hall_approach() -> None:
+    """5x5 terrain-matching paving between the gate and the market hall."""
+    s = Structure(5, 4, 5)
+    for x in range(5):
+        for z in range(5):
+            s.set(x, 0, z, paving(x, z))
+    s.set(2, 1, 4, jigsaw("south_up", "minecraft:street", "minecraft:street", "minecraft:empty",
+                          "minecraft:structure_void"))
+    s.set(2, 1, 0, kit.bld_j("north_up", "landmarks"))
+    s.save(kit.struct / "hall_approach.nbt")
 
 
 def lanes() -> None:
@@ -262,10 +278,29 @@ def market_hall() -> None:
     s.save(kit.struct / "market_hall.nbt")
 
 
+# Extra empty height on every piece. Lanes follow the terrain, so on a hillside one lane can run
+# 30+ blocks below another; with short bounding boxes the jigsaw packed shops UNDER the pieces on
+# the ridge (seed 777). Empty layers have no block entries, so nothing is placed there, but the
+# taller box makes the jigsaw reject stacked pieces.
+HEADROOM = 28
+
+
+def add_headroom() -> None:
+    import nbtlib
+    for f in sorted(kit.struct.glob("*.nbt")):
+        nbt = nbtlib.load(f)
+        size = nbt["size"]
+        size[1] = nbtlib.Int(int(size[1]) + HEADROOM)
+        nbt.save(f, gzipped=True)
+
+
 def main() -> None:
-    market_gate(); lanes(); shops(); cafe(); market_hall()
+    market_gate(); hall_approach(); lanes(); shops(); cafe(); market_hall()
     house(kit, "market_house", 9, 9, 2, "smooth_sandstone", door="spruce", shutter="spruce",
           trim="cut_sandstone", beds=("red", "white"), loot=LOOT_MARKET, vines=False)
+    add_headroom()
+    # beard_thin: with HEADROOM no piece is stacked under another any more; on 5 seeds it buried
+    # nothing on its own (terrain "none" left a hillside over one shop roof on seed 99)
     kit.write_structure_json("israel_simulator:jerusalem", size=5, max_distance=64)
     kit.write_pools(
         "market_gate",
@@ -278,6 +313,7 @@ def main() -> None:
                    ("market_house", 2, "rigid")],
         landmarks=[("market_hall", 1, "rigid")],
     )
+    write_pool(kit.pool / "approach.json", [(kit.loc("hall_approach"), 1, "terrain_matching")], "minecraft:empty")
 
 
 if __name__ == "__main__":

@@ -514,5 +514,6 @@
   "message.israel_simulator.work.no_gigs": "No delivery gigs out here: go to Tel Aviv or Jerusalem.",
   "message.israel_simulator.work.gig": "Delivery gig done: +%s ₪.",
   "message.israel_simulator.shabbat.work": "It's Shabbat: you are working. No rest bonus for a minute.",
-  "message.israel_simulator.shabbat.rest": "Shabbat rest: Menuchah (regeneration)"
+  "message.israel_simulator.shabbat.rest": "Shabbat rest: Menuchah (regeneration)",
+  "item.israel_simulator.shuk_vendor_spawn_egg": "Shuk Vendor Spawn Egg"
 }

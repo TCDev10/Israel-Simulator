@@ -734,6 +734,40 @@ Provato in gioco: `runServer` e `runClient` sul seed 777, con un venditore della
 
 Ancora mancante (roadmap 11): durante lo Shabbat gli altri NPC non si riposano e non c'è un bonus di riposo. Le decorazioni nelle strutture non ci sono: solo la Menorah. Non provato dall'utente in gioco.
 
+## Grand Market: negozi generati sotto terra (seed 777) — IN CORSO, non risolto del tutto
+
+Problema riscontrato: nel seed 777, intorno a 1776 -2208, sei edifici del mercato finiscono 20–35 blocchi sotto la superficie. Ho trovato due cause.
+1. **Pezzi impilati.** Le stradine seguono il terreno. Su un fianco di collina una stradina può scendere più di 30 blocchi sotto un'altra, e siccome i box dei pezzi erano bassi, il jigsaw metteva dei negozi *sotto* altri pezzi del mercato (per esempio un fruit_shop sotto la porta).
+2. **Strutture vicine.** Un historical_house (beard_box) e la jerusalem_city riempiono il terreno fino a 12 blocchi intorno a sé e coprono i pezzi bassi del mercato. Ho verificato con un datapack di prova: senza città le posizioni dei pezzi restano identiche, quindi il layout dipende solo dal terreno.
+
+Cosa ho cambiato, solo nei file del mercato:
+- Ogni pezzo ha 28 strati vuoti in più sopra (`HEADROOM` in `gen_grand_market.py`). Gli strati senza blocchi non piazzano niente, ma il box più alto impedisce al jigsaw di impilare i pezzi.
+- `terrain_adaptation` del mercato passa da `beard_thin` a `none`.
+- Aggiunto l'uovo generatore del Venditore dello Shuk, con la texture vanilla dell'uovo del villager.
+
+Verifica su più seed (edifici con la superficie sopra il tetto):
+| seed | prima | dopo |
+|---|---|---|
+| 777 | 6 sepolti, alcuni impilati | 4 sepolti, nessuno impilato |
+| 424242 | 0 | 0 |
+| 12345 | 0 (solo con `none`) | non riprovato |
+| 99 | 0 (solo con `none`) | non riprovato |
+| 2024 | non provato | 1 sepolto |
+
+Sono rimasti 5 casi:
+- 4 sono a meno di 12 blocchi da un historical_house o dalla jerusalem_city. Questo va risolto con l'esclusione tra i set di strutture (structure_set), che non posso toccare.
+- Il market_hall del seed 777 è rigido e attaccato alla porta, quindi resta alla quota della porta anche se il terreno sale: finisce dentro la collina.
+
+Non è chiuso: niente merge finché il test su più seed non dà 0 sepolti.
+
+Aggiornamento:
+- La sala del mercato non è più attaccata in modo rigido alla porta: è collegata con un breve passaggio che segue il terreno (`market/hall_approach`), quindi sta sul terreno.
+- Confronto tra `none` e `beard_thin` sui 5 seed (777, 424242, 12345, 99, 2024), con lo spazio vuoto sopra e la sala collegata così:
+  - `none`: 1 edificio sepolto per colpa del mercato (seed 99, 2 blocchi di pendio sul tetto) e 4 vicini ad altre strutture.
+  - `beard_thin`: 0 per colpa del mercato e 5 vicini ad altre strutture (777: 3, 2024: 2).
+- Torno quindi a `beard_thin`. I casi vicino a historical_house e jerusalem_city li risolve la PR anti-sovrapposizione (box allargati del margine di adattamento del terreno).
+- I venditori si caricano su tutti i seed (da 6 a 18 per mercato).
+
 ## Mar Morto: galleggiamento, fango e sale
 
 Problema riscontrato: il galleggiamento c'era solo sulla carta. La spinta verso l'alto veniva applicata soltanto dal server, mentre il movimento del giocatore lo calcola il suo client, quindi il giocatore affondava e annegava (provato: in una vasca nel bioma Mar Morto andava a fondo con l'aria a 0). Il fango del Mar Morto si poteva solo trovare nelle casse, e i bagni di fango del resort erano solo decorazione. Il sale non aveva nessun uso.
