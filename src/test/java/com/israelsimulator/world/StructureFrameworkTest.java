@@ -142,6 +142,9 @@ class StructureFrameworkTest {
             } else if ("grand_market".equals(name)) {
                 assertEquals("israel_simulator:market/market_gate", location,
                         "grand_market must start from the market gate piece");
+            } else if ("agricultural_farm".equals(name)) {
+                assertEquals("israel_simulator:farm/farmyard", location,
+                        "agricultural_farm must start from the farmyard piece");
             } else if ("tel_aviv_city".equals(name)) {
                 assertEquals("israel_simulator:tel_aviv/square", location,
                         "tel_aviv_city must start from the Dizengoff square piece");
@@ -157,6 +160,7 @@ class StructureFrameworkTest {
             String nbtPath = switch (name) {
                 case "jerusalem_city" -> "data/israel_simulator/structure/jerusalem/plaza.nbt";
                 case "tel_aviv_city" -> "data/israel_simulator/structure/tel_aviv/square.nbt";
+                case "agricultural_farm" -> "data/israel_simulator/structure/farm/farmyard.nbt";
                 case "grand_market" -> "data/israel_simulator/structure/market/market_gate.nbt";
                 case "desert_ruins" -> "data/israel_simulator/structure/ruins/courtyard.nbt";
                 case "dead_sea_resort" -> "data/israel_simulator/structure/dsr/resort_plaza.nbt";
