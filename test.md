@@ -774,6 +774,13 @@ Non provato: la discesa accovacciandosi e la ciotola fuori dal bioma (non dà ni
 - Durante lo **Shabbat** (`/festival start shabbat`) laptop e smartphone rifiutano: "È Shabbat: oggi niente lavoro".
 - Verificato in gioco (seed 777): 3 ₪ fuori città, cooldown, 6+25 ₪ nella sessione 10 e 20 a Tel Aviv, consegna +1 ₪ in città, rifiuto fuori città e di Shabbat, nessun errore nei log.
 
+## Shabbat: riposo
+- `/festival start shabbat` (o venerdì sera nel calendario): se per 1 minuto non rompi/piazzi blocchi e non attacchi, ogni 10 s ricevi Rigenerazione e un po' di saturazione, con il messaggio "Riposo di Shabbat" sopra la hotbar.
+- Rompere/piazzare un blocco o attaccare di Shabbat: messaggio "È Shabbat e stai lavorando" e niente bonus per 1 minuto (in creativa non conta).
+- Gli abitanti dei villaggi riposano: di Shabbat camminano lentamente. Lo Shuk e gli NPC osservanti restano chiusi; laptop e smartphone non lavorano.
+- `/festival stop`: niente più bonus né lentezza.
+- Verifica: solo build e test unitari (`ShabbatRestTest`).
+
 ## Strutture sovrapposte o sepolte da altre strutture
 
 Problema riscontrato: strutture diverse della mod (e copie della stessa) spawnavano una dentro l'altra, oppure una seppelliva l'altra: il terreno rimodellato da `terrain_adaptation` (beard/bury/encapsulate) arriva fino a 12 blocchi attorno a ogni pezzo. Le `exclusion_zone` aggiunte per Gaza e per il Muro (PR 65 e 69) coprivano solo alcune coppie, una sola zona per set, e rendevano le strutture molto più rare.

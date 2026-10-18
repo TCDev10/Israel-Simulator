@@ -38,6 +38,7 @@ public final class ModGameEvents {
         com.israelsimulator.event.world.speech.PublicSpeechEvent.reset();
         com.israelsimulator.deadsea.DeadSeaSpa.reset();
         com.israelsimulator.festival.FestivalEvents.reset();
+        com.israelsimulator.festival.ShabbatRest.reset();
         com.israelsimulator.festival.FestivalManager.clearForcedFestival();
     }
 
@@ -84,6 +85,9 @@ public final class ModGameEvents {
             com.israelsimulator.event.world.plane.TwinTowersPlaneEvent.tick(speechLevel);
             com.israelsimulator.mossad.MossadAgentSpawner.tick(speechLevel);
             com.israelsimulator.festival.FestivalEvents.tick(speechLevel);
+            if (speechLevel.dimension() == net.minecraft.world.level.Level.OVERWORLD) {
+                com.israelsimulator.festival.ShabbatRest.tick(speechLevel);
+            }
             if (speechLevel.getGameTime() % 20 == 0) {
                 for (net.minecraft.server.level.ServerPlayer p : speechLevel.players()) {
                     com.israelsimulator.mossad.MossadMissions.tickPlayer(p);
@@ -105,6 +109,10 @@ public final class ModGameEvents {
                 return;
             }
 
+            if (entity instanceof net.minecraft.world.entity.npc.villager.AbstractVillager villager) {
+                com.israelsimulator.festival.ShabbatRest.tickVillager(villager);
+            }
+
             // Desert sun and heat exhaustion (player-specific)
             if (entity instanceof net.minecraft.world.entity.player.Player player) {
                 com.israelsimulator.desert.DesertHazards.handleDesertTick(player);
@@ -120,6 +128,21 @@ public final class ModGameEvents {
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onBlockBreak(net.neoforged.neoforge.event.level.block.BreakBlockEvent event) {
+        com.israelsimulator.festival.ShabbatRest.onWork(event.getPlayer());
+    }
+
+    @SubscribeEvent
+    public static void onBlockPlace(net.neoforged.neoforge.event.level.BlockEvent.EntityPlaceEvent event) {
+        com.israelsimulator.festival.ShabbatRest.onWork(event.getEntity());
+    }
+
+    @SubscribeEvent
+    public static void onAttack(net.neoforged.neoforge.event.entity.player.AttackEntityEvent event) {
+        com.israelsimulator.festival.ShabbatRest.onWork(event.getEntity());
     }
 
     @SubscribeEvent
