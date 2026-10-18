@@ -19,7 +19,7 @@
 
 ---
 
-> 📖 **Official Documentation & Wiki:** Explore the complete **[GitHub Wiki (wiki/)](wiki/Home.md)** for in-depth guides on all 16 structures, items, bosses, kosher rules, and economies.
+> 📖 **Official Documentation & Wiki:** Explore the complete **[GitHub Wiki (wiki/)](wiki/Home.md)** for in-depth guides on all 19 structures, items, bosses, kosher rules, and economies.
 
 ## Table of Contents
 
@@ -27,7 +27,7 @@
 - [Official Wiki](wiki/Home.md)
 - [Key Features](#key-features)
   - [Deterministic Biomes & World Generation](#-deterministic-biomes--world-generation)
-  - [16 Procedural Real Structures](#-16-procedural-real-structures)
+  - [19 Procedural Real Structures](#-19-procedural-real-structures)
   - [Dynamic Cities & Tel Aviv District System](#-dynamic-cities--tel-aviv-district-system)
   - [Living Cultural & Religious Mechanics](#-living-cultural--religious-mechanics)
   - [Currency, Economy & Food](#-currency-economy--food)
@@ -52,7 +52,7 @@
 **Israel-Simulator** is a sandbox mod built for **NeoForge 26.2** (targeting **Minecraft 26.2** on **Java 25**). Rather than being a linear adventure map or a scripted tour, the mod proceduralizes the landscape of Israel into Minecraft's native world generation.
 
 It combines two core experiences:
-1. **Authentic Cultural Simulation**: Walk the limestone alleys of Jerusalem's Old City, pray at the Western Wall with a Kippah and Prayer Note, light the Hanukkah Menorah, celebrate Shabbat, sample street food (falafel, shakshuka, sabich, hummus), and trade using Shekels and Rav-Kav transit cards.
+1. **Authentic Cultural Simulation**: Walk the limestone alleys of Jerusalem's Old City, pray at the Western Wall with a Kippah, wear a Talit and Tefillin, light the Hanukkah Menorah, sample street food (falafel, shakshuka, sabich, hummus), and pay with Shekels or a Rav-Kav card.
 2. **Chaotic Sandbox Gameplay**: Discover ancient desert sanctuaries holding the mythic *Rabbi's Crown*, venture into tech startups in Tel Aviv, battle the satirical *Bibi* boss and his security guards, and play the legendary *Hava Nagila* music disc.
 
 Every mechanic is built from the ground up to be **authoritative on the server**, ensuring fair multiplayer environments without client-side exploit vectors.
@@ -71,30 +71,33 @@ The mod organizes Israeli biomes into an intuitive West-to-East geographic strip
 * **Judean Desert**: Arid sandstone valleys, canyons, oasis pockets, and harsh survival conditions.
 * **Dead Sea**: Deep salt-crusted depression with salt blocks, mineral water, and extreme elevation drops bordering Jerusalem and the desert.
 
-### 🏛️ 16 Procedural Real Structures
+### 🏛️ 19 Procedural Real Structures
 
-All 16 registered structures have furnished interiors, functional block entities and dedicated chest/barrel loot tables. Six are multi-piece jigsaw settlements that follow the terrain (streets bend with the ground, buildings sit on buried footings); the rest are single hand-built pieces:
+All 19 registered structures are real builds with furnished interiors and chest/barrel loot tables, each locked to one biome. Most are multi-piece jigsaws that follow the terrain (streets bend with the ground, buildings sit on buried footings); the others are single hand-built pieces, some with several variants:
 
-| Structure | Dimensions | Key Highlights |
-| :--- | :--- | :--- |
-| `western_wall` | 54×19×18 | Sacred limestone plaza, underground prayer tunnels, note crevices |
-| `tel_aviv_city` | Jigsaw city | Dizengoff square, Bauhaus blocks, Florentin lofts, Sarona houses, high-rises, Rothschild kiosks, Tayelet |
-| `jerusalem_city` | Jigsaw city | Old City plaza, stone streets, shuk stalls, well, wall gates, synagogue, six house styles (courtyard, domed, Nachlaot, Templer, Rehavia, arched) |
-| `great_synagogue` | 36×31×36 | Stained glass hall, central bimah, Torah Ark; copper dome, twin towers, pedimented portico |
-| `ancient_sanctuary` | 30×12×34 | Hidden desert temple guarding the Mythic Rabbi's Crown |
-| `grand_market` | Jigsaw market | Mahane Yehuda-style gate plaza, covered and open lanes, spice/fruit/bakery/fish/halva shops, cafe, covered market hall |
-| `government_building` | 28×14×26 | Civic halls, debating chambers, executive offices |
-| `startup_office` | 26×17×26 | Modern tech hub with workstations and server racks; lit canopy sign, rooftop terrace |
-| `synagogue` | 26×24×26 | Neighbourhood house of prayer and study; dome on a windowed drum, turrets, portico, rose window |
-| `historical_house` | 24×14×24 | Heritage limestone home with olive courtyard, dome, green shutters, external roof stair |
-| `agricultural_farm` | 32×12×32 | Modern greenhouses, irrigated crop plots, barn storage |
-| `dead_sea_resort` | Jigsaw resort | Mud-spa plaza, hotel tower, promenade/boardwalk, mud spa, pool club, beach bar, salt shop, salt-formation beach |
-| `desert_ruins` | Jigsaw ruins | Qumran-style courtyard and cistern, temple ruin, scriptorium with scroll jars, pottery workshop, watchtower, mikveh |
-| `ein_gedi_oasis` | 32×16×32 | Natural mountain waterfall, lush palm pools, hidden cavern loot |
-| `jaffa_port` | Jigsaw town | Ottoman clock tower square, harbour with boats, pier and lighthouse, stone alleys and stairs, flea market |
-| `mediterranean_village` | Jigsaw village | Square with well, whitewashed houses, chapel, bakery, fisherman's hut, olive grove, market stall |
+| Structure | Biome | Size / layout | Key Highlights |
+| :--- | :--- | :--- | :--- |
+| `western_wall` | Jerusalem | 64×26×48 | Herodian courses of large pale ashlars, paved prayer plaza with mechitza, Wilson's Arch prayer hall with the treasury, covered Mughrabi ramp |
+| `jerusalem_city` | Jerusalem | Jigsaw city | Old City plaza, stone streets, shuk stalls, well, wall gates, synagogue, six house styles (courtyard, domed, Nachlaot, Templer, Rehavia, arched) |
+| `grand_market` | Jerusalem | Jigsaw market | Mahane Yehuda-style gate plaza, covered and open lanes, spice/fruit/bakery/fish/halva shops, cafe, covered market hall |
+| `great_synagogue` | Jerusalem | 36×31×36 | Stained glass hall, central bimah, Torah Ark; copper dome, twin towers, pedimented portico |
+| `synagogue` | Jerusalem | 26×24×26 | Neighbourhood house of prayer and study; dome on a windowed drum, turrets, portico, rose window |
+| `historical_house` | Jerusalem | 24×14×24 | Heritage limestone home with olive courtyard, dome, green shutters, external roof stair |
+| `tel_aviv_city` | Urban Area | Jigsaw city | Dizengoff square, Bauhaus blocks, Florentin lofts, Sarona houses, high-rises, Rothschild kiosks, Tayelet |
+| `government_building` | Urban Area | 2 variants (41×22×47, 33×32×39) | Knesset with plenary hall, or ministry tower with helipad |
+| `startup_office` | Urban Area | 26×17×26 | Modern tech hub with workstations and server racks; lit canopy sign, rooftop terrace |
+| `jaffa_port` | Mediterranean Coast | Jigsaw town | Ottoman clock tower square, harbour with boats, pier and lighthouse, stone alleys and stairs, flea market |
+| `mediterranean_village` | Mediterranean Coast | Jigsaw village | Square with well, whitewashed houses, chapel, bakery, fisherman's hut, olive grove, market stall |
+| `gaza_strip` | Mediterranean Coast | Jigsaw zone, 110–160 blocks a side | Rubble streets, checkpoints, ruins, watchtowers, breached walls and compounds, randomised every time |
+| `agricultural_farm` | Israeli Agriculture | Jigsaw moshav | Fields, irrigation, greenhouses, date grove, farmyard and sheds |
+| `ancient_sanctuary` | Judean Desert | 2 variants (31×18×43) | Hidden Tabernacle-plan temple, also half-buried, with the Rabbi's Crown in a crypt |
+| `desert_ruins` | Judean Desert | Jigsaw ruins | Qumran-style courtyard and cistern, temple ruin, scriptorium with scroll jars, pottery workshop, watchtower, mikveh |
+| `ein_gedi_oasis` | Judean Desert | Jigsaw oasis | Waterfall and pools, trails, ancient mosaic synagogue, hidden cave, balsam terraces, lookout |
+| `dead_sea_resort` | Dead Sea | Jigsaw resort | Mud-spa plaza, hotel tower, promenade/boardwalk, mud spa, pool club, beach bar, salt shop, salt-formation beach |
+| `tropical_island` | Tropical Island (rare warm deep ocean) | 240×72×170 | A whole island with its temple |
+| `torri_gemelle` | Plains (vanilla) | 74×200×71 | The Twin Towers |
 
-*Structure set placement and spacing are optimized for lightning-fast `/locate` searches without freezing chunk generation.*
+Find any of them with `/locate structure israel_simulator:<name>`.
 
 ### 🏙️ Dynamic Cities & Tel Aviv District System
 
@@ -112,14 +115,16 @@ When walking through Tel Aviv, players traverse **6 functional districts**, each
 - **Menorah Lighting**: Placeable multi-state Menorah block that can be progressively lit candle by candle during holiday festivals.
 - **Synagogue Torah Ark**: Interactive holy ark providing community blessings to gathered worshippers.
 - **Kosher Digestion System**: Dietary status effects rewarding proper kosher food combinations.
-- **Holiday Calendar Events**: Scheduled in-game world events for Shabbat and Hanukkah.
+- **Festival items**: Shofar, Dreidel and holiday foods (Matzo, Sufganiyah, Hamantash). A festival calendar and Shabbat routines for NPCs exist in code but do not yet run in the world (see `TODO.md`, roadmap).
 
 ### 💰 Currency, Economy & Food
 
 - **Currency**: Minted **Shekel** and **Agora** coins with server-authoritative exchange rates and merchant discounts.
-- **Public Transport**: **Rav-Kav** smart cards and transport stop blocks providing rapid transit across distant cities.
-- **Mediterranean Cuisine**: 12 custom foods with original textures and realistic nutrition values:
-  - *Falafel*, *Shakshuka*, *Sabich*, *Hummus*, *Challah*, *Matzo*, *Sufganiyah*, *Hamantash*, *Rugelach*, *Tahini*, *Olives*, *Citrus*, and fresh vineyard *Grapes*.
+- **Public Transport**: **Rav-Kav** card and transit stop blocks: right-clicking a stop moves you to the next stop of a small fixed network, paying the fare in Shekels unless you carry a Rav-Kav. Real lines built on placed stops are on the roadmap.
+- **Mediterranean Cuisine**: custom foods with original textures:
+  - dishes: *Falafel*, *Shakshuka*, *Sabich*, *Hummus*, *Challah*, *Rugelach*, *Tahini*;
+  - holiday foods: *Matzo*, *Sufganiyah*, *Hamantash*;
+  - produce: *Olives*, *Dates*, *Citrus*, *Grapes* (grown on the grapevine crop), *Chickpeas*, *Tomato*, *Eggplant*, *Sesame Seeds*.
 
 ### ⚡ Endgame & Sandbox Encounters
 
@@ -127,6 +132,7 @@ When walking through Tel Aviv, players traverse **6 functional districts**, each
 - **First Amendment** *(LEGENDARY)*: High-tier artifact granting speech and immunity effects.
 - **Hava Nagila Music Disc** *(LEGENDARY)*: Custom music disc with full jukebox audio integration.
 - **Bibi Boss Battle**: Satirical boss entity with custom AI goals, armed security guards, speech sound effects, and unique endgame drops.
+- **Other encounters**: further satirical bosses and minibosses, Mossad agents, a plane-crash world event and regional wildlife (gazelle, ibex, hyrax). See the [wiki](wiki/Home.md).
 
 ---
 
@@ -149,6 +155,24 @@ When walking through Tel Aviv, players traverse **6 functional districts**, each
 2. Ensure the server runs on **Java 25** (`java -version`).
 3. Place `israel_simulator-x.y.z.jar` into the server's `mods/` directory.
 4. Start the server via `run.bat` or `run.sh`. World generation rules and city structures will automatically generate in newly explored chunks.
+
+### Multiplayer
+
+The mod must be installed on both the server and every client. Gameplay (prayer, trades, transit, bosses, economy) runs on the server.
+
+### Configuration
+
+Common options live in `config/israel_simulator-common.toml` (created on first launch): Blessed effect duration and level, the kosher system and its digestion times, Bibi boss health/damage/guards/arena radius, NPC density, trade discount cap and world event duration/cooldown.
+
+### CI builds
+
+Every push to `main` is built by GitHub Actions; the mod JAR is attached to the run as the artifact `israel-simulator-<version>-<sha>` (Actions → run → Artifacts).
+
+### Known Limitations
+
+- Only NeoForge 26.2 / Minecraft 26.2 on Java 25 is supported.
+- Some structures can still overlap their neighbours; spawn spacing is being retuned.
+- Festival calendar events and NPC Shabbat routines are not active in the world yet.
 
 ---
 
@@ -194,10 +218,10 @@ NeoForge ModDevGradle comes preconfigured with dedicated run configurations:
 
 ### Running the Test Suite
 
-Israel-Simulator enforces strict test coverage across all worldgen algorithms, registries, economies, and data assets:
+JUnit tests cover worldgen data, registries, economies and data assets:
 
 ```bash
-# Run all 54 JUnit 5 test suites (250 tests)
+# Run the JUnit 5 test suite
 ./gradlew test
 ```
 
@@ -213,17 +237,16 @@ The codebase follows a modular server-authoritative structure:
 
 ```text
 src/main/java/com/israelsimulator/
-├── IsraelSimulator.java          # Mod entrypoint & event bus registrations
-├── city/                         # City simulation & Tel Aviv district logic
-│   ├── telaviv/                  # District boundaries, banners, economy multipliers
-│   ├── jerusalem/                # Old City bazaar trades and economy
-│   └── jaffa/                    # Port merchant trades and maritime economy
-├── cultural/                     # Cultural interaction handlers (Western Wall, Menorah)
-├── entity/                       # Custom entity definitions, AI goals, Bibi boss
-├── event/                        # World events, festivals, player join/tick listeners
-├── food/                         # Kosher digestion and nutrition handlers
-├── registry/                     # NeoForge deferred registers (Blocks, Items, Entities, etc.)
-└── world/                        # Climate parameters, biomes, jigsaw pools, structure sets
+├── IsraelSimulator.java   # Mod entrypoint & event bus registrations
+├── agriculture/ desert/ deadsea/        # Regional mechanics (crops, desert, Dead Sea buoyancy)
+├── block/ item/ effect/ entity/         # Content: blocks, items, effects, mobs, bosses, projectiles
+├── city/ economy/ trading/ reputation/  # Cities and Tel Aviv districts, Shekel economy, trades
+├── religion/ synagogue/ westernwall/ festival/  # Prayer, Torah Ark, festival items and calendar
+├── transport/ npc/ mossad/ quest/ easteregg/
+├── client/                              # Client-only renderers, 3D wearables, music
+├── event/ network/ config/ registry/ datagen/ mixin/ performance/ core/ audio/
+└── world/                               # Biomes, climate, structures, worldgen guards
+scripts/worldgen/                        # Python generators for the structure NBT templates
 ```
 
 ---

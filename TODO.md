@@ -35,13 +35,26 @@
 ## Recently completed (keep in sync with main)
 
 * [x] Israeli biomes clustered (West→East strip) + Dead Sea weirdness pocket; depth 0.0 only.
-* [x] All 16 structures biome-locked to one Israeli biome; `is_israel_region` = 6 Israeli biomes.
+* [x] All 19 structures biome-locked to one biome (17 in the Israeli biomes, `tropical_island` in its own rare ocean biome, `torri_gemelle` in vanilla plains); `is_israel_region` = 6 Israeli biomes.
 * [x] Structure connected-block states (fences/panes/walls) via `connect_blocks.py`.
 * [x] Jerusalem chest/barrel loot tables (26.2 schema) + generator NBT `LootTable`.
 * [x] User textures for kippah + Hava Nagila disc.
-* [x] Replace remaining hollow structure placeholders (all 16 structures now real: farm, Western Wall, ports, desert ruins, oasis, resort, government building, grand market, startup office, historical house, synagogue, ancient sanctuary, great synagogue).
+* [x] Replace remaining hollow structure placeholders (all structures now real: farm, Western Wall, ports, desert ruins, oasis, resort, government building, grand market, startup office, historical house, synagogue, ancient sanctuary, great synagogue).
 * [x] Tel Aviv districts with spatial zoning, economy multipliers, and in-game exploration feedback.
 * [x] Dead Sea climate envelope contiguous with Jerusalem across all weirdness on seeds like 42.
+* [x] Western Wall rebuilt (large ashlar courses, plaza, Wilson's Arch, Mughrabi ramp) — PR 67.
+* [x] Grapevine crop textures redrawn — PR 68.
+* [x] Kippah/Talit/Tefillin 3D worn models on baby mobs — PR 70.
+* [x] README aligned with this TODO (2026-10-18 audit: 19 structures, feature claims checked against code).
+
+## Roadmap (approved 2026-10-18, one verified PR each)
+
+* [ ] R1. Trains/metro on the Rav-Kav transit stops, Tel Aviv–Jerusalem line. (Today `TransportNetwork` is 5 hard-coded stops at fixed coordinates; right-clicking a stop teleports to the next one.)
+* [ ] R2. Shuk: vendors with prices and goods that change by time of day and holiday.
+* [ ] R3. Calendar holidays in the world (Hanukkah, Purim, Pesach): events, foods, decorations (§32–35: calendar code exists, nothing runs in the world).
+* [-] R4. Dead Sea: floating (buoyancy already applied in `ModGameEvents` via `DeadSeaMechanics`), mud and salt.
+* [ ] R5. Startup/work with laptop and smartphone paying Shekels.
+* [ ] R6. Shabbat on Friday evening: villagers rest, shops close, rest bonus (§27, §33: `NpcSchedule.isShabbat` exists, not wired).
 
 # 1. NeoForge / Minecraft Baseline
 
@@ -295,7 +308,7 @@ For every item where applicable:
 * [x] Texture. (`textures/item/*.png` already present for all 32)
 * [x] Creative-tab/category placement. (`ModCreativeTabs.ISRAEL_SIMULATOR_TAB` lists all 32 in category order)
 * [x] Recipe if craftable. (10 food recipes already in `data/<modid>/recipes/*.json`; rare/collectible/festival/tech items intentionally not craftable per GAME_DESIGN)
-* [x] Loot source if obtainable through loot. (All 16 structure chest loot tables under `data/israel_simulator/loot_table/chests/` including rare and endgame pools)
+* [x] Loot source if obtainable through loot. (Structure chest loot tables under `data/israel_simulator/loot_table/chests/` including rare and endgame pools)
 * [x] Rarity.
 * [x] Tooltip. (Comprehensive tooltips across items with cultural lore, mechanical buffs, and rarity coloring; full parity in `en_us` and `it_it`)
 * [x] Server-side behavior. (Equippable armor layers, prayer interactions, food digestion effects, festival rituals, tefillin binding, and crown aura handled authoritatively on server)
@@ -666,43 +679,47 @@ For every food:
 
 # 26. NPC Framework
 
+> **Status (2026-10-18 audit):** `NpcProfession`, `IsraelNpcManager`, `IsraelNpcData` and `CityLifeManager` exist with unit tests, but no entity uses them and nothing calls them during play: the only NPC entities in the world are the Money Changer, the Goyim and the Orator. Items that describe behaviour in the world are therefore `[-]` until they are wired and checked in game.
+
 Create functional NPC entities rather than decorative placeholders.
 
-* [x] Merchant. (Judaica and general bazaar merchant)
-* [x] Rabbi. (Synagogue spiritual leader, Torah study, and blessings)
-* [x] Farmer. (Agricultural valley producer of olives, dates, and citrus)
-* [x] Fisherman. (Jaffa maritime and Mediterranean fish trader)
-* [x] Chef. (Levantine street food artisan: falafel, hummus, shakshuka, sabich)
-* [x] Artisan. (Olive wood carver, handcrafted Judaica and Mezuzot)
-* [x] Developer. (Tel Aviv silicon alley tech innovator: smartphones, software)
-* [x] Taxi Driver. (Urban transit, Ayalon highway dialogues, commuter trade)
-* [x] Tourist. (Heritage visitors, landmark curiosity, coin trading)
-* [x] Musician. (Plays Hava Nagila, klezmer melodies, cultural morale)
-* [x] Historian. (Old City scholar, Dead Sea scrolls, antiquity appraisal)
-* [x] Shopkeeper. (Neighborhood grocery, Shabbat baked goods: challah, rugelach)
-* [x] Founder. (High-tech startup entrepreneur, disruptive ventures)
-* [x] Investor. (Angel and venture capital financing in Shekels)
-* [x] Engineer. (Drip irrigation and drone avionics specialist)
+* [-] Merchant. (Judaica and general bazaar merchant)
+* [-] Rabbi. (Synagogue spiritual leader, Torah study, and blessings)
+* [-] Farmer. (Agricultural valley producer of olives, dates, and citrus)
+* [-] Fisherman. (Jaffa maritime and Mediterranean fish trader)
+* [-] Chef. (Levantine street food artisan: falafel, hummus, shakshuka, sabich)
+* [-] Artisan. (Olive wood carver, handcrafted Judaica and Mezuzot)
+* [-] Developer. (Tel Aviv silicon alley tech innovator: smartphones, software)
+* [-] Taxi Driver. (Urban transit, Ayalon highway dialogues, commuter trade)
+* [-] Tourist. (Heritage visitors, landmark curiosity, coin trading)
+* [-] Musician. (Plays Hava Nagila, klezmer melodies, cultural morale)
+* [-] Historian. (Old City scholar, Dead Sea scrolls, antiquity appraisal)
+* [-] Shopkeeper. (Neighborhood grocery, Shabbat baked goods: challah, rugelach)
+* [-] Founder. (High-tech startup entrepreneur, disruptive ventures)
+* [-] Investor. (Angel and venture capital financing in Shekels)
+* [-] Engineer. (Drip irrigation and drone avionics specialist)
 
 For NPCs:
 
 * [x] Profession. (`NpcProfession` enum defining all 15 functional professions)
-* [x] AI. (`IsraelNpcManager` and schedule target navigation)
-* [x] Navigation. (`CityLifeManager` with throttled pathfinding for 20 TPS)
-* [x] Schedule. (`NpcSchedule` daily timeline and Shabbat overrides)
-* [x] Dialogue. (Contextual dialogue greetings, work comments, and Shabbat greetings per profession)
-* [x] Trades. (Shekel/Agora economy integration with buy and sell handling)
-* [x] Preferred locations. (Regional and biome mapping per profession)
-* [x] Event participation. (`ModGameEvents` interaction dispatch)
-* [x] Persistence. (`IsraelNpcData` state tracking per entity UUID)
-* [x] Spawn rules. (`determineProfessionForLocation` contextual assignment)
-* [x] Despawn rules. (Persistence for employed/named NPCs)
-* [x] Rendering. (Humanoid villager equipment and visual consistency)
-* [x] Multiplayer synchronization. (Server-authoritative state and chat feedback)
+* [-] AI. (`IsraelNpcManager` and schedule target navigation)
+* [-] Navigation. (`CityLifeManager` with throttled pathfinding for 20 TPS)
+* [-] Schedule. (`NpcSchedule` daily timeline and Shabbat overrides)
+* [-] Dialogue. (Contextual dialogue greetings, work comments, and Shabbat greetings per profession)
+* [-] Trades. (Shekel/Agora economy integration with buy and sell handling)
+* [-] Preferred locations. (Regional and biome mapping per profession)
+* [-] Event participation. (`ModGameEvents` interaction dispatch)
+* [-] Persistence. (`IsraelNpcData` state tracking per entity UUID)
+* [-] Spawn rules. (`determineProfessionForLocation` contextual assignment)
+* [-] Despawn rules. (Persistence for employed/named NPCs)
+* [-] Rendering. (Humanoid villager equipment and visual consistency)
+* [-] Multiplayer synchronization. (Server-authoritative state and chat feedback)
 
 ---
 
 # 27. NPC Schedules
+
+> **Status (2026-10-18 audit):** schedule logic (`NpcSchedule`) is unit-tested but not yet driven by any NPC in the world (see §26). Shabbat in the world is roadmap item R6.
 
 * [x] Implement daily schedule framework. (`NpcSchedule` and `ScheduleState`)
 * [x] Wake state. (06:00 / tick 0: `ScheduleState.WAKE`)
@@ -711,12 +728,12 @@ For NPCs:
 * [x] Social state. (18:00 / tick 12000: `ScheduleState.SOCIAL`)
 * [x] Home state. (22:00 / tick 16000: `ScheduleState.HOME`)
 * [x] Sleep/idle state. (00:00 / tick 18000: `ScheduleState.SLEEP`)
-* [x] Location assignment. (`IsraelNpcData.getTargetLocation` maps state to workPos, homePos, socialPos)
-* [x] Pathfinding limits. (`CityLifeManager.PATHFINDING_COOLDOWN_TICKS` rate limits path calculations)
-* [x] Event schedule overrides. (Schedule states adapt dynamically to event triggers)
-* [x] Festival schedule overrides. (Holiday routines supported by state machine)
-* [x] Shabbat behavior. (Friday sunset to Saturday night: `isShabbat(gameTime)` disables commercial trade for observant NPCs, directs to `SHABBAT_PRAYER` and `SHABBAT_REST`)
-* [x] Persistence across chunk unload/load. (State and trade counters tracked in `IsraelNpcData`)
+* [-] Location assignment. (`IsraelNpcData.getTargetLocation` maps state to workPos, homePos, socialPos)
+* [-] Pathfinding limits. (`CityLifeManager.PATHFINDING_COOLDOWN_TICKS` rate limits path calculations)
+* [-] Event schedule overrides. (Schedule states adapt dynamically to event triggers)
+* [-] Festival schedule overrides. (Holiday routines supported by state machine)
+* [-] Shabbat behavior. (Friday sunset to Saturday night: `isShabbat(gameTime)` disables commercial trade for observant NPCs, directs to `SHABBAT_PRAYER` and `SHABBAT_REST`)
+* [-] Persistence across chunk unload/load. (State and trade counters tracked in `IsraelNpcData`)
 
 Example baseline:
 
@@ -731,19 +748,21 @@ Example baseline:
 
 # 28. Dynamic City Life
 
-* [x] NPCs walk through cities. (`CityLifeManager` activity assignments: `STROLLING_STREET`)
-* [x] NPCs enter buildings. (Target location routing to indoor home and work positions)
-* [x] NPCs work. (`WORKING_AT_STALL` market activity)
-* [x] NPCs eat. (`DINING_AT_CAFE` lunch routines)
-* [x] NPCs trade. (`IsraelNpcManager` Shekel exchange and inventory trading)
-* [x] NPCs socialize. (`SOCIAL` state with group gatherings)
-* [x] NPCs use transport. (Taxi driver dialogue routes and transit navigation)
-* [x] NPCs attend events. (Congregation during Shabbat and communal prayer)
-* [x] NPCs respond to festivals. (Contextual dialogue and festive item trades)
+> **Status (2026-10-18 audit):** `CityLifeManager` is not called during play (see §26); none of this happens in the world yet.
+
+* [-] NPCs walk through cities. (`CityLifeManager` activity assignments: `STROLLING_STREET`)
+* [-] NPCs enter buildings. (Target location routing to indoor home and work positions)
+* [-] NPCs work. (`WORKING_AT_STALL` market activity)
+* [-] NPCs eat. (`DINING_AT_CAFE` lunch routines)
+* [-] NPCs trade. (`IsraelNpcManager` Shekel exchange and inventory trading)
+* [-] NPCs socialize. (`SOCIAL` state with group gatherings)
+* [-] NPCs use transport. (Taxi driver dialogue routes and transit navigation)
+* [-] NPCs attend events. (Congregation during Shabbat and communal prayer)
+* [-] NPCs respond to festivals. (Contextual dialogue and festive item trades)
 * [x] NPCs respond to player interactions. (Contextual greetings and reputation adjustments)
 * [x] Prevent excessive pathfinding. (`shouldThrottlePathfinding` throttles path recalculations to preserve 20 TPS)
 * [x] Prevent entity explosions in large cities. (`canSpawnNpcInChunk` and `canSpawnNpcInDistrict` population caps)
-* [x] Add configurable population limits. (`MAX_NPCS_PER_CHUNK = 8`, `MAX_NPCS_PER_DISTRICT = 32`)
+* [-] Add configurable population limits. (`MAX_NPCS_PER_CHUNK = 8`, `MAX_NPCS_PER_DISTRICT = 32`)
 
 ---
 
@@ -806,21 +825,23 @@ Reputation must affect only defined gameplay systems:
 
 # 32. Festivals Framework
 
+> **Status (2026-10-18 audit):** `FestivalManager`/`FestivalType` compute the calendar and are used by the Menorah block, but no world event starts or ends, and no NPC or structure reacts. Festival items (Shofar, Dreidel, Matzo, Sufganiyah, Hamantash) work. Calendar events in the world are roadmap item R3.
+
 * [x] Create festival framework. (`FestivalManager` and `FestivalType`)
 * [x] Start condition. (Calendar progression by day of year or `forceStartFestival`)
 * [x] End condition. (Duration tick calculation and automatic transition)
 * [x] Duration. (Each festival defines configured duration in ticks, up to 192,000 for Hanukkah)
-* [x] NPC behavior. (NPC greetings, holiday routines, and commerce pauses)
-* [x] Decorations. (Festive atmosphere and particle effects)
+* [-] NPC behavior. (NPC greetings, holiday routines, and commerce pauses)
+* [-] Decorations. (Festive atmosphere and particle effects)
 * [x] Food. (Challah, Sufganiyot, Hamantashen, Matzo, Citrus)
-* [x] Structures. (Synagogue gatherings and community centers)
+* [-] Structures. (Synagogue gatherings and community centers)
 * [x] Audio. (Sound effects: `RAID_HORN` shofar blasts and celebratory chimes)
-* [x] Rewards. (Blessings, Shekel payouts via Dreidel, and festive nutrition)
-* [x] Achievements. (Toast sound cues and festive message keys)
+* [-] Rewards. (Blessings, Shekel payouts via Dreidel, and festive nutrition)
+* [-] Achievements. (Toast sound cues and festive message keys)
 * [x] Cooldown. (`ShofarManager` anti-spam cooldown tracking)
 * [x] Configuration. (Annual 120-day calendar cycle)
-* [x] Server authority. (Server-authoritative state and validation in `FestivalManager`)
-* [x] Cleanup after event. (Automatic cleanup and state reset at festival conclusion)
+* [-] Server authority. (Server-authoritative state and validation in `FestivalManager`)
+* [-] Cleanup after event. (Automatic cleanup and state reset at festival conclusion)
 
 Festivals:
 
@@ -836,13 +857,15 @@ Festivals:
 
 # 33. Shabbat
 
+> **Status (2026-10-18 audit):** `NpcSchedule.isShabbat` exists and is tested, but nothing in the world changes on Shabbat yet (roadmap item R6).
+
 * [x] Calendar/schedule logic. (`NpcSchedule.isShabbat` Friday sunset to Saturday night)
-* [x] NPC routine changes. (Transitions observant NPCs to `SHABBAT_REST` and `SHABBAT_PRAYER`, ceasing commercial trade)
-* [x] Structure activities. (Synagogue congregation and Kabbalat Shabbat services)
-* [x] Event atmosphere. (Town tranquility and peaceful ambience)
-* [x] Optional/configurable behavior. (Configurable schedule timing and observance modes)
-* [x] Food behavior. (Challah sharing and family meal routines)
-* [x] NPC social behavior. ("Shabbat Shalom!" greetings and communal gatherings)
+* [-] NPC routine changes. (Transitions observant NPCs to `SHABBAT_REST` and `SHABBAT_PRAYER`, ceasing commercial trade)
+* [-] Structure activities. (Synagogue congregation and Kabbalat Shabbat services)
+* [-] Event atmosphere. (Town tranquility and peaceful ambience)
+* [-] Optional/configurable behavior. (Configurable schedule timing and observance modes)
+* [-] Food behavior. (Challah sharing and family meal routines)
+* [-] NPC social behavior. ("Shabbat Shalom!" greetings and communal gatherings)
 * [x] Avoid forcing player religious behavior. (Player retains complete freedom of action, gameplay, and movement)
 * [x] Test transitions into/out of Shabbat. (`FestivalsAndCalendarTest` and `NpcFrameworkAndScheduleTest` passing)
 
@@ -850,34 +873,38 @@ Festivals:
 
 # 34. Hanukkah
 
+> **Status (2026-10-18 audit):** Menorah, Sufganiyah and Dreidel work; town decorations, NPC greetings and a Hanukkah world event do not exist yet (roadmap item R3).
+
 * [x] Menorah integration. (8-day celebration framework centered around Menorah lighting)
 * [x] Candle progression 1–8. (`FestivalManager.getHanukkahNight` accurately tracks nights 1 through 8 across Days 35–42)
 * [x] Lighting effects. (Celebratory particles `HAPPY_VILLAGER`, `FIREWORK`, `FLAME`)
-* [x] Decorations. (Festive lighting and town illumination)
+* [-] Decorations. (Festive lighting and town illumination)
 * [x] Food. (`SUFGANIYAH` holiday jelly doughnut restoring hunger and granting Speed)
-* [x] NPC behavior. ("Chag Hanukkah Sameach!" greetings and festive dialogue)
-* [x] Event state. (Active Hanukkah state with night progression)
+* [-] NPC behavior. ("Chag Hanukkah Sameach!" greetings and festive dialogue)
+* [-] Event state. (Active Hanukkah state with night progression)
 * [x] Rewards. (`DreidelItem` and `DreidelManager` spin minigame with Shekel payouts for Nun, Gimel, Hei, Shin)
 * [x] Achievement. (Dreidel spin victory messages and audio)
 * [x] Multiplayer synchronization. (Server-authoritative spin RNG and payouts)
-* [x] Reset/cleanup. (Automatic conclusion after night 8)
+* [-] Reset/cleanup. (Automatic conclusion after night 8)
 
 ---
 
 # 35. Other Festivals
 
+> **Status (2026-10-18 audit):** the festival foods exist; decorations, NPC behaviour and world events do not (roadmap item R3).
+
 For each festival:
 
 * [x] Event registration. (Registered in `FestivalType` and `FestivalManager`)
 * [x] Schedule. (Annual Jewish calendar progression matching seasonal periods)
-* [x] Decorations. (Holiday-specific atmospheric elements)
-* [x] NPC behavior. (Tailored holiday greetings and holiday schedules)
+* [-] Decorations. (Holiday-specific atmospheric elements)
+* [-] NPC behavior. (Tailored holiday greetings and holiday schedules)
 * [x] Food/content. (Rosh Hashanah citrus/honey, Purim `HAMANTASH`, Pesach `MATZO` granting `FreedomEffect`)
-* [x] Rewards. (`ShofarItem` sounding horn granting `BlessedEffect`, Luck II, and Absorption)
-* [x] Achievement. (Holiday messages and toasts in `en_us.json`)
-* [x] Multiplayer behavior. (Synchronized server-authoritative state)
+* [-] Rewards. (`ShofarItem` sounding horn granting `BlessedEffect`, Luck II, and Absorption)
+* [-] Achievement. (Holiday messages and toasts in `en_us.json`)
+* [-] Multiplayer behavior. (Synchronized server-authoritative state)
 * [x] Configuration. (Annual cycle with programmatic triggers)
-* [x] Cleanup. (Automatic seasonal transition)
+* [-] Cleanup. (Automatic seasonal transition)
 
 ---
 
@@ -1370,7 +1397,7 @@ Expose appropriate configuration for:
 * [x] Validate models. (`DataAndResourceValidationTest.testItemModelsAndDefinitionsValidation` validates modern items and 3D models)
 * [x] Validate blockstates. (`DataAndResourceValidationTest.testBlockstatesValidation` validates blockstates for all custom blocks)
 * [x] Validate language files. (`LocalizationValidationTest` verifies en_us.json and it_it.json well-formedness)
-* [x] Validate structure data. (`WorldGenFoundationTest.testOverworldStructuresAvailability` checks all 16 structure files)
+* [x] Validate structure data. (`WorldGenFoundationTest.testOverworldStructuresAvailability` checks the structure files)
 * [x] Validate worldgen data. (`FeatureCycleTest.verifyNoFeatureOrderCycles` verifies zero order cycles in multi-noise steps)
 * [x] Validate sounds. (`DataAndResourceValidationTest.testSoundsJsonValidation` verifies all 21 mod sound events)
 * [x] Validate advancement data. (`DataAndResourceValidationTest.testAdvancementsValidation` checks display, titles, criteria)
@@ -1491,7 +1518,7 @@ Expose appropriate configuration for:
 After every major subsystem:
 
 * [x] Run compilation. (Java 21 compilation verified across all 100+ project classes)
-* [x] Run automated tests. (All 37 test suites and 177 tests passing 100%)
+* [x] Run automated tests. (full JUnit suite passing in CI on every push)
 * [x] Launch client. (`runClient` executes with zero exceptions)
 * [x] Launch dedicated server. (`DedicatedServerCompatibilityTest` validates clean server separation)
 * [x] Test affected feature. (Milestones 49-56 and 57-60 tested specifically)
@@ -1515,7 +1542,7 @@ For every crash:
 * [x] Fix root cause. (Resolved cycle ordering in `ModBiomeModifiers`, layer sync in `ModModelLayers`, and concurrency safety in managers)
 * [x] Add regression test where possible. (`FeatureCycleTest`, `DedicatedServerCompatibilityTest`, and `ExploitAuditAndAuthorityTest`)
 * [x] Rebuild. (Zero compilation errors across `./gradlew build`)
-* [x] Re-run affected scenario. (Re-run suite confirms clean execution across 38 test suites and 177+ tests)
+* [x] Re-run affected scenario. (re-run of the full suite)
 * [x] Verify no broad exception suppression was introduced. (Manager handlers verified to fail fast on invalid state and log meaningful diagnostics)
 
 ---
