@@ -13,6 +13,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -97,6 +98,12 @@ public class TefillinItem extends Item {
                 // Record cooldown
                 TefillinManager.setLastUseTime(cooldowns, player.getUUID(), level.getGameTime());
 
+                // Binding them: if the legs slot is free, the Tefillin go on (forehead + left arm).
+                ItemStack held = player.getItemInHand(hand);
+                if (held.getItem() instanceof TefillinItem && isWearingSlotFree(player)) {
+                    player.setItemSlot(EquipmentSlot.LEGS, held.copyAndClear());
+                }
+
                 // Apply blessings: BlessedEffect + Resistance + Strength if also wearing Talit
                 BlessedEffect.applyTo(player);
                 boolean hasTalit = TalitItem.isWearingTalit(player);
@@ -130,6 +137,16 @@ public class TefillinItem extends Item {
         return InteractionResult.PASS;
     }
 
+    /** The Tefillin slot (LEGS) is free, so binding them can put them on. */
+    static boolean isWearingSlotFree(Player player) {
+        return player.getItemBySlot(EquipmentSlot.LEGS).isEmpty();
+    }
+
+    /** Checks if the given entity is currently wearing Tefillin (LEGS slot). */
+    public static boolean isWearingTefillin(net.minecraft.world.entity.LivingEntity entity) {
+        return entity != null && entity.getItemBySlot(EquipmentSlot.LEGS).getItem() instanceof TefillinItem;
+    }
+
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display,
                                 Consumer<Component> tooltipOutput, TooltipFlag flag) {
@@ -138,5 +155,7 @@ public class TefillinItem extends Item {
                 .withStyle(ChatFormatting.GRAY));
         tooltipOutput.accept(Component.translatable("item.israel_simulator.tefillin.requirement")
                 .withStyle(ChatFormatting.GOLD));
+        tooltipOutput.accept(Component.translatable("item.israel_simulator.tefillin.wear")
+                .withStyle(ChatFormatting.DARK_AQUA));
     }
 }

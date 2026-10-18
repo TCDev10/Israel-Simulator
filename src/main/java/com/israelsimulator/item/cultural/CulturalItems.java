@@ -30,6 +30,13 @@ public final class CulturalItems {
     public static final ResourceKey<EquipmentAsset> TALIT_ASSET =
             ResourceKey.create(EquipmentAssets.ROOT_ID, Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "talit"));
 
+    /**
+     * Tefillin are worn in the LEGS slot: HEAD is taken by the Kippah (required to bind them) and
+     * CHEST by the Talit. The worn model still draws the boxes on the forehead and on the left arm.
+     */
+    public static final ResourceKey<EquipmentAsset> TEFILLIN_ASSET =
+            ResourceKey.create(EquipmentAssets.ROOT_ID, Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "tefillin"));
+
     public static final ResourceKey<net.minecraft.world.item.JukeboxSong> HAVA_NAGILA_SONG =
             ResourceKey.create(net.minecraft.core.registries.Registries.JUKEBOX_SONG, Identifier.fromNamespaceAndPath(IsraelSimulator.MOD_ID, "hava_nagila"));
 
@@ -63,9 +70,22 @@ public final class CulturalItems {
                 .component(DataComponents.EQUIPPABLE, equippable);
     }
 
-    /** Tefillin — contextual interaction item, RARE, unstackable. */
+    /**
+     * Tefillin — morning-prayer item and wearable, RARE, unstackable, no damage on hurt.
+     * Right-click still runs the prayer ritual ({@link TefillinItem#use}); the item goes in the
+     * LEGS slot so it can be worn together with the Kippah (HEAD) and the Talit (CHEST).
+     */
     public static Item.Properties tefillin(Item.Properties p) {
-        return p.stacksTo(1).rarity(RarityLevel.RARE.vanilla());
+        Equippable equippable = Equippable.builder(EquipmentSlot.LEGS)
+                .setEquipSound(SoundEvents.ARMOR_EQUIP_LEATHER)
+                .setAsset(TEFILLIN_ASSET)
+                .setSwappable(false)
+                .setDamageOnHurt(false)
+                .build();
+
+        return p.stacksTo(1)
+                .rarity(RarityLevel.RARE.vanilla())
+                .component(DataComponents.EQUIPPABLE, equippable);
     }
 
     /**

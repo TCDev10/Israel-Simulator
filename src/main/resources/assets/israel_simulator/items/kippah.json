@@ -1,6 +1,23 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "israel_simulator:item/kippah"
+    "type": "minecraft:select",
+    "property": "minecraft:display_context",
+    "cases": [
+      {
+        "when": [
+          "gui",
+          "on_shelf",
+          "fixed"
+        ],
+        "model": {
+          "type": "minecraft:model",
+          "model": "israel_simulator:item/kippah_icon"
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "israel_simulator:item/kippah"
+    }
   }
 }
