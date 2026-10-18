@@ -142,6 +142,9 @@ class StructureFrameworkTest {
             } else if ("grand_market".equals(name)) {
                 assertEquals("israel_simulator:market/market_gate", location,
                         "grand_market must start from the market gate piece");
+            } else if ("gaza_strip".equals(name)) {
+                assertEquals("israel_simulator:gaza/square", location,
+                        "gaza_strip must start from the ruined central square piece");
             } else if ("tel_aviv_city".equals(name)) {
                 assertEquals("israel_simulator:tel_aviv/square", location,
                         "tel_aviv_city must start from the Dizengoff square piece");
@@ -162,6 +165,7 @@ class StructureFrameworkTest {
                 case "dead_sea_resort" -> "data/israel_simulator/structure/dsr/resort_plaza.nbt";
                 case "jaffa_port" -> "data/israel_simulator/structure/jaffa/clock_square.nbt";
                 case "mediterranean_village" -> "data/israel_simulator/structure/mediterranean/square.nbt";
+                case "gaza_strip" -> "data/israel_simulator/structure/gaza/square.nbt";
                 default -> "data/israel_simulator/structure/" + name + ".nbt";
             };
             InputStream nbtStream = getClass().getClassLoader().getResourceAsStream(nbtPath);

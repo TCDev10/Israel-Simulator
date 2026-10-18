@@ -5,11 +5,10 @@
       "weight": 1,
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "israel_simulator:gaza_strip",
-        "processors": "minecraft:empty",
+        "location": "israel_simulator:gaza/square",
+        "processors": "israel_simulator:gaza_ruins_weathering",
         "projection": "rigid"
       }
     }
   ]
 }
-
