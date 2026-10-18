@@ -708,3 +708,28 @@ Provato in gioco: `runServer` e `runClient` sul seed 777, con il Grand Market a 
 - Nei log non ci sono errori della mod.
 
 Bug trovato, non corretto qui: nel seed 777 due negozi del mercato sono generati sotto terra (pavimento a y 55 sotto 1778 -2207 e a y 46 sotto 1789 -2191, con la superficie a circa y 89). È un problema di posizionamento dei pezzi jigsaw del Grand Market che c'era già: i loro venditori ci sono ma non si vedono. Non provato dall'utente in gioco.
+
+## Festività nel mondo (Hanukkah, Purim, Pesach, Shabbat…)
+
+Problema riscontrato: il calendario di `FestivalManager` (anno di 120 giorni, Hanukkah giorni 35–42, Purim giorno 74, Pesach giorni 90–91, Shabbat ogni settimana) lo usava solo la Menorah. Nel mondo non succedeva niente: nessun annuncio, nessun cambiamento per gli NPC.
+
+Funzionamento aspettato: quando una festività inizia o finisce, tutti i giocatori lo vedono in chat, e chi entra durante una festività riceve il saluto. I venditori dello Shuk cambiano merce, prezzi e aspetto con la festa.
+
+Come è stato risolto:
+- Il nuovo `FestivalEvents` controlla il calendario ogni 100 tick nell'Overworld e annuncia inizio e fine (Shabbat compreso) con un suono.
+- All'ingresso del giocatore manda il saluto della festività in corso.
+- La festività forzata con `/festival` si azzera quando il server si ferma.
+- I venditori dello Shuk tengono in mano il cibo della festa: sufganiyah, hamantash, matzah, miele, agrumi. Non lo lasciano cadere.
+- Nuovi testi en/it per ogni festività e il nuovo `FestivalEventsTest`.
+- `./gradlew build`: tutti i test passati.
+
+Provato in gioco: `runServer` e `runClient` sul seed 777, con un venditore della panetteria e il comando `/festival`.
+- Purim: "Purim begins…"; il venditore ha l'hamantash in mano e la prima offerta è hamantash 3 per 2₪.
+- Hanukkah: "Purim is over." e "Hanukkah begins…"; il venditore ha la sufganiyah in mano.
+- Pesach: il venditore ha la matzah in mano.
+- Shabbat: "Shabbat has begun…"; banco chiuso e mani vuote.
+- Stop: "Shabbat is over: Shavua Tov!".
+- Riconnettendo il client durante Hanukkah arriva il saluto "Hanukkah begins…".
+- Nei log non ci sono errori della mod.
+
+Ancora mancante (roadmap 11): durante lo Shabbat gli altri NPC non si riposano e non c'è un bonus di riposo. Le decorazioni nelle strutture non ci sono: solo la Menorah. Non provato dall'utente in gioco.
