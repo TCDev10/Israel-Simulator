@@ -93,6 +93,7 @@ class Rigid(Structure):
     `no_footing` (piers, boats over water) are skipped."""
 
     FOOTING = 4
+    FOOTING_BLOCK = "smooth_sandstone"
 
     def __init__(self, sx: int, sy: int, sz: int):
         self._ready = False
@@ -120,7 +121,7 @@ class Rigid(Structure):
                 if str(self.palette[self.blocks[(x, F, z)]]["Name"]) not in ("minecraft:air",
                                                                               "minecraft:structure_void"):
                     for y in range(F):
-                        self.set(x, y, z, B("smooth_sandstone"))
+                        self.set(x, y, z, B(self.FOOTING_BLOCK))
         super().save(path)
 
 
