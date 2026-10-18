@@ -759,3 +759,11 @@ Sono rimasti 5 casi:
 - Il market_hall del seed 777 è rigido e attaccato alla porta, quindi resta alla quota della porta anche se il terreno sale: finisce dentro la collina.
 
 Non è chiuso: niente merge finché il test su più seed non dà 0 sepolti.
+
+Aggiornamento:
+- La sala del mercato non è più attaccata in modo rigido alla porta: è collegata con un breve passaggio che segue il terreno (`market/hall_approach`), quindi sta sul terreno.
+- Confronto tra `none` e `beard_thin` sui 5 seed (777, 424242, 12345, 99, 2024), con lo spazio vuoto sopra e la sala collegata così:
+  - `none`: 1 edificio sepolto per colpa del mercato (seed 99, 2 blocchi di pendio sul tetto) e 4 vicini ad altre strutture.
+  - `beard_thin`: 0 per colpa del mercato e 5 vicini ad altre strutture (777: 3, 2024: 2).
+- Torno quindi a `beard_thin`. I casi vicino a historical_house e jerusalem_city li risolve la PR anti-sovrapposizione (box allargati del margine di adattamento del terreno).
+- I venditori si caricano su tutti i seed (da 6 a 18 per mercato).
