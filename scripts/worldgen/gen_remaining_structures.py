@@ -5,7 +5,6 @@
 - startup_office (modern Silicon Alley office)
 - historical_house (heritage Jerusalem stone residence)
 - synagogue (community prayer hall and Aron Kodesh)
-- ancient_sanctuary (desert Mishkan / biblical sanctuary)
 - great_synagogue (monumental cathedral synagogue)
 """
 from __future__ import annotations
@@ -479,113 +478,6 @@ def gen_synagogue():
     s.save(ROOT / "src/main/resources/data/israel_simulator/structure/synagogue.nbt")
 
 
-def gen_ancient_sanctuary():
-    """Ancient desert sanctuary / Mishkan (Judean Desert / Tel Arad style).
-    Marker: minecraft:chiseled_sandstone
-    Loot: israel_simulator:chests/ancient_sanctuary
-    """
-    SX, SY, SZ = 30, 12, 34
-    fy = 1
-    s = Structure(SX, SY, SZ)
-    s.fills(0, 0, 0, SX - 1, fy - 1, SZ - 1, blk("minecraft:sand"))
-
-    # Desert sand and weathered sandstone ground
-    for x in range(SX):
-        for z in range(SZ):
-            s.set(x, fy, z, blk("minecraft:sand") if (x + z) % 3 != 0 else blk("minecraft:smooth_sandstone"))
-
-    # Outer courtyard enclosure: acacia fence posts with white linen curtain
-    for x in range(2, SX - 2):
-        s.set(x, fy + 1, 2, wall("sandstone_wall"))
-        s.set(x, fy + 1, SZ - 3, wall("sandstone_wall"))
-    for z in range(2, SZ - 2):
-        s.set(2, fy + 1, z, wall("sandstone_wall"))
-        s.set(SX - 3, fy + 1, z, wall("sandstone_wall"))
-    # Courtyard entrance at south (z=SZ-3, x=13..16)
-    for x in range(13, 17):
-        s.set(x, fy + 1, SZ - 3, blk("minecraft:air"))
-
-    # Outer Court: Bronze Altar of Burnt Offering (x=13..16, z=22..25)
-    for ax in range(13, 17):
-        for az in range(22, 26):
-            s.set(ax, fy + 1, az, blk("minecraft:basalt", axis="y"))
-            s.set(ax, fy + 2, az, blk("minecraft:cut_sandstone"))
-    s.set(14, fy + 2, 23, blk("minecraft:campfire", facing="north", lit="true", signal_fire="false", waterlogged="false"))
-    s.set(15, fy + 2, 23, blk("minecraft:campfire", facing="north", lit="true", signal_fire="false", waterlogged="false"))
-    for hx in (13, 16):
-        for hz in (22, 25):
-            s.set(hx, fy + 3, hz, wall("sandstone_wall"))  # Horns of the altar
-
-    # Bronze Laver of Water (x=14..15, z=18..19)
-    s.set(14, fy + 1, 18, blk("minecraft:cauldron"))
-    s.set(15, fy + 1, 18, blk("minecraft:cauldron"))
-
-    # Sanctuary Tent / Holy Building (x=8..21, z=5..15, height 7)
-    sx0, sx1 = 8, 21
-    sz0, sz1 = 5, 15
-    sh = 6
-
-    # Ancient cut sandstone structure with acacia wood beams
-    for y in range(fy + 1, fy + sh + 1):
-        for x in range(sx0, sx1 + 1):
-            s.set(x, y, sz0, blk("minecraft:chiseled_sandstone" if y == fy + 1 else "cut_sandstone"))
-            s.set(x, y, sz1, blk("minecraft:cut_sandstone"))
-        for z in range(sz0, sz1 + 1):
-            s.set(sx0, y, z, blk("minecraft:cut_sandstone"))
-            s.set(sx1, y, z, blk("minecraft:cut_sandstone"))
-
-    # Entrance to Holy Place at south (x=14..15, z=sz1)
-    s.set(14, fy + 1, sz1, blk("minecraft:air"))
-    s.set(14, fy + 2, sz1, blk("minecraft:air"))
-    s.set(15, fy + 1, sz1, blk("minecraft:air"))
-    s.set(15, fy + 2, sz1, blk("minecraft:air"))
-
-    # Layered tabernacle roof (ram skins / acacia planks / dark oak slabs)
-    s.fills(sx0, fy + sh + 1, sz0, sx1, fy + sh + 1, sz1, slab("cut_sandstone_slab", "bottom"))
-
-    # Inside Holy Place (z=10..14):
-    # Table of Showbread (x=10, z=12)
-    s.set(10, fy + 1, 12, blk("minecraft:oak_planks"))
-    s.set(10, fy + 2, 12, blk("minecraft:cake", bites="0"))
-    # Golden Menorah (x=19, z=12)
-    s.set(19, fy + 1, 12, fence("acacia_fence"))
-    s.set(19, fy + 2, 12, blk("minecraft:gold_block"))
-    s.set(19, fy + 3, 12, lantern())
-    # Altar of Incense (x=14..15, z=10)
-    s.set(14, fy + 1, 10, blk("minecraft:chiseled_sandstone"))
-    s.set(15, fy + 1, 10, blk("minecraft:chiseled_sandstone"))
-    s.set(14, fy + 2, 10, blk("minecraft:candle", candles="4", lit="true", waterlogged="false"))
-
-    # Veil separating Holy Place from Holy of Holies (z=9)
-    for x in range(sx0 + 1, sx1):
-        for y in range(fy + 1, fy + sh):
-            s.set(x, y, 9, blk("minecraft:blue_wool" if x % 2 == 0 else "purple_wool"))
-    # Veil doorway in center
-    s.set(14, fy + 1, 9, blk("minecraft:air"))
-    s.set(14, fy + 2, 9, blk("minecraft:air"))
-    s.set(15, fy + 1, 9, blk("minecraft:air"))
-    s.set(15, fy + 2, 9, blk("minecraft:air"))
-
-    # Holy of Holies (Dvir) (z=6..8, x=11..18):
-    # Golden Ark of the Covenant & Cherubim Chamber
-    s.set(14, fy + 1, 7, blk("minecraft:gold_block"))
-    s.set(15, fy + 1, 7, blk("minecraft:gold_block"))
-    # Ancient Sanctuary Chest containing Rabbi's Crown and holy relics
-    s.set(14, fy + 2, 7, chest(facing="south", loot="israel_simulator:chests/ancient_sanctuary"))
-    s.set(15, fy + 2, 7, blk("minecraft:chiseled_bookshelf", facing="south"))
-    # Cherubim wings flanking Ark
-    s.set(13, fy + 2, 7, wall("sandstone_wall"))
-    s.set(16, fy + 2, 7, wall("sandstone_wall"))
-    s.set(13, fy + 3, 7, blk("minecraft:gold_block"))
-    s.set(16, fy + 3, 7, blk("minecraft:gold_block"))
-
-    # Required Framework Marker Block
-    s.set(1, fy + 1, 1, blk("minecraft:chiseled_sandstone"))
-
-    write_jigsaw("ancient_sanctuary", "israel_simulator:judean_desert", salt=667788)
-    s.save(ROOT / "src/main/resources/data/israel_simulator/structure/ancient_sanctuary.nbt")
-
-
 def gen_great_synagogue():
     """Monumental Jerusalem Great Synagogue.
     Marker: minecraft:blue_stained_glass
@@ -713,6 +605,5 @@ if __name__ == "__main__":
     gen_startup_office()
     gen_historical_house()
     gen_synagogue()
-    gen_ancient_sanctuary()
     gen_great_synagogue()
     print("All 7 structures generated successfully.")
