@@ -758,3 +758,30 @@ Provato in gioco: `runServer` e `runClient` sul seed 777, nel resort del Mar Mor
 - Nei log non ci sono errori della mod.
 
 Non provato: la discesa accovacciandosi e la ciotola fuori dal bioma (non dà niente). Non provato dall'utente in gioco.
+
+## Strutture sovrapposte o sepolte da altre strutture
+
+Problema riscontrato: strutture diverse della mod (e copie della stessa) spawnavano una dentro l'altra, oppure una seppelliva l'altra: il terreno rimodellato da `terrain_adaptation` (beard/bury/encapsulate) arriva fino a 12 blocchi attorno a ogni pezzo. Le `exclusion_zone` aggiunte per Gaza e per il Muro (PR 65 e 69) coprivano solo alcune coppie, una sola zona per set, e rendevano le strutture molto più rare.
+
+Funzionamento aspettato: nessuna struttura della mod si sovrappone a un'altra o la seppellisce, e le strutture spawnano più o meno quanto prima delle PR 65/69.
+
+Come è stato risolto:
+- Nuovo `StructureOverlapGuard` (mixin su `Structure.findValidGenerationPoint`, quindi vale sia per la generazione sia per `/locate`). Le 19 strutture hanno una priorità fissa (isola, torri, città prima; case e sinagoghe piccole per ultime). Uno start viene annullato solo se i riquadri dei suoi pezzi toccano davvero quelli di una struttura con priorità più alta, o di una copia della stessa in un chunk precedente.
+- Margine terreno: per le strutture con beard/bury/encapsulate i riquadri vengono allargati di 12 blocchi (0 per `none`), così niente più strutture sepolte.
+- Tabella `REACH`: per ogni struttura la distanza massima a cui arrivano i pezzi. I candidati più lontani non vengono nemmeno ricostruiti. `StructureNoOverlapTest` controlla la tabella sui dati.
+- Niente ricorsione: per un candidato si controlla solo che passi i propri controlli vanilla (bioma), non se a sua volta viene annullato. Prima la catena di dipendenze bloccava `/locate` di ancient_sanctuary per più di 5 minuti. Il prezzo: raramente due start sovrapposti spariscono entrambi.
+- Tolte le `exclusion_zone` di Gaza, Muro, Jaffa, villaggio, Grand Market e Tel Aviv (e i loro test). Gli spacing sono stati ritarati per compensare la rarità.
+- `./gradlew build`: tutti i test passati.
+
+Provato con `runServer` (strutture localizzate e generate ±96 blocchi, poi letti i chunk salvati):
+- seed 424242: 155 strutture, 0 sovrapposizioni, 0 sepolte;
+- seed 20261018: 147 strutture, 0 sovrapposizioni, 0 sepolte;
+- scansione vegetazione pulita, 0 errori della mod nel log;
+- `/locate`: 1,6 s in media.
+
+Da sapere:
+- Queste prove sono state fatte sulla penultima taratura degli spacing. Il seed 777 e l'ultima taratura non sono stati riverificati: test fermati per risparmiare.
+- Frequenze ancora fuori misura rispetto a prima delle PR 65/69: Tel Aviv e le sinagoghe escono troppo poco, l'edificio del governo e il villaggio mediterraneo troppo spesso. Le copie di Tel Aviv che prima si sovrapponevano tra loro non possono più esistere.
+- Le foglie dentro le torri_gemelle sul seed 424242 non vengono dalla nostra guardia della vegetazione: lì si sovrappone un villaggio vanilla, e l'albero del villaggio cresce dentro la struttura. La guardia vale solo per le strutture della mod.
+
+Non provato dall'utente in gioco.
