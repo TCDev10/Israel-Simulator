@@ -733,3 +733,28 @@ Provato in gioco: `runServer` e `runClient` sul seed 777, con un venditore della
 - Nei log non ci sono errori della mod.
 
 Ancora mancante (roadmap 11): durante lo Shabbat gli altri NPC non si riposano e non c'è un bonus di riposo. Le decorazioni nelle strutture non ci sono: solo la Menorah. Non provato dall'utente in gioco.
+
+## Mar Morto: galleggiamento, fango e sale
+
+Problema riscontrato: il galleggiamento c'era solo sulla carta. La spinta verso l'alto veniva applicata soltanto dal server, mentre il movimento del giocatore lo calcola il suo client, quindi il giocatore affondava e annegava (provato: in una vasca nel bioma Mar Morto andava a fondo con l'aria a 0). Il fango del Mar Morto si poteva solo trovare nelle casse, e i bagni di fango del resort erano solo decorazione. Il sale non aveva nessun uso.
+
+Funzionamento aspettato: nel Mar Morto si galleggia (accovacciandosi si scende), con la testa fuori dall'acqua salata ci si cura e il sale negli occhi brucia. I bagni di fango del resort funzionano, il fango si raccoglie e il sale si compra allo Shuk.
+
+Come è stato risolto:
+- `DeadSeaMechanics` applica la spinta dove il movimento viene simulato davvero (`isLocalInstanceAuthoritative`): sul server per i mob, sul client per il giocatore. L'evento di tick la chiama anche lato client.
+- Nuovo `DeadSeaSpa`:
+  - **bagno di fango:** 5 secondi nel fango del bioma Mar Morto danno lo stesso effetto della crema di fango (pulizia da lentezza, debolezza e veleno, più Assorbimento e Rigenerazione), al massimo una volta ogni 2 minuti, con un messaggio;
+  - **raccolta del fango:** una ciotola usata sul fango, o su sabbia o argilla bagnata dal Mar Morto, dà 1 Fango del Mar Morto;
+  - **galleggiamento curativo:** con la testa fuori dall'acqua, Rigenerazione ogni 10 secondi.
+- Il banco delle spezie dello Shuk vende il blocco di sale a 2₪.
+- Testi en/it e il nuovo `DeadSeaSpaTest`.
+- `./gradlew build`: tutti i test passati.
+
+Provato in gioco: `runServer` e `runClient` sul seed 777, nel resort del Mar Morto a -1552 -1680, in sopravvivenza.
+- Nella vasca del bagno di fango (-1554 69 -1660): "You sink into the warm Dead Sea mud…", poi "Mud bath complete" con Assorbimento e Rigenerazione attivi.
+- Ciotola sul fango, con il clic destro vero: 1 Fango del Mar Morto, la ciotola viene consumata.
+- Vasca d'acqua nel bioma: prima della correzione il giocatore affondava a y 73 e annegava. Dopo galleggia in superficie (y 76.4–77.0) con l'aria piena (300), riceve "Floating on the salt water…" e Rigenerazione ogni 10 secondi.
+- Un venditore di spezie offre il blocco di sale.
+- Nei log non ci sono errori della mod.
+
+Non provato: la discesa accovacciandosi e la ciotola fuori dal bioma (non dà niente). Non provato dall'utente in gioco.
