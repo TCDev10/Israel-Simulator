@@ -502,5 +502,12 @@
   "message.israel_simulator.festival.begins.purim": "Inizia Purim: Chag Purim Sameach! Hamantaschen allo Shuk.",
   "message.israel_simulator.festival.ends.purim": "Purim è finito.",
   "message.israel_simulator.festival.begins.pesach": "Inizia Pesach: Chag Pesach Sameach! Nelle panetterie solo matzah.",
-  "message.israel_simulator.festival.ends.pesach": "Pesach è finito: il pane torna nelle panetterie."
+  "message.israel_simulator.festival.ends.pesach": "Pesach è finito: il pane torna nelle panetterie.",
+  "message.israel_simulator.work.shabbat": "È Shabbat: oggi niente lavoro. Shabbat Shalom!",
+  "message.israel_simulator.work.session": "Sessione di lavoro finita: +%s ₪ (sessioni: %s).",
+  "message.israel_simulator.work.session_hub": "Sessione di lavoro nel polo tech: +%s ₪, paga doppia (sessioni: %s).",
+  "message.israel_simulator.work.exit": "EXIT! La tua startup è stata acquisita: bonus di +%s ₪!",
+  "message.israel_simulator.work.status": "Startup: %s sessioni di lavoro, %s alla prossima exit.",
+  "message.israel_simulator.work.no_gigs": "Qui non ci sono consegne: vai a Tel Aviv o a Gerusalemme.",
+  "message.israel_simulator.work.gig": "Consegna fatta: +%s ₪."
 }
