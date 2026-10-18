@@ -4,6 +4,7 @@ import com.israelsimulator.IsraelSimulator;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.List;
@@ -91,7 +92,8 @@ public final class StructureVegetationGuard {
         State state = STATE.get();
         STATE.remove();
         if (state != null) {
-            int removed = removeFloatingTrees(level, chunk, state.boxes) + cleanUp(level, chunk, state.boxes);
+            Area area = new Area(level, chunk.getPos(), state.boxes);
+            int removed = removeFloatingTrees(level, chunk, area) + cleanUp(level, area);
             if (removed > 0) {
                 IsraelSimulator.LOGGER.debug("Removed {} unsupported plants near structures in chunk {}",
                         removed, chunk.getPos());
@@ -186,33 +188,23 @@ public final class StructureVegetationGuard {
      * already decorated chunks around it: decoration of a later neighbour (a rock mound, a patch) can
      * still change the soil or the wall a plant of this chunk relies on, and the other way round.
      */
-    private static int cleanUp(WorldGenLevel level, ChunkAccess chunk, List<BoundingBox> boxes) {
-        ChunkPos cp = chunk.getPos();
-        int x0 = cp.getMinBlockX() - 16, z0 = cp.getMinBlockZ() - 16;
+    private static int cleanUp(WorldGenLevel level, Area area) {
         int removed = 0;
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-        for (BoundingBox b : boxes) {
-            int minX = Math.max(x0, b.minX() - MARGIN), maxX = Math.min(x0 + 47, b.maxX() + MARGIN);
-            int minZ = Math.max(z0, b.minZ() - MARGIN), maxZ = Math.min(z0 + 47, b.maxZ() + MARGIN);
-            if (minX > maxX || minZ > maxZ) {
-                continue;
-            }
-            int minY = Math.max(level.getMinY() + 1, b.minY());
-            int maxY = Math.min(level.getMaxY() - 1, b.maxY() + 8);
-            for (int x = minX; x <= maxX; x++) {
-                for (int z = minZ; z <= maxZ; z++) {
-                    if (!decided(level, cp, x, z)) {
-                        continue;
-                    }
-                    ChunkAccess column = level.getChunk(x >> 4, z >> 4);
-                    // top-down, so a vine left hanging by the removal of the one above goes too
-                    for (int y = maxY; y >= minY; y--) {
-                        pos.set(x, y, z);
-                        BlockState state = column.getBlockState(pos);
-                        if (shouldRemove(level, pos, state)) {
-                            removePlant(level, pos.immutable(), state);
-                            removed++;
-                        }
+        for (int x = area.x0; x < area.x0 + 48; x++) {
+            for (int z = area.z0; z < area.z0 + 48; z++) {
+                int i = area.index(x, z);
+                if (area.lo[i] > area.hi[i] || !area.decided(x, z)) {
+                    continue;
+                }
+                ChunkAccess column = level.getChunk(x >> 4, z >> 4);
+                // top-down, so a vine left hanging by the removal of the one above goes too
+                for (int y = area.hi[i]; y >= area.lo[i]; y--) {
+                    pos.set(x, y, z);
+                    BlockState state = column.getBlockState(pos);
+                    if (shouldRemove(level, pos, state)) {
+                        removePlant(level, pos.immutable(), state);
+                        removed++;
                     }
                 }
             }
@@ -220,21 +212,58 @@ public final class StructureVegetationGuard {
         return removed;
     }
 
-    /** True when this column and the four next to it are final (their chunks are decorated). */
-    private static boolean decided(WorldGenLevel level, ChunkPos center, int x, int z) {
-        return decorated(level, center, x, z) && decorated(level, center, x + 1, z) && decorated(level, center, x - 1, z)
-                && decorated(level, center, x, z + 1) && decorated(level, center, x, z - 1);
-    }
+    /**
+     * The 3x3 chunks around the decorated one: for every column the height range covered by a piece
+     * box (grown by MARGIN), and which of the chunks are already decorated, so final.
+     */
+    static final class Area {
+        final int x0, z0;
+        final int[] lo = new int[48 * 48], hi = new int[48 * 48];
+        final boolean[] done = new boolean[9];
 
-    private static boolean decorated(WorldGenLevel level, ChunkPos center, int x, int z) {
-        int cx = x >> 4, cz = z >> 4;
-        if (cx == center.x() && cz == center.z()) {
-            return true;
+        Area(WorldGenLevel level, ChunkPos center, List<BoundingBox> boxes) {
+            x0 = center.getMinBlockX() - 16;
+            z0 = center.getMinBlockZ() - 16;
+            Arrays.fill(lo, Integer.MAX_VALUE);
+            Arrays.fill(hi, Integer.MIN_VALUE);
+            for (BoundingBox b : boxes) {
+                int minX = Math.max(x0, b.minX() - MARGIN), maxX = Math.min(x0 + 47, b.maxX() + MARGIN);
+                int minZ = Math.max(z0, b.minZ() - MARGIN), maxZ = Math.min(z0 + 47, b.maxZ() + MARGIN);
+                int minY = Math.max(level.getMinY() + 1, b.minY());
+                int maxY = Math.min(level.getMaxY() - 1, b.maxY() + 8);
+                for (int x = minX; x <= maxX; x++) {
+                    for (int z = minZ; z <= maxZ; z++) {
+                        int i = index(x, z);
+                        lo[i] = Math.min(lo[i], minY);
+                        hi[i] = Math.max(hi[i], maxY);
+                    }
+                }
+            }
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    done[(dx + 1) * 3 + dz + 1] = (dx == 0 && dz == 0) || level.getChunk(center.x() + dx, center.z() + dz)
+                            .getPersistedStatus().isOrAfter(ChunkStatus.FEATURES);
+                }
+            }
         }
-        if (Math.abs(cx - center.x()) > 1 || Math.abs(cz - center.z()) > 1) {
-            return false;
+
+        int index(int x, int z) {
+            return (x - x0) * 48 + (z - z0);
         }
-        return level.getChunk(cx, cz).getPersistedStatus().isOrAfter(ChunkStatus.FEATURES);
+
+        boolean inside(int x, int z) {
+            return x >= x0 && x < x0 + 48 && z >= z0 && z < z0 + 48;
+        }
+
+        /** The chunk holding this column is inside the area and decorated. */
+        boolean decorated(int x, int z) {
+            return inside(x, z) && done[((x - x0) >> 4) * 3 + ((z - z0) >> 4)];
+        }
+
+        /** This column and the four next to it are final. */
+        boolean decided(int x, int z) {
+            return decorated(x, z) && decorated(x + 1, z) && decorated(x - 1, z) && decorated(x, z + 1) && decorated(x, z - 1);
+        }
     }
 
     /** Largest tree part examined; anything bigger is a building, not a tree, and is left alone. */
@@ -245,32 +274,23 @@ public final class StructureVegetationGuard {
      * structure blocks are final. A tree part is judged only when every chunk it touches is decorated;
      * until then the last of those chunks to be decorated judges it.
      */
-    private static int removeFloatingTrees(WorldGenLevel level, ChunkAccess chunk, List<BoundingBox> boxes) {
+    private static int removeFloatingTrees(WorldGenLevel level, ChunkAccess chunk, Area area) {
         ChunkPos cp = chunk.getPos();
-        int x0 = cp.getMinBlockX(), z0 = cp.getMinBlockZ();
         Set<BlockPos> visited = new HashSet<>();
         int removed = 0;
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-        for (BoundingBox b : boxes) {
-            int minX = Math.max(x0, b.minX() - MARGIN), maxX = Math.min(x0 + 15, b.maxX() + MARGIN);
-            int minZ = Math.max(z0, b.minZ() - MARGIN), maxZ = Math.min(z0 + 15, b.maxZ() + MARGIN);
-            if (minX > maxX || minZ > maxZ) {
-                continue;
-            }
-            int minY = Math.max(level.getMinY() + 1, b.minY());
-            int maxY = Math.min(level.getMaxY() - 1, b.maxY() + 8);
-            for (int x = minX; x <= maxX; x++) {
-                for (int z = minZ; z <= maxZ; z++) {
-                    for (int y = minY; y <= maxY; y++) {
-                        pos.set(x, y, z);
-                        if (!visited.contains(pos) && isTree(chunk.getBlockState(pos))) {
-                            List<BlockPos> part = floatingTreePart(level, cp, pos.immutable(), visited);
-                            if (part != null) {
-                                for (BlockPos q : part) {
-                                    level.setBlock(q, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
-                                }
-                                removed += part.size();
+        for (int x = cp.getMinBlockX(); x <= cp.getMaxBlockX(); x++) {
+            for (int z = cp.getMinBlockZ(); z <= cp.getMaxBlockZ(); z++) {
+                int i = area.index(x, z);
+                for (int y = area.lo[i]; y <= area.hi[i]; y++) {
+                    pos.set(x, y, z);
+                    if (!visited.contains(pos) && isTree(chunk.getBlockState(pos))) {
+                        List<BlockPos> part = floatingTreePart(level, area, pos.immutable(), visited);
+                        if (part != null) {
+                            for (BlockPos q : part) {
+                                level.setBlock(q, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
                             }
+                            removed += part.size();
                         }
                     }
                 }
@@ -297,7 +317,7 @@ public final class StructureVegetationGuard {
     }
 
     /** The 26-connected tree part through {@code start}, if it contains leaves and touches nothing solid. */
-    private static List<BlockPos> floatingTreePart(WorldGenLevel level, ChunkPos center, BlockPos start, Set<BlockPos> visited) {
+    private static List<BlockPos> floatingTreePart(WorldGenLevel level, Area area, BlockPos start, Set<BlockPos> visited) {
         List<BlockPos> part = new ArrayList<>();
         ArrayDeque<BlockPos> todo = new ArrayDeque<>();
         Set<BlockPos> seen = new HashSet<>();
@@ -311,12 +331,11 @@ public final class StructureVegetationGuard {
             if (part.size() > MAX_TREE) {
                 anchored = true;
             }
-            int cx = p.getX() >> 4, cz = p.getZ() >> 4;
-            if (Math.abs(cx - center.x()) > 1 || Math.abs(cz - center.z()) > 1) {
+            if (!area.inside(p.getX(), p.getZ())) {
                 undecided = true;         // reaches outside the area this chunk may look at
                 continue;
             }
-            if (!decorated(level, center, p.getX(), p.getZ())) {
+            if (!area.decorated(p.getX(), p.getZ())) {
                 undecided = true;         // that chunk has not placed its structure pieces yet
             }
             BlockState state = level.getBlockState(p);
@@ -332,8 +351,7 @@ public final class StructureVegetationGuard {
                             continue;
                         }
                         boolean face = Math.abs(dx) + Math.abs(dy) + Math.abs(dz) == 1;
-                        int qx = q.getX() >> 4, qz = q.getZ() >> 4;
-                        if (Math.abs(qx - center.x()) > 1 || Math.abs(qz - center.z()) > 1) {
+                        if (!area.inside(q.getX(), q.getZ())) {
                             if (face) {
                                 undecided = true;
                             }
