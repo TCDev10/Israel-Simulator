@@ -773,3 +773,10 @@ Non provato: la discesa accovacciandosi e la ciotola fuori dal bioma (non dà ni
 - **Smartphone** a Tel Aviv/Gerusalemme: consegna da +1 ₪ (ricarica 30 s) e mostra lo stato della startup; fuori città: "Nessuna consegna qui".
 - Durante lo **Shabbat** (`/festival start shabbat`) laptop e smartphone rifiutano: "È Shabbat: oggi niente lavoro".
 - Verificato in gioco (seed 777): 3 ₪ fuori città, cooldown, 6+25 ₪ nella sessione 10 e 20 a Tel Aviv, consegna +1 ₪ in città, rifiuto fuori città e di Shabbat, nessun errore nei log.
+
+## Shabbat: riposo
+- `/festival start shabbat` (o venerdì sera nel calendario): se per 1 minuto non rompi/piazzi blocchi e non attacchi, ogni 10 s ricevi Rigenerazione e un po' di saturazione, con il messaggio "Riposo di Shabbat" sopra la hotbar.
+- Rompere/piazzare un blocco o attaccare di Shabbat: messaggio "È Shabbat e stai lavorando" e niente bonus per 1 minuto (in creativa non conta).
+- Gli abitanti dei villaggi riposano: di Shabbat camminano lentamente. Lo Shuk e gli NPC osservanti restano chiusi; laptop e smartphone non lavorano.
+- `/festival stop`: niente più bonus né lentezza.
+- Verifica: solo build e test unitari (`ShabbatRestTest`).
