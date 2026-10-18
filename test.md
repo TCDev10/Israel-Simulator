@@ -586,3 +586,13 @@ Problema riscontrato: all'avvio del client il log mostrava `Missing item model` 
 Funzionamento aspettato: i quattro raccolti mostrano la loro icona in inventario e in mano, senza errori nel log.
 
 Come è stato risolto: aggiunti `items/chickpeas.json`, `items/tomato.json`, `items/eggplant.json` e `items/sesame_seeds.json`, che puntano ai modelli esistenti. Nessuna texture modificata. Nuovo `ItemDefinitionCoverageTest`: controlla che ogni oggetto registrato abbia la sua definizione e che il modello esista (senza i quattro file il test fallisce). `./gradlew build` passato. Provato in gioco: nel `latest.log` del client non c'è più nessun `Missing item model`; dati i quattro oggetti con `/give`, nella hotbar e in mano si vedono le icone giuste (ceci, pomodoro rosso, melanzana viola, sesamo).
+
+## Sovrapposizione Gaza / Jaffa / villaggio mediterraneo: risolta
+
+Problema riscontrato: è il problema della sezione "Striscia di Gaza ingrandita". Nel seed 424242 Gaza (-1760, 4768) si sovrapponeva al porto di Jaffa. Nel seed 20261018 la struttura dentro Gaza (-3712, -4992) era il villaggio mediterraneo (start nel chunk -234, -316, a 2-4 chunk dallo start di Gaza).
+
+Funzionamento aspettato: Gaza, Jaffa e il villaggio mediterraneo non si sovrappongono mai.
+
+Come è stato risolto: in `structure_set/jaffa_ports.json` e `structure_set/mediterranean_villages.json` c'è ora `exclusion_zone` verso `israel_simulator:gaza_strips` con `chunk_count` 10. Lo start di un jigsaw è nell'angolo del suo chunk e tutti i pezzi restano entro `max_distance_from_center` (80 blocchi per tutte e tre le strutture), quindi due strutture si toccano solo se gli start distano meno di (80 + 80) / 16 = 10 chunk. Con 10 chunk la sovrapposizione è impossibile. Nuovo `GazaExclusionZoneTest`: ricalcola la distanza dai `max_distance_from_center` attuali e fallisce se l'esclusione non basta. `./gradlew build`: 393/393 test. `runServer` sui seed 424242, 20261018 e 777: trovate 19 Gaza, 16 Jaffa e 15 villaggi, generato un anello di 176 blocchi attorno a ogni Gaza. Nessuna Jaffa o villaggio entro 12 chunk da una Gaza, 0 sovrapposizioni, 0 errori nel log. Nei punti dove prima c'era la sovrapposizione Gaza è rimasta e Jaffa o il villaggio non spawnano più lì.
+
+Effetto collaterale: l'esclusione guarda la griglia di Gaza (una posizione possibile ogni 24×24 chunk), non il bioma, quindi Jaffa e il villaggio mediterraneo spawnano meno spesso: secondo una stima restano circa il 30% delle loro posizioni possibili. Si trovano comunque, ma più lontani. Se diventano troppo rari si può abbassare il loro `spacing`.
