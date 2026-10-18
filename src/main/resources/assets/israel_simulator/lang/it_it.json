@@ -471,5 +471,22 @@
   "message.israel_simulator.train_arrival_station": "Arrivato alla stazione di %s! %s",
   "message.israel_simulator.train_arrival_city": "Arrivato a %s (qui non c'è ancora una stazione: piazza una fermata per crearla). %s",
   "message.israel_simulator.train_terminal.tel_aviv": "Tel Aviv",
-  "message.israel_simulator.train_terminal.jerusalem": "Gerusalemme"
+  "message.israel_simulator.train_terminal.jerusalem": "Gerusalemme",
+  "entity.israel_simulator.shuk_vendor": "Venditore dello Shuk",
+  "entity.israel_simulator.shuk_vendor.stall.spice": "Banco delle spezie",
+  "entity.israel_simulator.shuk_vendor.stall.fruit": "Banco di frutta e verdura",
+  "entity.israel_simulator.shuk_vendor.stall.bakery": "Panetteria",
+  "entity.israel_simulator.shuk_vendor.stall.fish": "Banco del pesce",
+  "entity.israel_simulator.shuk_vendor.stall.halva": "Banco di halva e miele",
+  "message.israel_simulator.shuk.period.morning": "Boker tov! Appena arrivato dai campi: porzioni più grandi di frutta e pesce.",
+  "message.israel_simulator.shuk.period.afternoon": "Yalla, yalla! Tutto fresco, buoni prezzi!",
+  "message.israel_simulator.shuk.period.closing": "Svendita di fine giornata! Di più allo stesso prezzo prima della chiusura.",
+  "message.israel_simulator.shuk.closed_night": "Il banco è chiuso. Lo Shuk riapre all'alba.",
+  "message.israel_simulator.shuk.closed_shabbat": "Shabbat Shalom! Lo Shuk è chiuso fino alla fine dello Shabbat.",
+  "message.israel_simulator.shuk.closed_yom_kippur": "È Yom Kippur: oggi lo Shuk è chiuso.",
+  "command.israel_simulator.festival.status": "Festività attuale: %s",
+  "command.israel_simulator.festival.none": "nessuna",
+  "command.israel_simulator.festival.started": "Festività avviata: %s",
+  "command.israel_simulator.festival.stopped": "Festività forzata terminata.",
+  "command.israel_simulator.festival.unknown": "Festività sconosciuta."
 }

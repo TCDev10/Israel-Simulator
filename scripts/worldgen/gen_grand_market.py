@@ -15,6 +15,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from nbtlib import Byte, Compound, String  # noqa: E402
 from jigsaw_kit import (  # noqa: E402
     AIR, B, BARREL, CHEST, CRAFT, HLANTERN, NS, PANE, SFENCE, SLAB, STAIR, Kit, Rigid, entrance_j,
     house, lamp, table,
@@ -114,7 +115,13 @@ def lanes() -> None:
 
 
 # ---------------------------------------------------------------- shops
-def shop(name: str, awning: str, goods, back, loot: str) -> None:
+def vendor(stall: str):
+    """Shuk vendor (ShukVendorEntity) NBT for one stall."""
+    return Compound({"id": String("israel_simulator:shuk_vendor"), "Stall": String(stall),
+                     "PersistenceRequired": Byte(1)})
+
+
+def shop(name: str, awning: str, goods, back, loot: str, stall: str) -> None:
     """7x7 stone shop: open front with counter goods, awning, back shelves, loot."""
     W, D = 7, 7
     s = Rigid(W, 7, D)
@@ -143,6 +150,7 @@ def shop(name: str, awning: str, goods, back, loot: str) -> None:
     s.set(1, 1, 4, BARREL("up", loot)); s.set(5, 1, 4, CHEST("west", LOOT_MARKET))
     s.set(3, 3, 4, HLANTERN())
     s.set(3, 1, 0, entrance_j())
+    s.add_entity(3, 1, 3, vendor(stall))   # behind the counter, facing the street
     s.save(kit.struct / f"{name}.nbt")
 
 
@@ -152,22 +160,22 @@ def shops() -> None:
          [B("orange_concrete_powder"), B("red_concrete_powder"), B("yellow_concrete_powder"),
           B("brown_concrete_powder")],
          [pot(), B("potted_fern"), B("dried_kelp_block"), pot(),
-          B("potted_azalea_bush")], LOOT_FOOD)
+          B("potted_azalea_bush")], LOOT_FOOD, "spice")
     shop("fruit_shop", "green",
          [B("melon"), B("pumpkin"), B("orange_concrete"), B("yellow_concrete")],
          [B("hay_block", axis="y"), B("melon"), B("composter", level="8"), B("pumpkin"), B("hay_block", axis="x")],
-         LOOT_FOOD)
+         LOOT_FOOD, "fruit")
     shop("bakery_shop", "yellow",
          [B("hay_block", axis="x"), B("cake", bites="0"), B("hay_block", axis="z"), SLAB("spruce", "top")],
          [B("smoker", facing="north", lit="true"), B("bricks"), B("smoker", facing="north", lit="false"),
-          CRAFT(), B("bricks")], LOOT_FOOD)
+          CRAFT(), B("bricks")], LOOT_FOOD, "bakery")
     shop("fish_shop", "blue",
          [B("packed_ice"), B("blue_ice"), B("packed_ice"), B("blue_ice")],
-         [B("water_cauldron", level="3"), B("packed_ice"), B("dried_kelp_block"), B("water_cauldron", level="2"), B("packed_ice")], LOOT_FOOD)
+         [B("water_cauldron", level="3"), B("packed_ice"), B("dried_kelp_block"), B("water_cauldron", level="2"), B("packed_ice")], LOOT_FOOD, "fish")
     shop("halva_shop", "orange",
          [B("honey_block"), B("white_terracotta"), B("brown_terracotta"), B("honeycomb_block")],
          [B("beehive", facing="north", honey_level="5"), pot(), B("honey_block"), pot(),
-          B("beehive", facing="north", honey_level="3")], LOOT_BAZAAR)
+          B("beehive", facing="north", honey_level="3")], LOOT_BAZAAR, "halva")
 
 
 def cafe() -> None:

@@ -61,6 +61,10 @@ public final class ModEntities {
             ENTITY_TYPES.registerEntityType(MoneyChangerEntity.TRADE_SET_ID, MoneyChangerEntity::new, MobCategory.CREATURE,
                     b -> b.sized(0.6F, 1.95F).clientTrackingRange(10));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<com.israelsimulator.entity.npc.shuk.ShukVendorEntity>> SHUK_VENDOR =
+            ENTITY_TYPES.registerEntityType("shuk_vendor", com.israelsimulator.entity.npc.shuk.ShukVendorEntity::new, MobCategory.CREATURE,
+                    b -> b.sized(0.6F, 1.95F).clientTrackingRange(10));
+
     public static final DeferredHolder<EntityType<?>, EntityType<com.israelsimulator.entity.npc.GoyimEntity>> GOYIM =
             ENTITY_TYPES.registerEntityType("goyim", com.israelsimulator.entity.npc.GoyimEntity::new, MobCategory.CREATURE,
                     b -> b.sized(0.6F, 1.95F).clientTrackingRange(10));
@@ -123,6 +127,7 @@ public final class ModEntities {
         event.put(JEFFREY_EPSTEIN.get(), com.israelsimulator.entity.boss.JeffreyEpsteinEntity.createAttributes().build());
         event.put(CHILD_ZOMBIE_MINION.get(), com.israelsimulator.entity.boss.ChildZombieMinionEntity.createAttributes().build());
         event.put(MONEY_CHANGER.get(), MoneyChangerEntity.createAttributes().build());
+        event.put(SHUK_VENDOR.get(), com.israelsimulator.entity.npc.shuk.ShukVendorEntity.createAttributes().build());
         event.put(GOYIM.get(), com.israelsimulator.entity.npc.GoyimEntity.createAttributes().build());
         event.put(PALANTRIO_DRONE.get(), com.israelsimulator.entity.projectile.PalantrioDroneEntity.createAttributes().build());
         event.put(MOSSAD_AGENT.get(), com.israelsimulator.entity.mossad.MossadAgentEntity.createAttributes().build());

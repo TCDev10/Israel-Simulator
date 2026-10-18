@@ -72,6 +72,7 @@ class Structure:
         self.index: dict[str, int] = {}
         self.blocks: dict[tuple[int, int, int], int] = {}
         self.block_nbt: dict[tuple[int, int, int], Compound] = {}
+        self.entities: list[tuple[int, int, int, Compound]] = []
         self.fills(0, 0, 0, sx - 1, sy - 1, sz - 1, blk("minecraft:air"))
         if self.foundation:
             # solid footing under the eventual floor so hilly terrain gets sandstone, not dirt
@@ -110,6 +111,18 @@ class Structure:
             self.block_nbt[(x, y, z)] = entry["_nbt"]
         elif (x, y, z) in self.block_nbt:
             del self.block_nbt[(x, y, z)]
+
+    def add_entity(self, x: int, y: int, z: int, nbt: Compound) -> None:
+        """Entity saved in the template, standing centred in block (x, y, z)."""
+        if not (0 <= x < self.sx and 0 <= y < self.sy and 0 <= z < self.sz):
+            raise ValueError(f"entity out of bounds {(x,y,z)}")
+        self.entities.append((x, y, z, nbt))
+
+    def _entities_nbt(self) -> List:
+        return List[Compound]([
+            Compound({"pos": List[nbtlib.Double]([nbtlib.Double(x + 0.5), nbtlib.Double(y), nbtlib.Double(z + 0.5)]),
+                      "blockPos": List[Int]([Int(x), Int(y), Int(z)]), "nbt": nbt})
+            for (x, y, z, nbt) in self.entities])
 
     def fills(self, x0, y0, z0, x1, y1, z1, entry: Compound) -> None:
         for x in range(min(x0, x1), max(x0, x1) + 1):
@@ -165,7 +178,7 @@ class Structure:
         root = Compound(
             {
                 "size": List[Int]([Int(self.sx), Int(self.sy), Int(self.sz)]),
-                "entities": List[Compound]([]),
+                "entities": self._entities_nbt(),
                 "blocks": List[Compound](blocks_list),
                 "palette": List[Compound](new_palette),
                 "DataVersion": Int(DATA_VERSION),

@@ -61,6 +61,7 @@ public class IsraelSimulatorClient {
         event.registerEntityRenderer(ModEntities.CHILD_ZOMBIE_MINION.get(), com.israelsimulator.client.renderer.ChildZombieMinionRenderer::new);
         event.registerEntityRenderer(ModEntities.GOYIM.get(), net.minecraft.client.renderer.entity.VillagerRenderer::new);
         event.registerEntityRenderer(ModEntities.MONEY_CHANGER.get(), com.israelsimulator.client.renderer.MoneyChangerRenderer::new);
+        event.registerEntityRenderer(ModEntities.SHUK_VENDOR.get(), com.israelsimulator.client.renderer.ShukVendorRenderer::new);
         event.registerEntityRenderer(ModEntities.ORATOR.get(), com.israelsimulator.client.renderer.OratorRenderer::new);
         event.registerEntityRenderer(ModEntities.PALANTRIO_DRONE.get(), com.israelsimulator.client.renderer.PalantrioDroneRenderer::new);
         event.registerEntityRenderer(ModEntities.BIBI_POISON_BREATH.get(), net.minecraft.client.renderer.entity.DragonFireballRenderer::new);
