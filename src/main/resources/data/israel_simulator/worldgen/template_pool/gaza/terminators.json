@@ -1,0 +1,32 @@
+{
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/terminator_0",
+        "processors": "israel_simulator:gaza_street_rubble",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/terminator_1",
+        "processors": "israel_simulator:gaza_street_rubble",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/terminator_2",
+        "processors": "israel_simulator:gaza_street_rubble",
+        "projection": "terrain_matching"
+      }
+    }
+  ]
+}

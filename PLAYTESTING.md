@@ -151,12 +151,13 @@ Verifica specifica delle strutture aggiunte e aggiornate di recente.
 - [ ] Nessun blocco di arenaria compare nella struttura.
 
 ### 3.2 Striscia di Gaza (`israel_simulator:gaza_strip`)
-* **Comando:** `/locate structure israel_simulator:gaza_strip`
-- [ ] La struttura rappresenta un villaggio abbandonato **senza case intatte**.
-- [ ] Sono visibili solo le fondamenta a raso terra degli antichi edifici con macerie e sbarre di ferro all'interno.
-- [ ] La piazza centrale presenta il pozzo prosciugato con pilastri spezzati.
-- [ ] **Torri di guardia:** Sono presenti torri perimetrali alte fino a 15 blocchi con scale interne, feritoie in sbarre di ferro e merlature.
-- [ ] **Verifica Materiali:** La struttura è composta al 100% da `cobblestone`, `stone`, `cobbled_deepslate` e `gravel`. **Nessuna traccia di arenaria o sabbia nella struttura o sotto di essa.**
+* **Comando:** `/locate structure israel_simulator:gaza_strip` (solo nel bioma `mediterranean_coast`)
+- [ ] È un quartiere in rovina enorme (di solito 100-160 blocchi per lato, circa 10 volte la vecchia struttura da 32×32), con strade di macerie, incroci, vicoli e posti di blocco.
+- [ ] Non ci sono case intatte: solo fondamenta a raso terra con macerie e sbarre di ferro, cortili di macerie, tratti di mura con brecce e compound in rovina.
+- [ ] La piazza centrale ha il pozzo prosciugato con i pilastri spezzati.
+- [ ] **Torri di guardia:** di altezze diverse (fino a 15 blocchi), con scale interne, feritoie in sbarre di ferro e merlature in parte crollate.
+- [ ] **Casualità:** due Striscie di Gaza (seed diversi o la stessa mappa) non sono mai uguali: cambiano la pianta, le varianti dei pezzi, la rotazione, i materiali e i blocchi crollati.
+- [ ] **Verifica materiali:** solo `cobblestone`, `stone`, `cobbled_deepslate`, `gravel` e `cracked_stone_bricks` (con muretti/lastre), sbarre e scale. **Nessuna arenaria o sabbia nei pezzi o sotto di essi** (sotto c'è un basamento di pietra).
 
 ---
 

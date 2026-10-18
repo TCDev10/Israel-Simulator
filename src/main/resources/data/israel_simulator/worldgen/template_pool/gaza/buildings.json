@@ -1,0 +1,266 @@
+{
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/foundation_0",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/foundation_1",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/foundation_2",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/foundation_3",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/foundation_4",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/foundation_5",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/foundation_6",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/foundation_7",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/foundation_8",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/foundation_9",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/foundation_10",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/foundation_11",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/watchtower_0",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/watchtower_1",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/watchtower_2",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/watchtower_3",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/watchtower_4",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/watchtower_5",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/wall_0",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/wall_1",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/wall_2",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/wall_3",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/rubble_yard_0",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/rubble_yard_1",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/rubble_yard_2",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/rubble_yard_3",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/compound_0",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/compound_1",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/compound_2",
+        "processors": "israel_simulator:gaza_ruins_weathering",
+        "projection": "rigid"
+      }
+    }
+  ]
+}

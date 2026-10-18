@@ -1,0 +1,131 @@
+{
+  "fallback": "israel_simulator:gaza/terminators",
+  "elements": [
+    {
+      "weight": 5,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/road_0",
+        "processors": "israel_simulator:gaza_street_rubble",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 5,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/road_1",
+        "processors": "israel_simulator:gaza_street_rubble",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 5,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/road_2",
+        "processors": "israel_simulator:gaza_street_rubble",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 4,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/road_3",
+        "processors": "israel_simulator:gaza_street_rubble",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 4,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/road_4",
+        "processors": "israel_simulator:gaza_street_rubble",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 4,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/road_5",
+        "processors": "israel_simulator:gaza_street_rubble",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 4,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/road_6",
+        "processors": "israel_simulator:gaza_street_rubble",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/road_7",
+        "processors": "israel_simulator:gaza_street_rubble",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 5,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/crossroad",
+        "processors": "israel_simulator:gaza_street_rubble",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 6,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/t_junction",
+        "processors": "israel_simulator:gaza_street_rubble",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/corner",
+        "processors": "israel_simulator:gaza_street_rubble",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/crossroad_b",
+        "processors": "israel_simulator:gaza_street_rubble",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/checkpoint_0",
+        "processors": "israel_simulator:gaza_street_rubble",
+        "projection": "terrain_matching"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "israel_simulator:gaza/checkpoint_1",
+        "processors": "israel_simulator:gaza_street_rubble",
+        "projection": "terrain_matching"
+      }
+    }
+  ]
+}
