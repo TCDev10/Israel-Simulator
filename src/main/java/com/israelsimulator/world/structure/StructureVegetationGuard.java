@@ -181,14 +181,19 @@ public final class StructureVegetationGuard {
         return boxes;
     }
 
+    /**
+     * Removes plants and vines that cannot survive, inside the piece boxes, in this chunk and in the
+     * already decorated chunks around it: decoration of a later neighbour (a rock mound, a patch) can
+     * still change the soil or the wall a plant of this chunk relies on, and the other way round.
+     */
     private static int cleanUp(WorldGenLevel level, ChunkAccess chunk, List<BoundingBox> boxes) {
         ChunkPos cp = chunk.getPos();
-        int x0 = cp.getMinBlockX(), z0 = cp.getMinBlockZ();
+        int x0 = cp.getMinBlockX() - 16, z0 = cp.getMinBlockZ() - 16;
         int removed = 0;
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         for (BoundingBox b : boxes) {
-            int minX = Math.max(x0, b.minX() - MARGIN), maxX = Math.min(x0 + 15, b.maxX() + MARGIN);
-            int minZ = Math.max(z0, b.minZ() - MARGIN), maxZ = Math.min(z0 + 15, b.maxZ() + MARGIN);
+            int minX = Math.max(x0, b.minX() - MARGIN), maxX = Math.min(x0 + 47, b.maxX() + MARGIN);
+            int minZ = Math.max(z0, b.minZ() - MARGIN), maxZ = Math.min(z0 + 47, b.maxZ() + MARGIN);
             if (minX > maxX || minZ > maxZ) {
                 continue;
             }
@@ -196,11 +201,15 @@ public final class StructureVegetationGuard {
             int maxY = Math.min(level.getMaxY() - 1, b.maxY() + 8);
             for (int x = minX; x <= maxX; x++) {
                 for (int z = minZ; z <= maxZ; z++) {
-                    boolean edge = (x & 15) == 0 || (x & 15) == 15 || (z & 15) == 0 || (z & 15) == 15;
-                    for (int y = minY; y <= maxY; y++) {
+                    if (!decided(level, cp, x, z)) {
+                        continue;
+                    }
+                    ChunkAccess column = level.getChunk(x >> 4, z >> 4);
+                    // top-down, so a vine left hanging by the removal of the one above goes too
+                    for (int y = maxY; y >= minY; y--) {
                         pos.set(x, y, z);
-                        BlockState state = chunk.getBlockState(pos);
-                        if (shouldRemove(level, pos, state, edge)) {
+                        BlockState state = column.getBlockState(pos);
+                        if (shouldRemove(level, pos, state)) {
                             removePlant(level, pos.immutable(), state);
                             removed++;
                         }
@@ -209,6 +218,23 @@ public final class StructureVegetationGuard {
             }
         }
         return removed;
+    }
+
+    /** True when this column and the four next to it are final (their chunks are decorated). */
+    private static boolean decided(WorldGenLevel level, ChunkPos center, int x, int z) {
+        return decorated(level, center, x, z) && decorated(level, center, x + 1, z) && decorated(level, center, x - 1, z)
+                && decorated(level, center, x, z + 1) && decorated(level, center, x, z - 1);
+    }
+
+    private static boolean decorated(WorldGenLevel level, ChunkPos center, int x, int z) {
+        int cx = x >> 4, cz = z >> 4;
+        if (cx == center.x() && cz == center.z()) {
+            return true;
+        }
+        if (Math.abs(cx - center.x()) > 1 || Math.abs(cz - center.z()) > 1) {
+            return false;
+        }
+        return level.getChunk(cx, cz).getPersistedStatus().isOrAfter(ChunkStatus.FEATURES);
     }
 
     /** Largest tree part examined; anything bigger is a building, not a tree, and is left alone. */
@@ -290,8 +316,7 @@ public final class StructureVegetationGuard {
                 undecided = true;         // reaches outside the area this chunk may look at
                 continue;
             }
-            if (!(cx == center.x() && cz == center.z())
-                    && !level.getChunk(cx, cz).getPersistedStatus().isOrAfter(ChunkStatus.FEATURES)) {
+            if (!decorated(level, center, p.getX(), p.getZ())) {
                 undecided = true;         // that chunk has not placed its structure pieces yet
             }
             BlockState state = level.getBlockState(p);
@@ -330,14 +355,13 @@ public final class StructureVegetationGuard {
     }
 
     /** A plant or vine that the game itself would pop off at the first block update. */
-    static boolean shouldRemove(WorldGenLevel level, BlockPos pos, BlockState state, boolean chunkEdge) {
+    static boolean shouldRemove(WorldGenLevel level, BlockPos pos, BlockState state) {
         Block block = state.getBlock();
         if (!state.getFluidState().isEmpty()) {
             return false;
         }
         if (block instanceof VineBlock) {
-            // a vine on the chunk border may cling to a wall the neighbour chunk has not placed yet
-            return !chunkEdge && !state.canSurvive(level, pos);
+            return !state.canSurvive(level, pos);
         }
         if (block instanceof CropBlock) {
             // crops also want light, which is not computed yet during world generation: soil only
