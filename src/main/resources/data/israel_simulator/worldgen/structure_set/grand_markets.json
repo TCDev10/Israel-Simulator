@@ -3,7 +3,11 @@
     "type": "minecraft:random_spread",
     "salt": 19482031,
     "separation": 7,
-    "spacing": 18
+    "spacing": 18,
+    "exclusion_zone": {
+      "other_set": "israel_simulator:western_walls",
+      "chunk_count": 8
+    }
   },
   "structures": [
     {

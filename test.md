@@ -628,3 +628,17 @@ Funzionamento aspettato: si riconosce una vite. Si parte da una talea legnosa co
 Come è stato risolto: c'è il nuovo `scripts/textures/gen_grapevine_crop.py`, che scrive solo le 8 texture `textures/block/grapevine_stage*.png`. Il vecchio `gen_grape_textures.py` è segnato come superato e non si avvia più, perché sovrascriverebbe anche l'icona dell'uva disegnata a mano. Modelli, blockstate e icona dell'uva non sono cambiati. `./gradlew build`: tutti i test passati.
 
 Provato in gioco: `runServer` e `runClient`, con le 8 fasi piazzate su terra arata (`setblock ... grapevine[age=0..7]`). Le texture si vedono con la trasparenza giusta, da vicino e da lontano, senza texture mancanti, e nel log non ci sono errori sulle texture. Non provato dall'utente in gioco.
+
+## Muro del Pianto sovrapposto al Gran Mercato e a Tel Aviv
+
+Problema riscontrato: il nuovo Muro del Pianto (PR 67, un solo template 64×26×48) si sovrapponeva ad altre strutture. Nel seed 777 si sovrapponeva al Gran Mercato (muro a 1664, -2527) e nel seed 20261018 a Tel Aviv (muro a -6639, 768). Nel seed 20261018, a -1183, -4815, toccava anche il bordo delle rovine nel deserto.
+
+Funzionamento aspettato: il Muro del Pianto non si sovrappone mai al Gran Mercato né a Tel Aviv.
+
+Come è stato risolto: in `structure_set/grand_markets.json` c'è ora `exclusion_zone` verso `israel_simulator:western_walls` con `chunk_count` 8, e in `structure_set/tel_aviv_cities.json` con `chunk_count` 9. Calcolo (JigsawPlacement 26.2): lo start è nell'angolo del chunk e il template di partenza ruota attorno a quell'angolo, quindi la portata di una struttura è `max_distance_from_center` + metà del lato più lungo del pezzo di partenza. Il muro, che è un solo template senza jigsaw, arriva a 63 blocchi, il mercato a 64 + 7 = 71 e Tel Aviv a 80 + 8 = 88. Con n chunk di esclusione l'altro start è ad almeno n + 1 chunk su un asse, quindi serve 16 × (n + 1) > somma delle portate: 134 per il mercato dà n = 8, 151 per Tel Aviv dà n = 9. Le zone sono sul mercato e su Tel Aviv, non sul muro, perché un set ha una sola `exclusion_zone` e il muro ne servirebbe due. Inoltre, con la zona sul muro, contro Tel Aviv non resterebbe quasi nessun muro (griglia di Tel Aviv troppo fitta). Nuovo `WesternWallExclusionZoneTest`: ricalcola le portate da JSON e NBT e fallisce se l'esclusione non basta.
+
+Verifica: `./gradlew build`, 397/397 test. `runServer` sui seed 424242, 20261018 e 777 con muro, mercato, Tel Aviv e rovine localizzati e generati (±96 blocchi). 0 sovrapposizioni tra il muro e mercato o Tel Aviv. Le istanze più vicine sono un mercato a 9 chunk e Tel Aviv a 10 chunk, quindi appena fuori dalla zona. Spawnano ancora tutti: muri 5/6/7, mercati 5/5/4, Tel Aviv 5/3/3, rovine 5/9/7. Scansione vegetazione 0 problemi e 0 errori nel log su tutti e tre i seed.
+
+Effetto collaterale: l'esclusione guarda la griglia del muro (spacing 20), non il bioma. Secondo una stima resta circa il 34% delle posizioni possibili del Gran Mercato e il 23% di quelle di Tel Aviv, anche lontano da Gerusalemme.
+
+Non risolto: le rovine nel deserto (seed 20261018, muro nel chunk -70, -298) si toccano ancora con il muro. Coprirle costerebbe circa il 66% delle rovine (zona di 8 chunk sulle rovine), oppure l'88% dei muri con la zona sul muro, quindi non l'ho fatto. Nella stessa verifica il muro si sovrappone anche a sinagoga (seed 20261018, stesso chunk -470, 141), grande sinagoga (-99, -315) e casa storica (-211, 62): sono strutture singole dello stesso bioma, fuori da questa PR.
