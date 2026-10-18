@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Generate the remaining real structures (DataVersion 4903):
-- government_building (urban civic hall)
 - grand_market (covered Shuk bazaar)
 - startup_office (modern Silicon Alley office)
 - historical_house (heritage Jerusalem stone residence)
@@ -36,107 +35,6 @@ def lantern(hanging="false"):
 
 def barrel(facing="up"):
     return blk("minecraft:barrel", facing=facing, open="false")
-
-
-def gen_government_building():
-    """Urban civic administrative building (Tel Aviv / Knesset-inspired).
-    Marker: minecraft:polished_deepslate
-    Loot: israel_simulator:chests/government_building
-    """
-    SX, SY, SZ = 28, 14, 26
-    fy = 1
-    s = Structure(SX, SY, SZ)
-    s.fills(0, 0, 0, SX - 1, fy - 1, SZ - 1, blk("minecraft:stone"))
-    
-    # Exterior plaza & steps
-    for x in range(SX):
-        for z in range(SZ):
-            if z < 5 or z > SZ - 3 or x < 3 or x > SX - 4:
-                s.set(x, fy, z, blk("minecraft:polished_andesite") if (x + z) % 2 == 0 else blk("minecraft:smooth_stone"))
-            else:
-                s.set(x, fy, z, blk("minecraft:polished_deepslate"))
-
-    # Entrance staircase at z=0..3, x=10..17
-    for y in range(fy + 1, fy + 3):
-        for x in range(10, 18):
-            s.set(x, y - 1, 3, stair("polished_deepslate_stairs", f="south"))
-            s.set(x, y - 1, 4, blk("minecraft:polished_deepslate"))
-
-    # Main building envelope: x=4..23, z=5..23, y=fy+1..fy+10
-    x0, x1 = 4, 23
-    z0, z1 = 5, 23
-    h = 9
-    
-    # Walls & facade
-    for y in range(fy + 1, fy + h + 1):
-        for x in range(x0, x1 + 1):
-            s.set(x, y, z0, blk("minecraft:quartz_block"))
-            s.set(x, y, z1, blk("minecraft:deepslate_bricks"))
-        for z in range(z0, z1 + 1):
-            s.set(x0, y, z, blk("minecraft:deepslate_bricks"))
-            s.set(x1, y, z, blk("minecraft:deepslate_bricks"))
-
-    # Portico columns in front (z=5)
-    for col_x in (6, 10, 17, 21):
-        for y in range(fy + 1, fy + h):
-            s.set(col_x, y, z0, blk("minecraft:quartz_pillar", axis="y"))
-
-    # Windows on side and front
-    for y in (fy + 3, fy + 4, fy + 7, fy + 8):
-        for z in range(z0 + 3, z1 - 2, 3):
-            s.set(x0, y, z, pane("light_blue_stained_glass_pane"))
-            s.set(x1, y, z, pane("light_blue_stained_glass_pane"))
-        for x in (8, 12, 15, 19):
-            if y in (fy + 7, fy + 8):
-                s.set(x, y, z0, pane("light_blue_stained_glass_pane"))
-
-    # Grand entrance door (x=13..14, z=5, y=fy+1..fy+3)
-    s.set(13, fy + 1, z0, blk("minecraft:air"))
-    s.set(13, fy + 2, z0, blk("minecraft:air"))
-    s.set(14, fy + 1, z0, blk("minecraft:air"))
-    s.set(14, fy + 2, z0, blk("minecraft:air"))
-
-    # Floor 1 & Floor 2 ceiling
-    s.fills(x0 + 1, fy + 5, z0 + 1, x1 - 1, fy + 5, z1 - 1, blk("minecraft:smooth_stone_slab", type="top", waterlogged="false"))
-    # Roof with skylight
-    s.fills(x0, fy + h + 1, z0, x1, fy + h + 1, z1, blk("minecraft:deepslate_brick_slab", type="bottom", waterlogged="false"))
-    s.fills(11, fy + h + 1, 11, 16, fy + h + 1, 17, blk("minecraft:tinted_glass"))
-
-    # Interior: Assembly hall / Council Chamber on ground floor (z=10..22)
-    # Blue carpet runner
-    for z in range(z0 + 2, z1 - 1):
-        s.set(13, fy + 1, z, blk("minecraft:blue_carpet"))
-        s.set(14, fy + 1, z, blk("minecraft:blue_carpet"))
-    # Podium & lectern at far end (z=21, x=13..14)
-    s.set(13, fy + 1, 21, blk("minecraft:lectern", facing="north", has_book="true"))
-    s.set(14, fy + 1, 21, blk("minecraft:chiseled_bookshelf", facing="north"))
-    # Delegate seats
-    for row_z in (12, 15, 18):
-        for seat_x in (7, 9, 11, 16, 18, 20):
-            s.set(seat_x, fy + 1, row_z, stair("dark_oak_stairs", f="south"))
-            s.set(seat_x, fy + 1, row_z + 1, blk("minecraft:spruce_trapdoor", facing="south", half="top", open="false", powered="false", waterlogged="false"))
-
-    # Archives / Registry on upper floor (fy+6)
-    for bx in (6, 7, 8, 19, 20, 21):
-        s.set(bx, fy + 6, 10, blk("minecraft:bookshelf"))
-        s.set(bx, fy + 7, 10, blk("minecraft:bookshelf"))
-        s.set(bx, fy + 6, 18, blk("minecraft:chiseled_bookshelf", facing="south"))
-
-    # Official chests
-    s.set(13, fy + 1, 22, chest(facing="north", loot="israel_simulator:chests/government_building"))
-    s.set(20, fy + 6, 21, chest(facing="west", loot="israel_simulator:chests/government_building"))
-    
-    # Lighting
-    for lx in (8, 19):
-        for lz in (9, 19):
-            s.set(lx, fy + 4, lz, lantern(hanging="true"))
-            s.set(lx, fy + 9, lz, lantern(hanging="true"))
-
-    # Required Framework Marker Block
-    s.set(1, fy + 1, 1, blk("minecraft:polished_deepslate"))
-
-    write_jigsaw("government_building", "israel_simulator:urban_area", salt=112233)
-    s.save(ROOT / "src/main/resources/data/israel_simulator/structure/government_building.nbt")
 
 
 def gen_startup_office():
@@ -601,7 +499,6 @@ def gen_great_synagogue():
 
 if __name__ == "__main__":
     print("Generating remaining structures...")
-    gen_government_building()
     gen_startup_office()
     gen_historical_house()
     gen_synagogue()
