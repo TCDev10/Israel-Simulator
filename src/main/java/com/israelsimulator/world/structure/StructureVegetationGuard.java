@@ -2,11 +2,16 @@ package com.israelsimulator.world.structure;
 
 import com.israelsimulator.IsraelSimulator;
 import it.unimi.dsi.fastutil.longs.LongSet;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.List;
 import java.util.Map;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.ChunkPos;
@@ -43,7 +48,10 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
  *       known long before any piece is placed, so it works for pieces in not-yet-decorated chunks);</li>
  *   <li>refuses every VEGETAL_DECORATION feature whose origin is inside a piece box grown by
  *       {@link #MARGIN} blocks (trees, grass/flower patches, bushes, vines...);</li>
- *   <li>at the end removes, inside those boxes, any plant or vine of this chunk that cannot survive
+ *   <li>at the end removes, inside those boxes, every tree part (leaves and the logs joined to them) that
+ *       touches nothing solid any more, typically a palm of one structure whose trunk was cut away by the
+ *       template air of another structure laid over it;</li>
+ *   <li>then removes, inside those boxes, any plant or vine of this chunk that cannot survive
  *       where it ended up (no soil below, no wall to cling to, a broken double plant).</li>
  * </ol>
  * Outside the boxes and outside world generation (saplings, bone meal) nothing changes.
@@ -74,7 +82,7 @@ public final class StructureVegetationGuard {
         State state = STATE.get();
         STATE.remove();
         if (state != null) {
-            int removed = cleanUp(level, chunk, state.boxes);
+            int removed = removeFloatingTrees(level, chunk, state.boxes) + cleanUp(level, chunk, state.boxes);
             if (removed > 0) {
                 IsraelSimulator.LOGGER.debug("Removed {} unsupported plants near structures in chunk {}",
                         removed, chunk.getPos());
@@ -180,6 +188,124 @@ public final class StructureVegetationGuard {
             }
         }
         return removed;
+    }
+
+    /** Largest tree part examined; anything bigger is a building, not a tree, and is left alone. */
+    static final int MAX_TREE = 2048;
+
+    /**
+     * Structure pieces are clipped to the chunk being decorated, so once a chunk is decorated its
+     * structure blocks are final. A tree part is judged only when every chunk it touches is decorated;
+     * until then the last of those chunks to be decorated judges it.
+     */
+    private static int removeFloatingTrees(WorldGenLevel level, ChunkAccess chunk, List<BoundingBox> boxes) {
+        ChunkPos cp = chunk.getPos();
+        int x0 = cp.getMinBlockX(), z0 = cp.getMinBlockZ();
+        Set<BlockPos> visited = new HashSet<>();
+        int removed = 0;
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        for (BoundingBox b : boxes) {
+            int minX = Math.max(x0, b.minX() - MARGIN), maxX = Math.min(x0 + 15, b.maxX() + MARGIN);
+            int minZ = Math.max(z0, b.minZ() - MARGIN), maxZ = Math.min(z0 + 15, b.maxZ() + MARGIN);
+            if (minX > maxX || minZ > maxZ) {
+                continue;
+            }
+            int minY = Math.max(level.getMinY() + 1, b.minY());
+            int maxY = Math.min(level.getMaxY() - 1, b.maxY() + 8);
+            for (int x = minX; x <= maxX; x++) {
+                for (int z = minZ; z <= maxZ; z++) {
+                    for (int y = minY; y <= maxY; y++) {
+                        pos.set(x, y, z);
+                        if (!visited.contains(pos) && isTree(chunk.getBlockState(pos))) {
+                            List<BlockPos> part = floatingTreePart(level, cp, pos.immutable(), visited);
+                            if (part != null) {
+                                for (BlockPos q : part) {
+                                    level.setBlock(q, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+                                }
+                                removed += part.size();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return removed;
+    }
+
+    static boolean isTree(BlockState state) {
+        if (state.is(BlockTags.LEAVES)) {
+            return true;
+        }
+        if (!state.is(BlockTags.LOGS)) {
+            return false;
+        }
+        Identifier id = BuiltInRegistries.BLOCK.getKey(state.getBlock());
+        return !id.getPath().startsWith("stripped_");
+    }
+
+    /** Vegetation and air: what a tree part can rest on without being held up. */
+    private static boolean holdsNothing(BlockState state) {
+        return state.isAir() || state.getBlock() instanceof VegetationBlock || state.getBlock() instanceof VineBlock
+                || state.is(Blocks.WATER);
+    }
+
+    /** The 26-connected tree part through {@code start}, if it contains leaves and touches nothing solid. */
+    private static List<BlockPos> floatingTreePart(WorldGenLevel level, ChunkPos center, BlockPos start, Set<BlockPos> visited) {
+        List<BlockPos> part = new ArrayList<>();
+        ArrayDeque<BlockPos> todo = new ArrayDeque<>();
+        Set<BlockPos> seen = new HashSet<>();
+        todo.add(start);
+        seen.add(start);
+        boolean anchored = false, leaves = false, undecided = false;
+        while (!todo.isEmpty()) {
+            BlockPos p = todo.poll();
+            part.add(p);
+            visited.add(p);
+            if (part.size() > MAX_TREE) {
+                anchored = true;
+            }
+            int cx = p.getX() >> 4, cz = p.getZ() >> 4;
+            if (Math.abs(cx - center.x()) > 1 || Math.abs(cz - center.z()) > 1) {
+                undecided = true;         // reaches outside the area this chunk may look at
+                continue;
+            }
+            if (!(cx == center.x() && cz == center.z())
+                    && !level.getChunk(cx, cz).getPersistedStatus().isOrAfter(ChunkStatus.FEATURES)) {
+                undecided = true;         // that chunk has not placed its structure pieces yet
+            }
+            BlockState state = level.getBlockState(p);
+            leaves |= state.is(BlockTags.LEAVES);
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dy = -1; dy <= 1; dy++) {
+                    for (int dz = -1; dz <= 1; dz++) {
+                        if (dx == 0 && dy == 0 && dz == 0) {
+                            continue;
+                        }
+                        BlockPos q = p.offset(dx, dy, dz);
+                        if (q.getY() < level.getMinY() || q.getY() > level.getMaxY()) {
+                            continue;
+                        }
+                        boolean face = Math.abs(dx) + Math.abs(dy) + Math.abs(dz) == 1;
+                        int qx = q.getX() >> 4, qz = q.getZ() >> 4;
+                        if (Math.abs(qx - center.x()) > 1 || Math.abs(qz - center.z()) > 1) {
+                            if (face) {
+                                undecided = true;
+                            }
+                            continue;
+                        }
+                        BlockState n = level.getBlockState(q);
+                        if (isTree(n)) {
+                            if (part.size() + todo.size() <= MAX_TREE && seen.add(q)) {
+                                todo.add(q);
+                            }
+                        } else if (face && !holdsNothing(n)) {
+                            anchored = true;
+                        }
+                    }
+                }
+            }
+        }
+        return anchored || undecided || !leaves ? null : part;
     }
 
     /** A plant or vine that the game itself would pop off at the first block update. */
