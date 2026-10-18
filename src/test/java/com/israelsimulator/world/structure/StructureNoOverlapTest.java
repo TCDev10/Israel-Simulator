@@ -78,15 +78,35 @@ class StructureNoOverlapTest {
     }
 
     @Test
-    @DisplayName("The guard's search radius covers the two largest structures")
-    void rangeCoversLargestPair() throws Exception {
-        List<Integer> reaches = new ArrayList<>();
-        for (String[] e : modSets()) reaches.add(reach(e[1]));
-        reaches.sort(null);
-        int a = reaches.get(reaches.size() - 1), b = reaches.get(reaches.size() - 2);
-        assertTrue(StructureOverlapGuard.RANGE_CHUNKS * 16 > a + b,
-                "RANGE_CHUNKS " + StructureOverlapGuard.RANGE_CHUNKS + " too small for reaches " + a + " + " + b);
-        assertTrue(StructureOverlapGuard.RANGE_CHUNKS <= 32, "keep the search bounded");
+    @DisplayName("The guard's reach table is a safe upper bound for every structure")
+    void reachTableIsConservative() throws Exception {
+        StringBuilder bad = new StringBuilder();
+        for (String[] e : modSets()) {
+            int computed = reach(e[1]);
+            Integer table = StructureOverlapGuard.REACH.get(e[1]);
+            if (table == null || table < computed) bad.append(e[1]).append('=').append(computed).append(' ');
+        }
+        assertEquals("", bad.toString(), "REACH missing or too small (needed values)");
+        assertEquals(new HashSet<>(StructureOverlapGuard.PRIORITY), StructureOverlapGuard.REACH.keySet());
+    }
+
+    @Test
+    @DisplayName("Terrain adaptation margin: beard/bury/encapsulate reshape 12 blocks, none 0")
+    void terrainMargin() throws Exception {
+        assertEquals(12, StructureOverlapGuard.TERRAIN_MARGIN, "Beardifier kernel radius");
+        for (String[] e : modSets()) {
+            JsonObject s = json("worldgen/structure/" + e[1] + ".json");
+            String t = s.has("terrain_adaptation") ? s.get("terrain_adaptation").getAsString() : "none";
+            assertTrue(List.of("none", "beard_thin", "beard_box", "bury", "encapsulate").contains(t), e[1] + ": " + t);
+        }
+        BoundingBox house = new BoundingBox(0, 60, 0, 10, 70, 10);
+        BoundingBox shop = new BoundingBox(20, 60, 0, 30, 70, 10);   // 9 free blocks in between
+        assertFalse(StructureOverlapGuard.touches(List.of(house), 0, List.of(shop), 0));
+        assertTrue(StructureOverlapGuard.touches(List.of(house), 12, List.of(shop), 0), "beard of one side buries the other");
+        assertTrue(StructureOverlapGuard.touches(List.of(house), 0, List.of(shop), 12));
+        BoundingBox far = new BoundingBox(34, 60, 0, 40, 70, 10);    // 23 free blocks: the two 12-block beards meet
+        assertTrue(StructureOverlapGuard.touches(List.of(house), 12, List.of(far), 12), "both beards: need at least 24 free blocks");
+        assertFalse(StructureOverlapGuard.touches(List.of(house), 12, List.of(new BoundingBox(35, 60, 0, 40, 70, 10)), 12));
     }
 
     @Test
@@ -96,9 +116,9 @@ class StructureNoOverlapTest {
         assertNotNull(in);
         assertTrue(new String(in.readAllBytes(), StandardCharsets.UTF_8).contains("\"StructureOverlapGuardMixin\""));
         BoundingBox low = new BoundingBox(0, 60, 0, 10, 70, 10);
-        assertTrue(StructureOverlapGuard.touches(List.of(low), List.of(new BoundingBox(10, 120, 10, 20, 130, 20))),
+        assertTrue(StructureOverlapGuard.touches(List.of(low), 0, List.of(new BoundingBox(10, 120, 10, 20, 130, 20)), 0),
                 "touching columns count even at different heights");
-        assertFalse(StructureOverlapGuard.touches(List.of(low), List.of(new BoundingBox(11, 60, 0, 20, 70, 10))));
+        assertFalse(StructureOverlapGuard.touches(List.of(low), 0, List.of(new BoundingBox(11, 60, 0, 20, 70, 10)), 0));
     }
 
     @SuppressWarnings("unchecked")

@@ -15,6 +15,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
+import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
 
 /**
@@ -24,9 +25,10 @@ import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStruct
  * about to be created (real generation and {@code /locate} both go through
  * {@code Structure.findValidGenerationPoint}), the guard rebuilds this start's pieces on a fresh,
  * identical generation context and looks at every candidate start of every higher-priority mod
- * structure (and of the same structure in an earlier chunk) within {@link #RANGE_CHUNKS}. A candidate
+ * structure (and of the same structure in an earlier chunk) whose {@link #REACH} can hit this one. A candidate
  * counts only if it would really generate: right biome, not itself cancelled by an even higher one.
- * If any of its piece boxes touches one of ours in X/Z, this start is cancelled.
+ * If any of its piece boxes touches one of ours in X/Z, after inflating both by their terrain
+ * adaptation margin (beard/bury/encapsulate reshape 12 blocks around a piece), this start is cancelled.
  *
  * <p>So a structure only loses a spawn where it would really have overlapped a structure that
  * really spawns. Everything is a pure function of seed + chunk, so the result is the same in every
@@ -41,8 +43,35 @@ public final class StructureOverlapGuard {
             "desert_ruins", "ancient_sanctuary", "government_building", "great_synagogue", "startup_office",
             "ein_gedi_oasis", "synagogue", "historical_house");
 
-    /** Candidate search radius; must exceed (reachA + reachB) / 16 for every pair (largest: 240-block tropical island + Gaza = 330 blocks). */
-    public static final int RANGE_CHUNKS = 22;
+    /**
+     * Upper bound, in blocks, of how far each structure's pieces can reach from its start chunk's
+     * min corner in X/Z (jigsaw: max_distance_from_center + half the start template; single
+     * template: longest side - 1). StructureNoOverlapTest checks these against the data. Used as a
+     * cheap precheck so far-away candidates are never rebuilt.
+     */
+    public static final Map<String, Integer> REACH = Map.ofEntries(
+            Map.entry("tropical_island", 248),
+            Map.entry("torri_gemelle", 88),
+            Map.entry("jerusalem_city", 96),
+            Map.entry("tel_aviv_city", 96),
+            Map.entry("jaffa_port", 96),
+            Map.entry("gaza_strip", 104),
+            Map.entry("western_wall", 72),
+            Map.entry("dead_sea_resort", 80),
+            Map.entry("agricultural_farm", 96),
+            Map.entry("grand_market", 80),
+            Map.entry("mediterranean_village", 96),
+            Map.entry("desert_ruins", 80),
+            Map.entry("ancient_sanctuary", 56),
+            Map.entry("government_building", 56),
+            Map.entry("great_synagogue", 48),
+            Map.entry("startup_office", 40),
+            Map.entry("ein_gedi_oasis", 88),
+            Map.entry("synagogue", 40),
+            Map.entry("historical_house", 32));
+
+    /** Vanilla beard/bury/encapsulate reshapes terrain up to 12 blocks around every piece (Beardifier kernel). */
+    public static final int TERRAIN_MARGIN = 12;
 
     private static final ThreadLocal<Integer> BYPASS = ThreadLocal.withInitial(() -> 0);
     private static final Map<Key, List<BoundingBox>> CACHE = new ConcurrentHashMap<>();
@@ -51,7 +80,8 @@ public final class StructureOverlapGuard {
 
     private record Key(int structure, long chunk, long seed) {}
 
-    private record Entry(Holder<Structure> structure, RandomSpreadStructurePlacement placement) {}
+    /** reach = REACH + terrain margin: the farthest X/Z block this structure can touch or reshape. */
+    private record Entry(Holder<Structure> structure, RandomSpreadStructurePlacement placement, int margin, int reach) {}
 
     private record Index(RegistryAccess access, Map<Structure, Integer> rank, List<Entry> entries) {}
 
@@ -101,7 +131,8 @@ public final class StructureOverlapGuard {
                     for (StructureSet.StructureSelectionEntry e : set.value().structures()) {
                         Identifier key = structures.getKey(e.structure().value());
                         if (key != null && key.getNamespace().equals("israel_simulator") && key.getPath().equals(id)) {
-                            found = new Entry(e.structure(), rs);
+                            int margin = margin(e.structure().value());
+                            found = new Entry(e.structure(), rs, margin, REACH.getOrDefault(id, 512) + margin);
                         }
                     }
                 }
@@ -127,23 +158,34 @@ public final class StructureOverlapGuard {
         if (cached != null) {
             return cached;
         }
-        List<BoundingBox> boxes = build(idx.entries.get(rank).structure.value(), chunk, base);
+        Structure self = idx.entries.get(rank).structure.value();
+        List<BoundingBox> boxes = build(self, chunk, base);
         if (!boxes.isEmpty()) {
+            // our footprint incl. terrain reshaping
+            int m = margin(self);
+            int minX = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE, maxX = Integer.MIN_VALUE, maxZ = Integer.MIN_VALUE;
+            for (BoundingBox b : boxes) {
+                minX = Math.min(minX, b.minX() - m); maxX = Math.max(maxX, b.maxX() + m);
+                minZ = Math.min(minZ, b.minZ() - m); maxZ = Math.max(maxZ, b.maxZ() + m);
+            }
             search:
             for (int h = 0; h <= rank; h++) {
                 Entry other = idx.entries.get(h);
                 if (other == null) continue;
                 RandomSpreadStructurePlacement p = other.placement;
                 int sp = p.spacing();
-                int x0 = Math.floorDiv(chunk.x() - RANGE_CHUNKS, sp), x1 = Math.floorDiv(chunk.x() + RANGE_CHUNKS, sp);
-                int z0 = Math.floorDiv(chunk.z() - RANGE_CHUNKS, sp), z1 = Math.floorDiv(chunk.z() + RANGE_CHUNKS, sp);
-                for (int cx = x0; cx <= x1; cx++) {
-                    for (int cz = z0; cz <= z1; cz++) {
-                        ChunkPos cand = p.getPotentialStructureChunk(base.seed(), cx * sp, cz * sp);
-                        if (Math.abs(cand.x() - chunk.x()) > RANGE_CHUNKS || Math.abs(cand.z() - chunk.z()) > RANGE_CHUNKS) continue;
+                int r = other.reach;
+                // candidate start corners whose reach box can hit our footprint
+                int cx0 = Math.floorDiv(minX - r, 16), cx1 = Math.floorDiv(maxX + r, 16);
+                int cz0 = Math.floorDiv(minZ - r, 16), cz1 = Math.floorDiv(maxZ + r, 16);
+                for (int gx = Math.floorDiv(cx0, sp); gx <= Math.floorDiv(cx1, sp); gx++) {
+                    for (int gz = Math.floorDiv(cz0, sp); gz <= Math.floorDiv(cz1, sp); gz++) {
+                        ChunkPos cand = p.getPotentialStructureChunk(base.seed(), gx * sp, gz * sp);
+                        int bx = cand.getMinBlockX(), bz = cand.getMinBlockZ();
+                        if (bx + r < minX || bx - r > maxX || bz + r < minZ || bz - r > maxZ) continue;  // cheap precheck
                         if (h == rank && !before(cand, chunk)) continue;   // same structure: earlier chunk wins
                         List<BoundingBox> theirs = compute(idx, h, cand, base);
-                        if (touches(boxes, theirs)) {
+                        if (touches(boxes, m, theirs, other.margin)) {
                             boxes = NONE;
                             break search;
                         }
@@ -177,10 +219,16 @@ public final class StructureOverlapGuard {
         }
     }
 
-    static boolean touches(List<BoundingBox> a, List<BoundingBox> b) {
+    static int margin(Structure s) {
+        return s.terrainAdaptation() != TerrainAdjustment.NONE ? TERRAIN_MARGIN : 0;
+    }
+
+    /** X/Z touch test after inflating every piece of a by ma and of b by mb (terrain-adaptation margins). */
+    static boolean touches(List<BoundingBox> a, int ma, List<BoundingBox> b, int mb) {
+        int g = ma + mb;
         for (BoundingBox x : a) {
             for (BoundingBox y : b) {
-                if (x.minX() <= y.maxX() && y.minX() <= x.maxX() && x.minZ() <= y.maxZ() && y.minZ() <= x.maxZ()) {
+                if (x.minX() - g <= y.maxX() && y.minX() <= x.maxX() + g && x.minZ() - g <= y.maxZ() && y.minZ() <= x.maxZ() + g) {
                     return true;
                 }
             }
