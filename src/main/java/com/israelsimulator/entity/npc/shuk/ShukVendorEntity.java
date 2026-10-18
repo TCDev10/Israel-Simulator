@@ -138,8 +138,11 @@ public class ShukVendorEntity extends AbstractVillager {
         MerchantOffers offers = this.getOffers();
         offers.clear();
         for (ShukMarket.Listing l : ShukMarket.listings(stall, period, festival)) {
+            java.util.Optional<net.minecraft.core.Holder.Reference<net.minecraft.world.item.Item>> item =
+                    net.minecraft.core.registries.BuiltInRegistries.ITEM.get(net.minecraft.resources.Identifier.parse(l.item()));
+            if (item.isEmpty()) continue;
             offers.add(new MerchantOffer(new ItemCost(ModItems.SHEKEL.get(), l.shekels()),
-                    new ItemStack(l.item().get(), l.count()), 16, 1, 0.05F));
+                    new ItemStack(item.get(), l.count()), 16, 1, 0.05F));
         }
     }
 

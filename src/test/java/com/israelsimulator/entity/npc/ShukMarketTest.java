@@ -8,7 +8,8 @@ import com.israelsimulator.entity.npc.shuk.ShukMarket.Period;
 import com.israelsimulator.entity.npc.shuk.ShukMarket.Stall;
 import com.israelsimulator.festival.FestivalManager;
 import com.israelsimulator.festival.FestivalType;
-import com.israelsimulator.registry.ModItems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -65,12 +66,12 @@ class ShukMarketTest {
 
     @Test
     void festivalsChangeTheBakery() {
-        assertSame(ModItems.SUFGANIYAH, ShukMarket.listings(Stall.BAKERY, Period.AFTERNOON, FestivalType.HANUKKAH).get(0).item());
-        assertSame(ModItems.HAMANTASH, ShukMarket.listings(Stall.BAKERY, Period.AFTERNOON, FestivalType.PURIM).get(0).item());
+        assertEquals("israel_simulator:sufganiyah", ShukMarket.listings(Stall.BAKERY, Period.AFTERNOON, FestivalType.HANUKKAH).get(0).item());
+        assertEquals("israel_simulator:hamantash", ShukMarket.listings(Stall.BAKERY, Period.AFTERNOON, FestivalType.PURIM).get(0).item());
         List<Listing> pesach = ShukMarket.listings(Stall.BAKERY, Period.AFTERNOON, FestivalType.PESACH);
-        assertSame(ModItems.MATZO, pesach.get(0).item());
-        assertTrue(pesach.stream().noneMatch(l -> l.item() == ModItems.CHALLAH || l.item() == ModItems.RUGELACH));
-        assertTrue(ShukMarket.listings(Stall.BAKERY, Period.AFTERNOON, null).stream().anyMatch(l -> l.item() == ModItems.CHALLAH));
+        assertEquals("israel_simulator:matzo", pesach.get(0).item());
+        assertTrue(pesach.stream().noneMatch(l -> l.item().equals("israel_simulator:challah") || l.item().equals("israel_simulator:rugelach")));
+        assertTrue(ShukMarket.listings(Stall.BAKERY, Period.AFTERNOON, null).stream().anyMatch(l -> l.item().equals("israel_simulator:challah")));
     }
 
     @Test
@@ -80,5 +81,19 @@ class ShukMarketTest {
         FestivalManager.forceStartFestival(FestivalType.PURIM, PLAIN_DAY);
         assertEquals(FestivalType.PURIM, ShukMarket.stockFestival(PLAIN_DAY + 10));
         assertNotEquals(ShukMarket.stockKey(Period.MORNING, null), ShukMarket.stockKey(Period.MORNING, FestivalType.PURIM));
+    }
+
+    @Test
+    void everyModItemSoldExists() {
+        for (Stall s : Stall.values())
+            for (FestivalType f : new FestivalType[] {null, FestivalType.HANUKKAH, FestivalType.PURIM, FestivalType.PESACH,
+                    FestivalType.ROSH_HASHANAH, FestivalType.SUKKOT})
+                for (Listing l : ShukMarket.listings(s, Period.MORNING, f)) {
+                    assertTrue(l.shekels() > 0 && l.count() > 0 && l.count() <= 64);
+                    if (l.item().startsWith("israel_simulator:")) {
+                        String n = l.item().substring("israel_simulator:".length());
+                        assertTrue(Files.exists(Path.of("src/main/resources/assets/israel_simulator/items/" + n + ".json")), l.item());
+                    }
+                }
     }
 }

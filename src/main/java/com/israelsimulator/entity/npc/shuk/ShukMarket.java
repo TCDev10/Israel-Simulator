@@ -2,12 +2,8 @@ package com.israelsimulator.entity.npc.shuk;
 
 import com.israelsimulator.festival.FestivalManager;
 import com.israelsimulator.festival.FestivalType;
-import com.israelsimulator.registry.ModItems;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 
 /**
  * What a Shuk stall sells and for how much, depending on the time of day and the festival.
@@ -32,8 +28,8 @@ public final class ShukMarket {
         CLOSED
     }
 
-    /** One offer: pay {@code shekels} Shekels, get {@code count} of the item. */
-    public record Listing(Supplier<? extends Item> item, int count, int shekels) {}
+    /** One offer: pay {@code shekels} Shekels, get {@code count} of the item (registry id). */
+    public record Listing(String item, int count, int shekels) {}
 
     private ShukMarket() {}
 
@@ -59,51 +55,51 @@ public final class ShukMarket {
         boolean pesach = festival == FestivalType.PESACH;
         switch (stall) {
             case SPICE -> {
-                out.add(new Listing(ModItems.TAHINI, 1, 2));
-                out.add(new Listing(ModItems.SESAME_SEEDS, 4, 1));
-                out.add(new Listing(ModItems.CHICKPEAS, 4, 1));
-                out.add(new Listing(ModItems.HUMMUS, 1, 3));
+                out.add(new Listing("israel_simulator:tahini", 1, 2));
+                out.add(new Listing("israel_simulator:sesame_seeds", 4, 1));
+                out.add(new Listing("israel_simulator:chickpeas", 4, 1));
+                out.add(new Listing("israel_simulator:hummus", 1, 3));
             }
             case FRUIT -> {
-                out.add(new Listing(ModItems.DATES, 3, 1));
-                out.add(new Listing(ModItems.CITRUS, 2, 1));
-                out.add(new Listing(ModItems.OLIVES, 3, 1));
-                out.add(new Listing(ModItems.GRAPES, 3, 1));
-                out.add(new Listing(ModItems.TOMATO, 3, 1));
-                out.add(new Listing(ModItems.EGGPLANT, 2, 1));
+                out.add(new Listing("israel_simulator:dates", 3, 1));
+                out.add(new Listing("israel_simulator:citrus", 2, 1));
+                out.add(new Listing("israel_simulator:olives", 3, 1));
+                out.add(new Listing("israel_simulator:grapes", 3, 1));
+                out.add(new Listing("israel_simulator:tomato", 3, 1));
+                out.add(new Listing("israel_simulator:eggplant", 2, 1));
             }
             case BAKERY -> {
                 if (pesach) {
-                    out.add(new Listing(ModItems.MATZO, 3, 2));
+                    out.add(new Listing("israel_simulator:matzo", 3, 2));
                 } else {
-                    out.add(new Listing(ModItems.CHALLAH, 1, 3));
-                    out.add(new Listing(ModItems.RUGELACH, 2, 2));
-                    out.add(new Listing(() -> Items.BREAD, 2, 1));
+                    out.add(new Listing("israel_simulator:challah", 1, 3));
+                    out.add(new Listing("israel_simulator:rugelach", 2, 2));
+                    out.add(new Listing("minecraft:bread", 2, 1));
                 }
             }
             case FISH -> {
-                out.add(new Listing(() -> Items.COD, 2, 2));
-                out.add(new Listing(() -> Items.SALMON, 1, 2));
-                out.add(new Listing(() -> Items.DRIED_KELP, 6, 1));
+                out.add(new Listing("minecraft:cod", 2, 2));
+                out.add(new Listing("minecraft:salmon", 1, 2));
+                out.add(new Listing("minecraft:dried_kelp", 6, 1));
             }
             case HALVA -> {
-                out.add(new Listing(() -> Items.HONEY_BOTTLE, 1, 3));
-                out.add(new Listing(ModItems.SESAME_SEEDS, 6, 1));
-                if (!pesach) out.add(new Listing(ModItems.RUGELACH, 2, 2));
+                out.add(new Listing("minecraft:honey_bottle", 1, 3));
+                out.add(new Listing("israel_simulator:sesame_seeds", 6, 1));
+                if (!pesach) out.add(new Listing("israel_simulator:rugelach", 2, 2));
             }
         }
         // festival stock
         if (festival == FestivalType.HANUKKAH && (stall == Stall.BAKERY || stall == Stall.HALVA)) {
-            out.add(0, new Listing(ModItems.SUFGANIYAH, 2, 3));
+            out.add(0, new Listing("israel_simulator:sufganiyah", 2, 3));
         } else if (festival == FestivalType.PURIM && (stall == Stall.BAKERY || stall == Stall.HALVA)) {
-            out.add(0, new Listing(ModItems.HAMANTASH, 3, 2));
+            out.add(0, new Listing("israel_simulator:hamantash", 3, 2));
         } else if (festival == FestivalType.PESACH && stall == Stall.SPICE) {
-            out.add(0, new Listing(ModItems.MATZO, 2, 2));
+            out.add(0, new Listing("israel_simulator:matzo", 2, 2));
         } else if (festival == FestivalType.ROSH_HASHANAH && (stall == Stall.FRUIT || stall == Stall.HALVA)) {
-            out.add(0, new Listing(() -> Items.HONEY_BOTTLE, 1, 2));
-            out.add(1, new Listing(() -> Items.APPLE, 3, 1));
+            out.add(0, new Listing("minecraft:honey_bottle", 1, 2));
+            out.add(1, new Listing("minecraft:apple", 3, 1));
         } else if (festival == FestivalType.SUKKOT && stall == Stall.FRUIT) {
-            out.add(0, new Listing(ModItems.CITRUS, 4, 1));
+            out.add(0, new Listing("israel_simulator:citrus", 4, 1));
         }
         // time of day
         List<Listing> priced = new ArrayList<>(out.size());
