@@ -26,13 +26,14 @@ import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStruct
  * {@code Structure.findValidGenerationPoint}), the guard rebuilds this start's pieces on a fresh,
  * identical generation context and looks at every candidate start of every higher-priority mod
  * structure (and of the same structure in an earlier chunk) whose {@link #REACH} can hit this one. A candidate
- * counts only if it would really generate: right biome, not itself cancelled by an even higher one.
+ * counts if it passes its own vanilla checks (right biome); whether it is in turn cancelled by an even
+ * higher one is deliberately not asked, so there is no recursion and no chain of dependencies across
+ * the world (that made {@code /locate} hang). The price: rarely, both of two overlapping starts lose.
  * If any of its piece boxes touches one of ours in X/Z, after inflating both by their terrain
  * adaptation margin (beard/bury/encapsulate reshape 12 blocks around a piece), this start is cancelled.
  *
- * <p>So a structure only loses a spawn where it would really have overlapped a structure that
- * really spawns. Everything is a pure function of seed + chunk, so the result is the same in every
- * chunk-generation order and for {@code /locate}. Results are cached per (structure, chunk, seed).
+ * <p>Everything is a pure function of seed + chunk, so the result is the same in every
+ * chunk-generation order and for {@code /locate}. Raw piece boxes and decisions are cached per (structure, chunk, seed).
  */
 public final class StructureOverlapGuard {
 
@@ -74,7 +75,10 @@ public final class StructureOverlapGuard {
     public static final int TERRAIN_MARGIN = 12;
 
     private static final ThreadLocal<Integer> BYPASS = ThreadLocal.withInitial(() -> 0);
-    private static final Map<Key, List<BoundingBox>> CACHE = new ConcurrentHashMap<>();
+    /** Raw piece boxes per (structure, chunk, seed): what the start would build without the guard. */
+    private static final Map<Key, List<BoundingBox>> RAW = new ConcurrentHashMap<>();
+    /** Final decision per (structure, chunk, seed). */
+    private static final Map<Key, Boolean> DECISION = new ConcurrentHashMap<>();
     private static final List<BoundingBox> NONE = List.of();
     private static volatile Index index;
 
@@ -98,7 +102,7 @@ public final class StructureOverlapGuard {
         if (rank == null) {
             return true;
         }
-        return !compute(idx, rank, ctx.chunkPos(), ctx).isEmpty();
+        return decide(idx, rank, ctx.chunkPos(), ctx);
     }
 
     /** Raw check without the guard (for diagnostics/tests). */
@@ -140,7 +144,8 @@ public final class StructureOverlapGuard {
                 entries.add(found);
             }
             rank.remove(null);
-            CACHE.clear();
+            RAW.clear();
+            DECISION.clear();
             index = new Index(access, rank, entries);
             return index;
         }
@@ -152,15 +157,16 @@ public final class StructureOverlapGuard {
                 s.biomes()::contains);
     }
 
-    private static List<BoundingBox> compute(Index idx, int rank, ChunkPos chunk, Structure.GenerationContext base) {
+    private static boolean decide(Index idx, int rank, ChunkPos chunk, Structure.GenerationContext base) {
         Key key = new Key(rank, chunk.pack(), base.seed());
-        List<BoundingBox> cached = CACHE.get(key);
+        Boolean cached = DECISION.get(key);
         if (cached != null) {
             return cached;
         }
         Structure self = idx.entries.get(rank).structure.value();
-        List<BoundingBox> boxes = build(self, chunk, base);
-        if (!boxes.isEmpty()) {
+        List<BoundingBox> boxes = raw(idx, rank, chunk, base);
+        boolean ok = !boxes.isEmpty();
+        if (ok) {
             // our footprint incl. terrain reshaping
             int m = margin(self);
             int minX = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE, maxX = Integer.MIN_VALUE, maxZ = Integer.MIN_VALUE;
@@ -184,19 +190,33 @@ public final class StructureOverlapGuard {
                         int bx = cand.getMinBlockX(), bz = cand.getMinBlockZ();
                         if (bx + r < minX || bx - r > maxX || bz + r < minZ || bz - r > maxZ) continue;  // cheap precheck
                         if (h == rank && !before(cand, chunk)) continue;   // same structure: earlier chunk wins
-                        List<BoundingBox> theirs = compute(idx, h, cand, base);
+                        List<BoundingBox> theirs = raw(idx, h, cand, base);
                         if (touches(boxes, m, theirs, other.margin)) {
-                            boxes = NONE;
+                            ok = false;
                             break search;
                         }
                     }
                 }
             }
         }
-        if (CACHE.size() > 200_000) {
-            CACHE.clear();
+        if (DECISION.size() > 200_000) {
+            DECISION.clear();
         }
-        CACHE.put(key, boxes);
+        DECISION.put(key, ok);
+        return ok;
+    }
+
+    private static List<BoundingBox> raw(Index idx, int rank, ChunkPos chunk, Structure.GenerationContext base) {
+        Key key = new Key(rank, chunk.pack(), base.seed());
+        List<BoundingBox> cached = RAW.get(key);
+        if (cached != null) {
+            return cached;
+        }
+        List<BoundingBox> boxes = build(idx.entries.get(rank).structure.value(), chunk, base);
+        if (RAW.size() > 200_000) {
+            RAW.clear();
+        }
+        RAW.put(key, boxes);
         return boxes;
     }
 
