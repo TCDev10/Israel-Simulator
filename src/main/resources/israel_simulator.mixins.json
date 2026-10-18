@@ -6,7 +6,8 @@
   "mixins": [
     "ChunkGeneratorVegetationGuardMixin",
     "ConfiguredFeatureVegetationGuardMixin",
-    "OverworldBiomeBuilderMixin"
+    "OverworldBiomeBuilderMixin",
+    "StructureOverlapGuardMixin"
   ],
   "client": [
     "client.HumanoidModelPrayerMixin"
