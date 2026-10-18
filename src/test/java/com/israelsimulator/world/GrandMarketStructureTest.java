@@ -30,7 +30,7 @@ class GrandMarketStructureTest {
     private static final Gson GSON = new Gson();
     private static final String NS = "israel_simulator:";
 
-    private static final List<String> POOLS = List.of("grand_market", "market/streets", "market/terminators", "market/buildings", "market/landmarks");
+    private static final List<String> POOLS = List.of("grand_market", "market/streets", "market/terminators", "market/buildings", "market/landmarks", "market/approach");
     private static final List<String> STREETS = List.of("market/lane_covered", "market/lane_open", "market/lane_crossroad", "market/lane_corner", "market/lane_t");
     /** Street pieces that are rigid (stairs, arches, gates): they carry a footing. */
     private static final Set<String> RIGID_STREETS = Set.of();
@@ -64,7 +64,7 @@ class GrandMarketStructureTest {
                 assertTrue(loc.startsWith(NS + "market/"), loc);
                 String piece = loc.substring(NS.length());
                 String proj = e.get("projection").getAsString();
-                boolean street = pool.endsWith("/streets") || pool.endsWith("/terminators");
+                boolean street = pool.endsWith("/streets") || pool.endsWith("/terminators") || pool.endsWith("/approach");
                 if (street && !RIGID_STREETS.contains(piece)) {
                     assertEquals("terrain_matching", proj, loc + " streets must follow the terrain");
                 } else {
@@ -83,6 +83,7 @@ class GrandMarketStructureTest {
     void jigsawWiring() throws Exception {
         List<String> pieces = new ArrayList<>(STREETS);
         pieces.add("market/market_gate");
+        pieces.add("market/hall_approach");
         for (String piece : pieces) {
             Template t = Template.load(readGzip(nbtPath(piece)));
             int streetLinks = 0;
