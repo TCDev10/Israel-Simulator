@@ -33,6 +33,61 @@ class WesternWallStructureTest {
         assertEquals("israel_simulator:jerusalem", biomes.get(0).getAsString());
         assertEquals("beard_box", json.get("terrain_adaptation").getAsString());
         assertTrue(json.get("max_distance_from_center").getAsInt() >= 80);
+        assertEquals(-4, json.getAsJsonObject("start_height").get("absolute").getAsInt(),
+                "floor sits on the surface above a 4-block buried footing");
+    }
+
+    @Test
+    @DisplayName("Wall face is built of large mixed pale ashlars, prayer stone within reach of the plaza")
+    void wallFaceHasLargeAshlarsAndReachablePrayerStone() throws Exception {
+        StructureTemplate tpl = StructureTemplate.load(readGzip("data/israel_simulator/structure/western_wall.nbt"));
+        Map<String, String> at = new HashMap<>();
+        for (PlacedBlock b : tpl.blocks) at.put(b.x + "," + b.y + "," + b.z, b.name);
+        int floor = 4, front = 4;
+        // Herodian courses: several pale materials, stones 2 high and at least 3 wide
+        Set<String> faceMats = new HashSet<>();
+        int runs = 0, longRuns = 0;
+        for (int y = floor; y < floor + 12; y += 2) {
+            String prev = null;
+            int len = 0;
+            for (int x = 0; x <= tpl.sizeX; x++) {
+                String n = x < tpl.sizeX ? at.get(x + "," + y + "," + front) : null;
+                String above = at.get(x + "," + (y + 1) + "," + front);
+                if (n != null && !n.equals("minecraft:air") && !"minecraft:air".equals(above)) {
+                    assertEquals(n, at.get(x + "," + (y + 1) + "," + front), "stone 2 high at x=" + x + " y=" + y);
+                    faceMats.add(n);
+                }
+                if (n != null && n.equals(prev)) {
+                    len++;
+                } else {
+                    if (prev != null && !prev.equals("minecraft:air")) {
+                        runs++;
+                        if (len >= 3) longRuns++;
+                    }
+                    prev = n;
+                    len = 1;
+                }
+            }
+        }
+        faceMats.remove("minecraft:air");
+        assertTrue(faceMats.size() >= 3, "pale ashlar mix " + faceMats);
+        assertTrue(longRuns * 10 >= runs * 7, "most stones are large: " + longRuns + "/" + runs);
+        // reachable from the plaza (eye height): mostly prayer stone
+        int wws = 0, total = 0;
+        for (int y = floor; y < floor + 4; y++)
+            for (int x = 12; x < 52; x++) {
+                total++;
+                if ("israel_simulator:western_wall_stone".equals(at.get(x + "," + y + "," + front))) wws++;
+            }
+        assertTrue(wws * 2 >= total, "prayer stone in reach " + wws + "/" + total);
+        // plaza furniture: shtenders, washing basins, the big menorah, mechitza, ramp
+        Map<String, Integer> counts = new HashMap<>();
+        for (PlacedBlock b : tpl.blocks) counts.merge(b.name, 1, Integer::sum);
+        assertTrue(counts.getOrDefault("minecraft:lectern", 0) >= 6, "shtenders");
+        assertTrue(counts.getOrDefault("minecraft:water_cauldron", 0) >= 3, "hand-washing basins");
+        assertTrue(counts.getOrDefault("israel_simulator:menorah", 0) >= 2, "plaza menorah + ark menorah");
+        assertTrue(counts.getOrDefault("minecraft:dark_oak_fence", 0) >= 15, "mechitza");
+        assertTrue(counts.getOrDefault("minecraft:spruce_planks", 0) >= 40, "Mughrabi ramp");
     }
 
     @Test
@@ -40,7 +95,7 @@ class WesternWallStructureTest {
     void templateHasWallPlazaPrayerStoneAndChest() throws Exception {
         StructureTemplate tpl = StructureTemplate.load(readGzip("data/israel_simulator/structure/western_wall.nbt"));
         assertTrue(tpl.sizeX >= 48 && tpl.sizeX <= 64, "length " + tpl.sizeX);
-        assertTrue(tpl.sizeY >= 16 && tpl.sizeY <= 24, "height " + tpl.sizeY);
+        assertTrue(tpl.sizeY >= 20 && tpl.sizeY <= 30, "height " + tpl.sizeY);
         assertTrue(tpl.sizeZ >= 30 && tpl.sizeZ <= 48, "depth " + tpl.sizeZ);
 
         Map<String, Integer> counts = new HashMap<>();
@@ -65,7 +120,6 @@ class WesternWallStructureTest {
         assertTrue(counts.getOrDefault("israel_simulator:jerusalem_stone", 0) >= 100);
         assertEquals(1, chests);
         assertTrue(lootOk);
-        assertTrue(counts.getOrDefault("minecraft:oak_fence", 0) >= 10, "mechitza fences");
         // Not a hollow 9x6x5 box: solid blocks should be many thousands
         int solid = tpl.blocks.size() - counts.getOrDefault("minecraft:air", 0);
         assertTrue(solid >= 3000, "solid blocks " + solid);
@@ -98,6 +152,7 @@ class WesternWallStructureTest {
     private static final class PlacedBlock {
         final String name;
         final Map<String, Object> entityNbt;
+        int x, y, z;
 
         PlacedBlock(String name, Map<String, Object> entityNbt) {
             this.name = name;
@@ -132,7 +187,11 @@ class WesternWallStructureTest {
                 String name = String.valueOf(pe.get("Name"));
                 @SuppressWarnings("unchecked")
                 Map<String, Object> nbt = (Map<String, Object>) b.get("nbt");
-                blocks.add(new PlacedBlock(name, nbt));
+                PlacedBlock pb = new PlacedBlock(name, nbt);
+                @SuppressWarnings("unchecked")
+                List<Integer> pos = (List<Integer>) b.get("pos");
+                pb.x = pos.get(0); pb.y = pos.get(1); pb.z = pos.get(2);
+                blocks.add(pb);
             }
             return new StructureTemplate(size.get(0), size.get(1), size.get(2), blocks);
         }
