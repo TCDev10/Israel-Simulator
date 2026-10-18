@@ -618,3 +618,13 @@ Come è stato risolto: `scripts/worldgen/gen_western_wall.py` genera il nuovo te
 Provato in gioco: `runServer` sui seed 424242, 20261018 e 777, `/locate` del Muro e di Jerusalem da 4 punti e 64 blocchi generati attorno a ogni istanza. Su 12 Muri generati per intero: 0 colonne con aria sotto la piazza, 0 colonne con terreno sopra la piazza e 468 blocchi `western_wall_stone` in ognuno. La scansione della vegetazione dà 0 problemi su 120 istanze (32 + 39 + 49) e nel log non ci sono errori. Non provato dall'utente in gioco.
 
 Problema noto, non risolto: il Muro può ancora sovrapporsi in parte ad altre strutture vicine. È successo con il Grande Mercato (seed 20261018 e 777, già capitava con il muro vecchio), con Tel Aviv (seed 20261018, al confine tra i biomi) e con le Rovine nel deserto (solo il bordo). Si sistema con una distanza minima come per Gaza, ma così quelle strutture diventano più rare.
+
+## Vite: sembrava grano
+
+Problema riscontrato: le 8 fasi di crescita della vite (`grapevine_stage0..7`) erano uno stelo verde dritto con foglioline a croce. Nel campo, sul modello a "#" delle colture, sembrava grano, e i grappoli erano solo puntini viola.
+
+Funzionamento aspettato: si riconosce una vite. Si parte da una talea legnosa con una gemma, poi c'è un germoglio legato al palo e un tronco marrone nodoso che arriva al filo del pergolato e si apre nei cordoni orizzontali. Le foglie sono larghe e lobate, con viticci, poi vengono i fiori, i grappoli verdi e alla fine i grappoli viola maturi appesi sotto il cordone, con qualche foglia che ingiallisce.
+
+Come è stato risolto: c'è il nuovo `scripts/textures/gen_grapevine_crop.py`, che scrive solo le 8 texture `textures/block/grapevine_stage*.png`. Il vecchio `gen_grape_textures.py` è segnato come superato e non si avvia più, perché sovrascriverebbe anche l'icona dell'uva disegnata a mano. Modelli, blockstate e icona dell'uva non sono cambiati. `./gradlew build`: tutti i test passati.
+
+Provato in gioco: `runServer` e `runClient`, con le 8 fasi piazzate su terra arata (`setblock ... grapevine[age=0..7]`). Le texture si vedono con la trasparenza giusta, da vicino e da lontano, senza texture mancanti, e nel log non ci sono errori sulle texture. Non provato dall'utente in gioco.
