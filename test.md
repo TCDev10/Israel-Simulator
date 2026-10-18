@@ -758,3 +758,11 @@ Provato in gioco: `runServer` e `runClient` sul seed 777, nel resort del Mar Mor
 - Nei log non ci sono errori della mod.
 
 Non provato: la discesa accovacciandosi e la ciotola fuori dal bioma (non dà niente). Non provato dall'utente in gioco.
+
+## Startup e lavoro (laptop + smartphone)
+- Tieni premuto tasto destro col **laptop** per 5 secondi: "Sessione di lavoro completata: +3 ₪". Subito dopo, il laptop è in ricarica (60 s) e non paga.
+- Nel bioma **Tel Aviv (urban_area)** o in una startup office la paga è doppia (+6 ₪).
+- Ogni 10 sessioni (contatore salvato sul laptop) arriva l'**EXIT**: +25 ₪ di bonus e suono di level-up.
+- **Smartphone** a Tel Aviv/Gerusalemme: consegna da +1 ₪ (ricarica 30 s) e mostra lo stato della startup; fuori città: "Nessuna consegna qui".
+- Durante lo **Shabbat** (`/festival start shabbat`) laptop e smartphone rifiutano: "È Shabbat: oggi niente lavoro".
+- Verificato in gioco (seed 777): 3 ₪ fuori città, cooldown, 6+25 ₪ nella sessione 10 e 20 a Tel Aviv, consegna +1 ₪ in città, rifiuto fuori città e di Shabbat, nessun errore nei log.
