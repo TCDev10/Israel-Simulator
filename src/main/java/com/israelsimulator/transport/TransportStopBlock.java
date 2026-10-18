@@ -22,6 +22,9 @@ import java.util.UUID;
 /**
  * Interactive transport stop block (Bus Stop, Train Station, Taxi Stand, Boat Pier).
  * Handles passenger transit, fare checking, and multiplayer server-side teleportation (GAME_DESIGN.md §32, TODO §47).
+ *
+ * <p>A stop in the Urban Area or Jerusalem biome is a station of the Tel Aviv – Jerusalem train
+ * ({@link TrainLine}); right-click it to ride to the other end (Rav-Kav or {@link TrainLine#FARE} Shekels).</p>
  */
 public class TransportStopBlock extends Block {
 
@@ -94,14 +97,18 @@ public class TransportStopBlock extends Block {
             return InteractionResult.CONSUME;
         }
 
-        // Determine current stop and next destination stop
-        TransportNetwork.TransportStop currentStop = TransportNetwork.getNearestStop(pos);
-        String currentStopId = currentStop != null ? currentStop.id() : "tel_aviv_central";
-        TransportNetwork.TransportStop nextStop = TransportNetwork.getNextStop(currentStopId);
-        if (nextStop == null) {
+        // Tel Aviv – Jerusalem train: this stop is a station at one end of the line
+        TransitStations.get(serverLevel).add(pos);
+        if (TrainLine.terminalAt(serverLevel, pos).isEmpty()) {
+            player.sendSystemMessage(Component.translatable("message.israel_simulator.train_no_line").withStyle(ChatFormatting.YELLOW));
+            return InteractionResult.CONSUME;
+        }
+        TrainLine.Trip trip = TrainLine.plan(serverLevel, pos);
+        if (trip == null) {
             player.sendSystemMessage(Component.translatable("message.israel_simulator.no_route").withStyle(ChatFormatting.RED));
             return InteractionResult.CONSUME;
         }
+        Component destination = Component.translatable(trip.to().nameKey());
 
         // Check fare: Rav-Kav pass vs Shekels
         boolean hasRavKav = false;
@@ -113,7 +120,7 @@ public class TransportStopBlock extends Block {
             }
         }
 
-        int fare = nextStop.primaryType().getFareInShekels();
+        int fare = TrainLine.FARE;
         if (!hasRavKav && fare > 0) {
             int shekelCount = 0;
             for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
@@ -125,7 +132,7 @@ public class TransportStopBlock extends Block {
 
             if (shekelCount < fare) {
                 player.sendSystemMessage(
-                        Component.translatable("message.israel_simulator.insufficient_fare", fare, nextStop.displayName())
+                        Component.translatable("message.israel_simulator.insufficient_fare", destination, fare)
                                 .withStyle(ChatFormatting.RED)
                 );
                 return InteractionResult.CONSUME;
@@ -145,20 +152,40 @@ public class TransportStopBlock extends Block {
 
         recordTransit(cooldowns, player.getUUID(), now);
 
-        // Sound effect
-        ModAudioManager.playTransitSound(level, pos, nextStop.primaryType().name());
+        // Departure: whistle at the departing platform, a short dark "tunnel" while travelling
+        ModAudioManager.playTransitSound(level, pos, TransportType.TRAIN.name());
+        serverPlayer.sendSystemMessage(Component.translatable("message.israel_simulator.train_departure", destination)
+                .withStyle(ChatFormatting.AQUA));
+        serverPlayer.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.BLINDNESS, 30, 0, false, false));
+        BlockPos dest = trip.arrival();
+        serverPlayer.teleportTo(dest.getX() + 0.5, dest.getY(), dest.getZ() + 0.5);
+        serverPlayer.fallDistance = 0.0F;
+        ModAudioManager.playTransitSound(level, dest, TransportType.TRAIN.name());
 
-        // Perform safe teleportation
-        BlockPos dest = nextStop.defaultPos();
-        serverPlayer.teleportTo(dest.getX() + 0.5, dest.getY() + 1.0, dest.getZ() + 0.5);
-
-        String paymentInfo = hasRavKav ? "(Rav-Kav Pass)" : "(-" + fare + " Shekels)";
+        String paymentInfo = hasRavKav ? "(Rav-Kav)" : "(-" + fare + " ₪)";
         serverPlayer.sendSystemMessage(
-                Component.translatable("message.israel_simulator.transit_success", nextStop.displayName(), paymentInfo)
+                Component.translatable(trip.toStation() ? "message.israel_simulator.train_arrival_station"
+                                : "message.israel_simulator.train_arrival_city", destination, paymentInfo)
                         .withStyle(ChatFormatting.GREEN)
         );
 
         return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+        super.onPlace(state, level, pos, oldState, movedByPiston);
+        if (level instanceof ServerLevel serverLevel && !oldState.is(state.getBlock())) {
+            TransitStations.get(serverLevel).add(pos);
+        }
+    }
+
+    @Override
+    protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
+        super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
+        if (!(level.getBlockState(pos).getBlock() instanceof TransportStopBlock)) {
+            TransitStations.get(level).remove(pos);
+        }
     }
 
     @Override

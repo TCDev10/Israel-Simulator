@@ -465,5 +465,11 @@
   "entity.israel_simulator.plane_crash": "Aereo di Linea",
   "title.israel_simulator.air_raid_warning": "ALLARME ANTIAEREO",
   "subtitle.israel_simulator.countdown": "Impatto tra %d secondi! Evacuare immediatamente!",
-  "message.israel_simulator.plane_impact": "Vani ascensore violati! Detonazione TNT in corso!"
+  "message.israel_simulator.plane_impact": "Vani ascensore violati! Detonazione TNT in corso!",
+  "message.israel_simulator.train_no_line": "Nessun treno da qui: la linea Tel Aviv – Gerusalemme ferma alle fermate nei biomi Area Urbana e Gerusalemme.",
+  "message.israel_simulator.train_departure": "Israel Railways: treno per %s in partenza…",
+  "message.israel_simulator.train_arrival_station": "Arrivato alla stazione di %s! %s",
+  "message.israel_simulator.train_arrival_city": "Arrivato a %s (qui non c'è ancora una stazione: piazza una fermata per crearla). %s",
+  "message.israel_simulator.train_terminal.tel_aviv": "Tel Aviv",
+  "message.israel_simulator.train_terminal.jerusalem": "Gerusalemme"
 }
