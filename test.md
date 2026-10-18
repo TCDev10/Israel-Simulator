@@ -659,3 +659,21 @@ Problema riscontrato: il README parlava di 16 strutture, mentre sono 19 (mancava
 Funzionamento aspettato: README e TODO dicono la stessa cosa e descrivono solo quello che c'è davvero.
 
 Come è stato risolto: nel README ora ci sono la tabella delle 19 strutture con bioma e misure attuali, le fermate descritte per come funzionano oggi (5 fermate fisse, teletrasporto alla successiva), le festività ridotte agli oggetti che funzionano e la lista dei cibi corretta. Ci sono anche le altre creature e gli altri boss, la struttura reale dei pacchetti e le sezioni Multiplayer, Configurazione, Build della CI e Limiti noti. Ho tolto i numeri dei test e ogni affermazione su quanto spesso compaiono le strutture. Nel TODO le voci di §26–28 e §32–35 che descrivono comportamenti nel mondo passano a `[-]`, con una nota di stato per sezione. Ho corretto i conteggi "16 strutture" e aggiunto la roadmap approvata (R1–R6). `./gradlew build`: tutti i test passati. È solo documentazione, quindi non serve una prova in gioco.
+
+## Treno Tel Aviv – Gerusalemme sulle fermate Rav-Kav
+
+Problema riscontrato: la fermata non usava le fermate piazzate nel mondo. Ogni clic portava alla "fermata successiva" di una lista di 6 coordinate scritte nel codice (100 70 100, 800 110 800, 1500 45 1200…), che non corrispondono a nessuna città e possono finire dentro la roccia o nel vuoto. Il messaggio "Shekel insufficienti" in inglese aveva gli argomenti invertiti. Durante la prova sono venuti fuori altri due problemi. I biomi sono 3D, e le strade di una città generata possono stare in una cella di bioma diversa da quella della città (la Jerusalem del seed 424242 a y 64 non risulta nel bioma jerusalem), quindi una fermata in città non veniva riconosciuta. In più l'arrivo calcolato solo con la heightmap poteva capitare su tappeti o lastre.
+
+Funzionamento aspettato: una fermata a Tel Aviv (nella città generata o nel bioma Area Urbana) o a Gerusalemme (nella città o nel bioma Jerusalem) è una stazione della linea. Con il tasto destro e una Rav-Kav, oppure pagando 10 shekel, si va alla stazione più vicina dell'altro capo, e se lì non c'è ancora una stazione si arriva nella città generata più vicina, sempre in un punto dove si sta in piedi. Una fermata fuori dalle due città dice che da lì non passa il treno.
+
+Come è stato risolto: c'è il nuovo `TransitStations`, salvato con il mondo, con le fermate esistenti: si aggiungono quando vengono piazzate o usate e si tolgono quando il blocco sparisce. C'è anche il nuovo `TrainLine`, che riconosce il capo della linea dalla città generata (tutta la sua area, strade comprese) o dal bioma della colonna, sceglie la stazione di destinazione e calcola un punto di arrivo sicuro. I tag `worldgen/structure/train/tel_aviv` e `train/jerusalem` servono per cercare la città quando non c'è una stazione. `TransportStopBlock` usa la linea: partenza con fischio, breve dissolvenza in nero, arrivo, Rav-Kav o 10 shekel. Ci sono nuovi messaggi en/it e il nuovo `TrainLineTest`. `./gradlew build`: tutti i test passati. Il vecchio `TransportNetwork` resta solo per i test esistenti, la fermata non lo usa più.
+
+Provato in gioco: `runServer` e `runClient` sul seed 424242, con il tasto destro vero sulla fermata (`xdotool`).
+- Fermata nel bioma Area Urbana (-896 70 -1088), senza soldi: "Shekel insufficienti".
+- Con 12 shekel: arrivo nella Jerusalem generata (-1040 -1104), in piedi e libero, 2 shekel rimasti.
+- Fermata dentro Jerusalem, con la Rav-Kav: "Arrivato alla stazione di Tel Aviv", accanto alla fermata di partenza.
+- Ritorno: "Arrivato alla stazione di Gerusalemme". Le stazioni sono rimaste dopo il riavvio del server.
+- Tolta la fermata di Gerusalemme: si torna ad arrivare nella città generata.
+- Una fermata fuori dalle due città risponde "Nessun treno da qui" (verificato nel primo giro).
+
+Nel log non ci sono errori. Non c'è un treno su binari: il viaggio è uno spostamento tra stazioni. Non provato dall'utente in gioco.

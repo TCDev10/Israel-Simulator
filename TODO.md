@@ -49,7 +49,7 @@
 
 ## Roadmap (approved 2026-10-18, one verified PR each)
 
-* [ ] R1. Trains/metro on the Rav-Kav transit stops, Tel Aviv–Jerusalem line. (Today `TransportNetwork` is 5 hard-coded stops at fixed coordinates; right-clicking a stop teleports to the next one.)
+* [x] R1. Tel Aviv – Jerusalem train on the Rav-Kav transit stops: stations are the stop blocks in the world (`TransitStations`), `TrainLine` links the two ends, fallback to the generated city. No rail vehicle yet.
 * [ ] R2. Shuk: vendors with prices and goods that change by time of day and holiday.
 * [ ] R3. Calendar holidays in the world (Hanukkah, Purim, Pesach): events, foods, decorations (§32–35: calendar code exists, nothing runs in the world).
 * [-] R4. Dead Sea: floating (buoyancy already applied in `ModGameEvents` via `DeadSeaMechanics`), mud and salt.
