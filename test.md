@@ -677,3 +677,34 @@ Provato in gioco: `runServer` e `runClient` sul seed 424242, con il tasto destro
 - Una fermata fuori dalle due città risponde "Nessun treno da qui" (verificato nel primo giro).
 
 Nel log non ci sono errori. Non c'è un treno su binari: il viaggio è uno spostamento tra stazioni. Non provato dall'utente in gioco.
+
+## Venditori dello Shuk nel Grand Market
+
+Problema riscontrato: nel Grand Market i negozi (spezie, frutta, panetteria, pesce, halva) erano solo blocchi e casse: non c'era nessuno a cui comprare, e nessun prezzo cambiava con l'ora del giorno o con le festività. `FestivalManager` non si poteva nemmeno forzare in gioco, perché nessun comando lo usava.
+
+Funzionamento aspettato: dietro ogni banco c'è un venditore e si paga in Shekel. Al mattino la frutta e il pesce danno porzioni più grandi. Il pomeriggio ha i prezzi normali. Alla chiusura (17:00–18:30) c'è la svendita, con più merce allo stesso prezzo. Di notte, di Shabbat e a Yom Kippur il banco è chiuso e lo dice. Hanukkah aggiunge le sufganiyot, Purim gli hamantaschen, Pesach la matzah (la panetteria non vende più challah né rugelach), Rosh Hashanah miele e mele, Sukkot più agrumi.
+
+Come è stato risolto:
+- Nuova entità `israel_simulator:shuk_vendor` (`ShukVendorEntity`), con l'aspetto di un villager vanilla. Resta al banco, non viene rimossa quando ci si allontana e salva il tipo di banco (`Stall`).
+- La merce la decide `ShukMarket`, che è pura logica e ha i test in `ShukMarketTest`. Le offerte vengono ricostruite quando cambiano l'orario o la festività.
+- Nei cinque template dei negozi del mercato ora c'è un venditore dietro il bancone. I blocchi sono identici a prima: ho controllato le differenze NBT e cambia solo la lista delle entità. Per farlo `Structure.save` (in `gen_jerusalem_city.py`) e `Rigid` hanno ora `add_entity`.
+- Nuovo comando `/festival status|start <tipo>|stop`; start e stop sono solo per gli operatori.
+- Nuovi testi en/it.
+- Non ho toccato structure_set né la frequenza degli spawn.
+- `./gradlew build`: tutti i test passati.
+
+Provato in gioco: `runServer` e `runClient` sul seed 777, con il Grand Market a 1776 -2208.
+- Il mercato generato ha 16 venditori nei negozi (halva, frutta, pesce, spezie, panetteria).
+- Il tasto destro vero (`xdotool`) su un venditore di halva dentro un negozio generato apre gli scambi con "Boker tov!", e la prima offerta è il miele.
+- Banco di prova della panetteria:
+  - ore 1000: challah 1 per 3₪
+  - ore 7000: "Yalla, yalla!"
+  - ore 11500: svendita con challah 2 per 3₪, rugelach 3 e pane 3
+  - ore 18000: "Il banco è chiuso"
+  - con `/festival start hanukkah` compaiono le sufganiyot 2 per 3₪
+  - con pesach resta solo la matzah, 3 per 2₪
+  - con shabbat: "Shabbat Shalom! Lo Shuk è chiuso"
+- Acquisto vero dalla GUI degli scambi: 16 challah comprate con 48 Shekel, finché l'offerta non si è esaurita.
+- Nei log non ci sono errori della mod.
+
+Bug trovato, non corretto qui: nel seed 777 due negozi del mercato sono generati sotto terra (pavimento a y 55 sotto 1778 -2207 e a y 46 sotto 1789 -2191, con la superficie a circa y 89). È un problema di posizionamento dei pezzi jigsaw del Grand Market che c'era già: i loro venditori ci sono ma non si vedono. Non provato dall'utente in gioco.

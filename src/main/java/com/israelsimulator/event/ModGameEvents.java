@@ -23,6 +23,7 @@ public final class ModGameEvents {
         com.israelsimulator.event.world.speech.SpeechCommands.register(event.getDispatcher());
         com.israelsimulator.event.world.plane.PlaneCrashCommands.register(event.getDispatcher());
         com.israelsimulator.mossad.MossadCommands.register(event.getDispatcher());
+        com.israelsimulator.festival.FestivalCommands.register(event.getDispatcher());
     }
 
     @SubscribeEvent

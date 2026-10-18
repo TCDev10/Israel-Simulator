@@ -471,5 +471,22 @@
   "message.israel_simulator.train_arrival_station": "Arrived at %s station! %s",
   "message.israel_simulator.train_arrival_city": "Arrived in %s (no station built here yet: place a transit stop to make one). %s",
   "message.israel_simulator.train_terminal.tel_aviv": "Tel Aviv",
-  "message.israel_simulator.train_terminal.jerusalem": "Jerusalem"
+  "message.israel_simulator.train_terminal.jerusalem": "Jerusalem",
+  "entity.israel_simulator.shuk_vendor": "Shuk Vendor",
+  "entity.israel_simulator.shuk_vendor.stall.spice": "Spice Stall",
+  "entity.israel_simulator.shuk_vendor.stall.fruit": "Fruit & Vegetable Stall",
+  "entity.israel_simulator.shuk_vendor.stall.bakery": "Bakery",
+  "entity.israel_simulator.shuk_vendor.stall.fish": "Fish Stall",
+  "entity.israel_simulator.shuk_vendor.stall.halva": "Halva & Honey Stall",
+  "message.israel_simulator.shuk.period.morning": "Boker tov! Fresh from the fields this morning — bigger portions of fruit and fish.",
+  "message.israel_simulator.shuk.period.afternoon": "Yalla, yalla! Everything fresh, good prices!",
+  "message.israel_simulator.shuk.period.closing": "Closing time sale! More for the same Shekels before we shut.",
+  "message.israel_simulator.shuk.closed_night": "The stall is closed. The Shuk reopens at dawn.",
+  "message.israel_simulator.shuk.closed_shabbat": "Shabbat Shalom! The Shuk is closed until Shabbat ends.",
+  "message.israel_simulator.shuk.closed_yom_kippur": "It's Yom Kippur: the Shuk is closed today.",
+  "command.israel_simulator.festival.status": "Current festival: %s",
+  "command.israel_simulator.festival.none": "none",
+  "command.israel_simulator.festival.started": "Festival started: %s",
+  "command.israel_simulator.festival.stopped": "Forced festival stopped.",
+  "command.israel_simulator.festival.unknown": "Unknown festival."
 }

@@ -107,6 +107,9 @@ class Rigid(Structure):
     def get(self, x, y, z) -> str:
         return str(self.palette[self.blocks[(x, y + self.FOOTING, z)]]["Name"])
 
+    def add_entity(self, x, y, z, nbt) -> None:
+        super().add_entity(x, y + self.FOOTING if self._ready else y, z, nbt)
+
     def free(self, x, y, z) -> bool:
         return (0 <= x < self.sx and 0 <= z < self.sz and 0 <= y + self.FOOTING < self.sy
                 and self.get(x, y, z) == "minecraft:air")
