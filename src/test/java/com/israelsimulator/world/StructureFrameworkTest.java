@@ -53,7 +53,7 @@ class StructureFrameworkTest {
                 "jerusalem_bazaar",
                 "western_wall_treasury",
                 "island_temple",
-                "torri_gemelle"
+                "twin_towers"
         );
 
         for (String name : lootTables) {
@@ -85,7 +85,7 @@ class StructureFrameworkTest {
                 Map.entry("ein_gedi_oasis", "minecraft:moss_block"),
                 Map.entry("tropical_island", "minecraft:blue_concrete"),
                 Map.entry("gaza_strip", "minecraft:cobbled_deepslate"),
-                Map.entry("torri_gemelle", "minecraft:smooth_stone")
+                Map.entry("twin_towers", "minecraft:smooth_stone")
         );
         Gson gson = new Gson();
         java.net.URL structuresDir = getClass().getClassLoader()

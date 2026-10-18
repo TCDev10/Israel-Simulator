@@ -30,7 +30,7 @@ public final class TwinTowersPlaneEvent {
     public static final float SCHEDULE_CHANCE = 0.35F; // 35% chance per interval
     public static final int COUNTDOWN_SECONDS = 10;
 
-    // Twin towers dimensions from torri_gemelle.nbt / towers.schem (74 x 200 x 71)
+    // Twin towers dimensions from twin_towers.nbt / towers.schem (74 x 200 x 71)
     public static final int TOWER_WIDTH_X = 74;
     public static final int TOWER_HEIGHT = 195;
     public static final int TOWER_LENGTH_Z = 71;
@@ -109,7 +109,7 @@ public final class TwinTowersPlaneEvent {
 
         // 1. Check generated world structure if player is inside it
         StructureStart start = level.structureManager().getStructureWithPieceAt(pos,
-                h -> h.is(ModStructures.TORRI_GEMELLE));
+                h -> h.is(ModStructures.TWIN_TOWERS));
         if (start != null && start.isValid() && !start.getPieces().isEmpty()) {
             var box = start.getBoundingBox();
             towersOrigin = new BlockPos(box.minX(), box.minY(), box.minZ());
@@ -131,7 +131,7 @@ public final class TwinTowersPlaneEvent {
 
         // Auto-locate structure or use base pos
         StructureStart start = level.structureManager().getStructureWithPieceAt(nearPos,
-                h -> h.is(ModStructures.TORRI_GEMELLE));
+                h -> h.is(ModStructures.TWIN_TOWERS));
         BlockPos base;
         if (start != null && start.isValid() && !start.getPieces().isEmpty()) {
             var box = start.getBoundingBox();
