@@ -29,7 +29,12 @@ import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsE
  * a cap on the back of the head, a shawl over shoulders and back with tzitzit, and the
  * tefillin boxes on the forehead and the left arm with their straps. The model copies the
  * pose of the original armor model every frame, so it follows head rotation, sneaking,
- * walking and armor-stand poses. Baby layers keep the original model.</p>
+ * walking and armor-stand poses.</p>
+ *
+ * <p>Baby humanoids (baby zombies, husks, drowned, piglins...) get their own smaller geometry,
+ * fitted to the vanilla baby body (6x6x6 head, 4x5x2 body, 2x5x2 arms) and expressed relative to
+ * the pivots of the baby armor model it copies the pose from (head 0/15/0, body 0/18/0, arms
+ * +-3.5/15.5/0). The baby layers use the same textures as the adult ones.</p>
  */
 public final class WearableArmorModels {
 
@@ -107,9 +112,102 @@ public final class WearableArmorModels {
         return LayerDefinition.create(mesh, 64, 32);
     }
 
+    // ---------------------------------------------------------------- baby geometry
+    // Baby armor pivots: head (0, 15, 0), body (0, 18, 0), arms (+-3.5, 15.5, 0). The baby head
+    // spans y -6..0 and x/z -3..3 from the head pivot (hat overlay 0.25 larger), the body
+    // y -3..2, x -2..2, z -1..1 from the body pivot, each arm is 2x5x2 centred 0.5 inwards of the
+    // armor arm pivot.
+
+    /** Kippah on a baby head: same cap, scaled to the 6-wide head. */
+    static LayerDefinition kippahBabyLayer() {
+        MeshDefinition mesh = new MeshDefinition();
+        PartDefinition root = mesh.getRoot();
+        root.addOrReplaceChild("head", CubeListBuilder.create()
+                        .texOffs(0, 0).addBox(-2.25F, -6.9F, -1.0F, 4.5F, 0.75F, 4.5F)
+                        .texOffs(0, 8).addBox(-1.5F, -7.3F, -0.25F, 3.0F, 0.4F, 3.0F),
+                PartPose.ZERO);
+        empty(root, "body", "left_arm", "right_arm");
+        return LayerDefinition.create(mesh, 32, 16);
+    }
+
+    /** Talit on a baby: back panel, front panels, short sleeves, four tzitzit. */
+    static LayerDefinition talitBabyLayer() {
+        MeshDefinition mesh = new MeshDefinition();
+        PartDefinition root = mesh.getRoot();
+        CubeDeformation panel = new CubeDeformation(0.35F, 0.2F, 0.05F);
+        root.addOrReplaceChild("body", CubeListBuilder.create()
+                        .texOffs(0, 0).addBox(-2.0F, -3.0F, 1.0F, 4.0F, 5.5F, 0.6F, panel)
+                        .texOffs(20, 0).addBox(-2.0F, -3.0F, -1.6F, 1.0F, 5.5F, 0.6F, panel)
+                        .texOffs(28, 0).addBox(1.0F, -3.0F, -1.6F, 1.0F, 5.5F, 0.6F, panel)
+                        .texOffs(40, 0).addBox(-2.45F, 2.7F, 1.25F, 0.35F, 1.6F, 0.35F)
+                        .texOffs(40, 0).addBox(2.1F, 2.7F, 1.25F, 0.35F, 1.6F, 0.35F)
+                        .texOffs(40, 0).addBox(-2.45F, 2.7F, -1.75F, 0.35F, 1.6F, 0.35F)
+                        .texOffs(40, 0).addBox(2.1F, 2.7F, -1.75F, 0.35F, 1.6F, 0.35F),
+                PartPose.ZERO);
+        CubeDeformation sleeve = new CubeDeformation(0.4F);
+        root.addOrReplaceChild("right_arm", CubeListBuilder.create()
+                .texOffs(0, 16).addBox(-0.5F, -0.5F, -1.0F, 2.0F, 3.0F, 2.0F, sleeve), PartPose.ZERO);
+        root.addOrReplaceChild("left_arm", CubeListBuilder.create()
+                .texOffs(16, 16).addBox(-1.5F, -0.5F, -1.0F, 2.0F, 3.0F, 2.0F, sleeve), PartPose.ZERO);
+        empty(root, "head");
+        return LayerDefinition.create(mesh, 64, 32);
+    }
+
+    /** Tefillin on a baby: forehead box with plate, head strap and knot, chest straps, arm box and windings. */
+    static LayerDefinition tefillinBabyLayer() {
+        MeshDefinition mesh = new MeshDefinition();
+        PartDefinition root = mesh.getRoot();
+        root.addOrReplaceChild("head", CubeListBuilder.create()
+                        .texOffs(0, 0).addBox(-0.8F, -5.2F, -4.4F, 1.6F, 1.6F, 1.2F)
+                        .texOffs(0, 6).addBox(-1.1F, -3.6F, -4.55F, 2.2F, 0.35F, 1.4F)
+                        .texOffs(0, 10).addBox(-3.0F, -3.7F, -3.0F, 6.0F, 0.7F, 6.0F, new CubeDeformation(0.33F, -0.1F, 0.33F))
+                        .texOffs(34, 0).addBox(-0.75F, -4.0F, 3.3F, 1.5F, 1.5F, 0.7F),
+                PartPose.ZERO);
+        root.addOrReplaceChild("body", CubeListBuilder.create()
+                        .texOffs(40, 0).addBox(-1.6F, -3.0F, -1.25F, 0.6F, 5.5F, 0.2F)
+                        .texOffs(44, 0).addBox(1.0F, -3.0F, -1.25F, 0.6F, 5.5F, 0.2F),
+                PartPose.ZERO);
+        root.addOrReplaceChild("body_over_talit", CubeListBuilder.create()
+                        .texOffs(48, 0).addBox(-1.6F, -3.0F, -1.9F, 0.6F, 5.5F, 0.2F)
+                        .texOffs(52, 0).addBox(1.0F, -3.0F, -1.9F, 0.6F, 5.5F, 0.2F),
+                PartPose.ZERO);
+        CubeDeformation winding = new CubeDeformation(0.25F, -0.15F, 0.25F);
+        root.addOrReplaceChild("left_arm", CubeListBuilder.create()
+                        .texOffs(0, 22).addBox(-1.2F, 0.0F, -1.9F, 1.4F, 1.4F, 0.9F)
+                        .texOffs(36, 22).addBox(-0.7F, 1.4F, -1.25F, 0.4F, 3.0F, 0.2F)
+                        .texOffs(16, 22).addBox(-1.5F, 2.0F, -1.0F, 2.0F, 0.6F, 2.0F, winding)
+                        .texOffs(16, 22).addBox(-1.5F, 3.0F, -1.0F, 2.0F, 0.6F, 2.0F, winding)
+                        .texOffs(16, 22).addBox(-1.5F, 4.0F, -1.0F, 2.0F, 0.6F, 2.0F, winding),
+                PartPose.ZERO);
+        empty(root, "right_arm");
+        return LayerDefinition.create(mesh, 64, 32);
+    }
+
     private static void empty(PartDefinition root, String... names) {
         for (String name : names) {
             root.addOrReplaceChild(name, CubeListBuilder.create(), PartPose.ZERO);
+        }
+    }
+
+    // ---------------------------------------------------------------- baby fit per mob
+    /**
+     * The baby geometry is drawn for the baby zombie (also husk and drowned). Other baby humanoids
+     * share the same baby armor pivots but have other head and body sizes; this stretches each part
+     * around its pivot and shifts it so the pieces sit on the real head, body and arms.
+     */
+    record BabyFit(float headSx, float headSy, float headSz, float headDy,
+                   float bodySx, float bodySz, float bodyDy, float bodyDz,
+                   float armDx, float armDy, float armSz) {
+        static final BabyFit ZOMBIE = new BabyFit(1F, 1F, 1F, 0F, 1F, 1F, 0F, 0F, 0F, 0F, 1F);
+        /** Baby zombie villager: 8x8x7 head one pixel lower, 4x5x3 body (robe) one pixel lower. */
+        static final BabyFit ZOMBIE_VILLAGER = new BabyFit(8F / 6F, 8F / 6F, 7F / 6F, 1F, 1F, 1.5F, 1F, 0F, 0F, 0F, 1F);
+        /** Baby piglin: 9x6x7 head, 6x5x3 body half a pixel forward, 2x5x3 arms centred on their pivot. */
+        static final BabyFit PIGLIN = new BabyFit(1.5F, 1F, 7F / 6F, 0F, 1.5F, 1.5F, 0F, -0.5F, 0.5F, 0.5F, 1.5F);
+
+        static BabyFit of(net.minecraft.world.entity.EntityType<?> type) {
+            if (type == net.minecraft.world.entity.EntityTypes.ZOMBIE_VILLAGER) return ZOMBIE_VILLAGER;
+            if (type == net.minecraft.world.entity.EntityTypes.PIGLIN || type == net.minecraft.world.entity.EntityTypes.ZOMBIFIED_PIGLIN) return PIGLIN;
+            return ZOMBIE;
         }
     }
 
@@ -124,9 +222,12 @@ public final class WearableArmorModels {
         private final ModelPart rightArm;
         private final ModelPart leftArm;
 
-        WornModel(ModelPart root, HumanoidModel<?> original) {
+        private final boolean baby;
+
+        WornModel(ModelPart root, HumanoidModel<?> original, boolean baby) {
             super(root, RenderTypes::armorCutoutNoCull);
             this.original = original;
+            this.baby = baby;
             this.head = root.getChild("head");
             this.body = root.getChild("body");
             this.bodyOverTalit = root.hasChild("body_over_talit") ? root.getChild("body_over_talit") : null;
@@ -149,31 +250,52 @@ public final class WearableArmorModels {
                 this.bodyOverTalit.visible = talit;
                 this.body.visible = !talit;
             }
+            if (this.baby) {
+                fit(BabyFit.of(state.entityType));
+            }
+        }
+
+        private void fit(BabyFit f) {
+            if (f == BabyFit.ZOMBIE) return;
+            this.head.xScale = f.headSx(); this.head.yScale = f.headSy(); this.head.zScale = f.headSz();
+            this.head.y += f.headDy();
+            for (ModelPart b : this.bodyOverTalit == null ? new ModelPart[]{this.body} : new ModelPart[]{this.body, this.bodyOverTalit}) {
+                b.xScale = f.bodySx(); b.zScale = f.bodySz();
+                b.y += f.bodyDy(); b.z += f.bodyDz();
+            }
+            // the baby geometry puts each arm 0.5 px inwards of the armor pivot; undo that by armDx
+            this.rightArm.x -= f.armDx(); this.leftArm.x += f.armDx();
+            this.rightArm.y += f.armDy(); this.leftArm.y += f.armDy();
+            this.rightArm.zScale = f.armSz(); this.leftArm.zScale = f.armSz();
         }
     }
 
     /** One wrapper per (item, original armor model); renderers rebuilt on resource reload get fresh ones. */
     private static final class Extensions implements IClientItemExtensions {
         private final java.util.function.Supplier<LayerDefinition> layer;
+        private final java.util.function.Supplier<LayerDefinition> babyLayer;
         private final Map<Model<?>, WornModel> cache = new WeakHashMap<>();
 
-        Extensions(java.util.function.Supplier<LayerDefinition> layer) {
+        Extensions(java.util.function.Supplier<LayerDefinition> layer, java.util.function.Supplier<LayerDefinition> babyLayer) {
             this.layer = layer;
+            this.babyLayer = babyLayer;
         }
 
         @Override
         @SuppressWarnings("rawtypes")
         public Model getGenericArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, Model original) {
-            if (layerType == EquipmentClientInfo.LayerType.HUMANOID_BABY || !(original instanceof HumanoidModel<?> humanoid)) {
+            if (!(original instanceof HumanoidModel<?> humanoid)) {
                 return original;
             }
-            return this.cache.computeIfAbsent(original, o -> new WornModel(this.layer.get().bakeRoot(), humanoid));
+            boolean baby = layerType == EquipmentClientInfo.LayerType.HUMANOID_BABY;
+            return this.cache.computeIfAbsent(original,
+                    o -> new WornModel((baby ? this.babyLayer : this.layer).get().bakeRoot(), humanoid, baby));
         }
     }
 
     public static void register(RegisterClientExtensionsEvent event) {
-        event.registerItem(new Extensions(WearableArmorModels::kippahLayer), ModItems.KIPPAH.get());
-        event.registerItem(new Extensions(WearableArmorModels::talitLayer), ModItems.TALIT.get());
-        event.registerItem(new Extensions(WearableArmorModels::tefillinLayer), ModItems.TEFILLIN.get());
+        event.registerItem(new Extensions(WearableArmorModels::kippahLayer, WearableArmorModels::kippahBabyLayer), ModItems.KIPPAH.get());
+        event.registerItem(new Extensions(WearableArmorModels::talitLayer, WearableArmorModels::talitBabyLayer), ModItems.TALIT.get());
+        event.registerItem(new Extensions(WearableArmorModels::tefillinLayer, WearableArmorModels::tefillinBabyLayer), ModItems.TEFILLIN.get());
     }
 }

@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 /**
  * Client Rendering Validation Test Suite (GAME_DESIGN.md §59, TODO §59).
@@ -136,6 +137,13 @@ public class ClientRenderingValidationTest {
                 // Tefillin are worn in the LEGS slot (HEAD is the Kippah), so the armor layer asks for humanoid_leggings.
                 String layer = eq.equals("tefillin") ? "humanoid_leggings" : "humanoid";
                 assertTrue(layers.has(layer), eq + " equipment must have " + layer + " layer");
+                // Baby humanoids use the humanoid_baby layer for every slot; it carries the 3D model's texture.
+                assertTrue(layers.has("humanoid_baby"), eq + " equipment must have humanoid_baby layer");
+                Path babyTex = ASSETS_PATH.resolve(Paths.get("textures", "entity", "equipment", "humanoid_baby", eq + ".png"));
+                Path adultTex = ASSETS_PATH.resolve(Paths.get("textures", "entity", "equipment", layer, eq + ".png"));
+                assertTrue(Files.exists(babyTex), "missing " + babyTex);
+                assertArrayEquals(Files.readAllBytes(adultTex), Files.readAllBytes(babyTex),
+                        eq + ": the baby 3D model uses the same texture layout as the adult one");
             }
         }
     }
