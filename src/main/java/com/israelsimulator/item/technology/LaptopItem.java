@@ -61,7 +61,8 @@ public class LaptopItem extends Item {
                 if (!player.getInventory().add(money)) player.drop(money, false);
                 player.causeFoodExhaustion(StartupWork.WORK_EXHAUSTION);
                 player.sendSystemMessage(Component.translatable(hub ? "message.israel_simulator.work.session_hub"
-                        : "message.israel_simulator.work.session", pay, sessions).withStyle(ChatFormatting.GREEN));
+                        : "message.israel_simulator.work.session",
+                        StartupWork.isExit(sessions) ? pay - StartupWork.EXIT_BONUS : pay, sessions).withStyle(ChatFormatting.GREEN));
                 if (StartupWork.isExit(sessions)) {
                     player.sendSystemMessage(Component.translatable("message.israel_simulator.work.exit", StartupWork.EXIT_BONUS)
                             .withStyle(ChatFormatting.GOLD));
