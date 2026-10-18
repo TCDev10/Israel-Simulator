@@ -758,3 +758,10 @@ Provato in gioco: `runServer` e `runClient` sul seed 777, nel resort del Mar Mor
 - Nei log non ci sono errori della mod.
 
 Non provato: la discesa accovacciandosi e la ciotola fuori dal bioma (non dà niente). Non provato dall'utente in gioco.
+
+## Decorazioni delle feste nel Grand Market
+- Con una festa attiva (es. `/festival start hanukkah`), entro ~5 secondi ogni venditore del Shuk mette fino a 2 decorazioni sul bancone accanto a sé:
+  Hanukkah = menorah (candele = sera di Hanukkah), Shabbat = 2 candele bianche accese, Rosh Hashanah = candela gialla accesa, Sukkot = lanterna, Purim = torta, Pesach = vaso decorato. Yom Kippur: nessuna.
+- `/festival stop`: entro ~5 secondi le decorazioni spariscono (senza drop). Una decorazione rotta dal giocatore non viene rimessa durante la stessa festa.
+- Se il venditore muore, le sue decorazioni vengono tolte.
+- Verifica: solo build e test unitari (`ShukDecorationsTest`); test in gioco sospesi su richiesta.
