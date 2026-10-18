@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Regenerate grapevine (age 0-7) and grapes item 16x16 textures."""
+"""Old grapevine (age 0-7) and grapes item 16x16 textures.
+
+Superseded: the grapevine crop stages are now drawn by gen_grapevine_crop.py and the grapes item
+is hand-drawn, so this script must not be run again (it would overwrite both)."""
 from pathlib import Path
 from PIL import Image
 
@@ -75,4 +78,4 @@ def main():
     print("ok")
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit("superseded: use gen_grapevine_crop.py for the grapevine stages")
