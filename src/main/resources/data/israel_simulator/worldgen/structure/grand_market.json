@@ -5,7 +5,7 @@
   ],
   "step": "surface_structures",
   "spawn_overrides": {},
-  "terrain_adaptation": "none",
+  "terrain_adaptation": "beard_thin",
   "start_pool": "israel_simulator:grand_market",
   "size": 5,
   "start_height": {
