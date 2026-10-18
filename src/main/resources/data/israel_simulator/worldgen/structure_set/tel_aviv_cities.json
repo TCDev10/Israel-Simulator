@@ -9,10 +9,6 @@
     "type": "minecraft:random_spread",
     "spacing": 12,
     "separation": 4,
-    "salt": 49201948,
-    "exclusion_zone": {
-      "other_set": "israel_simulator:western_walls",
-      "chunk_count": 9
-    }
+    "salt": 49201948
   }
 }

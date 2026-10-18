@@ -1,4 +1,4 @@
-package com.israelsimulator.world;
+package com.israelsimulator.world.structure;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -8,51 +8,97 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Stream;
 import java.util.zip.GZIPInputStream;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * The Western Wall (one 64x26x48 template, no jigsaw children) must never overlap the Grand Market
- * or Tel Aviv. Their structure sets carry an exclusion_zone around the Western Wall placement grid.
+ * No two Israel-Simulator structures may overlap, whatever their biomes. This is enforced in game
+ * by {@link StructureOverlapGuard} (priority list + exact piece boxes, biome-aware), which replaced
+ * the biome-blind exclusion zones of PR 65/69. Here we check the data the guard relies on.
  *
- * <p>Reach of a structure from its start chunk corner, per axis (JigsawPlacement 26.2): the start
- * template is rotated around the chunk corner and the max-distance box is centred on the start
- * piece's centre, so reach = max_distance_from_center + ceil((longest start side - 1) / 2).
- * A single template without jigsaw blocks only reaches (longest side - 1). An exclusion zone of
- * n chunks keeps the other start at least n + 1 chunks away on some axis, so overlap is impossible
- * when 16 * (n + 1) > reachA + reachB.
+ * <p>Reach of a structure from its start chunk corner (JigsawPlacement 26.2): the start template is
+ * rotated around the corner and the max-distance box is centred on the start piece, so
+ * reach = max_distance_from_center + ceil((longest start side - 1) / 2); a single template without
+ * jigsaw blocks only reaches (longest side - 1).
  */
-class WesternWallExclusionZoneTest {
+class StructureNoOverlapTest {
 
     private static final Gson GSON = new Gson();
-    private static final Map<String, String> SETS = Map.of(
-            "grand_markets", "grand_market",
-            "tel_aviv_cities", "tel_aviv_city");
+
+    private List<String[]> modSets() throws Exception {
+        Path dir = Paths.get(getClass().getClassLoader().getResource("data/israel_simulator/worldgen/structure_set").toURI());
+        List<String[]> out = new ArrayList<>();
+        try (Stream<Path> files = Files.list(dir)) {
+            for (Path f : files.filter(p -> p.toString().endsWith(".json")).sorted().toList()) {
+                String set = f.getFileName().toString().replace(".json", "");
+                JsonObject j = json("worldgen/structure_set/" + set + ".json");
+                assertEquals(1, j.getAsJsonArray("structures").size(), set + ": one structure per set (the guard ranks structures)");
+                String s = j.getAsJsonArray("structures").get(0).getAsJsonObject().get("structure").getAsString();
+                assertTrue(s.startsWith("israel_simulator:"), s);
+                out.add(new String[] {set, s.substring("israel_simulator:".length())});
+            }
+        }
+        assertFalse(out.isEmpty());
+        return out;
+    }
 
     @Test
-    @DisplayName("Grand Market and Tel Aviv keep a no-overlap exclusion zone around the Western Wall")
-    void exclusionZoneCoversBothReaches() throws Exception {
-        int wall = reach("western_wall");
-        assertTrue(wall >= 63, "Western Wall template is 64 blocks long, reach " + wall);
-        for (Map.Entry<String, String> e : SETS.entrySet()) {
-            JsonObject placement = json("worldgen/structure_set/" + e.getKey() + ".json").getAsJsonObject("placement");
-            assertTrue(placement.has("exclusion_zone"), e.getKey() + " needs an exclusion_zone against the Western Wall");
-            JsonObject zone = placement.getAsJsonObject("exclusion_zone");
-            assertEquals("israel_simulator:western_walls", zone.get("other_set").getAsString(), e.getKey());
-            int n = zone.get("chunk_count").getAsInt();
-            assertTrue(n >= 1 && n <= 16, "vanilla limit 1..16, was " + n);
-            int other = reach(e.getValue());
-            assertTrue(16 * (n + 1) > wall + other, e.getKey() + " chunk_count " + n + " too small: reaches "
-                    + wall + " + " + other + " need at least " + ((wall + other) / 16));
+    @DisplayName("Every mod structure set is a plain random_spread without biome-blind exclusion zones")
+    void setsArePlainRandomSpread() throws Exception {
+        for (String[] e : modSets()) {
+            JsonObject p = json("worldgen/structure_set/" + e[0] + ".json").getAsJsonObject("placement");
+            assertEquals("minecraft:random_spread", p.get("type").getAsString(), e[0]);
+            assertFalse(p.has("exclusion_zone"), e[0] + ": overlaps are handled by StructureOverlapGuard, not exclusion zones");
+            assertTrue(p.get("spacing").getAsInt() > p.get("separation").getAsInt(), e[0]);
+            assertFalse(p.has("frequency"), e[0] + ": the guard assumes frequency 1.0");
         }
-        assertNotNull(json("worldgen/structure_set/western_walls.json"));
+    }
+
+    @Test
+    @DisplayName("The guard ranks every mod structure exactly once")
+    void priorityCoversAllStructures() throws Exception {
+        Set<String> structures = new HashSet<>();
+        for (String[] e : modSets()) structures.add(e[1]);
+        assertEquals(structures, new HashSet<>(StructureOverlapGuard.PRIORITY), "PRIORITY must list every mod structure");
+        assertEquals(StructureOverlapGuard.PRIORITY.size(), new HashSet<>(StructureOverlapGuard.PRIORITY).size(), "no duplicates");
+    }
+
+    @Test
+    @DisplayName("The guard's search radius covers the two largest structures")
+    void rangeCoversLargestPair() throws Exception {
+        List<Integer> reaches = new ArrayList<>();
+        for (String[] e : modSets()) reaches.add(reach(e[1]));
+        reaches.sort(null);
+        int a = reaches.get(reaches.size() - 1), b = reaches.get(reaches.size() - 2);
+        assertTrue(StructureOverlapGuard.RANGE_CHUNKS * 16 > a + b,
+                "RANGE_CHUNKS " + StructureOverlapGuard.RANGE_CHUNKS + " too small for reaches " + a + " + " + b);
+        assertTrue(StructureOverlapGuard.RANGE_CHUNKS <= 32, "keep the search bounded");
+    }
+
+    @Test
+    @DisplayName("The mixin is registered and overlap is tested on X/Z")
+    void mixinAndTouches() throws Exception {
+        InputStream in = getClass().getClassLoader().getResourceAsStream("israel_simulator.mixins.json");
+        assertNotNull(in);
+        assertTrue(new String(in.readAllBytes(), StandardCharsets.UTF_8).contains("\"StructureOverlapGuardMixin\""));
+        BoundingBox low = new BoundingBox(0, 60, 0, 10, 70, 10);
+        assertTrue(StructureOverlapGuard.touches(List.of(low), List.of(new BoundingBox(10, 120, 10, 20, 130, 20))),
+                "touching columns count even at different heights");
+        assertFalse(StructureOverlapGuard.touches(List.of(low), List.of(new BoundingBox(11, 60, 0, 20, 70, 10))));
     }
 
     @SuppressWarnings("unchecked")

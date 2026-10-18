@@ -9,10 +9,6 @@
     "type": "minecraft:random_spread",
     "spacing": 14,
     "separation": 5,
-    "salt": 38192019,
-    "exclusion_zone": {
-      "other_set": "israel_simulator:gaza_strips",
-      "chunk_count": 10
-    }
+    "salt": 38192019
   }
 }

@@ -41,8 +41,8 @@ public final class StructureOverlapGuard {
             "desert_ruins", "ancient_sanctuary", "government_building", "great_synagogue", "startup_office",
             "ein_gedi_oasis", "synagogue", "historical_house");
 
-    /** Candidate search radius; must exceed (reachA + reachB) / 16 for every pair (largest: island + Gaza). */
-    public static final int RANGE_CHUNKS = 16;
+    /** Candidate search radius; must exceed (reachA + reachB) / 16 for every pair (largest: 240-block tropical island + Gaza = 330 blocks). */
+    public static final int RANGE_CHUNKS = 22;
 
     private static final ThreadLocal<Integer> BYPASS = ThreadLocal.withInitial(() -> 0);
     private static final Map<Key, List<BoundingBox>> CACHE = new ConcurrentHashMap<>();
