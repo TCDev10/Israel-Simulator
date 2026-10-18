@@ -36,7 +36,9 @@ public final class ModGameEvents {
     @SubscribeEvent
     public static void onServerStopping(net.neoforged.neoforge.event.server.ServerStoppingEvent event) {
         com.israelsimulator.event.world.speech.PublicSpeechEvent.reset();
+        com.israelsimulator.deadsea.DeadSeaSpa.reset();
         com.israelsimulator.festival.FestivalEvents.reset();
+        com.israelsimulator.festival.ShabbatRest.reset();
         com.israelsimulator.festival.FestivalManager.clearForcedFestival();
     }
 
@@ -83,6 +85,9 @@ public final class ModGameEvents {
             com.israelsimulator.event.world.plane.TwinTowersPlaneEvent.tick(speechLevel);
             com.israelsimulator.mossad.MossadAgentSpawner.tick(speechLevel);
             com.israelsimulator.festival.FestivalEvents.tick(speechLevel);
+            if (speechLevel.dimension() == net.minecraft.world.level.Level.OVERWORLD) {
+                com.israelsimulator.festival.ShabbatRest.tick(speechLevel);
+            }
             if (speechLevel.getGameTime() % 20 == 0) {
                 for (net.minecraft.server.level.ServerPlayer p : speechLevel.players()) {
                     com.israelsimulator.mossad.MossadMissions.tickPlayer(p);
@@ -98,12 +103,15 @@ public final class ModGameEvents {
     @SubscribeEvent
     public static void onEntityTick(net.neoforged.neoforge.event.tick.EntityTickEvent.Post event) {
         if (event.getEntity() instanceof net.minecraft.world.entity.LivingEntity entity) {
+            // Dead Sea buoyancy (also on the client: players move themselves)
+            com.israelsimulator.deadsea.DeadSeaMechanics.applyBuoyancy(entity);
             if (entity.level().isClientSide()) {
                 return;
             }
 
-            // Dead Sea buoyancy
-            com.israelsimulator.deadsea.DeadSeaMechanics.applyBuoyancy(entity);
+            if (entity instanceof net.minecraft.world.entity.npc.villager.AbstractVillager villager) {
+                com.israelsimulator.festival.ShabbatRest.tickVillager(villager);
+            }
 
             // Desert sun and heat exhaustion (player-specific)
             if (entity instanceof net.minecraft.world.entity.player.Player player) {
@@ -114,11 +122,27 @@ public final class ModGameEvents {
             if (entity instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
                 com.israelsimulator.westernwall.WesternWallManager.tickPlayer(serverPlayer);
                 if (serverPlayer.tickCount % 20 == 0) {
+                    com.israelsimulator.deadsea.DeadSeaSpa.tickPlayer(serverPlayer);
                     com.israelsimulator.world.map.PlayerLandmarkTracker.checkProximityAndDiscover(serverPlayer);
                     com.israelsimulator.city.telaviv.TelAvivDistrictManager.checkPlayerDistrict(serverPlayer);
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onBlockBreak(net.neoforged.neoforge.event.level.block.BreakBlockEvent event) {
+        com.israelsimulator.festival.ShabbatRest.onWork(event.getPlayer());
+    }
+
+    @SubscribeEvent
+    public static void onBlockPlace(net.neoforged.neoforge.event.level.BlockEvent.EntityPlaceEvent event) {
+        com.israelsimulator.festival.ShabbatRest.onWork(event.getEntity());
+    }
+
+    @SubscribeEvent
+    public static void onAttack(net.neoforged.neoforge.event.entity.player.AttackEntityEvent event) {
+        com.israelsimulator.festival.ShabbatRest.onWork(event.getEntity());
     }
 
     @SubscribeEvent
@@ -145,6 +169,12 @@ public final class ModGameEvents {
                 event.setCancellationResult(net.minecraft.world.InteractionResult.SUCCESS);
                 return;
             }
+        }
+
+        if (com.israelsimulator.deadsea.DeadSeaSpa.tryScoop(event.getEntity(), event.getHand(), event.getPos())) {
+            event.setCanceled(true);
+            event.setCancellationResult(net.minecraft.world.InteractionResult.SUCCESS);
+            return;
         }
 
         if (com.israelsimulator.synagogue.SynagogueManager.tryArkPray(event.getEntity(), event.getHand(), event.getPos())) {

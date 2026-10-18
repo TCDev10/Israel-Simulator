@@ -75,8 +75,8 @@ public final class ModItems {
     public static final DeferredHolder<Item, com.israelsimulator.item.festival.ShofarItem> SHOFAR = ITEMS.registerItem("shofar", p -> new com.israelsimulator.item.festival.ShofarItem(FestivalItems.shofar(p)));
 
     // Technology items
-    public static final DeferredHolder<Item, Item> SMARTPHONE = ITEMS.registerItem("smartphone", p -> new Item(TechnologyItems.smartphone(p)));
-    public static final DeferredHolder<Item, Item> LAPTOP = ITEMS.registerItem("laptop", p -> new Item(TechnologyItems.laptop(p)));
+    public static final DeferredHolder<Item, Item> SMARTPHONE = ITEMS.registerItem("smartphone", p -> new com.israelsimulator.item.technology.SmartphoneItem(TechnologyItems.smartphone(p)));
+    public static final DeferredHolder<Item, Item> LAPTOP = ITEMS.registerItem("laptop", p -> new com.israelsimulator.item.technology.LaptopItem(TechnologyItems.laptop(p)));
     public static final DeferredHolder<Item, Item> DRONE_PART = ITEMS.registerItem("drone_part", p -> new Item(TechnologyItems.dronePart(p)));
 
     // Transportation items (§47)

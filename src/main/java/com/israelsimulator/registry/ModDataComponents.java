@@ -21,6 +21,11 @@ public final class ModDataComponents {
             DATA_COMPONENTS.registerComponentType("magazine",
                     b -> b.persistent(ExtraCodecs.NON_NEGATIVE_INT).networkSynchronized(ByteBufCodecs.VAR_INT));
 
+    /** Completed startup work sessions on a laptop (roadmap R5). */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> WORK_SESSIONS =
+            DATA_COMPONENTS.registerComponentType("work_sessions",
+                    b -> b.persistent(ExtraCodecs.NON_NEGATIVE_INT).networkSynchronized(ByteBufCodecs.VAR_INT));
+
     private ModDataComponents() {}
 
     public static void register(IEventBus modEventBus) {

@@ -767,3 +767,77 @@ Aggiornamento:
   - `beard_thin`: 0 per colpa del mercato e 5 vicini ad altre strutture (777: 3, 2024: 2).
 - Torno quindi a `beard_thin`. I casi vicino a historical_house e jerusalem_city li risolve la PR anti-sovrapposizione (box allargati del margine di adattamento del terreno).
 - I venditori si caricano su tutti i seed (da 6 a 18 per mercato).
+
+## Mar Morto: galleggiamento, fango e sale
+
+Problema riscontrato: il galleggiamento c'era solo sulla carta. La spinta verso l'alto veniva applicata soltanto dal server, mentre il movimento del giocatore lo calcola il suo client, quindi il giocatore affondava e annegava (provato: in una vasca nel bioma Mar Morto andava a fondo con l'aria a 0). Il fango del Mar Morto si poteva solo trovare nelle casse, e i bagni di fango del resort erano solo decorazione. Il sale non aveva nessun uso.
+
+Funzionamento aspettato: nel Mar Morto si galleggia (accovacciandosi si scende), con la testa fuori dall'acqua salata ci si cura e il sale negli occhi brucia. I bagni di fango del resort funzionano, il fango si raccoglie e il sale si compra allo Shuk.
+
+Come è stato risolto:
+- `DeadSeaMechanics` applica la spinta dove il movimento viene simulato davvero (`isLocalInstanceAuthoritative`): sul server per i mob, sul client per il giocatore. L'evento di tick la chiama anche lato client.
+- Nuovo `DeadSeaSpa`:
+  - **bagno di fango:** 5 secondi nel fango del bioma Mar Morto danno lo stesso effetto della crema di fango (pulizia da lentezza, debolezza e veleno, più Assorbimento e Rigenerazione), al massimo una volta ogni 2 minuti, con un messaggio;
+  - **raccolta del fango:** una ciotola usata sul fango, o su sabbia o argilla bagnata dal Mar Morto, dà 1 Fango del Mar Morto;
+  - **galleggiamento curativo:** con la testa fuori dall'acqua, Rigenerazione ogni 10 secondi.
+- Il banco delle spezie dello Shuk vende il blocco di sale a 2₪.
+- Testi en/it e il nuovo `DeadSeaSpaTest`.
+- `./gradlew build`: tutti i test passati.
+
+Provato in gioco: `runServer` e `runClient` sul seed 777, nel resort del Mar Morto a -1552 -1680, in sopravvivenza.
+- Nella vasca del bagno di fango (-1554 69 -1660): "You sink into the warm Dead Sea mud…", poi "Mud bath complete" con Assorbimento e Rigenerazione attivi.
+- Ciotola sul fango, con il clic destro vero: 1 Fango del Mar Morto, la ciotola viene consumata.
+- Vasca d'acqua nel bioma: prima della correzione il giocatore affondava a y 73 e annegava. Dopo galleggia in superficie (y 76.4–77.0) con l'aria piena (300), riceve "Floating on the salt water…" e Rigenerazione ogni 10 secondi.
+- Un venditore di spezie offre il blocco di sale.
+- Nei log non ci sono errori della mod.
+
+Non provato: la discesa accovacciandosi e la ciotola fuori dal bioma (non dà niente). Non provato dall'utente in gioco.
+
+## Decorazioni delle feste nel Grand Market
+- Con una festa attiva (es. `/festival start hanukkah`), entro ~5 secondi ogni venditore del Shuk mette fino a 2 decorazioni sul bancone accanto a sé:
+  Hanukkah = menorah (candele = sera di Hanukkah), Shabbat = 2 candele bianche accese, Rosh Hashanah = candela gialla accesa, Sukkot = lanterna, Purim = torta, Pesach = vaso decorato. Yom Kippur: nessuna.
+- `/festival stop`: entro ~5 secondi le decorazioni spariscono (senza drop). Una decorazione rotta dal giocatore non viene rimessa durante la stessa festa.
+- Se il venditore muore, le sue decorazioni vengono tolte.
+- Verifica: solo build e test unitari (`ShukDecorationsTest`); test in gioco sospesi su richiesta.
+
+## Startup e lavoro (laptop + smartphone)
+- Tieni premuto tasto destro col **laptop** per 5 secondi: "Sessione di lavoro completata: +3 ₪". Subito dopo, il laptop è in ricarica (60 s) e non paga.
+- Nel bioma **Tel Aviv (urban_area)** o in una startup office la paga è doppia (+6 ₪).
+- Ogni 10 sessioni (contatore salvato sul laptop) arriva l'**EXIT**: +25 ₪ di bonus e suono di level-up.
+- **Smartphone** a Tel Aviv/Gerusalemme: consegna da +1 ₪ (ricarica 30 s) e mostra lo stato della startup; fuori città: "Nessuna consegna qui".
+- Durante lo **Shabbat** (`/festival start shabbat`) laptop e smartphone rifiutano: "È Shabbat: oggi niente lavoro".
+- Verificato in gioco (seed 777): 3 ₪ fuori città, cooldown, 6+25 ₪ nella sessione 10 e 20 a Tel Aviv, consegna +1 ₪ in città, rifiuto fuori città e di Shabbat, nessun errore nei log.
+
+## Shabbat: riposo
+- `/festival start shabbat` (o venerdì sera nel calendario): se per 1 minuto non rompi/piazzi blocchi e non attacchi, ogni 10 s ricevi Rigenerazione e un po' di saturazione, con il messaggio "Riposo di Shabbat" sopra la hotbar.
+- Rompere/piazzare un blocco o attaccare di Shabbat: messaggio "È Shabbat e stai lavorando" e niente bonus per 1 minuto (in creativa non conta).
+- Gli abitanti dei villaggi riposano: di Shabbat camminano lentamente. Lo Shuk e gli NPC osservanti restano chiusi; laptop e smartphone non lavorano.
+- `/festival stop`: niente più bonus né lentezza.
+- Verifica: solo build e test unitari (`ShabbatRestTest`).
+
+## Strutture sovrapposte o sepolte da altre strutture
+
+Problema riscontrato: strutture diverse della mod (e copie della stessa) spawnavano una dentro l'altra, oppure una seppelliva l'altra: il terreno rimodellato da `terrain_adaptation` (beard/bury/encapsulate) arriva fino a 12 blocchi attorno a ogni pezzo. Le `exclusion_zone` aggiunte per Gaza e per il Muro (PR 65 e 69) coprivano solo alcune coppie, una sola zona per set, e rendevano le strutture molto più rare.
+
+Funzionamento aspettato: nessuna struttura della mod si sovrappone a un'altra o la seppellisce, e le strutture spawnano più o meno quanto prima delle PR 65/69.
+
+Come è stato risolto:
+- Nuovo `StructureOverlapGuard` (mixin su `Structure.findValidGenerationPoint`, quindi vale sia per la generazione sia per `/locate`). Le 19 strutture hanno una priorità fissa (isola, torri, città prima; case e sinagoghe piccole per ultime). Uno start viene annullato solo se i riquadri dei suoi pezzi toccano davvero quelli di una struttura con priorità più alta, o di una copia della stessa in un chunk precedente.
+- Margine terreno: per le strutture con beard/bury/encapsulate i riquadri vengono allargati di 12 blocchi (0 per `none`), così niente più strutture sepolte.
+- Tabella `REACH`: per ogni struttura la distanza massima a cui arrivano i pezzi. I candidati più lontani non vengono nemmeno ricostruiti. `StructureNoOverlapTest` controlla la tabella sui dati.
+- Niente ricorsione: per un candidato si controlla solo che passi i propri controlli vanilla (bioma), non se a sua volta viene annullato. Prima la catena di dipendenze bloccava `/locate` di ancient_sanctuary per più di 5 minuti. Il prezzo: raramente due start sovrapposti spariscono entrambi.
+- Tolte le `exclusion_zone` di Gaza, Muro, Jaffa, villaggio, Grand Market e Tel Aviv (e i loro test). Gli spacing sono stati ritarati per compensare la rarità.
+- `./gradlew build`: tutti i test passati.
+
+Provato con `runServer` (strutture localizzate e generate ±96 blocchi, poi letti i chunk salvati):
+- seed 424242: 155 strutture, 0 sovrapposizioni, 0 sepolte;
+- seed 20261018: 147 strutture, 0 sovrapposizioni, 0 sepolte;
+- scansione vegetazione pulita, 0 errori della mod nel log;
+- `/locate`: 1,6 s in media.
+
+Da sapere:
+- Queste prove sono state fatte sulla penultima taratura degli spacing. Il seed 777 e l'ultima taratura non sono stati riverificati: test fermati per risparmiare.
+- Frequenze ancora fuori misura rispetto a prima delle PR 65/69: Tel Aviv e le sinagoghe escono troppo poco, l'edificio del governo e il villaggio mediterraneo troppo spesso. Le copie di Tel Aviv che prima si sovrapponevano tra loro non possono più esistere.
+- Le foglie dentro le torri_gemelle sul seed 424242 non vengono dalla nostra guardia della vegetazione: lì si sovrappone un villaggio vanilla, e l'albero del villaggio cresce dentro la struttura. La guardia vale solo per le strutture della mod.
+
+Non provato dall'utente in gioco.

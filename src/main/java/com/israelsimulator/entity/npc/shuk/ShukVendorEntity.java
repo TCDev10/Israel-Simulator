@@ -2,7 +2,20 @@ package com.israelsimulator.entity.npc.shuk;
 
 import com.israelsimulator.festival.FestivalType;
 import com.israelsimulator.registry.ModItems;
+import com.israelsimulator.block.MenorahBlock;
+import com.israelsimulator.festival.FestivalManager;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jspecify.annotations.Nullable;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -41,6 +54,10 @@ public class ShukVendorEntity extends AbstractVillager {
 
     private ShukMarket.Stall stall = ShukMarket.Stall.FRUIT;
     private String stockKey = "";
+    /** Festival decorations this vendor put on the counter, and for which festival ("" = none). */
+    private final List<BlockPos> decor = new ArrayList<>();
+    private String decorFor = "";
+    private boolean decorDone;
 
     public ShukVendorEntity(EntityType<? extends AbstractVillager> type, Level level) {
         super(type, level);
@@ -172,6 +189,80 @@ public class ShukVendorEntity extends AbstractVillager {
         if (!this.level().isClientSide() && this.tickCount % 100 == 0 && !this.isTrading()) {
             refreshStock();
         }
+        if (this.level() instanceof ServerLevel sl && this.tickCount % 100 == 50) {
+            updateDecorations(sl);
+        }
+    }
+
+    /**
+     * Puts the festival decoration on the counter when a festival starts (once per festival, so
+     * breaking one does not make it come back) and takes the decorations away when it ends.
+     */
+    private void updateDecorations(ServerLevel level) {
+        long t = level.getGameTime();
+        FestivalType festival = FestivalManager.getCurrentFestival(t);
+        ShukDecorations.Decoration d = ShukDecorations.forFestival(festival, FestivalManager.getHanukkahNight(t));
+        String key = d == null ? "" : festival.name();
+        if (!key.equals(decorFor)) {
+            clearDecorations(level);
+            decorFor = key;
+            decorDone = false;
+        }
+        if (d == null) return;
+        BlockState state = decorState(d);
+        Block block = state.getBlock();
+        decor.removeIf(p -> level.isLoaded(p) && !level.getBlockState(p).is(block));
+        for (BlockPos p : decor) {
+            if (level.isLoaded(p) && level.getBlockState(p) != state) level.setBlock(p, state, Block.UPDATE_ALL);
+        }
+        if (decorDone) return;
+        BlockPos home = this.blockPosition();
+        for (int[] o : ShukDecorations.candidateOffsets()) {
+            if (decor.size() >= ShukDecorations.MAX_PER_VENDOR) break;
+            BlockPos p = home.offset(o[0], o[1], o[2]);
+            BlockPos below = p.below();
+            if (!level.isLoaded(p) || !level.isEmptyBlock(p)) continue;
+            if (!level.getBlockState(below).isFaceSturdy(level, below, Direction.UP)) continue;
+            if (!state.canSurvive(level, p)) continue;
+            level.setBlock(p, state, Block.UPDATE_ALL);
+            decor.add(p.immutable());
+        }
+        decorDone = true;
+    }
+
+    private static BlockState decorState(ShukDecorations.Decoration d) {
+        Block block = BuiltInRegistries.BLOCK.getValue(Identifier.parse(d.blockId()));
+        BlockState state = block.defaultBlockState();
+        if (state.hasProperty(MenorahBlock.CANDLES)) state = state.setValue(MenorahBlock.CANDLES, d.candles());
+        if (d.candles() > 0 && state.hasProperty(BlockStateProperties.CANDLES)) {
+            state = state.setValue(BlockStateProperties.CANDLES, Math.min(4, d.candles()));
+        }
+        if (state.hasProperty(BlockStateProperties.LIT)) state = state.setValue(BlockStateProperties.LIT, d.lit());
+        return state;
+    }
+
+    /** Removes this vendor's decorations that are still in place (no drops). */
+    private void clearDecorations(ServerLevel level) {
+        if (!decorFor.isEmpty()) {
+            ShukDecorations.Decoration old = ShukDecorations.forFestival(FestivalType.valueOf(decorFor), 1);
+            if (old != null) {
+                Block block = decorState(old).getBlock();
+                for (BlockPos p : decor) {
+                    if (level.isLoaded(p) && level.getBlockState(p).is(block)) {
+                        level.setBlock(p, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
+                    }
+                }
+            }
+        }
+        decor.clear();
+    }
+
+    @Override
+    public void remove(Entity.RemovalReason reason) {
+        if (reason.shouldDestroy() && this.level() instanceof ServerLevel sl) {
+            clearDecorations(sl);
+        }
+        super.remove(reason);
     }
 
     @Override
@@ -196,6 +287,9 @@ public class ShukVendorEntity extends AbstractVillager {
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
         output.putString("Stall", stall.name().toLowerCase(Locale.ROOT));
+        output.store("Decor", BlockPos.CODEC.listOf(), List.copyOf(decor));
+        output.putString("DecorFor", decorFor);
+        output.putBoolean("DecorDone", decorDone);
     }
 
     @Override
@@ -208,5 +302,15 @@ public class ShukVendorEntity extends AbstractVillager {
             this.stall = ShukMarket.Stall.FRUIT;
         }
         this.stockKey = "";
+        decor.clear();
+        decor.addAll(input.read("Decor", BlockPos.CODEC.listOf()).orElse(List.of()));
+        String f = input.getStringOr("DecorFor", "");
+        try {
+            if (!f.isEmpty()) FestivalType.valueOf(f);
+            decorFor = f;
+        } catch (IllegalArgumentException e) {
+            decorFor = "";
+        }
+        decorDone = input.getBooleanOr("DecorDone", false);
     }
 }

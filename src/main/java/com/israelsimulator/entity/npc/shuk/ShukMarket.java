@@ -59,6 +59,7 @@ public final class ShukMarket {
                 out.add(new Listing("israel_simulator:sesame_seeds", 4, 1));
                 out.add(new Listing("israel_simulator:chickpeas", 4, 1));
                 out.add(new Listing("israel_simulator:hummus", 1, 3));
+                out.add(new Listing("israel_simulator:salt_block", 1, 2));   // Dead Sea salt
             }
             case FRUIT -> {
                 out.add(new Listing("israel_simulator:dates", 3, 1));
