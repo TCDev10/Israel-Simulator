@@ -37,11 +37,11 @@ class GrandMarketStructureTest {
     private static final List<String> BUILDINGS = List.of("market/spice_shop", "market/fruit_shop", "market/bakery_shop", "market/fish_shop", "market/halva_shop", "market/cafe", "market/market_house", "market/market_hall");
 
     @Test
-    @DisplayName("grand_market is a beard_thin jigsaw locked to its biome, starting at market/market_gate")
+    @DisplayName("grand_market is a jigsaw without terrain adaptation (shops not buried) locked to its biome, starting at market/market_gate")
     void structureJson() throws Exception {
         JsonObject s = readJson("data/israel_simulator/worldgen/structure/grand_market.json");
         assertEquals("minecraft:jigsaw", s.get("type").getAsString());
-        assertEquals("beard_thin", s.get("terrain_adaptation").getAsString());
+        assertEquals("none", s.get("terrain_adaptation").getAsString());
         assertTrue(s.get("size").getAsInt() >= 5, "jigsaw depth too small");
         JsonArray biomes = s.getAsJsonArray("biomes");
         assertEquals(1, biomes.size());
