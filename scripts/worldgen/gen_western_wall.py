@@ -6,7 +6,7 @@ One rigid piece (64 x 48 footprint), floor at y=0 above a 4-block buried footing
   * the wall       Herodian courses of LARGE pale ashlars (2 high, 3-7 wide, running bond,
                    mixed western_wall_stone / jerusalem_stone / white terracotta / smooth sandstone so the
                    joints read), then smaller Umayyad courses set back one block, then small
-                   Ottoman courses with hyssop, capers and vines on the ledges; cypresses on top
+                   Ottoman courses with moss and vines on the ledges; cypresses on top
   * prayer area    raised strip along the wall, men's section with shtenders (lecterns), plastic
                    chairs and book tables, mechitza (fence + lanterns) to the women's section
   * Wilson's Arch  vaulted prayer hall on the north end: Torah ark, bookshelves, benches,
@@ -102,12 +102,13 @@ def wall(s: Kotel, gate_x: tuple[int, int], gate_y: int) -> None:
             x += w
             k += 1
         prev = row
-    # ledges where the wall steps back: hyssop, capers, grass; vines down the face
+    # ledges where the wall steps back: moss in the joints (it holds on bare stone, unlike grass or
+    # bushes, which would need a dirt block in the wall face); vines down the face
     for x in range(SX):
         if h(x, 1) % 5 == 0:
-            s.set(x, 12, FRONT, B("fern") if h(x, 2) % 2 else B("short_grass"))
+            s.set(x, 12, FRONT, B("moss_carpet"))
         if h(x, 3) % 6 == 0:
-            s.set(x, 16, FRONT - 1, B("sweet_berry_bush", age="1") if h(x, 4) % 3 == 0 else B("fern"))
+            s.set(x, 16, FRONT - 1, B("moss_carpet"))
         if h(x, 5) % 11 == 0:
             for y in range(13 + h(x, 6) % 2, 16):
                 s.set(x, y, FRONT, B("vine", north="true", south="false", east="false", west="false", up="false"))
