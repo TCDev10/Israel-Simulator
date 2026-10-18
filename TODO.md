@@ -35,7 +35,7 @@
 ## Recently completed (keep in sync with main)
 
 * [x] Israeli biomes clustered (West→East strip) + Dead Sea weirdness pocket; depth 0.0 only.
-* [x] All 19 structures biome-locked to one biome (17 in the Israeli biomes, `tropical_island` in its own rare ocean biome, `torri_gemelle` in vanilla plains); `is_israel_region` = 6 Israeli biomes.
+* [x] All 19 structures biome-locked to one biome (17 in the Israeli biomes, `tropical_island` in its own rare ocean biome, `twin_towers` in vanilla plains); `is_israel_region` = 6 Israeli biomes.
 * [x] Structure connected-block states (fences/panes/walls) via `connect_blocks.py`.
 * [x] Jerusalem chest/barrel loot tables (26.2 schema) + generator NBT `LootTable`.
 * [x] User textures for kippah + Hava Nagila disc.

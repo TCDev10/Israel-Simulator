@@ -95,7 +95,7 @@ All 19 registered structures are real builds with furnished interiors and chest/
 | `ein_gedi_oasis` | Judean Desert | Jigsaw oasis | Waterfall and pools, trails, ancient mosaic synagogue, hidden cave, balsam terraces, lookout |
 | `dead_sea_resort` | Dead Sea | Jigsaw resort | Mud-spa plaza, hotel tower, promenade/boardwalk, mud spa, pool club, beach bar, salt shop, salt-formation beach |
 | `tropical_island` | Tropical Island (rare warm deep ocean) | 240×72×170 | A whole island with its temple |
-| `torri_gemelle` | Plains (vanilla) | 74×200×71 | The Twin Towers |
+| `twin_towers` | Plains (vanilla) | 74×200×71 | The Twin Towers |
 
 Find any of them with `/locate structure israel_simulator:<name>`.
 

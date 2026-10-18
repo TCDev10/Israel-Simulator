@@ -39,7 +39,7 @@ public final class StructureOverlapGuard {
 
     /** Highest priority first: landmarks and big cities keep their spot, small fillers yield. */
     public static final List<String> PRIORITY = List.of(
-            "tropical_island", "torri_gemelle", "jerusalem_city", "tel_aviv_city", "jaffa_port", "gaza_strip",
+            "tropical_island", "twin_towers", "jerusalem_city", "tel_aviv_city", "jaffa_port", "gaza_strip",
             "western_wall", "dead_sea_resort", "agricultural_farm", "grand_market", "mediterranean_village",
             "desert_ruins", "ancient_sanctuary", "government_building", "great_synagogue", "startup_office",
             "ein_gedi_oasis", "synagogue", "historical_house");
@@ -52,7 +52,7 @@ public final class StructureOverlapGuard {
      */
     public static final Map<String, Integer> REACH = Map.ofEntries(
             Map.entry("tropical_island", 248),
-            Map.entry("torri_gemelle", 88),
+            Map.entry("twin_towers", 88),
             Map.entry("jerusalem_city", 96),
             Map.entry("tel_aviv_city", 96),
             Map.entry("jaffa_port", 96),

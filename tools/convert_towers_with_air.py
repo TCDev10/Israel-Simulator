@@ -5,7 +5,7 @@ import nbtlib
 
 def main():
     t0 = time.time()
-    path = 'src/main/resources/data/israel_simulator/structure/torri_gemelle.nbt'
+    path = 'src/main/resources/data/israel_simulator/structure/twin_towers.nbt'
     print(f"Loading {path}...")
     
     with open(path, 'rb') as f:
@@ -93,7 +93,7 @@ def main():
     compressed = gzip.compress(full_nbt)
     print(f"Compressed GZIP length: {len(compressed)} bytes (~{len(compressed)//1024} KB)")
     
-    # Write to torri_gemelle.nbt
+    # Write to twin_towers.nbt
     with open(path, 'wb') as f:
         f.write(compressed)
         

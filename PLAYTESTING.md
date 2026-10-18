@@ -139,15 +139,15 @@ Verificare la presenza, la coerenza architettonica e il corretto riempimento del
 
 Verifica specifica delle strutture aggiunte e aggiornate di recente.
 
-### 3.1 Torri Gemelle (`israel_simulator:torri_gemelle`)
-* **Comando:** `/locate structure israel_simulator:torri_gemelle`
+### 3.1 Torri Gemelle (`israel_simulator:twin_towers`)
+* **Comando:** `/locate structure israel_simulator:twin_towers`
 - [ ] La struttura spawna nel bioma delle pianure (`minecraft:plains`).
 - [ ] Le due torri si ergono per oltre 180 blocchi di altezza mantenendo l'architettura esterna in quarzo, pietra levigata e vetrate.
 - [ ] **Mob Spawner:** Verificare che all'interno di entrambe le torri, ai diversi piani ($Y=12, 22, 32, \dots$), siano presenti spawner funzionanti di:
   - [ ] Zombie (`minecraft:zombie`)
   - [ ] Scheletri (`minecraft:skeleton`)
   - [ ] Ragni (`minecraft:spider` / `minecraft:cave_spider`)
-- [ ] **Casse con Loot:** Le casse accanto agli spawner contengono il loot della tabella `torri_gemelle.json` (ferro, oro, smeraldi, diamanti, mele d'oro, libri incantati, falafel).
+- [ ] **Casse con Loot:** Le casse accanto agli spawner contengono il loot della tabella `twin_towers.json` (ferro, oro, smeraldi, diamanti, mele d'oro, libri incantati, falafel).
 - [ ] Nessun blocco di arenaria compare nella struttura.
 
 ### 3.2 Striscia di Gaza (`israel_simulator:gaza_strip`)

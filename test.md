@@ -838,6 +838,12 @@ Provato con `runServer` (strutture localizzate e generate ±96 blocchi, poi lett
 Da sapere:
 - Queste prove sono state fatte sulla penultima taratura degli spacing. Il seed 777 e l'ultima taratura non sono stati riverificati: test fermati per risparmiare.
 - Frequenze ancora fuori misura rispetto a prima delle PR 65/69: Tel Aviv e le sinagoghe escono troppo poco, l'edificio del governo e il villaggio mediterraneo troppo spesso. Le copie di Tel Aviv che prima si sovrapponevano tra loro non possono più esistere.
-- Le foglie dentro le torri_gemelle sul seed 424242 non vengono dalla nostra guardia della vegetazione: lì si sovrappone un villaggio vanilla, e l'albero del villaggio cresce dentro la struttura. La guardia vale solo per le strutture della mod.
+- Le foglie dentro le twin_towers sul seed 424242 non vengono dalla nostra guardia della vegetazione: lì si sovrappone un villaggio vanilla, e l'albero del villaggio cresce dentro la struttura. La guardia vale solo per le strutture della mod.
 
 Non provato dall'utente in gioco.
+
+## Rinomina torri_gemelle → twin_towers
+- Struttura, template, template pool, structure set (`torri_gemelles` → `twin_towers`) e tabella del loot delle casse (`chests/twin_towers`, aggiornata anche nelle casse dentro l'NBT) ora si chiamano `twin_towers`. Costanti Java: `ModStructures.TWIN_TOWERS` / `TWIN_TOWERS_SET`. Aggiornati anche guardia anti-sovrapposizione, test, README, PLAYTESTING, TODO e script.
+- Da provare: `/locate structure israel_simulator:twin_towers` trova le torri; le casse hanno loot; il vecchio id non esiste più.
+- Nei mondi già creati le torri generate restano come blocchi, ma il gioco non le riconosce più come struttura (`/locate`, evento dell'aereo).
+- Verifica: solo build e test unitari.

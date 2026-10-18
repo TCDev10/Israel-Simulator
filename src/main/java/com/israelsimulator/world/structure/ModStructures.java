@@ -51,8 +51,8 @@ public final class ModStructures {
 
     public static final ResourceKey<Structure> GAZA_STRIP =
             structureKey("gaza_strip");
-    public static final ResourceKey<Structure> TORRI_GEMELLE =
-            structureKey("torri_gemelle");
+    public static final ResourceKey<Structure> TWIN_TOWERS =
+            structureKey("twin_towers");
 
     // Structure Sets
     public static final ResourceKey<StructureSet> MEDITERRANEAN_VILLAGES =
@@ -92,8 +92,8 @@ public final class ModStructures {
 
     public static final ResourceKey<StructureSet> GAZA_STRIPS =
             structureSetKey("gaza_strips");
-    public static final ResourceKey<StructureSet> TORRI_GEMELLES =
-            structureSetKey("torri_gemelles");
+    public static final ResourceKey<StructureSet> TWIN_TOWERS_SET =
+            structureSetKey("twin_towers");
 
     // Processor Lists
     public static final ResourceKey<net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList> ANCIENT_RUINS_WEATHERING =
@@ -118,7 +118,7 @@ public final class ModStructures {
             ANCIENT_SANCTUARY,
             TROPICAL_ISLAND,
             GAZA_STRIP,
-            TORRI_GEMELLE
+            TWIN_TOWERS
     );
 
     private ModStructures() {}
