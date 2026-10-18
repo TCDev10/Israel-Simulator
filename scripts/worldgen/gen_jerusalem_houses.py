@@ -67,10 +67,19 @@ def hip_roof(s, x0, z0, x1, z1, y) -> None:
         i += 1
 
 
+def courtyard_garden(s, cut) -> None:
+    """Earth floor for the open courtyard, so the olive tree is planted in soil (and the footing
+    goes under it) instead of standing over a hole."""
+    x0, z0, x1, z1 = cut
+    for x in range(x0, x1 + 1):
+        for z in range(z0, z1 + 1):
+            s.set(x, 0, z, B("grass_block", snowy="false") if (x + z) % 3 else B("coarse_dirt"))
+
+
 def build() -> list[tuple[str, int, str]]:
     house(kit, "house_courtyard", 11, 11, 1, "sandstone", cut=(4, 5, 6, 7), door="dark_oak",
           shutter="spruce", beds=("green",), loot=LOOT_HOUSE, pergola=False,
-          extra=lambda s: (olive(s, 5, 6), s.set(4, 1, 7, B("potted_red_tulip")),
+          extra=lambda s: (courtyard_garden(s, (4, 5, 6, 7)), olive(s, 5, 6), s.set(4, 1, 7, B("potted_red_tulip")),
                            s.set(6, 1, 5, B("water_cauldron", level="3"))), **COMMON)
 
     def domed(s):
