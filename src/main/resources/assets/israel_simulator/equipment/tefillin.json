@@ -4,6 +4,11 @@
       {
         "texture": "israel_simulator:tefillin"
       }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "israel_simulator:tefillin"
+      }
     ]
   }
 }
