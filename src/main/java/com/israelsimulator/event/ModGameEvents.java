@@ -27,8 +27,17 @@ public final class ModGameEvents {
     }
 
     @SubscribeEvent
+    public static void onPlayerLoggedIn(net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.getEntity() instanceof net.minecraft.server.level.ServerPlayer player) {
+            com.israelsimulator.festival.FestivalEvents.onJoin(player);
+        }
+    }
+
+    @SubscribeEvent
     public static void onServerStopping(net.neoforged.neoforge.event.server.ServerStoppingEvent event) {
         com.israelsimulator.event.world.speech.PublicSpeechEvent.reset();
+        com.israelsimulator.festival.FestivalEvents.reset();
+        com.israelsimulator.festival.FestivalManager.clearForcedFestival();
     }
 
     /** Crowd villagers left over from a previous session (event state is not saved) leave on load. */
@@ -73,6 +82,7 @@ public final class ModGameEvents {
             com.israelsimulator.event.world.speech.PublicSpeechEvent.tick(speechLevel);
             com.israelsimulator.event.world.plane.TwinTowersPlaneEvent.tick(speechLevel);
             com.israelsimulator.mossad.MossadAgentSpawner.tick(speechLevel);
+            com.israelsimulator.festival.FestivalEvents.tick(speechLevel);
             if (speechLevel.getGameTime() % 20 == 0) {
                 for (net.minecraft.server.level.ServerPlayer p : speechLevel.players()) {
                     com.israelsimulator.mossad.MossadMissions.tickPlayer(p);

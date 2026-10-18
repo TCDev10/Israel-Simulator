@@ -488,5 +488,19 @@
   "command.israel_simulator.festival.none": "nessuna",
   "command.israel_simulator.festival.started": "Festività avviata: %s",
   "command.israel_simulator.festival.stopped": "Festività forzata terminata.",
-  "command.israel_simulator.festival.unknown": "Festività sconosciuta."
+  "command.israel_simulator.festival.unknown": "Festività sconosciuta.",
+  "message.israel_simulator.festival.begins.shabbat": "È iniziato lo Shabbat: Shabbat Shalom! Lo Shuk è chiuso fino a domani sera.",
+  "message.israel_simulator.festival.ends.shabbat": "Lo Shabbat è finito: Shavua Tov! Lo Shuk riapre.",
+  "message.israel_simulator.festival.begins.rosh_hashanah": "Inizia Rosh Hashanah: Shana Tova U'Metuka! Miele e mele allo Shuk.",
+  "message.israel_simulator.festival.ends.rosh_hashanah": "Rosh Hashanah è finito.",
+  "message.israel_simulator.festival.begins.yom_kippur": "Inizia Yom Kippur: Gmar Chatima Tova. Oggi lo Shuk è chiuso.",
+  "message.israel_simulator.festival.ends.yom_kippur": "Yom Kippur è finito: lo Shuk riapre.",
+  "message.israel_simulator.festival.begins.sukkot": "Inizia Sukkot: Chag Sameach! Più agrumi ai banchi della frutta.",
+  "message.israel_simulator.festival.ends.sukkot": "Sukkot è finito.",
+  "message.israel_simulator.festival.begins.hanukkah": "Inizia Hanukkah: Chag Hanukkah Sameach! Accendi la Menorah, allo Shuk ci sono le sufganiyot.",
+  "message.israel_simulator.festival.ends.hanukkah": "Hanukkah è finito.",
+  "message.israel_simulator.festival.begins.purim": "Inizia Purim: Chag Purim Sameach! Hamantaschen allo Shuk.",
+  "message.israel_simulator.festival.ends.purim": "Purim è finito.",
+  "message.israel_simulator.festival.begins.pesach": "Inizia Pesach: Chag Pesach Sameach! Nelle panetterie solo matzah.",
+  "message.israel_simulator.festival.ends.pesach": "Pesach è finito: il pane torna nelle panetterie."
 }

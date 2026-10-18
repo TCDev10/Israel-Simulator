@@ -44,6 +44,7 @@ public class ShukVendorEntity extends AbstractVillager {
 
     public ShukVendorEntity(EntityType<? extends AbstractVillager> type, Level level) {
         super(type, level);
+        this.setDropChance(net.minecraft.world.entity.EquipmentSlot.MAINHAND, 0.0F);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -135,6 +136,7 @@ public class ShukVendorEntity extends AbstractVillager {
         String key = stall.name() + ":" + ShukMarket.stockKey(period, festival);
         if (key.equals(this.stockKey) && !this.getOffers().isEmpty()) return;
         this.stockKey = key;
+        this.setItemSlot(net.minecraft.world.entity.EquipmentSlot.MAINHAND, festiveItem(festival, period));
         MerchantOffers offers = this.getOffers();
         offers.clear();
         for (ShukMarket.Listing l : ShukMarket.listings(stall, period, festival)) {
@@ -144,6 +146,19 @@ public class ShukVendorEntity extends AbstractVillager {
             offers.add(new MerchantOffer(new ItemCost(ModItems.SHEKEL.get(), l.shekels()),
                     new ItemStack(item.get(), l.count()), 16, 1, 0.05F));
         }
+    }
+
+    /** What the vendor holds up: the festival food, nothing when the stall is closed. */
+    private static ItemStack festiveItem(FestivalType festival, ShukMarket.Period period) {
+        if (festival == null || period == ShukMarket.Period.CLOSED) return ItemStack.EMPTY;
+        return switch (festival) {
+            case HANUKKAH -> new ItemStack(ModItems.SUFGANIYAH.get());
+            case PURIM -> new ItemStack(ModItems.HAMANTASH.get());
+            case PESACH -> new ItemStack(ModItems.MATZO.get());
+            case ROSH_HASHANAH -> new ItemStack(net.minecraft.world.item.Items.HONEY_BOTTLE);
+            case SUKKOT -> new ItemStack(ModItems.CITRUS.get());
+            default -> ItemStack.EMPTY;
+        };
     }
 
     @Override
