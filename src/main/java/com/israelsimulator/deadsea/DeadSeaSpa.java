@@ -80,7 +80,10 @@ public final class DeadSeaSpa {
         } else {
             soak.remove(id);
         }
-        if (player.isInWater() && !player.isEyeInFluid(FluidTags.WATER)) {
+        // fluid checks by position: the server's in-water flags lag behind client-driven movement
+        boolean feetWet = level.getFluidState(player.blockPosition()).is(FluidTags.WATER);
+        boolean eyesWet = level.getFluidState(BlockPos.containing(player.getEyePosition())).is(FluidTags.WATER);
+        if (feetWet && !eyesWet) {
             int f = floating.merge(id, 1, Integer::sum);
             if (f % FLOAT_SECONDS == 0) {
                 player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 0, false, true, true));
