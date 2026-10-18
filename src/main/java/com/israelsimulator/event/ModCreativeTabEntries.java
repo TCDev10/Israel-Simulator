@@ -34,6 +34,7 @@ public final class ModCreativeTabEntries {
             event.accept(ModItems.SESAME_SEEDS.get());
         } else if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
             event.accept(ModItems.MONEY_CHANGER_SPAWN_EGG.get());
+            event.accept(ModItems.SHUK_VENDOR_SPAWN_EGG.get());
         }
     }
 }

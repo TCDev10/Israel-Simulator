@@ -502,5 +502,6 @@
   "message.israel_simulator.festival.begins.purim": "Inizia Purim: Chag Purim Sameach! Hamantaschen allo Shuk.",
   "message.israel_simulator.festival.ends.purim": "Purim è finito.",
   "message.israel_simulator.festival.begins.pesach": "Inizia Pesach: Chag Pesach Sameach! Nelle panetterie solo matzah.",
-  "message.israel_simulator.festival.ends.pesach": "Pesach è finito: il pane torna nelle panetterie."
+  "message.israel_simulator.festival.ends.pesach": "Pesach è finito: il pane torna nelle panetterie.",
+  "item.israel_simulator.shuk_vendor_spawn_egg": "Uovo generatore di Venditore dello Shuk"
 }

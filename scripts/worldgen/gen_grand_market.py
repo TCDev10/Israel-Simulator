@@ -266,7 +266,9 @@ def main() -> None:
     market_gate(); lanes(); shops(); cafe(); market_hall()
     house(kit, "market_house", 9, 9, 2, "smooth_sandstone", door="spruce", shutter="spruce",
           trim="cut_sandstone", beds=("red", "white"), loot=LOOT_MARKET, vines=False)
-    kit.write_structure_json("israel_simulator:jerusalem", size=5, max_distance=64)
+    # "none": the lanes follow the terrain and the shops sit on them; with a beard the fill
+    # under shops on a ridge buried the shops down in a neighbouring valley (seed 777).
+    kit.write_structure_json("israel_simulator:jerusalem", size=5, max_distance=64, adaptation="none")
     kit.write_pools(
         "market_gate",
         streets=[("lane_covered", 6, "terrain_matching"), ("lane_open", 6, "terrain_matching"),
