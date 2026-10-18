@@ -262,10 +262,27 @@ def market_hall() -> None:
     s.save(kit.struct / "market_hall.nbt")
 
 
+# Extra empty height on every piece. Lanes follow the terrain, so on a hillside one lane can run
+# 30+ blocks below another; with short bounding boxes the jigsaw packed shops UNDER the pieces on
+# the ridge (seed 777). Empty layers have no block entries, so nothing is placed there, but the
+# taller box makes the jigsaw reject stacked pieces.
+HEADROOM = 28
+
+
+def add_headroom() -> None:
+    import nbtlib
+    for f in sorted(kit.struct.glob("*.nbt")):
+        nbt = nbtlib.load(f)
+        size = nbt["size"]
+        size[1] = nbtlib.Int(int(size[1]) + HEADROOM)
+        nbt.save(f, gzipped=True)
+
+
 def main() -> None:
     market_gate(); lanes(); shops(); cafe(); market_hall()
     house(kit, "market_house", 9, 9, 2, "smooth_sandstone", door="spruce", shutter="spruce",
           trim="cut_sandstone", beds=("red", "white"), loot=LOOT_MARKET, vines=False)
+    add_headroom()
     # "none": the lanes follow the terrain and the shops sit on them; with a beard the fill
     # under shops on a ridge buried the shops down in a neighbouring valley (seed 777).
     kit.write_structure_json("israel_simulator:jerusalem", size=5, max_distance=64, adaptation="none")
