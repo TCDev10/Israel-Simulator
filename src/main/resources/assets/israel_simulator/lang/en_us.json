@@ -502,5 +502,8 @@
   "message.israel_simulator.festival.begins.purim": "Purim begins: Chag Purim Sameach! Hamantaschen at the Shuk.",
   "message.israel_simulator.festival.ends.purim": "Purim is over.",
   "message.israel_simulator.festival.begins.pesach": "Pesach begins: Chag Pesach Sameach! Only matzo at the bakeries.",
-  "message.israel_simulator.festival.ends.pesach": "Pesach is over: bread is back at the bakeries."
+  "message.israel_simulator.festival.ends.pesach": "Pesach is over: bread is back at the bakeries.",
+  "message.israel_simulator.dead_sea.mud_bath_start": "You sink into the warm Dead Sea mud…",
+  "message.israel_simulator.dead_sea.mud_bath_done": "Mud bath complete: your skin feels brand new.",
+  "message.israel_simulator.dead_sea.salt_float": "Floating on the salt water: the minerals heal you."
 }
