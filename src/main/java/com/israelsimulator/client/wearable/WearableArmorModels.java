@@ -158,8 +158,8 @@ public final class WearableArmorModels {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
         root.addOrReplaceChild("head", CubeListBuilder.create()
-                        .texOffs(0, 0).addBox(-1.0F, -5.6F, -4.6F, 2.0F, 2.0F, 1.4F)
-                        .texOffs(0, 6).addBox(-1.4F, -3.6F, -4.75F, 2.8F, 0.4F, 1.6F)
+                        .texOffs(0, 0).addBox(-0.8F, -5.2F, -4.4F, 1.6F, 1.6F, 1.2F)
+                        .texOffs(0, 6).addBox(-1.1F, -3.6F, -4.55F, 2.2F, 0.35F, 1.4F)
                         .texOffs(0, 10).addBox(-3.0F, -3.7F, -3.0F, 6.0F, 0.7F, 6.0F, new CubeDeformation(0.33F, -0.1F, 0.33F))
                         .texOffs(34, 0).addBox(-0.75F, -4.0F, 3.3F, 1.5F, 1.5F, 0.7F),
                 PartPose.ZERO);
@@ -189,6 +189,28 @@ public final class WearableArmorModels {
         }
     }
 
+    // ---------------------------------------------------------------- baby fit per mob
+    /**
+     * The baby geometry is drawn for the baby zombie (also husk and drowned). Other baby humanoids
+     * share the same baby armor pivots but have other head and body sizes; this stretches each part
+     * around its pivot and shifts it so the pieces sit on the real head, body and arms.
+     */
+    record BabyFit(float headSx, float headSy, float headSz, float headDy,
+                   float bodySx, float bodySz, float bodyDy, float bodyDz,
+                   float armDx, float armDy, float armSz) {
+        static final BabyFit ZOMBIE = new BabyFit(1F, 1F, 1F, 0F, 1F, 1F, 0F, 0F, 0F, 0F, 1F);
+        /** Baby zombie villager: 8x8x7 head one pixel lower, 4x5x3 body (robe) one pixel lower. */
+        static final BabyFit ZOMBIE_VILLAGER = new BabyFit(8F / 6F, 8F / 6F, 7F / 6F, 1F, 1F, 1.5F, 1F, 0F, 0F, 0F, 1F);
+        /** Baby piglin: 9x6x7 head, 6x5x3 body half a pixel forward, 2x5x3 arms centred on their pivot. */
+        static final BabyFit PIGLIN = new BabyFit(1.5F, 1F, 7F / 6F, 0F, 1.5F, 1.5F, 0F, -0.5F, 0.5F, 0.5F, 1.5F);
+
+        static BabyFit of(net.minecraft.world.entity.EntityType<?> type) {
+            if (type == net.minecraft.world.entity.EntityTypes.ZOMBIE_VILLAGER) return ZOMBIE_VILLAGER;
+            if (type == net.minecraft.world.entity.EntityTypes.PIGLIN || type == net.minecraft.world.entity.EntityTypes.ZOMBIFIED_PIGLIN) return PIGLIN;
+            return ZOMBIE;
+        }
+    }
+
     // ---------------------------------------------------------------- runtime model
 
     /** Wraps the vanilla armor model the layer would have used and copies its pose each frame. */
@@ -200,9 +222,12 @@ public final class WearableArmorModels {
         private final ModelPart rightArm;
         private final ModelPart leftArm;
 
-        WornModel(ModelPart root, HumanoidModel<?> original) {
+        private final boolean baby;
+
+        WornModel(ModelPart root, HumanoidModel<?> original, boolean baby) {
             super(root, RenderTypes::armorCutoutNoCull);
             this.original = original;
+            this.baby = baby;
             this.head = root.getChild("head");
             this.body = root.getChild("body");
             this.bodyOverTalit = root.hasChild("body_over_talit") ? root.getChild("body_over_talit") : null;
@@ -225,6 +250,23 @@ public final class WearableArmorModels {
                 this.bodyOverTalit.visible = talit;
                 this.body.visible = !talit;
             }
+            if (this.baby) {
+                fit(BabyFit.of(state.entityType));
+            }
+        }
+
+        private void fit(BabyFit f) {
+            if (f == BabyFit.ZOMBIE) return;
+            this.head.xScale = f.headSx(); this.head.yScale = f.headSy(); this.head.zScale = f.headSz();
+            this.head.y += f.headDy();
+            for (ModelPart b : this.bodyOverTalit == null ? new ModelPart[]{this.body} : new ModelPart[]{this.body, this.bodyOverTalit}) {
+                b.xScale = f.bodySx(); b.zScale = f.bodySz();
+                b.y += f.bodyDy(); b.z += f.bodyDz();
+            }
+            // the baby geometry puts each arm 0.5 px inwards of the armor pivot; undo that by armDx
+            this.rightArm.x -= f.armDx(); this.leftArm.x += f.armDx();
+            this.rightArm.y += f.armDy(); this.leftArm.y += f.armDy();
+            this.rightArm.zScale = f.armSz(); this.leftArm.zScale = f.armSz();
         }
     }
 
@@ -247,7 +289,7 @@ public final class WearableArmorModels {
             }
             boolean baby = layerType == EquipmentClientInfo.LayerType.HUMANOID_BABY;
             return this.cache.computeIfAbsent(original,
-                    o -> new WornModel((baby ? this.babyLayer : this.layer).get().bakeRoot(), humanoid));
+                    o -> new WornModel((baby ? this.babyLayer : this.layer).get().bakeRoot(), humanoid, baby));
         }
     }
 
