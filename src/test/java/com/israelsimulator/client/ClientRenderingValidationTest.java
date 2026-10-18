@@ -133,7 +133,9 @@ public class ClientRenderingValidationTest {
                 JsonObject json = GSON.fromJson(reader, JsonObject.class);
                 assertTrue(json.has("layers"), eq + " equipment JSON must define 'layers'");
                 JsonObject layers = json.getAsJsonObject("layers");
-                assertTrue(layers.has("humanoid"), eq + " equipment must have humanoid layer");
+                // Tefillin are worn in the LEGS slot (HEAD is the Kippah), so the armor layer asks for humanoid_leggings.
+                String layer = eq.equals("tefillin") ? "humanoid_leggings" : "humanoid";
+                assertTrue(layers.has(layer), eq + " equipment must have " + layer + " layer");
             }
         }
     }

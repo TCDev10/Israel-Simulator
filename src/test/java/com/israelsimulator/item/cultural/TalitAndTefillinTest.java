@@ -160,4 +160,27 @@ class TalitAndTefillinTest {
             fail("Failed reading en_us.json: " + e.getMessage());
         }
     }
+
+    @Test
+    @DisplayName("Tefillin are wearable: LEGS-slot equipment asset with a humanoid_leggings layer and its texture")
+    void testTefillinIsWearable() throws Exception {
+        assertEquals("israel_simulator:tefillin", CulturalItems.TEFILLIN_ASSET.identifier().toString());
+
+        InputStream stream = getClass().getResourceAsStream("/assets/israel_simulator/equipment/tefillin.json");
+        assertNotNull(stream, "equipment/tefillin.json must exist");
+        String json = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+        assertTrue(json.contains("humanoid_leggings"), "LEGS slot renders the humanoid_leggings layer");
+        assertTrue(json.contains("israel_simulator:tefillin"));
+        assertNotNull(getClass().getResourceAsStream("/assets/israel_simulator/textures/entity/equipment/humanoid_leggings/tefillin.png"),
+                "worn tefillin texture must exist");
+
+        String source = java.nio.file.Files.readString(java.nio.file.Path.of(
+                "src/main/java/com/israelsimulator/item/cultural/CulturalItems.java"));
+        int start = source.indexOf("public static Item.Properties tefillin(");
+        assertTrue(start > 0);
+        String body = source.substring(start, source.indexOf("}", source.indexOf("return p", start)));
+        assertTrue(body.contains("EquipmentSlot.LEGS"), "Tefillin must be equippable (LEGS: HEAD is the Kippah, CHEST the Talit)");
+        assertTrue(body.contains("TEFILLIN_ASSET"), "Tefillin must point at their equipment asset");
+        assertTrue(body.contains("DataComponents.EQUIPPABLE"));
+    }
 }

@@ -1,11 +1,6 @@
 {
   "layers": {
-    "humanoid": [
-      {
-        "texture": "israel_simulator:tefillin"
-      }
-    ],
-    "humanoid_baby": [
+    "humanoid_leggings": [
       {
         "texture": "israel_simulator:tefillin"
       }

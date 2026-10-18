@@ -1,76 +1,551 @@
 {
-  "credit": "Israel Simulator - Talit 3D Model",
-  "parent": "minecraft:item/generated",
+  "credit": "Israel Simulator - Talit 3D Model (in hand/ground; worn model in WearableArmorModels)",
   "textures": {
-    "layer0": "israel_simulator:item/talit",
+    "t": "israel_simulator:item/talit_model",
     "particle": "israel_simulator:item/talit"
   },
   "elements": [
     {
-      "name": "shawl_body",
-      "from": [3, 0, 4],
-      "to": [13, 2, 12],
+      "name": "shawl",
+      "from": [
+        2,
+        0,
+        3
+      ],
+      "to": [
+        14,
+        2,
+        13
+      ],
       "faces": {
-        "north": {"uv": [3, 4, 13, 6], "texture": "#layer0"},
-        "east": {"uv": [4, 4, 12, 6], "texture": "#layer0"},
-        "south": {"uv": [3, 10, 13, 12], "texture": "#layer0"},
-        "west": {"uv": [4, 4, 12, 6], "texture": "#layer0"},
-        "up": {"uv": [3, 4, 13, 12], "texture": "#layer0"},
-        "down": {"uv": [3, 4, 13, 12], "texture": "#layer0"}
+        "north": {
+          "uv": [
+            0,
+            10,
+            12,
+            12
+          ],
+          "texture": "#t"
+        },
+        "south": {
+          "uv": [
+            0,
+            10,
+            12,
+            12
+          ],
+          "texture": "#t"
+        },
+        "east": {
+          "uv": [
+            0,
+            12,
+            10,
+            14
+          ],
+          "texture": "#t"
+        },
+        "west": {
+          "uv": [
+            0,
+            12,
+            10,
+            14
+          ],
+          "texture": "#t"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            12,
+            10
+          ],
+          "texture": "#t"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            12,
+            10
+          ],
+          "texture": "#t"
+        }
       }
     },
     {
-      "name": "shawl_fold",
-      "from": [4, 2, 5],
-      "to": [12, 3, 11],
+      "name": "fold",
+      "from": [
+        3,
+        2,
+        4
+      ],
+      "to": [
+        13,
+        3,
+        12
+      ],
       "faces": {
-        "north": {"uv": [4, 5, 12, 6], "texture": "#layer0"},
-        "east": {"uv": [5, 5, 11, 6], "texture": "#layer0"},
-        "south": {"uv": [4, 10, 12, 11], "texture": "#layer0"},
-        "west": {"uv": [5, 5, 11, 6], "texture": "#layer0"},
-        "up": {"uv": [4, 5, 12, 11], "texture": "#layer0"},
-        "down": {"uv": [4, 5, 12, 11], "texture": "#layer0"}
+        "north": {
+          "uv": [
+            0,
+            14,
+            10,
+            15
+          ],
+          "texture": "#t"
+        },
+        "south": {
+          "uv": [
+            0,
+            14,
+            10,
+            15
+          ],
+          "texture": "#t"
+        },
+        "east": {
+          "uv": [
+            0,
+            14,
+            8,
+            15
+          ],
+          "texture": "#t"
+        },
+        "west": {
+          "uv": [
+            0,
+            14,
+            8,
+            15
+          ],
+          "texture": "#t"
+        },
+        "up": {
+          "uv": [
+            1,
+            1,
+            11,
+            9
+          ],
+          "texture": "#t"
+        },
+        "down": {
+          "uv": [
+            1,
+            1,
+            11,
+            9
+          ],
+          "texture": "#t"
+        }
+      }
+    },
+    {
+      "name": "tzitzit_1",
+      "from": [
+        2.5,
+        0.25,
+        1
+      ],
+      "to": [
+        3,
+        0.75,
+        3
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            14,
+            0,
+            15,
+            1
+          ],
+          "texture": "#t"
+        },
+        "south": {
+          "uv": [
+            14,
+            0,
+            15,
+            1
+          ],
+          "texture": "#t"
+        },
+        "east": {
+          "uv": [
+            14,
+            0,
+            15,
+            1
+          ],
+          "texture": "#t"
+        },
+        "west": {
+          "uv": [
+            14,
+            0,
+            15,
+            1
+          ],
+          "texture": "#t"
+        },
+        "up": {
+          "uv": [
+            14,
+            0,
+            15,
+            2
+          ],
+          "texture": "#t"
+        },
+        "down": {
+          "uv": [
+            14,
+            0,
+            15,
+            2
+          ],
+          "texture": "#t"
+        }
+      }
+    },
+    {
+      "name": "tzitzit_2",
+      "from": [
+        13,
+        0.25,
+        1
+      ],
+      "to": [
+        13.5,
+        0.75,
+        3
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            14,
+            0,
+            15,
+            1
+          ],
+          "texture": "#t"
+        },
+        "south": {
+          "uv": [
+            14,
+            0,
+            15,
+            1
+          ],
+          "texture": "#t"
+        },
+        "east": {
+          "uv": [
+            14,
+            0,
+            15,
+            1
+          ],
+          "texture": "#t"
+        },
+        "west": {
+          "uv": [
+            14,
+            0,
+            15,
+            1
+          ],
+          "texture": "#t"
+        },
+        "up": {
+          "uv": [
+            14,
+            0,
+            15,
+            2
+          ],
+          "texture": "#t"
+        },
+        "down": {
+          "uv": [
+            14,
+            0,
+            15,
+            2
+          ],
+          "texture": "#t"
+        }
+      }
+    },
+    {
+      "name": "tzitzit_3",
+      "from": [
+        2.5,
+        0.25,
+        13
+      ],
+      "to": [
+        3,
+        0.75,
+        15
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            14,
+            0,
+            15,
+            1
+          ],
+          "texture": "#t"
+        },
+        "south": {
+          "uv": [
+            14,
+            0,
+            15,
+            1
+          ],
+          "texture": "#t"
+        },
+        "east": {
+          "uv": [
+            14,
+            0,
+            15,
+            1
+          ],
+          "texture": "#t"
+        },
+        "west": {
+          "uv": [
+            14,
+            0,
+            15,
+            1
+          ],
+          "texture": "#t"
+        },
+        "up": {
+          "uv": [
+            14,
+            0,
+            15,
+            2
+          ],
+          "texture": "#t"
+        },
+        "down": {
+          "uv": [
+            14,
+            0,
+            15,
+            2
+          ],
+          "texture": "#t"
+        }
+      }
+    },
+    {
+      "name": "tzitzit_4",
+      "from": [
+        13,
+        0.25,
+        13
+      ],
+      "to": [
+        13.5,
+        0.75,
+        15
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            14,
+            0,
+            15,
+            1
+          ],
+          "texture": "#t"
+        },
+        "south": {
+          "uv": [
+            14,
+            0,
+            15,
+            1
+          ],
+          "texture": "#t"
+        },
+        "east": {
+          "uv": [
+            14,
+            0,
+            15,
+            1
+          ],
+          "texture": "#t"
+        },
+        "west": {
+          "uv": [
+            14,
+            0,
+            15,
+            1
+          ],
+          "texture": "#t"
+        },
+        "up": {
+          "uv": [
+            14,
+            0,
+            15,
+            2
+          ],
+          "texture": "#t"
+        },
+        "down": {
+          "uv": [
+            14,
+            0,
+            15,
+            2
+          ],
+          "texture": "#t"
+        }
       }
     }
   ],
   "display": {
     "thirdperson_righthand": {
-      "rotation": [60, 45, 0],
-      "translation": [0, 2, 0],
-      "scale": [0.65, 0.65, 0.65]
+      "rotation": [
+        75,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        2.5,
+        0
+      ],
+      "scale": [
+        0.55,
+        0.55,
+        0.55
+      ]
     },
     "thirdperson_lefthand": {
-      "rotation": [60, 45, 0],
-      "translation": [0, 2, 0],
-      "scale": [0.65, 0.65, 0.65]
+      "rotation": [
+        75,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        2.5,
+        0
+      ],
+      "scale": [
+        0.55,
+        0.55,
+        0.55
+      ]
     },
     "firstperson_righthand": {
-      "rotation": [0, 45, 0],
-      "translation": [0, 2.5, 0],
-      "scale": [0.75, 0.75, 0.75]
+      "rotation": [
+        0,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        3,
+        0
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ]
     },
     "firstperson_lefthand": {
-      "rotation": [0, 225, 0],
-      "translation": [0, 2.5, 0],
-      "scale": [0.75, 0.75, 0.75]
+      "rotation": [
+        0,
+        225,
+        0
+      ],
+      "translation": [
+        0,
+        3,
+        0
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ]
     },
     "ground": {
-      "translation": [0, 2, 0],
-      "scale": [0.7, 0.7, 0.7]
+      "translation": [
+        0,
+        2,
+        0
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ]
     },
     "gui": {
-      "rotation": [30, 225, 0],
-      "translation": [0, 3, 0],
-      "scale": [1.05, 1.05, 1.05]
+      "rotation": [
+        30,
+        225,
+        0
+      ],
+      "translation": [
+        0,
+        2,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
     },
     "head": {
-      "translation": [0, 10, 0],
-      "scale": [0.9, 0.9, 0.9]
+      "translation": [
+        0,
+        10,
+        0
+      ],
+      "scale": [
+        0.9,
+        0.9,
+        0.9
+      ]
     },
     "fixed": {
-      "rotation": [-90, 0, 0],
-      "translation": [0, 0, -3],
-      "scale": [0.9, 0.9, 0.9]
+      "rotation": [
+        -90,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        -2
+      ],
+      "scale": [
+        0.9,
+        0.9,
+        0.9
+      ]
     }
   }
 }

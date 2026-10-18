@@ -128,6 +128,7 @@
   "item.israel_simulator.tefillin": "Tefillin",
   "item.israel_simulator.tefillin.desc": "Traditional black leather prayer phylacteries.",
   "item.israel_simulator.tefillin.requirement": "Bound during daylight while wearing a Kippah.",
+  "item.israel_simulator.tefillin.wear": "Worn in the leggings slot: the boxes sit on the forehead and the left arm.",
   "item.israel_simulator.rabbis_crown": "Rabbi's Crown",
   "item.israel_simulator.prayer_note": "Prayer Note",
   "item.israel_simulator.first_amendment": "First Amendment",

@@ -81,6 +81,11 @@ public class IsraelSimulatorClient {
     }
 
     @SubscribeEvent
+    static void onRegisterClientExtensions(net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent event) {
+        com.israelsimulator.client.wearable.WearableArmorModels.register(event);
+    }
+
+    @SubscribeEvent
     static void onRegisterParticleProviders(net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(com.israelsimulator.registry.ModParticles.DOLLAR_BILL.get(),
                 com.israelsimulator.client.particle.DollarBillParticle.Provider::new);

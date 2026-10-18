@@ -1,6 +1,23 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "israel_simulator:item/tefillin"
+    "type": "minecraft:select",
+    "property": "minecraft:display_context",
+    "cases": [
+      {
+        "when": [
+          "gui",
+          "on_shelf",
+          "fixed"
+        ],
+        "model": {
+          "type": "minecraft:model",
+          "model": "israel_simulator:item/tefillin_icon"
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "israel_simulator:item/tefillin"
+    }
   }
 }
