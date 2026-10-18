@@ -28,6 +28,14 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
+import net.minecraft.world.level.levelgen.feature.AbstractHugeMushroomFeature;
+import net.minecraft.world.level.levelgen.feature.BambooFeature;
+import net.minecraft.world.level.levelgen.feature.BlockColumnFeature;
+import net.minecraft.world.level.levelgen.feature.FallenTreeFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.HugeFungusFeature;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
+import net.minecraft.world.level.levelgen.feature.VinesFeature;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -46,8 +54,9 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
  * <ol>
  *   <li>collects the bounding boxes of every mod structure piece near the chunk (structure starts are
  *       known long before any piece is placed, so it works for pieces in not-yet-decorated chunks);</li>
- *   <li>refuses every VEGETAL_DECORATION feature whose origin is inside a piece box grown by
- *       {@link #MARGIN} blocks (trees, grass/flower patches, bushes, vines...);</li>
+ *   <li>refuses every tree-like VEGETAL_DECORATION feature (trees, fallen logs, huge mushrooms,
+ *       bamboo, cactus / sugar cane columns, vines) whose origin is inside a piece box grown by
+ *       {@link #MARGIN} blocks; grass and flowers still generate;</li>
  *   <li>at the end removes, inside those boxes, every tree part (leaves and the logs joined to them) that
  *       touches nothing solid any more, typically a palm of one structure whose trunk was cut away by the
  *       template air of another structure laid over it;</li>
@@ -97,10 +106,22 @@ public final class StructureVegetationGuard {
         }
     }
 
-    /** True when a vegetation feature at {@code origin} would touch a mod structure. */
-    public static boolean blocks(BlockPos origin) {
+    /**
+     * True when a tree-like vegetation feature at {@code origin} would touch a mod structure. Grass,
+     * flower and bush patches still generate: they only land on soil, and whatever ends up without
+     * support is removed by the clean-up at the end of the chunk.
+     */
+    public static boolean blocks(BlockPos origin, Feature<?> feature) {
         State state = STATE.get();
-        return state != null && state.vegetationStep && nearAny(state.boxes, origin);
+        return state != null && state.vegetationStep && isBulky(feature) && nearAny(state.boxes, origin);
+    }
+
+    /** Features that grow trunks, canopies, columns or hanging vines through whatever is around them. */
+    static boolean isBulky(Feature<?> feature) {
+        return feature instanceof TreeFeature || feature instanceof FallenTreeFeature
+                || feature instanceof AbstractHugeMushroomFeature || feature instanceof HugeFungusFeature
+                || feature instanceof BambooFeature || feature instanceof BlockColumnFeature
+                || feature instanceof VinesFeature;
     }
 
     static boolean nearAny(List<BoundingBox> boxes, BlockPos p) {
