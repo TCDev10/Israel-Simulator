@@ -51,20 +51,22 @@ public final class DeadSeaMechanics {
         }
 
         Level level = entity.level();
-        if (level.isClientSide()) {
-            return false;
-        }
-
         if (!isDeadSeaBiome(level, entity.blockPosition())) {
             return false;
         }
 
-        Vec3 movement = entity.getDeltaMovement();
-        boolean crouching = entity.isCrouching();
-        double newVy = calculateBuoyancyVelocity(movement.y, crouching);
-
-        entity.setDeltaMovement(movement.x, newVy, movement.z);
-        entity.resetFallDistance();
+        // Movement is simulated where the entity is authoritative: on the server for mobs, on the
+        // player's own client for players (a server-side push never reached the player, who sank).
+        if (entity.isLocalInstanceAuthoritative()) {
+            Vec3 movement = entity.getDeltaMovement();
+            boolean crouching = entity.isCrouching();
+            double newVy = calculateBuoyancyVelocity(movement.y, crouching);
+            entity.setDeltaMovement(movement.x, newVy, movement.z);
+            entity.resetFallDistance();
+        }
+        if (level.isClientSide()) {
+            return true;
+        }
 
         // Saline eye-stinging check: prolonged submergence without goggles or helmet
         if (entity.isEyeInFluid(FluidTags.WATER) && entity.getItemBySlot(EquipmentSlot.HEAD).isEmpty()) {

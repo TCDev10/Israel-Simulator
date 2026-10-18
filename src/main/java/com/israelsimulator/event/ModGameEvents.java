@@ -99,12 +99,11 @@ public final class ModGameEvents {
     @SubscribeEvent
     public static void onEntityTick(net.neoforged.neoforge.event.tick.EntityTickEvent.Post event) {
         if (event.getEntity() instanceof net.minecraft.world.entity.LivingEntity entity) {
+            // Dead Sea buoyancy (also on the client: players move themselves)
+            com.israelsimulator.deadsea.DeadSeaMechanics.applyBuoyancy(entity);
             if (entity.level().isClientSide()) {
                 return;
             }
-
-            // Dead Sea buoyancy
-            com.israelsimulator.deadsea.DeadSeaMechanics.applyBuoyancy(entity);
 
             // Desert sun and heat exhaustion (player-specific)
             if (entity instanceof net.minecraft.world.entity.player.Player player) {
