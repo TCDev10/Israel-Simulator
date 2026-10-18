@@ -16,8 +16,8 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 /**
  * The Tel Aviv – Jerusalem train (Israel Railways), run from the transit stop blocks.
  *
- * <p>A stop standing in the Urban Area biome is a Tel Aviv station, one in the Jerusalem biome is
- * a Jerusalem station. Riding from one end takes you to the nearest station at the other end; if
+ * <p>A stop inside a generated Tel Aviv city or in the Urban Area biome is a Tel Aviv station; one
+ * inside a generated Jerusalem city or in the Jerusalem biome is a Jerusalem station. Riding from one end takes you to the nearest station at the other end; if
  * nobody has built one there yet, the train stops at the nearest generated city of that end.</p>
  */
 public final class TrainLine {
@@ -70,9 +70,25 @@ public final class TrainLine {
 
     private TrainLine() {}
 
+    /**
+     * The end of the line a stop belongs to. Biomes are 3D, so a stop on a roof or a bridge can
+     * sit in another biome cell than the ground; the column's surface biome counts too.
+     */
     public static Optional<Terminal> terminalAt(ServerLevel level, BlockPos pos) {
         for (Terminal t : Terminal.values()) {
-            if (level.getBiome(pos).is(t.biome())) return Optional.of(t);
+            // a stop inside the generated city itself (its streets can sit in a neighbouring biome cell)
+            // the whole city footprint counts, streets between the pieces included
+            for (var city : level.registryAccess().lookupOrThrow(Registries.STRUCTURE).getTagOrEmpty(t.cities())) {
+                if (level.structureManager().getStructureAt(pos, city.value()).isValid()) {
+                    return Optional.of(t);
+                }
+            }
+        }
+        BlockPos surface = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos);
+        for (BlockPos p : new BlockPos[]{pos, surface, surface.below(2)}) {
+            for (Terminal t : Terminal.values()) {
+                if (level.getBiome(p).is(t.biome())) return Optional.of(t);
+            }
         }
         return Optional.empty();
     }
@@ -99,18 +115,45 @@ public final class TrainLine {
         }
         BlockPos city = level.findNearestMapStructure(to.cities(), stop, CITY_SEARCH_RADIUS_CHUNKS, false);
         if (city == null) return null;
-        BlockPos surface = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, city);
-        return new Trip(from, to, surface, false);
+        return new Trip(from, to, safeArrival(level, city), false);
     }
 
-    /** A free two-block spot next to the station (platform side), or on top of it. */
+    /** A free two-block spot next to the station (platform side), or the nearest safe one around it. */
     static BlockPos standingSpot(ServerLevel level, BlockPos stop) {
         for (BlockPos p : new BlockPos[]{stop.north(), stop.south(), stop.east(), stop.west()}) {
-            if (level.getBlockState(p).isAir() && level.getBlockState(p.above()).isAir()
-                    && level.getBlockState(p.below()).isFaceSturdy(level, p.below(), net.minecraft.core.Direction.UP)) {
-                return p;
+            if (canStand(level, p)) return p;
+        }
+        return safeArrival(level, stop);
+    }
+
+    /**
+     * Nearest spot (within 8 blocks of the column) where a player fits: feet and head without a
+     * collision box or fluid, a sturdy block underneath. The heightmap alone is not enough in
+     * the cities (carpets, slabs, awnings), so each candidate is checked.
+     */
+    static BlockPos safeArrival(ServerLevel level, BlockPos target) {
+        for (int r = 0; r <= 8; r++) {
+            for (int dx = -r; dx <= r; dx++) {
+                for (int dz = -r; dz <= r; dz++) {
+                    if (Math.max(Math.abs(dx), Math.abs(dz)) != r) continue;
+                    BlockPos column = target.offset(dx, 0, dz);
+                    BlockPos top = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, column);
+                    for (int dy = 0; dy <= 2; dy++) {
+                        if (canStand(level, top.above(dy))) return top.above(dy);
+                    }
+                }
             }
         }
-        return stop.above();
+        return level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, target).above();
+    }
+
+    static boolean canStand(ServerLevel level, BlockPos feet) {
+        return free(level, feet) && free(level, feet.above())
+                && level.getBlockState(feet.below()).isFaceSturdy(level, feet.below(), net.minecraft.core.Direction.UP);
+    }
+
+    private static boolean free(ServerLevel level, BlockPos p) {
+        var state = level.getBlockState(p);
+        return state.getCollisionShape(level, p).isEmpty() && state.getFluidState().isEmpty();
     }
 }

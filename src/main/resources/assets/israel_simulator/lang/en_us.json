@@ -466,7 +466,7 @@
   "title.israel_simulator.air_raid_warning": "AIR RAID WARNING",
   "subtitle.israel_simulator.countdown": "Impact in %d seconds! Evacuate immediately!",
   "message.israel_simulator.plane_impact": "Elevator shafts breached! TNT detonation in progress!",
-  "message.israel_simulator.train_no_line": "No train from here: the Tel Aviv – Jerusalem line stops at transit stops in the Urban Area and Jerusalem biomes.",
+  "message.israel_simulator.train_no_line": "No train from here: the Tel Aviv – Jerusalem line stops at transit stops in Tel Aviv and Jerusalem (the cities or their biomes, Urban Area and Jerusalem).",
   "message.israel_simulator.train_departure": "Israel Railways: train to %s departing…",
   "message.israel_simulator.train_arrival_station": "Arrived at %s station! %s",
   "message.israel_simulator.train_arrival_city": "Arrived in %s (no station built here yet: place a transit stop to make one). %s",

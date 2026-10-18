@@ -120,7 +120,7 @@ When walking through Tel Aviv, players traverse **6 functional districts**, each
 ### 💰 Currency, Economy & Food
 
 - **Currency**: Minted **Shekel** and **Agora** coins with server-authoritative exchange rates and merchant discounts.
-- **Public Transport**: **Rav-Kav** card and transit stop blocks: right-clicking a stop moves you to the next stop of a small fixed network, paying the fare in Shekels unless you carry a Rav-Kav. Real lines built on placed stops are on the roadmap.
+- **Tel Aviv – Jerusalem train**: transit stops placed in Tel Aviv or Jerusalem (in the generated city or its biome) are stations of the Israel Railways line. Right-click one to ride to the nearest station at the other end, or to the nearest generated city there if no station has been built yet. Pay with a **Rav-Kav** card or 10 Shekels.
 - **Mediterranean Cuisine**: custom foods with original textures:
   - dishes: *Falafel*, *Shakshuka*, *Sabich*, *Hummus*, *Challah*, *Rugelach*, *Tahini*;
   - holiday foods: *Matzo*, *Sufganiyah*, *Hamantash*;
@@ -173,6 +173,7 @@ Every push to `main` is built by GitHub Actions; the mod JAR is attached to the 
 - Only NeoForge 26.2 / Minecraft 26.2 on Java 25 is supported.
 - Some structures can still overlap their neighbours; spawn spacing is being retuned.
 - Festival calendar events and NPC Shabbat routines are not active in the world yet.
+- The train is a ride between stations (short fade-out), there is no train vehicle on rails.
 
 ---
 
