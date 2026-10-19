@@ -1,23 +1,23 @@
 # Israel-Simulator (Minecraft 26.2 / NeoForge)
 
-**Israel-Simulator** is an open-world exploration and cultural simulation mod for Minecraft Java Edition.
+Israel-Simulator adds Israeli biomes, cities and landmarks to Minecraft Java Edition, with food, money, holidays and a satirical boss fight.
 
 ## Features
-- **Deterministic Biomes**: Mediterranean Coast, Urban Area, Agricultural Fields, Jerusalem Highlands, Judean Desert, and Dead Sea.
-- **16 Custom Structures**: Western Wall, Tel Aviv City, Jerusalem Old City, Great Synagogue, Ancient Sanctuary, Grand Market, Government Building, Startup Office, Jaffa Port, Desert Ruins, and Ein Gedi Oasis.
-- **Tel Aviv Districts**: 6 active districts with HUD entry alerts and specialized trade multipliers.
-- **Cultural Systems**: Western Wall prayer mechanics, Menorah lighting, Synagogue Torah ark blessings, and Kosher digestion system.
-- **Items & Food**: Shekels, Agoras, Rav-Kav transit cards, Falafel, Shakshuka, Sabich, Hummus, Challah, and more.
-- **Endgame Encounters**: The mythic Rabbi's Crown, First Amendment, Hava Nagila music disc, and the satirical Bibi boss.
+- **6 biomes**: Mediterranean Coast, Urban Area, farmland, Jerusalem, Judean Desert and the Dead Sea.
+- **19 structures**: Western Wall, Jerusalem Old City, Grand Market, two synagogues, an old stone house, Tel Aviv, Government Building, Startup Office, Jaffa Port, Mediterranean village, Gaza, farm, Ancient Sanctuary, Desert Ruins, Ein Gedi, Dead Sea resort, a tropical island and the Twin Towers.
+- **Tel Aviv districts**: 6 districts with a banner when you enter and their own trade prices.
+- **Religion and holidays**: Western Wall prayers, the Menorah, the Torah Ark, kosher rules, Shabbat and a holiday calendar.
+- **Items and food**: 70 items and blocks, including Shekels, Agorot, the Rav-Kav card, falafel, shakshuka, sabich, hummus and challah.
+- **Bosses**: Bibi (summoned with the Star of David), who drops the Rabbi's Crown and the Hava Nagila disc. The First Amendment comes from the public speech event.
 
 ## Requirements
 - **Minecraft**: 26.2
-- **Mod Loader**: NeoForge (version 26.2.0.88 or higher)
-- **Java**: Java 25
+- **Loader**: NeoForge 26.2.0.88 or newer
+- **Java**: 25
 
 ## Modpacks
-You are completely free to include Israel-Simulator in any public or private CurseForge modpack!
+Go ahead and put it in any modpack, public or private.
 
-## Links & Source
-- Source Code & Issue Tracker: [GitHub](https://github.com/TCDev10/Israel-Simulator)
+## Links
+- Source and issues: [GitHub](https://github.com/TCDev10/Israel-Simulator)
 - License: AGPL-3.0

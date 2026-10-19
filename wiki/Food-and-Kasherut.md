@@ -1,28 +1,29 @@
-# Cibo e Kasherut (Food & Dietary Traditions)
+# Cibo e kasherut
 
-La gastronomia del Vicino Oriente e della tradizione ebraica è centrale in **Israel-Simulator** con piatti iconici, ingredienti tipici e un sistema opzionale di purezza alimentare.
+Nella mod ci sono i piatti tipici israeliani e della tradizione ebraica, più un sistema kosher che puoi spegnere.
 
 ---
 
-## 1. Piatti Iconici e Proprietà
+## 1. I piatti
 
-| Cibo | Ingredienti di Base | Nutrizione / Saturazione | Effetti Speciali |
+| Cibo | Ingredienti | Fame | Note |
 | :--- | :--- | :--- | :--- |
-| **Falafel** | Ceci/Semi, barbabietola, grano | 6 Nutrizione / Alta saturazione | Spuntino energetico rapido da strada. |
-| **Hummus** | Tahini, barbabietola, ciotola | 7 Nutrizione / Ottima saturazione | Nutriente e confortevole. |
-| **Shakshuka** | Uovo, pomodoro/barbabietola, ciotola | 8 Nutrizione / Saturazione elevata | Rinvigorimento e rimozione della debolezza. |
-| **Sabich** | Pane/Pita, uovo, patata, tahini | 9 Nutrizione / Massima saturazione | Pasto completo e sostanzioso. |
-| **Challah** | Grano, uova, zucchero intrecciato | 8 Nutrizione / Saturazione sacra | Tradizionale per la cena del venerdì sera di Shabbat. |
-| **Sufganiyah** | Grano, marmellata di bacche, zucchero | 5 Nutrizione / Zucchero rapido | Dolce tipico di Hanukkah, conferisce una breve scarica di velocità. |
-| **Hamantash** | Grano, datteri, zucchero | 5 Nutrizione / Dolce triangolare | Dolce di Purim ripieno di datteri dolci. |
-| **Matzo** | Grano e acqua (pane azzimo) | 4 Nutrizione / Conservabile | Pane azzimo cerimoniale di Pesach. |
-| **Rugelach** | Grano, cacao, zucchero | 4 Nutrizione / Pasticceria | Dolce sfizioso venduto nei mercati di Mahane Yehuda. |
+| **Falafel** | ceci o semi, barbabietola, grano | 6 | Il classico cibo di strada. |
+| **Hummus** | tahina, barbabietola, ciotola | 7 | Sazia bene. |
+| **Shakshuka** | uovo, pomodoro o barbabietola, ciotola | 8 | Ti toglie Debolezza. |
+| **Sabich** | pane o pita, uovo, patata, tahina | 9 | Un pasto completo. |
+| **Challah** | grano, uova, zucchero | 8 | Il pane intrecciato del venerdì sera. |
+| **Sufganiyah** | grano, marmellata di bacche, zucchero | 5 | Il bombolone di Hanukkah. Ti dà un po' di velocità. |
+| **Hamantash** | grano, datteri, zucchero | 5 | Il dolcetto triangolare di Purim, qui ripieno di datteri. |
+| **Matzah** | grano e acqua | 4 | Il pane azzimo di Pesach. Si conserva. |
+| **Rugelach** | grano, cacao, zucchero | 4 | Il dolce che trovi ai banchi di Mahane Yehuda. |
 
 ---
 
-## 2. Principi di Kasherut
+## 2. Regole kosher
 
-Il sistema di purezza alimentare è progettato per arricchire il gioco senza bloccare la progressione:
-- I cibi preparati secondo ricette tradizionali e conformi donano una percentuale di saturazione extra e sinergizzano con le benedizioni di Shabbat.
-- Bere latte subito dopo aver consumato carne annulla temporaneamente i bonus di sazietà spirituale (rispettando il principio della separazione tra carne e latticini).
-
+Il sistema è semplice e non ti blocca mai la progressione:
+- I cibi hanno un tag: carne, latticini o parve (neutri).
+- Dopo aver mangiato carne devi aspettare (di default 3 minuti) prima dei latticini. Dopo i latticini l'attesa è di 1 minuto prima della carne. L'attesa compare come effetto.
+- Se li mischi lo stesso ti senti male.
+- Si spegne tutto con `kosherSystemEnabled` nel config.

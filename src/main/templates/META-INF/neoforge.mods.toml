@@ -22,9 +22,8 @@ credits="Israel-Simulator Contributors & Community"
 authors="TCDev10"
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-A Minecraft Java Edition sandbox expansion focused on exploration, culture, cities,
-dynamic NPCs, events, rare discoveries, and chaotic endgame content, inspired by
-Israeli environments and culture.
+Israel in Minecraft: Israeli biomes, cities and landmarks in normal world generation,
+plus local food, Shekels, holidays, a train and a satirical boss fight.
 '''
 
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
