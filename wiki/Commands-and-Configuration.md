@@ -1,27 +1,41 @@
-# Comandi e Configurazione (Commands & Configuration)
-
-Israel-Simulator offre comandi dedicati per amministratori e giocatori per gestire il tempo festivo, l'economia e la navigazione rapida.
+# Comandi e configurazione
 
 ---
 
-## 1. Comandi di Gioco (`/israel`)
+## 1. Comandi
 
-| Comando | Permesso | Descrizione |
+| Comando | Chi può usarlo | Cosa fa |
 | :--- | :--- | :--- |
-| `/israel shabbat status` | Tutti | Mostra lo stato attuale dello Shabbat e il tempo mancante all'inizio o alla fine. |
-| `/israel shabbat start` | Operatore | Attiva forzatamente lo Shabbat nel mondo per test o celebrazioni. |
-| `/israel shabbat end` | Operatore | Conclude anticipatamente lo Shabbat. |
-| `/israel festival info` | Tutti | Mostra la festività attiva nel calendario del mondo. |
-| `/israel economy prices` | Tutti | Visualizza i prezzi correnti delle materie prime nei vari distretti. |
-| `/israel transit list` | Tutti | Mostra tutte le fermate registrate della rete di trasporto rapido. |
+| `/festival status` | Tutti | Dice quale festa (o Shabbat) è in corso. |
+| `/festival start <tipo>` | Operatori | Forza una festa, per esempio `hanukkah` o `shabbat`. |
+| `/festival stop` | Operatori | Ferma la festa forzata. |
+| `/mossad accept <missione>` | Tutti | Accetta una missione. Devi essere vicino a un Referente del Mossad. |
+| `/mossad status` | Tutti | Mostra la missione in corso e la tua reputazione. |
+| `/mossad abandon` | Tutti | Abbandona la missione (reputazione -5). |
+| `/mossad spawn_agents [numero]` | Operatori | Fa spawnare agenti del Mossad (default 2, massimo 8). |
+| `/mossad reputation <valore>` | Operatori | Imposta la tua reputazione col Mossad (da -100 a 100). |
+| `/israelsim event speech start [pos]` | Operatori | Avvia il discorso in piazza. |
+| `/israelsim event speech stop` | Operatori | Ferma il discorso. |
+| `/israelsim event speech status` | Operatori | Dice se c'è un discorso in corso e quanto manca. |
+| `/israelsim event speech duration [secondi]` | Operatori | Mostra o cambia quanto dura il discorso. |
+| `/israelsim event plane_crash start [pos]` | Operatori | Fa partire l'evento dell'aereo (altrimenti parte da solo ogni 60 secondi vicino a `twin_towers` se c'è un giocatore entro 160 blocchi). |
+| `/israelsim event plane_crash stop` | Operatori | Ferma l'evento e toglie gli aerei in volo. |
+| `/israelsim towers setpos [pos]` | Operatori | Imposta dove stanno le Torri Gemelle per l'evento. |
+
+Per trovare una struttura usa il comando vanilla `/locate structure israel_simulator:<nome>`.
 
 ---
 
-## 2. File di Configurazione (`config/israel_simulator-server.toml`)
+## 2. File di config (`config/israel_simulator-common.toml`)
 
-Il server consente di calibrare:
-- `shabbat_cycle_days`: Intervallo in giorni di gioco tra ogni Shabbat (default: 7).
-- `boss_health`: Punti salute base del Boss Bibi (default: 300).
-- `economy_inflation_rate`: Moltiplicatore di fluttuazione dei prezzi di mercato.
-- `heatstroke_enabled`: Abilita/disabilita i colpi di calore nel deserto della Giudea.
-
+Si crea al primo avvio. Le opzioni principali:
+- `blessedDurationTicks`, `blessedAmplifier`: durata e livello di Benedizione.
+- `kosherSystemEnabled`, `meatDigestionTicks`, `dairyDigestionTicks`: regole kosher e attese tra carne e latticini.
+- `bibiBossMaxHealth` (default 10.000), `bibiBossBaseDamage`, `bibiBossMaxGuards`, `bibiBossArenaRadius`: lo scontro con Bibi.
+- `citySpacingChunks`, `rareStructureSpacingChunks`: quanto sono distanti città e strutture rare.
+- `maxNpcPerChunk`, `villagerTradeDiscountMax`: NPC e sconto massimo.
+- `eventDurationTicks`, `eventCooldownTicks`, `speechDurationTicks`, `speechMinParticipationTicks`: eventi nel mondo e discorso in piazza.
+- `prayerCooldownTicks`, `shofarCooldownTicks`, `transitCooldownTicks`: tempi di attesa.
+- `maxParticlesPerEvent`, `enablePerformanceThrottling`: prestazioni.
+- `musicVolumeMultiplier`, `cityAmbienceEnabled`: audio.
+- `weaponDamageMultiplier`: danno delle armi.

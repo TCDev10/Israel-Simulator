@@ -1,41 +1,40 @@
-# Biomi e Generazione del Mondo (Biomes & World Generation)
+# Biomi e generazione del mondo
 
-Il mondo di **Israel-Simulator** modella il variegato clima della regione attraverso 6 biomi personalizzati (uno dei quali urbano).
+La mod aggiunge 6 biomi, uno dei quali è urbano.
 
-I biomi condividono la zona calda con quelli vanilla: ogni area di deserto, savana e badlands è divisa a metà (per "weirdness"), metà resta vanilla e metà diventa israeliana, quindi compaiono come chiazze accanto ai biomi vanilla. Da ovest a est: costa mediterranea, area urbana/agricoltura, Gerusalemme sulle alture e deserto della Giudea con la sacca del Mar Morto nelle zone più pianeggianti. Di solito si trovano entro ~2500 blocchi dallo spawn.
+Stanno nella stessa fascia calda dei biomi vanilla: ogni zona di deserto, savana e badlands è divisa a metà (in base alla "weirdness"), una metà resta vanilla e l'altra diventa israeliana. Per questo li trovi a chiazze accanto ai biomi normali. Da ovest a est: costa mediterranea, area urbana e campagna, Gerusalemme sulle alture, poi il deserto della Giudea con il Mar Morto nelle zone più basse e piatte. Di solito sono entro circa 2500 blocchi dallo spawn.
 
 ---
 
-## 1. I Biomi Regionali
+## I biomi
 
-### 1. Costa Mediterranea (`mediterranean_coast`)
-- **Caratteristiche**: Spiagge sabbiose, dune costiere, clima temperato, brezza marina.
-- **Flora**: Agrumeti (arance, limoni), palme, erbe aromatiche mediterranee.
-- **Strutture**: Il porto storico di Giaffa (con faro), il villaggio mediterraneo.
+### Costa mediterranea (`mediterranean_coast`)
+- **Com'è**: spiagge, dune, mare caldo.
+- **Piante**: agrumi, palme, erbe mediterranee.
+- **Strutture**: porto di Giaffa (con il faro), villaggio mediterraneo, Gaza.
 
-### 2. Colline di Gerusalemme (`jerusalem`)
-- **Caratteristiche**: Rilievi calcarei ondulati, terrazzamenti agricoli, clima continentale mite.
-- **Flora**: Ulivi secolari, pini di Gerusalemme, viti.
-- **Strutture**: La Città Vecchia di Gerusalemme, il mercato Mahane Yehuda, sinagoghe, la casa storica, il Muro Occidentale.
+### Gerusalemme (`jerusalem`)
+- **Com'è**: colline di calcare e terrazzamenti.
+- **Piante**: ulivi, pini, viti.
+- **Strutture**: Città Vecchia, mercato in stile Mahane Yehuda, le due sinagoghe, la vecchia casa in pietra, il Muro del Pianto.
 
-### 3. Deserto della Giudea (`judean_desert`)
-- **Caratteristiche**: Canyon aridi, dune sabbiose, gole rocciose (Wadi), sbalzi termici intensi.
-- **Flora**: Macchia desertica resistente, cespugli spinosi, oasi di palme da dattero (Ein Gedi).
-- **Pericoli**: Colpi di calore durante il giorno se non equipaggiati adeguatamente.
-- **Strutture**: Rovine in stile Qumran, il santuario antico, l'oasi di Ein Gedi.
+### Deserto della Giudea (`judean_desert`)
+- **Com'è**: canyon, dune, gole (wadi).
+- **Piante**: arbusti del deserto e palme da dattero nelle oasi.
+- **Attenzione**: di giorno, senza niente in testa, il sole ti fa venire fame in fretta. Vedi [Mar Morto e pericoli](Dead-Sea-and-Hazards).
+- **Strutture**: rovine in stile Qumran, santuario antico, oasi di Ein Gedi.
 
-### 4. Mar Morto (`dead_sea`)
-- **Caratteristiche**: Lago salato dalle acque turchesi.
-- **Risorse**: Blocchi di sale (`salt_block`) e fango curativo del Mar Morto (`dead_sea_mud`).
-- **Strutture**: Il resort del Mar Morto (stile Ein Bokek).
-- **Acque Saline**: Altissima densità che fa galleggiare naturalmente il giocatore ma causa accecamento/danno se immerso a lungo senza protezione.
+### Mar Morto (`dead_sea`)
+- **Com'è**: un lago salato color turchese.
+- **Risorse**: blocchi di sale (`salt_block`) e fango del Mar Morto (`dead_sea_mud`).
+- **Strutture**: resort del Mar Morto (tipo Ein Bokek).
+- **L'acqua**: è così salata che galleggi da solo. Se resti sott'acqua a lungo senza casco ti bruciano gli occhi.
 
-### 5. Agricoltura (`israeli_agriculture`)
-- **Caratteristiche**: Pianure fertili verdeggianti e valli fluviali (Emek Yizre'el).
-- **Coltivazioni**: Campi ordinati di grano, uliveti intensivi, agrumeti, vigneti con viti rampicanti.
-- **Strutture**: La fattoria agricola.
+### Campagna (`israeli_agriculture`)
+- **Com'è**: pianure verdi e valli, tipo la valle di Izreel.
+- **Coltivazioni**: grano, ulivi, agrumi, vigne.
+- **Strutture**: la fattoria (moshav).
 
-### 6. Area Urbana Moderna (`urban_area`)
-- **Caratteristiche**: Asfalto, marciapiedi in pietra liscia, architettura Bauhaus bianca (White City).
-- **Strutture**: Tel Aviv (piazza Dizengoff, edifici Bauhaus, Florentin, Sarona, grattacieli, Rothschild, lungomare), lo startup office e l'edificio governativo.
-
+### Area urbana (`urban_area`)
+- **Com'è**: asfalto, marciapiedi, palazzi Bauhaus bianchi.
+- **Strutture**: Tel Aviv (piazza Dizengoff, Bauhaus, Florentin, Sarona, grattacieli, Rothschild, lungomare), l'ufficio della startup e il palazzo del governo.

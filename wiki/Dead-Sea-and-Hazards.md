@@ -1,32 +1,28 @@
-# Il Mar Morto e i Pericoli Ambientali (Dead Sea & Hazards)
+# Mar Morto e pericoli
 
-Il bacino del **Mar Morto** è l'ambiente naturale più estremo e affascinante della mappa, un lago ipersalino dalle acque turchesi.
-
----
-
-## 1. Meccaniche Uniche dell'Acqua Ipersalina
-
-- **Galleggiamento Naturale Estremo (Extreme Buoyancy)**:
-  - Nuotando nelle acque del Mar Morto, il giocatore viene spinto naturalmente verso l'alto ed è impossibile affondare o immergersi a fondo senza pesi.
-  - È possibile rimanere a galla a pancia in su leggendo pergamene o libri.
-- **Bruciore agli Occhi e Danno da Sale**:
-  - Se il giocatore si immerge con la testa sott'acqua senza occhiali protettivi o maschere, subisce l'effetto **Salt Sting** (danno periodico e visione offuscata).
+Il Mar Morto è un lago salatissimo color turchese, nel punto più basso della mappa.
 
 ---
 
-## 2. Risorse Preziose del Mar Morto
+## 1. L'acqua salata
 
-- **Fango del Mar Morto (`dead_sea_mud`)**:
-  - Raccolto lungo le rive argillose.
-  - Applicandolo sulla pelle, rimuove gli effetti di veleno e rigenera i punti salute conferendo una pelle nutrita e rinfrescata.
-- **Blocchi di Sale (`salt_block`)**:
-  - Utilizzabili per la conservazione dei cibi e decorazione minerale cristallina.
+- **Galleggi da solo**: nell'acqua del Mar Morto vieni spinto verso l'alto. Per scendere devi stare accovacciato.
+- **Sale negli occhi**: se metti la testa sott'acqua senza niente in testa ti viene la Nausea. Basta un casco (o qualsiasi cosa nello slot della testa).
+- **Galleggiare fa bene**: se resti a galla con la testa fuori per qualche secondo ti curi (Rigenerazione).
 
 ---
 
-## 3. Pericoli del Deserto della Giudea
+## 2. Fango e sale
 
-- **Colpo di Calore (Heatstroke)**:
-  - Esporsi al sole rovente del mezzogiorno nel deserto senza cappello (o Kippah) aumenta rapidamente la sete e riduce la velocità di movimento.
-  - Cerca l'ombra delle palme da dattero, oasi d'acqua dolce ad Ein Gedi o entra in un edificio per rinfrescarti.
+- **Fango del Mar Morto** (`dead_sea_mud`):
+  - si prende con una ciotola dal fango, o dalla sabbia e dall'argilla vicino all'acqua del Mar Morto;
+  - usato toglie Lentezza, Debolezza e Veleno, e dà Assorbimento I per 60 s e Rigenerazione I per 10 s. Poi ha 30 s di ricarica.
+- **Bagno di fango**: resta qualche secondo nel fango dei bagni del resort (o nella fontana della spa) e ottieni lo stesso effetto.
+- **Blocchi di sale** (`salt_block`): si trovano intorno al lago. Servono soprattutto per costruire.
 
+---
+
+## 3. Il sole del deserto della Giudea
+
+- Di giorno, all'aperto e senza niente in testa, il sole ti fa venire fame molto più in fretta. Quando la fame scende a 3 cosce o meno arriva anche la Lentezza.
+- Per evitarlo ti basta qualcosa in testa (una Kippah va benissimo), stare all'ombra o al chiuso, o aspettare la sera.

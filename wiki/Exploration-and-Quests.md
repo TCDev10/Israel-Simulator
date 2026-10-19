@@ -1,38 +1,33 @@
-# Esplorazione e Quest (Exploration & Discoveries)
+# Esplorazione
 
-L'esplorazione premia i viaggiatori curiosi con scoperte storiche, oggetti rari e segreti celati nelle sabbie del deserto e nelle viuzze delle città.
+Girando trovi luoghi da scoprire, oggetti rari e casse nascoste tra il deserto e le città.
 
 ---
 
 ## 1. La Mappa d'Israele (`israel_map`)
 
-La **Mappa d'Israele** (`israel_simulator:israel_map`) è lo strumento principe per tracciare i progressi delle proprie avventure geografiche e storiche:
-- **Tracciamento Interattivo**: Cliccando con il tasto destro, la mappa consulta il registro server-authoritative (`PlayerLandmarkTracker`) e stampa nella chat del giocatore il log dettagliato delle scoperte:
-  - **Regioni Visitate**: la regione di ogni landmark scoperto (Gerusalemme, Giaffa, Tel Aviv).
-  - **Landmark Scoperti**: un landmark si scopre entrando nella struttura reale che lo contiene: il Muro Occidentale (`western_wall`), la Torre dell'Orologio e il Mercato delle Pulci di Giaffa (pezzi di `jaffa_port`) e il Lungomare (Tayelet) di Tel Aviv (pezzo di `tel_aviv_city`).
-- **Titolo Master Explorer**: Raggiungendo e scoprendo tutti i punti cardinali e monumenti del paese, il giocatore riceve il titolo onorifico di *Master Explorer*.
+La Mappa d'Israele (`israel_simulator:israel_map`) tiene il conto di quello che hai scoperto:
+- **Tasto destro** per vedere in chat il resoconto, salvato sul server (`PlayerLandmarkTracker`):
+  - **Regioni**: la regione di ogni luogo che hai scoperto (Gerusalemme, Giaffa, Tel Aviv).
+  - **Luoghi**: un luogo si scopre entrando nella struttura che lo contiene. Sono il Muro del Pianto (`western_wall`), la Torre dell'Orologio e il mercato delle pulci di Giaffa (pezzi di `jaffa_port`) e il lungomare (Tayelet) di Tel Aviv (pezzo di `tel_aviv_city`).
+- **Master Explorer**: quando li hai scoperti tutti, la mappa te lo dice.
 
 ---
 
-## 2. Collezionabili Leggendari
+## 2. Collezionabili
 
-- **Frammenti dei Rotoli del Mar Morto (`dead_sea_scroll_fragment`)**:
-  - Trovati nelle casse delle rovine nel deserto (soprattutto nello scriptorium) e del resort del Mar Morto.
-  - Consegnali allo Storico della Città Vecchia di Gerusalemme per svelare frammenti di saggezza e cospicue ricompense in Shekel.
-- **Scultura in Legno d'Ulivo (`olive_wood_carving`)**:
-  - Manufatti artigianali intagliati a mano dai mastri ebanisti di Giaffa e Betlemme, molto richiesti dagli antiquari.
-- **Stella di David d'Argento (`star_of_david`)**:
-  - Amuleto cerimoniale da collezione e artefatto di evocazione del Boss Bibi.
-- **Disco Musicale Hava Nagila (`hava_nagila_disc`)**:
-  - Rarissimo disco musicale leggendario (rarità **LEGENDARY**) ottenuto sconfiggendo il Boss Bibi, riproducibile in qualsiasi Jukebox per avviare la celebre melodia festosa.
+- **Frammenti dei rotoli del Mar Morto** (`dead_sea_scroll_fragment`):
+  - si trovano nelle casse delle rovine nel deserto (soprattutto nello scriptorium) e del resort del Mar Morto;
+  - i mercanti del deserto li pagano 10 Shekel l'uno, e servono per craftare la Stella di Davide.
+- **Intaglio in legno d'ulivo** (`olive_wood_carving`): lavoro artigianale di Giaffa e Betlemme. Gli antiquari lo pagano bene.
+- **Stella di Davide** (`star_of_david`): serve per evocare Bibi.
+- **Disco Hava Nagila** (`hava_nagila_disc`): rarità **LEGENDARY**. Lo lascia Bibi e si suona in qualsiasi jukebox.
 
 ---
 
-## 3. Punti di Interesse per Esploratori
+## 3. Posti da vedere
 
-- **Oasi di Ein Gedi**: Una cascata d'acqua dolce nel mezzo del deserto con vegetazione lussureggiante.
-- **Rovine nel Deserto**: Insediamento antico in stile Qumran con scriptorium e giare dei rotoli.
-- **Santuario Antico**: Tempio nel deserto che custodisce la Corona del Rabbino.
-- **Mercato Mahane Yehuda**: Il grande shuk di Gerusalemme.
-
-
+- **Oasi di Ein Gedi**: una cascata in mezzo al deserto, con piante e pozze.
+- **Rovine nel deserto**: un insediamento tipo Qumran, con lo scriptorium e le giare dei rotoli.
+- **Santuario antico**: un tempio nascosto nel deserto, a volte mezzo sepolto, con una cripta.
+- **Mercato in stile Mahane Yehuda**: il grande shuk di Gerusalemme.

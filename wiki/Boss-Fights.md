@@ -1,65 +1,69 @@
-# Boss Fights — Il Boss Satirico Bibi e il Miniboss Donald Trump
+# Boss: Bibi, Trump ed Epstein
 
-In conformità con **GAME_DESIGN.md §41–44** e le regole etiche di **AGENTS.md §22**, il boss Bibi e il miniboss Donald Trump sono figure fantasy satiriche e parodistiche di finzione videoludica.
-
----
-
-## 1. Come Evocare il Boss (Stella di David)
-
-Il premier satirico Bibi non spawna casualmente nel mondo, ma deve essere invocato tramite un rituale volontario:
-- **Oggetto Richiesto**: **Stella di David Cerimoniale (`israel_simulator:star_of_david`)**.
-- **Procedura**: Cliccare con il tasto destro impugnando la Stella di David. Se non ci sono altri boss già attivi nell'area, il boss Bibi verrà generato accompagnato da tuoni, particelle oscure e un annuncio in chat per tutti i giocatori nel raggio di 96 blocchi.
-- **Protezione Anti-Exploit**: È vietato lo spawn multiplo simultaneo all'interno della stessa arena.
+Bibi, Donald Trump e Jeffrey Epstein sono parodie. Sono personaggi satirici, non vanno presi sul serio (vedi **GAME_DESIGN.md §41-44** e **AGENTS.md §22**).
 
 ---
 
-## 2. Fase 1: Il Leader Storico (`bibi_boss`)
+## 1. Come si evoca Bibi
 
-
-- **Salute Massima**: 10.000 HP (configurabile) con Boss Bar blu a 10 tacche.
-- **Resistenza Anti-Cheese**: Tetto massimo di 500 danni per colpo singolo (`MAX_SINGLE_HIT_DAMAGE`) per prevenire one-shot exploit.
-- **Attacchi e Meccaniche della Fase 1**:
-  1. **Attacco Missilistico Mirato (`BibiMissileEntity`)**: Spara un missile tattico ad alta velocità direttamente contro il giocatore, dotato di manovre di tracking a inseguimento morbido. All'impatto esplode danneggiando il bersaglio e l'area circostante.
-  2. **Bombardamento Aereo ad Area**: Fa piovere dal cielo una salva di 8 missili tattici su un largo raggio attorno a sé, bombardando, incendiando e distruggendo la vegetazione e l'ambiente circostante.
-  3. **Onda d'Urto del Filibustiere**: Un'onda sonica d'urto ad area che respinge con forza i giocatori e infligge l'effetto Lentezza (la cecità è stata rimossa per garantire migliore visibilità).
-  4. **Guardie d'Élite della Coalizione (`bibi_guard`)**: Evocate a frequenza ridotta, equipaggiate con pistole di sicurezza (`pistol`) con cui bersagliano i giocatori a distanza.
+Bibi non spawna da solo, devi chiamarlo tu.
+- **Ti serve**: la Stella di Davide (`israel_simulator:star_of_david`).
+- **Come**: tasto destro con la Stella in mano. Se nella zona non c'è già un boss, arriva Bibi con tuoni, particelle scure e un messaggio in chat per tutti i giocatori entro 96 blocchi.
+- **Un Bibi alla volta**: non puoi evocarne due nella stessa arena.
 
 ---
 
-## 3. Fase 2: Miniboss Donald Trump e Scudo Diplomatico (50% HP)
+## 2. Fase 1 (`bibi_boss`)
 
-Quando la salute di Bibi scende al **50% HP** (`ENRAGE_HEALTH_FRACTION = 0.50F`):
-- Bibi entra in modalità **INFURIATO** (Boss bar rossa a 10 tacche).
-- **Aumento del Ritmo di Combattimento**:
-  - L'attacco missilistico mirato raddoppia i proiettili sparando due missili in salva rapida.
-  - Il bombardamento aereo ha un tempo di ricarica dimezzato (da 180 a 90 tick) e scatena ben 16 missili dal cielo.
-- **Spawn del Miniboss Donald Trump (`trump_miniboss`)**: Le guardie standard cessano di spawnare; al loro posto scende in campo il miniboss alleato Donald Trump (1.500 HP, Boss bar dorata/gialla a 6 tacche).
-- **Scudo di Immunità Totale**: Finché Donald Trump è in vita, Bibi è protetto da un'immunità totale indistruttibile. Qualsiasi attacco rivolto a Bibi viene bloccato (particelle Totem e suono scudo).
-- **Attacchi del Miniboss Donald Trump**:
-  1. **Enorme Muro di Soldi ("Wall of Money")**: Un imponente muro di banconote e monete che travolge i giocatori a cono aperto, infliggendo ingente danno, respingimento e **distruggendo direttamente la durabilità dell'armatura** indossata (35 punti di durabilità per pezzo). Attacco bilanciato da un lungo tempo di ricarica.
-  2. **Chiamata ICE ("Call ICE")**: Suona l'allarme ed evoca 3 agenti federali ICE d'élite muniti di **armatura completa in Netherite e spada in Netherite**.
-- **Infrangimento dello Scudo**: Alla morte di Donald Trump, lo scudo di Bibi si spezza con effetto sonoro e visivo di scudo rotto, rendendolo nuovamente vulnerabile agli attacchi per concludere la battaglia.
+- **Vita**: 10.000 (si cambia nel config), barra blu.
+- **Niente one-shot**: un singolo colpo non può fare più di 500 danni (`MAX_SINGLE_HIT_DAMAGE`).
+- **Attacchi**:
+  1. **Missile a ricerca** (`BibiMissileEntity`): un missile veloce che ti insegue e esplode all'impatto, colpendo anche chi ti sta vicino.
+  2. **Bombardamento**: fa piovere 8 missili in un'area larga intorno a sé. Esplosioni, fuoco e vegetazione distrutta.
+  3. **Onda d'urto (ostruzionismo)**: ti sbalza indietro e ti dà Lentezza. Prima dava anche Cecità, l'abbiamo tolta perché non si vedeva niente.
+  4. **Guardie** (`bibi_guard`): ogni tanto ne evoca qualcuna. Hanno la pistola e ti sparano da lontano.
 
 ---
 
-## 4. Arsenale Balistico del Giocatore
+## 3. Fase 2: arriva Trump (50% di vita)
 
-Nel combattimento contro le forze nemiche, i giocatori possono fabbricare e impiegare armi da fuoco e da lancio dedicate:
-- **Pistola di Sicurezza (`israel_simulator:pistol`)**:
-  - Arma da fuoco di precisione a raggio immediato (raycast balistico su 32 blocchi).
-  - Infligge **9.0 cuori di danno** al bersaglio colpito. Durabilità: 250 colpi. Incantabile con *Unbreaking* e *Mending*.
-- **Missile Tattico Tascabile (`israel_simulator:missile`)**:
-  - Lanciabile direttamente dall'inventario per innescare un proiettile a razzo a impatto esplosivo.
+Quando Bibi scende al 50% (`ENRAGE_HEALTH_FRACTION = 0.50F`):
+- Si **infuria** e la barra diventa rossa.
+- **Attacca più spesso**:
+  - il missile a ricerca diventa una raffica da due;
+  - il bombardamento si ricarica in metà tempo (da 180 a 90 tick) e i missili diventano 16.
+- **Arriva Donald Trump** (`trump_miniboss`): smettono di arrivare guardie e scende in campo Trump (1.500 di vita, barra gialla).
+- **Scudo**: finché Trump è vivo, Bibi è invulnerabile. Ogni colpo viene bloccato (particelle del Totem e suono dello scudo).
+- **Attacchi di Trump**:
+  1. **Muro di soldi**: un muro di banconote e monete che ti travolge davanti a lui. Fa molto danno, ti sbalza e toglie 35 di durabilità a ogni pezzo d'armatura. Ha una ricarica lunga.
+  2. **Chiama l'ICE**: evoca 3 agenti dell'ICE con armatura e spada di netherite.
+- **Lo scudo si rompe** quando muore Trump, e Bibi torna attaccabile.
 
 ---
 
-## 5. Ricompense e Drop della Boss Fight
+## 4. Fase 3: arriva Epstein (33% di vita)
 
-Sconfiggere il Boss Bibi sul server garantisce ricompense leggendarie e prestigiose:
-- **Disco Musicale Hava Nagila (`hava_nagila_disc`)**: Ricompensa LEGGENDARIA garantita al 100%, riproducibile nel Jukebox.
-- **48x Shekel (`shekel`)** & **12x Lingotti d'Oro**: Valuta e metalli preziosi.
-- **6x Ancient Coins (`ancient_coin`)**: Monete antiche rare per il collezionismo e il commercio specializzato.
-- **5x Diamanti**: Risorse per equipaggiamento endgame.
-- **Avanzamento "Hava Nagila"**: Sbloccato per tutti i partecipanti che hanno contribuito a infliggere danni nella battaglia.
+Sotto un terzo della vita Bibi diventa **disperato** e arriva Jeffrey Epstein con i suoi scagnozzi. Anche lui protegge Bibi: prima devi battere lui.
 
+---
 
+## 5. Armi per il giocatore
+
+- **Pistola** (`israel_simulator:pistol`):
+  - colpo istantaneo fino a 32 blocchi;
+  - 9 danni (4,5 cuori), 250 di durabilità, si incanta con Indistruttibilità e Riparazione.
+- **Missile tattico** (`israel_simulator:missile`):
+  - lo lanci dall'inventario e esplode all'impatto.
+
+Per il resto delle armi (fucili, Uzi, granate, drone) guarda il README.
+
+---
+
+## 6. Cosa lascia Bibi
+
+- **Corona del rabbino** (`rabbis_crown`): sempre. È l'unico modo per averla.
+- **Disco Hava Nagila** (`hava_nagila_disc`): sempre. Si suona nel jukebox.
+- **48 Shekel** (`shekel`).
+- **6 monete antiche** (`ancient_coin`).
+- **5 diamanti**.
+- **Progresso "Hava Nagila"**: uccidi Bibi e raccogli il disco.
