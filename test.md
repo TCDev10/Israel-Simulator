@@ -853,3 +853,9 @@ Non provato dall'utente in gioco.
 - Funzionamento atteso: circa +50% di frequenza (una possibile posizione ogni 26×26 chunk invece di 32×32: 1024/676 ≈ 1,51).
 - Soluzione: nello structure set `twin_towers` spaziatura da 32 a 26 chunk e separazione da 12 a 10 (sempre minore della spaziatura). Nessuna costante Java o test fissava questi valori; la guardia anti-sovrapposizione legge la spaziatura dallo structure set.
 - Verifica: solo la CI di GitHub, nessun test in gioco. Non provato dall'utente in gioco.
+
+## Aereo sulle twin_towers ogni minuto
+- Problema riscontrato: l'aereo partiva solo con il giocatore dentro le torri, col 35% di probabilità e 5 minuti di attesa; i punti delle torri erano fissi e sbagliati se la struttura era ruotata, e le esplosioni rompevano anche il terreno intorno.
+- Funzionamento atteso: ogni minuto, per ogni twin_towers con un giocatore entro 160 blocchi, parte un aereo da un punto a caso fuori dalla struttura (metà diagonale + 48-96 blocchi, quota del bersaglio + 0-15), puntato dritto al centro di una delle due torri scelta a caso, a un'altezza tra il 40% e l'85% della torre. Un solo aereo in volo per struttura; se non colpisce sparisce dopo 30 s. Sirena e titolo d'allarme solo ai giocatori vicini (256 blocchi).
+- Soluzione: `TwinTowersPlaneEvent` ora cerca le twin_towers nei chunk caricati vicino ai giocatori (senza caricare chunk), calcola le due torri dal template ruotato (`PoolElementStructurePiece`), sceglie un punto di partenza caricato evitando la rotta che attraversa l'altra torre. `PlaneCrashEntity` rompe e incendia solo blocchi dentro la torre colpita (calcolatore d'esplosione personalizzato) e non viene salvato su disco.
+- Verifica: solo la CI di GitHub, nessun test in gioco. Non provato dall'utente in gioco.

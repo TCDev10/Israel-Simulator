@@ -16,7 +16,7 @@ Israel in Minecraft. A NeoForge mod for Minecraft 26.2 (Java 25) that adds Israe
   - A holiday calendar with Shabbat and the main Jewish holidays. The Shuk changes stock and closes on Shabbat.
 - **70 items and blocks**: Shekels and Agorot, the Rav-Kav card, falafel, shakshuka, sabich, hummus, challah, matzo, sufganiyot, grapes, guns, a bicycle and more.
 - **Bosses**: summon Bibi with the Star of David. He's the only source of the Rabbi's Crown and drops the Hava Nagila music disc. Get the First Amendment at the public speech event.
-- **Also**: a Tel Aviv to Jerusalem train, Mossad missions, a plane crash event, local animals.
+- **Also**: a Tel Aviv to Jerusalem train, Mossad missions, a plane crash event (one plane a minute at the twin towers when a player is nearby), local animals.
 
 ---
 

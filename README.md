@@ -129,7 +129,7 @@ Tel Aviv is split into 6 districts. When you walk into one you get a banner on t
 - **First Amendment**: you get it from the public speech event. Right-click for Freedom, which clears Slowness and Mining Fatigue.
 - **Mossad**: talk to a Handler in a city safehouse for missions (take out a cell, recover a dossier, escort an informant).
 - **Weapons**: pistol, bullpup assault rifle, Uzi, sniper rifle, frag grenades and the Palantrio Drone.
-- **More**: other bosses and minibosses, a plane crash event and local animals (gazelle, ibex, hyrax). See the [wiki](wiki/Home.md).
+- **More**: other bosses and minibosses, a plane-crash event (every 60 seconds one plane flies at a `twin_towers` when a player is within 160 blocks; the siren reaches 256 blocks; `/israelsim event plane_crash stop` clears flying planes) and local animals (gazelle, ibex, hyrax). See the [wiki](wiki/Home.md).
 
 ---
 

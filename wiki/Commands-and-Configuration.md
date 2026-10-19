@@ -18,8 +18,8 @@
 | `/israelsim event speech stop` | Operatori | Ferma il discorso. |
 | `/israelsim event speech status` | Operatori | Dice se c'è un discorso in corso e quanto manca. |
 | `/israelsim event speech duration [secondi]` | Operatori | Mostra o cambia quanto dura il discorso. |
-| `/israelsim event plane_crash start [pos]` | Operatori | Fa partire l'evento dell'aereo. |
-| `/israelsim event plane_crash stop` | Operatori | Ferma l'evento dell'aereo. |
+| `/israelsim event plane_crash start [pos]` | Operatori | Fa partire l'evento dell'aereo (altrimenti parte da solo ogni 60 secondi vicino a `twin_towers` se c'è un giocatore entro 160 blocchi). |
+| `/israelsim event plane_crash stop` | Operatori | Ferma l'evento e toglie gli aerei in volo. |
 | `/israelsim towers setpos [pos]` | Operatori | Imposta dove stanno le Torri Gemelle per l'evento. |
 
 Per trovare una struttura usa il comando vanilla `/locate structure israel_simulator:<nome>`.

@@ -49,4 +49,4 @@ Le città hanno ognuna il suo stile, e la regola è che non devono somigliarsi: 
 
 ## 6. Le altre
 - **Isola tropicale** (`tropical_island`): un'isola intera con il suo tempio, rara, in mezzo all'oceano caldo profondo.
-- **Torri Gemelle** (`twin_towers`): nelle pianure vanilla.
+- **Torri Gemelle** (`twin_towers`): nelle pianure vanilla. Ogni 60 secondi, se c'è un giocatore entro 160 blocchi, parte un aereo puntato al centro di una delle due torri (sirena entro 256 blocchi).
