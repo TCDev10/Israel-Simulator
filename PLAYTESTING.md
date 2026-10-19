@@ -149,6 +149,7 @@ Verifica specifica delle strutture aggiunte e aggiornate di recente.
   - [ ] Ragni (`minecraft:spider` / `minecraft:cave_spider`)
 - [ ] **Casse con Loot:** Le casse accanto agli spawner contengono il loot della tabella `twin_towers.json` (ferro, oro, smeraldi, diamanti, mele d'oro, libri incantati, falafel).
 - [ ] Nessun blocco di arenaria compare nella struttura.
+- [ ] **Aereo ogni minuto:** con un giocatore entro 160 blocchi, ogni 60 s parte un aereo da fuori della struttura (48-96 blocchi oltre il bordo), diretto al centro di una delle due torri scelta a caso; colpisce la torre ed esplode. Mai più di un aereo in volo per struttura; se non colpisce sparisce dopo 30 s. Esplosioni, fuoco e rottami restano dentro la torre colpita. Comandi: `/israelsim event plane_crash start|stop`.
 
 ### 3.2 Striscia di Gaza (`israel_simulator:gaza_strip`)
 * **Comando:** `/locate structure israel_simulator:gaza_strip` (solo nel bioma `mediterranean_coast`)
