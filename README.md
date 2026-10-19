@@ -132,7 +132,7 @@ When walking through Tel Aviv, players traverse **6 functional districts**, each
 - **First Amendment** *(LEGENDARY)*: High-tier artifact granting speech and immunity effects.
 - **Hava Nagila Music Disc** *(LEGENDARY)*: Custom music disc with full jukebox audio integration.
 - **Bibi Boss Battle**: Satirical boss entity with custom AI goals, armed security guards, speech sound effects, and unique endgame drops.
-- **Other encounters**: further satirical bosses and minibosses, Mossad agents, a plane-crash world event and regional wildlife (gazelle, ibex, hyrax). See the [wiki](wiki/Home.md).
+- **Other encounters**: further satirical bosses and minibosses, Mossad agents, a plane-crash world event (every minute a plane flies at one of the `twin_towers` when a player is within 160 blocks) and regional wildlife (gazelle, ibex, hyrax). See the [wiki](wiki/Home.md).
 
 ---
 

@@ -32,7 +32,7 @@ public final class PlaneCrashCommands {
                                 ctx.getSource().sendFailure(Component.literal("§cNessun evento aereo attivo al momento."));
                                 return 0;
                             }
-                            TwinTowersPlaneEvent.stopEvent();
+                            TwinTowersPlaneEvent.stopEvent(ctx.getSource().getLevel());
                             ctx.getSource().sendSuccess(() -> Component.literal("§aEvento aereo arrestato."), true);
                             return 1;
                         }))))
@@ -46,7 +46,7 @@ public final class PlaneCrashCommands {
     private static int start(CommandContext<CommandSourceStack> ctx, BlockPos pos) {
         ServerLevel level = ctx.getSource().getLevel();
         if (!TwinTowersPlaneEvent.startEvent(level, pos)) {
-            ctx.getSource().sendFailure(Component.literal("§cImpossibile avviare l'evento: un evento è già in corso."));
+            ctx.getSource().sendFailure(Component.literal("§cImpossibile avviare l'evento: nessuna twin_towers caricata vicino, aereo già in volo o nessun punto di partenza caricato."));
             return 0;
         }
         ctx.getSource().sendSuccess(() -> Component.literal("§6Allarme antiaereo attivato! Aereo in arrivo verso le coordinate " + pos.toShortString()), true);
