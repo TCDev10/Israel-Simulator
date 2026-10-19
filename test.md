@@ -847,3 +847,9 @@ Non provato dall'utente in gioco.
 - Da provare: `/locate structure israel_simulator:twin_towers` trova le torri; le casse hanno loot; il vecchio id non esiste più.
 - Nei mondi già creati le torri generate restano come blocchi, ma il gioco non le riconosce più come struttura (`/locate`, evento dell'aereo).
 - Verifica: solo build e test unitari.
+
+## twin_towers troppo rare
+- Problema riscontrato: le twin_towers comparivano troppo raramente nel mondo.
+- Funzionamento atteso: circa +50% di frequenza (una possibile posizione ogni 26×26 chunk invece di 32×32: 1024/676 ≈ 1,51).
+- Soluzione: nello structure set `twin_towers` spaziatura da 32 a 26 chunk e separazione da 12 a 10 (sempre minore della spaziatura). Nessuna costante Java o test fissava questi valori; la guardia anti-sovrapposizione legge la spaziatura dallo structure set.
+- Verifica: solo la CI di GitHub, nessun test in gioco. Non provato dall'utente in gioco.
