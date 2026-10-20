@@ -126,7 +126,7 @@ adv("economy/five_diamonds", "western_wall", "minecraft:diamond", "goal",
 adv("exploration/grand_market", "visit_jerusalem", "olives", "task",
     {"grand_market": in_structure("grand_market")}, OR,
     ("Shuk Day", "Get lost in the Grand Market"),
-    ("Giornata al Shuk", "Perditi nel Grande mercato"))
+    ("Giornata allo Shuk", "Perditi nel Grande mercato"))
 adv("economy/shuk_haggler", "grand_market", "citrus", "task",
     {"traded": trade("shuk_vendor")}, OR,
     ("Best Price for You, My Friend", "Buy something from a Shuk vendor"),
