@@ -1,0 +1,31 @@
+{
+  "parent": "israel_simulator:cultural/dressed_for_prayer",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:tefillin"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.tefillin_prayer.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.tefillin_prayer.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "bound": {
+      "trigger": "israel_simulator:mod_event",
+      "conditions": {
+        "event": "tefillin_bound"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "bound"
+    ]
+  ]
+}

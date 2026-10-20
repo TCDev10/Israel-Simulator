@@ -1,0 +1,39 @@
+{
+  "parent": "israel_simulator:exploration/grand_market",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:citrus"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.shuk_haggler.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.shuk_haggler.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "traded": {
+      "trigger": "minecraft:villager_trade",
+      "conditions": {
+        "villager": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "israel_simulator:shuk_vendor"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "traded"
+    ]
+  ]
+}

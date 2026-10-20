@@ -1,5 +1,5 @@
 {
-  "parent": "israel_simulator:exploration/welcome_to_israel",
+  "parent": "israel_simulator:cultural/shalom",
   "display": {
     "icon": {
       "id": "israel_simulator:first_amendment"
@@ -10,7 +10,7 @@
     "description": {
       "translate": "advancements.israel_simulator.freedom_of_speech.description"
     },
-    "frame": "challenge",
+    "frame": "goal",
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false

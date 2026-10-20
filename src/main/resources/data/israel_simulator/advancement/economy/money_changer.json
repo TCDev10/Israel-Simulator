@@ -1,0 +1,39 @@
+{
+  "parent": "israel_simulator:economy/first_shekel",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:ancient_coin"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.money_changer.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.money_changer.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "traded": {
+      "trigger": "minecraft:villager_trade",
+      "conditions": {
+        "villager": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "israel_simulator:money_changer"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "traded"
+    ]
+  ]
+}

@@ -16,32 +16,258 @@
     "hidden": false
   },
   "criteria": {
-    "has_shoes": {
-      "trigger": "minecraft:inventory_changed",
+    "jerusalem_city": {
+      "trigger": "minecraft:location",
       "conditions": {
-        "items": [
+        "player": [
           {
-            "items": "israel_simulator:walking_shoes"
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "israel_simulator:jerusalem_city"
+              }
+            }
           }
         ]
       }
     },
-    "has_bicycle": {
-      "trigger": "minecraft:inventory_changed",
+    "western_wall": {
+      "trigger": "minecraft:location",
       "conditions": {
-        "items": [
+        "player": [
           {
-            "items": "israel_simulator:bicycle"
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "israel_simulator:western_wall"
+              }
+            }
           }
         ]
       }
     },
-    "has_map": {
-      "trigger": "minecraft:inventory_changed",
+    "grand_market": {
+      "trigger": "minecraft:location",
       "conditions": {
-        "items": [
+        "player": [
           {
-            "items": "israel_simulator:israel_map"
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "israel_simulator:grand_market"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "great_synagogue": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "israel_simulator:great_synagogue"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "tel_aviv_city": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "israel_simulator:tel_aviv_city"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "jaffa_port": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "israel_simulator:jaffa_port"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "government_building": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "israel_simulator:government_building"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "startup_office": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "israel_simulator:startup_office"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "twin_towers": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "israel_simulator:twin_towers"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "gaza_strip": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "israel_simulator:gaza_strip"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "ein_gedi_oasis": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "israel_simulator:ein_gedi_oasis"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "ancient_sanctuary": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "israel_simulator:ancient_sanctuary"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "dead_sea_resort": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "israel_simulator:dead_sea_resort"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "agricultural_farm": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "israel_simulator:agricultural_farm"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "mediterranean_village": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "israel_simulator:mediterranean_village"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "tropical_island": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "israel_simulator:tropical_island"
+              }
+            }
           }
         ]
       }
@@ -49,9 +275,55 @@
   },
   "requirements": [
     [
-      "has_shoes",
-      "has_bicycle",
-      "has_map"
+      "jerusalem_city"
+    ],
+    [
+      "western_wall"
+    ],
+    [
+      "grand_market"
+    ],
+    [
+      "great_synagogue"
+    ],
+    [
+      "tel_aviv_city"
+    ],
+    [
+      "jaffa_port"
+    ],
+    [
+      "government_building"
+    ],
+    [
+      "startup_office"
+    ],
+    [
+      "twin_towers"
+    ],
+    [
+      "gaza_strip"
+    ],
+    [
+      "ein_gedi_oasis"
+    ],
+    [
+      "ancient_sanctuary"
+    ],
+    [
+      "dead_sea_resort"
+    ],
+    [
+      "agricultural_farm"
+    ],
+    [
+      "mediterranean_village"
+    ],
+    [
+      "tropical_island"
     ]
-  ]
+  ],
+  "rewards": {
+    "experience": 500
+  }
 }

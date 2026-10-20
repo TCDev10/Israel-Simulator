@@ -1,0 +1,31 @@
+{
+  "parent": "israel_simulator:mossad/mossad_recruit",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:assault_rifle"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.mossad_veteran.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.mossad_veteran.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "veteran": {
+      "trigger": "israel_simulator:mod_event",
+      "conditions": {
+        "event": "mossad_veteran"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "veteran"
+    ]
+  ]
+}

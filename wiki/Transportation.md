@@ -38,6 +38,7 @@ Comoda per girare per Tel Aviv, sul lungomare di Giaffa e sui sentieri.
 La Rav-Kav (`israel_simulator:rav_kav`) è la tessera dei mezzi pubblici:
 - **Tasto destro** con la tessera in mano per vedere se è attiva.
 - **Con la Rav-Kav il treno è gratis**, niente Shekel.
+- **Ricetta**: 7 Shekel, 1 lingotto d'oro e 1 carta (in alto al centro l'oro, al centro la carta, il resto Shekel).
 
 ---
 

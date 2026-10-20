@@ -39,6 +39,7 @@ public class SmartphoneItem extends Item {
             }
         }
         if (WorkPlaces.isShabbat(level)) {
+            com.israelsimulator.advancement.IsraelAdvancements.award(player, com.israelsimulator.advancement.AdvancementEvents.SHABBAT_WORK_BLOCKED);
             player.sendSystemMessage(Component.translatable("message.israel_simulator.work.shabbat").withStyle(ChatFormatting.YELLOW));
             return InteractionResult.SUCCESS;
         }
@@ -50,6 +51,7 @@ public class SmartphoneItem extends Item {
         ItemStack money = new ItemStack(ModItems.SHEKEL.get(), StartupWork.GIG_PAY);
         if (!player.getInventory().add(money)) player.drop(money, false);
         player.causeFoodExhaustion(1.0F);
+        com.israelsimulator.advancement.IsraelAdvancements.award(player, com.israelsimulator.advancement.AdvancementEvents.DELIVERY_GIG);
         player.sendSystemMessage(Component.translatable("message.israel_simulator.work.gig", StartupWork.GIG_PAY)
                 .withStyle(ChatFormatting.GREEN));
         level.playSound(null, player.blockPosition(), SoundEvents.NOTE_BLOCK_BELL.value(), SoundSource.PLAYERS, 0.7F, 1.6F);

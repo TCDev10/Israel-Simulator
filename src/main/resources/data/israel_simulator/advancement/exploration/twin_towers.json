@@ -1,0 +1,41 @@
+{
+  "parent": "israel_simulator:exploration/tel_aviv",
+  "display": {
+    "icon": {
+      "id": "minecraft:glass"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.twin_towers.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.twin_towers.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "twin_towers": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "israel_simulator:twin_towers"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "twin_towers"
+    ]
+  ]
+}

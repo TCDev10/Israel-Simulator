@@ -1,0 +1,35 @@
+{
+  "parent": "israel_simulator:exploration/welcome_to_israel",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:shekel"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.first_shekel.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.first_shekel.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "shekel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "israel_simulator:shekel"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "shekel"
+    ]
+  ]
+}

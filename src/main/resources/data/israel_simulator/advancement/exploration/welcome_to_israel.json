@@ -12,26 +12,22 @@
     },
     "frame": "task",
     "show_toast": true,
-    "announce_to_chat": true,
+    "announce_to_chat": false,
     "hidden": false
   },
   "criteria": {
-    "has_map": {
-      "trigger": "minecraft:inventory_changed",
+    "in_israel": {
+      "trigger": "minecraft:location",
       "conditions": {
-        "items": [
+        "player": [
           {
-            "items": "israel_simulator:israel_map"
-          }
-        ]
-      }
-    },
-    "has_shekel": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": "israel_simulator:shekel"
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "biomes": "#israel_simulator:is_israel_region"
+              }
+            }
           }
         ]
       }
@@ -39,8 +35,7 @@
   },
   "requirements": [
     [
-      "has_map",
-      "has_shekel"
+      "in_israel"
     ]
   ]
 }

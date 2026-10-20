@@ -865,3 +865,43 @@ Non provato dall'utente in gioco.
 - Funzionamento atteso: hanukkiah con base a gradini, fusto centrale, 4 coppie di bracci a U con 8 portacandele tutti alla stessa altezza e lo shamash rialzato al centro. Con `candles=0` ci sono 9 candele spente con lo stoppino. Con `candles=N` sono accesi lo shamash e N candele, partendo da destra guardando il lato sud; le fiammelle brillano anche al buio e le particelle escono proprio dalle fiamme. Nell'inventario, a terra e in mano la menorah si vede intera e di tre quarti. Il contorno e la collisione seguono il modello (base, bracci, shamash) invece del vecchio box unico.
 - Soluzione: modelli generati da `scripts/models/gen_menorah.py` (`menorah.json` + `menorah_lit_1..8.json`, 43 elementi sottili ciascuno, trasformazioni display per gui/terra/mano/cornice), blockstate con un modello per ogni valore di `candles`, nuova texture 16x16 solo per la menorah (oro, cera, stoppino, fiamma). In `MenorahBlock` nuova forma `Shapes.or` e particelle sulle posizioni reali delle fiamme. Id del blocco e proprietà `candles` invariati, quindi i mondi esistenti, le strutture e le decorazioni di Hanukkah nello Shuk funzionano come prima.
 - Verifica: solo validazione JSON/UV con Python e la CI di GitHub, nessun test in gioco. Non provato dall'utente in gioco.
+
+## Avanzamenti rifatti
+- Problema riscontrato: quasi tutti i 14 avanzamenti erano buggati.
+  - Tutti i criteri stavano in un solo gruppo `requirements`, quindi ne bastava uno qualsiasi. Bastava uno Shekel per "Welcome to Israel", tenere il disco per "Hava Nagila" senza uccidere Bibi, o avere un pezzo di drone per "Startup Founder".
+  - "Tel Aviv Nights" usava un campo `location` che `minecraft:location` non ha, quindi veniva ignorato. Si sbloccava ovunque, a qualsiasi ora, con la bicicletta in inventario.
+  - Mappa d'Israele, scarpe da camminata e bicicletta non si ottengono in sopravvivenza, quindi "Master Explorer" era impossibile.
+  - "Honorary Feline Citizen" si sbloccava raccogliendo una Kippah: mostrare la Kippah al gatto non dava niente.
+  - "Five Diamonds" chiedeva 5 diamanti qualsiasi invece della preghiera al Kotel. "Blessed Trader" chiedeva la Corona in inventario invece di uno scambio fatto indossandola.
+  - "Visit Jerusalem", "Jaffa", "Dead Sea Tourist" e "Hummus Connoisseur" chiedevano oggetti invece di luoghi o azioni. Per Hummus Connoisseur bastava averli in inventario, senza mangiarli, e mancava la shakshuka.
+  - L'albero era piatto: tutti i 13 avanzamenti stavano direttamente sotto la radice.
+  - La Rav-Kav non aveva una ricetta.
+- Funzionamento atteso: un'unica scheda con la radice "Welcome to Israel", che si sblocca entrando in un bioma d'Israele. Sotto ci sono rami logici: Gerusalemme, Tel Aviv e costa, deserto e Mar Morto, cultura, Shabbat e feste, soldi, boss, Mossad, startup, treno, fattoria e cibo. Ogni avanzamento si sblocca solo facendo davvero la cosa descritta.
+- Soluzione:
+  - Nuovo trigger `israel_simulator:mod_event` (`IsraelEventTrigger`, registrato in `ModTriggers`), con il campo `event`. Gli eventi stanno in `AdvancementEvents` e vengono lanciati dal codice:
+    - preghiere: preghiera al Muro, all'Arca e coi Tefillin;
+    - Shofar e gatto con la Kippah;
+    - Mar Morto: galleggiamento e bagno di fango;
+    - Shabbat: bonus riposo, e lavoro bloccato di Shabbat;
+    - startup: sessione col portatile, exit e consegna con lo smartphone;
+    - lancio del drone e treno, con o senza Rav-Kav;
+    - Mossad: missione completata e 5 missioni;
+    - evocazione di Bibi;
+    - aereo sulle twin_towers, per i giocatori entro 160 blocchi;
+    - feste, controllate una volta al secondo per giocatore.
+  - Gli avanzamenti si generano con `scripts/advancements/gen_advancements.py`, che scrive i JSON e le chiavi en_us/it_it. Gli avanzamenti sono 54: i 14 vecchi corretti, con lo stesso id (Hummus Connoisseur si sposta da `secret/` a `food/`), più 40 nuovi.
+  - Nuova ricetta della Rav-Kav: 7 Shekel, 1 lingotto d'oro e 1 carta.
+  - Il test `AchievementsAndProgressionTest` è stato riscritto e ora controlla:
+    - una sola radice e nessun genitore mancante;
+    - nessun criterio fuori dai `requirements`;
+    - stesse chiavi in en_us e it_it;
+    - che trigger, eventi, oggetti, entità, strutture, biomi ed effetti esistano davvero;
+    - che ogni evento venga lanciato da qualche parte nel codice.
+- Da provare in gioco:
+  - entrare in un bioma d'Israele;
+  - stare a Tel Aviv di notte;
+  - pregare al Kotel;
+  - galleggiare sul Mar Morto e fare il bagno di fango;
+  - mostrare la Kippah a un gatto;
+  - fare uno scambio con la Corona del rabbino in testa.
+- Verifica: solo la CI di GitHub, nessun test in gioco. Non provato dall'utente in gioco.

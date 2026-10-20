@@ -67,6 +67,7 @@ public final class ShabbatRest {
             if (!rested(last, now)) continue;
             p.addEffect(new MobEffectInstance(MobEffects.REGENERATION, REGEN_TICKS, 0, true, false, true));
             p.addEffect(new MobEffectInstance(MobEffects.SATURATION, 1, 0, true, false, false));
+            com.israelsimulator.advancement.IsraelAdvancements.award(p, com.israelsimulator.advancement.AdvancementEvents.SHABBAT_REST);
             p.sendOverlayMessage(Component.translatable("message.israel_simulator.shabbat.rest")
                     .withStyle(ChatFormatting.AQUA));
         }

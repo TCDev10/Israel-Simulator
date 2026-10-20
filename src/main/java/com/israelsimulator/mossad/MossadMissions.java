@@ -210,6 +210,10 @@ public final class MossadMissions {
             }
         }
         data.setDirty();
+        com.israelsimulator.advancement.IsraelAdvancements.award(player, com.israelsimulator.advancement.AdvancementEvents.MOSSAD_MISSION);
+        if (e.completed >= com.israelsimulator.advancement.AdvancementEvents.MOSSAD_VETERAN_MISSIONS) {
+            com.israelsimulator.advancement.IsraelAdvancements.award(player, com.israelsimulator.advancement.AdvancementEvents.MOSSAD_VETERAN);
+        }
         player.level().playSound(null, player.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.8F, 1.2F);
         say(player, Component.translatable("mossad.israel_simulator.completed", Component.translatable(m.translationKey()),
                 m.reputationReward(), rep).withStyle(ChatFormatting.GREEN));

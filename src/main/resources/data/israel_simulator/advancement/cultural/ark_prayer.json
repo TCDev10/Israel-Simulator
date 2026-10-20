@@ -1,0 +1,31 @@
+{
+  "parent": "israel_simulator:exploration/visit_jerusalem",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:prayer_note"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.ark_prayer.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.ark_prayer.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "prayed": {
+      "trigger": "israel_simulator:mod_event",
+      "conditions": {
+        "event": "ark_prayer"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "prayed"
+    ]
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "parent": "israel_simulator:exploration/judean_desert",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:dead_sea_scroll_fragment"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.ancient_sanctuary.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.ancient_sanctuary.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "sanctuary": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "israel_simulator:ancient_sanctuary"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "sanctuary"
+    ]
+  ]
+}

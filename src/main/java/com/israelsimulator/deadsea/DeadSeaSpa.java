@@ -74,6 +74,7 @@ public final class DeadSeaSpa {
                 lastBath.put(id, now);
                 soak.put(id, 0);
                 treat(player);
+                com.israelsimulator.advancement.IsraelAdvancements.award(player, com.israelsimulator.advancement.AdvancementEvents.MUD_BATH);
                 player.sendSystemMessage(Component.translatable("message.israel_simulator.dead_sea.mud_bath_done")
                         .withStyle(ChatFormatting.GOLD));
             }
@@ -88,6 +89,7 @@ public final class DeadSeaSpa {
             if (f % FLOAT_SECONDS == 0) {
                 player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 0, false, true, true));
                 if (f == FLOAT_SECONDS) {
+                    com.israelsimulator.advancement.IsraelAdvancements.award(player, com.israelsimulator.advancement.AdvancementEvents.DEAD_SEA_FLOAT);
                     player.sendSystemMessage(Component.translatable("message.israel_simulator.dead_sea.salt_float")
                             .withStyle(ChatFormatting.AQUA));
                 }

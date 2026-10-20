@@ -110,6 +110,7 @@ public final class SynagogueManager {
 
                 cooldowns.setLastUseTime(player.getUUID(), level.getGameTime());
                 BlessedEffect.applyTo(player);
+                com.israelsimulator.advancement.IsraelAdvancements.award(player, com.israelsimulator.advancement.AdvancementEvents.ARK_PRAYER);
 
                 if (isOffering) {
                     player.sendSystemMessage(Component.translatable("message.israel_simulator.ark_offering_complete"));

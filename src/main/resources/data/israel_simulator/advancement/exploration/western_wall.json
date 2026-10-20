@@ -1,0 +1,41 @@
+{
+  "parent": "israel_simulator:exploration/visit_jerusalem",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:western_wall_stone"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.western_wall.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.western_wall.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "western_wall": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "israel_simulator:western_wall"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "western_wall"
+    ]
+  ]
+}
