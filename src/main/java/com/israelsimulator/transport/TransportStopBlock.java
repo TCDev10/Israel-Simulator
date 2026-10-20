@@ -151,6 +151,10 @@ public class TransportStopBlock extends Block {
         }
 
         recordTransit(cooldowns, player.getUUID(), now);
+        com.israelsimulator.advancement.IsraelAdvancements.award(serverPlayer, com.israelsimulator.advancement.AdvancementEvents.TRAIN_RIDE);
+        if (hasRavKav) {
+            com.israelsimulator.advancement.IsraelAdvancements.award(serverPlayer, com.israelsimulator.advancement.AdvancementEvents.TRAIN_RIDE_RAV_KAV);
+        }
 
         // Departure: whistle at the departing platform, a short dark "tunnel" while travelling
         ModAudioManager.playTransitSound(level, pos, TransportType.TRAIN.name());
