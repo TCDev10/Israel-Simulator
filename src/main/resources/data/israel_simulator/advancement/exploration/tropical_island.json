@@ -1,0 +1,41 @@
+{
+  "parent": "israel_simulator:exploration/jaffa",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:dates"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.tropical_island.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.tropical_island.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "island": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "israel_simulator:tropical_island"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "island"
+    ]
+  ]
+}

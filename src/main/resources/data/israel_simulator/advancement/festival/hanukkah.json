@@ -1,0 +1,42 @@
+{
+  "parent": "israel_simulator:festival/shabbat_shalom",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:menorah"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.hanukkah.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.hanukkah.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "hanukkah": {
+      "trigger": "israel_simulator:mod_event",
+      "conditions": {
+        "event": "festival_hanukkah"
+      }
+    },
+    "sufganiyah": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "israel_simulator:sufganiyah"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "hanukkah"
+    ],
+    [
+      "sufganiyah"
+    ]
+  ]
+}

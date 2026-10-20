@@ -859,3 +859,43 @@ Non provato dall'utente in gioco.
 - Funzionamento atteso: ogni minuto, per ogni twin_towers con un giocatore entro 160 blocchi, parte un aereo da un punto a caso fuori dalla struttura (metà diagonale + 48-96 blocchi, quota del bersaglio + 0-15), puntato dritto al centro di una delle due torri scelta a caso, a un'altezza tra il 40% e l'85% della torre. Un solo aereo in volo per struttura; se non colpisce sparisce dopo 30 s. Sirena e titolo d'allarme solo ai giocatori vicini (256 blocchi).
 - Soluzione: `TwinTowersPlaneEvent` ora cerca le twin_towers nei chunk caricati vicino ai giocatori (senza caricare chunk), calcola le due torri dal template ruotato (`PoolElementStructurePiece`), sceglie un punto di partenza caricato evitando la rotta che attraversa l'altra torre. `PlaneCrashEntity` rompe e incendia solo blocchi dentro la torre colpita (calcolatore d'esplosione personalizzato) e non viene salvato su disco.
 - Verifica: solo la CI di GitHub, nessun test in gioco. Non provato dall'utente in gioco.
+
+## Avanzamenti rifatti
+- Problema riscontrato: quasi tutti i 14 avanzamenti erano buggati.
+  - Tutti i criteri stavano in un solo gruppo `requirements`, quindi ne bastava uno qualsiasi. Bastava uno Shekel per "Welcome to Israel", tenere il disco per "Hava Nagila" senza uccidere Bibi, o avere un pezzo di drone per "Startup Founder".
+  - "Tel Aviv Nights" usava un campo `location` che `minecraft:location` non ha, quindi veniva ignorato. Si sbloccava ovunque, a qualsiasi ora, con la bicicletta in inventario.
+  - Mappa d'Israele, scarpe da camminata e bicicletta non si ottengono in sopravvivenza, quindi "Master Explorer" era impossibile.
+  - "Honorary Feline Citizen" si sbloccava raccogliendo una Kippah: mostrare la Kippah al gatto non dava niente.
+  - "Five Diamonds" chiedeva 5 diamanti qualsiasi invece della preghiera al Kotel. "Blessed Trader" chiedeva la Corona in inventario invece di uno scambio fatto indossandola.
+  - "Visit Jerusalem", "Jaffa", "Dead Sea Tourist" e "Hummus Connoisseur" chiedevano oggetti invece di luoghi o azioni. Per Hummus Connoisseur bastava averli in inventario, senza mangiarli, e mancava la shakshuka.
+  - L'albero era piatto: tutti i 13 avanzamenti stavano direttamente sotto la radice.
+  - La Rav-Kav non aveva una ricetta.
+- Funzionamento atteso: un'unica scheda con la radice "Welcome to Israel", che si sblocca entrando in un bioma d'Israele. Sotto ci sono rami logici: Gerusalemme, Tel Aviv e costa, deserto e Mar Morto, cultura, Shabbat e feste, soldi, boss, Mossad, startup, treno, fattoria e cibo. Ogni avanzamento si sblocca solo facendo davvero la cosa descritta.
+- Soluzione:
+  - Nuovo trigger `israel_simulator:mod_event` (`IsraelEventTrigger`, registrato in `ModTriggers`), con il campo `event`. Gli eventi stanno in `AdvancementEvents` e vengono lanciati dal codice:
+    - preghiere: preghiera al Muro, all'Arca e coi Tefillin;
+    - Shofar e gatto con la Kippah;
+    - Mar Morto: galleggiamento e bagno di fango;
+    - Shabbat: bonus riposo, e lavoro bloccato di Shabbat;
+    - startup: sessione col portatile, exit e consegna con lo smartphone;
+    - lancio del drone e treno, con o senza Rav-Kav;
+    - Mossad: missione completata e 5 missioni;
+    - evocazione di Bibi;
+    - aereo sulle twin_towers, per i giocatori entro 160 blocchi;
+    - feste, controllate una volta al secondo per giocatore.
+  - Gli avanzamenti si generano con `scripts/advancements/gen_advancements.py`, che scrive i JSON e le chiavi en_us/it_it. Gli avanzamenti sono 54: i 14 vecchi corretti, con lo stesso id (Hummus Connoisseur si sposta da `secret/` a `food/`), più 40 nuovi.
+  - Nuova ricetta della Rav-Kav: 7 Shekel, 1 lingotto d'oro e 1 carta.
+  - Il test `AchievementsAndProgressionTest` è stato riscritto e ora controlla:
+    - una sola radice e nessun genitore mancante;
+    - nessun criterio fuori dai `requirements`;
+    - stesse chiavi in en_us e it_it;
+    - che trigger, eventi, oggetti, entità, strutture, biomi ed effetti esistano davvero;
+    - che ogni evento venga lanciato da qualche parte nel codice.
+- Da provare in gioco:
+  - entrare in un bioma d'Israele;
+  - stare a Tel Aviv di notte;
+  - pregare al Kotel;
+  - galleggiare sul Mar Morto e fare il bagno di fango;
+  - mostrare la Kippah a un gatto;
+  - fare uno scambio con la Corona del rabbino in testa.
+- Verifica: solo la CI di GitHub, nessun test in gioco. Non provato dall'utente in gioco.

@@ -1,0 +1,31 @@
+{
+  "parent": "israel_simulator:exploration/welcome_to_israel",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:sealed_dossier"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.mossad_recruit.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.mossad_recruit.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "mission": {
+      "trigger": "israel_simulator:mod_event",
+      "conditions": {
+        "event": "mossad_mission"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "mission"
+    ]
+  ]
+}

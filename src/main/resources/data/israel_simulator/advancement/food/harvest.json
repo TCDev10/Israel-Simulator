@@ -1,0 +1,74 @@
+{
+  "parent": "israel_simulator:food/moshav",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:eggplant"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.harvest.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.harvest.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "chickpeas": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "israel_simulator:chickpeas"
+          }
+        ]
+      }
+    },
+    "tomato": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "israel_simulator:tomato"
+          }
+        ]
+      }
+    },
+    "eggplant": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "israel_simulator:eggplant"
+          }
+        ]
+      }
+    },
+    "sesame_seeds": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "israel_simulator:sesame_seeds"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "chickpeas"
+    ],
+    [
+      "tomato"
+    ],
+    [
+      "eggplant"
+    ],
+    [
+      "sesame_seeds"
+    ]
+  ]
+}

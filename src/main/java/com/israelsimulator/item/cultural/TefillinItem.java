@@ -106,6 +106,7 @@ public class TefillinItem extends Item {
 
                 // Apply blessings: BlessedEffect + Resistance + Strength if also wearing Talit
                 BlessedEffect.applyTo(player);
+                com.israelsimulator.advancement.IsraelAdvancements.award(player, com.israelsimulator.advancement.AdvancementEvents.TEFILLIN_BOUND);
                 boolean hasTalit = TalitItem.isWearingTalit(player);
                 if (hasTalit) {
                     player.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 6000, 0));
