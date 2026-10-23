@@ -35,10 +35,10 @@
 
 ## 1. Prerequisiti & Kit Rapido di Setup
 
-- [ ] Avvia il gioco con Java 25 e NeoForge 26.2.0.88.
-- [ ] Crea un mondo Singleplayer abilitando i comandi (`Allow Cheats: ON`).
-- [ ] Verifica che la Creative Tab **"Israel Simulator"** esista e contenga tutti gli oggetti e blocchi senza icone viola/nere.
-- [ ] Ottieni il Kit di Setup per il testing eseguendo i comandi:
+- [x] Avvia il gioco con Java 25 e NeoForge 26.2.0.88.
+- [x] Crea un mondo Singleplayer abilitando i comandi (`Allow Cheats: ON`).
+- [x] Verifica che la Creative Tab **"Israel Simulator"** esista e contenga tutti gli oggetti e blocchi senza icone viola/nere.
+- [x] Ottieni il Kit di Setup per il testing eseguendo i comandi:
 
 ```text
 /gamemode creative
@@ -51,7 +51,6 @@
 /give @p israel_simulator:agora 64
 /give @p israel_simulator:rav_kav
 /give @p israel_simulator:bicycle
-/give @p israel_simulator:israel_map
 /give @p israel_simulator:menorah 8
 /give @p israel_simulator:shofar
 /give @p israel_simulator:dreidel
@@ -64,31 +63,31 @@
 
 La transizione dei biomi segue una logica Ovest -> Est (Costa -> Urbano -> Campagna -> Gerusalemme -> Deserto di Giuda -> Depressione Mar Morto).
 
-- [ ] **2.1 Mediterranean Coast**
+- [x] **2.1 Mediterranean Coast**
   - **Comando:** `/locate biome israel_simulator:mediterranean_coast`
   - **Verifica F3:** Il bioma riporta `israel_simulator:mediterranean_coast`.
   - **Dettagli:** Presenza di sabbia dorata, acqua marina limpida, transizione verso pianure costiere.
-- [ ] **2.2 Urban Area**
+- [x] **2.2 Urban Area**
   - **Comando:** `/locate biome israel_simulator:urban_area`
   - **Verifica F3:** Il bioma riporta `israel_simulator:urban_area`.
   - **Dettagli:** Terreno pianeggiante predisposto per strade lastricate e quartieri moderni di Tel Aviv.
-- [ ] **2.3 Israeli Agriculture**
+- [x] **2.3 Israeli Agriculture**
   - **Comando:** `/locate biome israel_simulator:israeli_agriculture`
   - **Verifica F3:** Il bioma riporta `israel_simulator:israeli_agriculture`.
   - **Dettagli:** Generazione naturale di ulivi, campi di erbe aromatiche e frutteti.
-- [ ] **2.4 Jerusalem**
+- [x] **2.4 Jerusalem**
   - **Comando:** `/locate biome israel_simulator:jerusalem`
   - **Verifica F3:** Il bioma riporta `israel_simulator:jerusalem`.
   - **Dettagli:** Altura collinare con affioramenti di Jerusalem Stone, cipressi e pini.
-- [ ] **2.5 Judean Desert**
+- [x] **2.5 Judean Desert**
   - **Comando:** `/locate biome israel_simulator:judean_desert`
   - **Verifica F3:** Il bioma riporta `israel_simulator:judean_desert`.
   - **Dettagli:** Rilievi aridi, dune sabbiose, cespugli secchi del deserto e montagnole rocciose.
-- [ ] **2.6 Dead Sea**
+- [x] **2.6 Dead Sea**
   - **Comando:** `/locate biome israel_simulator:dead_sea`
   - **Verifica F3:** Il bioma riporta `israel_simulator:dead_sea`.
   - **Dettagli:** Quota Y ribassata (depressione), spiagge di blocchi di sale (`salt_block`) e cluster salini bianchi.
-- [ ] **2.7 Coerenza Climatica (Seed 42)**
+- [x] **2.7 Coerenza Climatica (Seed 42)**
   - **Test:** Crea un mondo con Seed `42`. Teletrasportati a Gerusalemme e vola verso Est (+X).
   - **Risultato Atteso:** Nessun salto innaturale (niente ghiaccio o giungle monsoniche accanto al deserto).
 
@@ -96,52 +95,52 @@ La transizione dei biomi segue una logica Ovest -> Est (Costa -> Urbano -> Campa
 
 ## 3. Checklist Strutture Reali & Citta (16 Strutture)
 
-- [ ] **3.1 `western_wall` (Western Wall / Kotel)**
+- [x] **3.1 `western_wall` (Western Wall / Kotel)**
   - **Comando:** `/locate structure israel_simulator:western_wall`
   - **Expected:** Muro erodiano a blocchi maestosi (56x20x42), mechitza divisoria, piazza pavimentata.
-- [ ] **3.2 `jerusalem_city` (Citta Vecchia di Gerusalemme)**
+- [x] **3.2 `jerusalem_city` (Citta Vecchia di Gerusalemme)**
   - **Comando:** `/locate structure israel_simulator:jerusalem_city`
   - **Expected:** Mura storiche merlate, viuzze in pietra, archi orientali e shuk interno.
-- [ ] **3.3 `synagogue` (Sinagoga di Quartiere)**
+- [x] **3.3 `synagogue` (Sinagoga di Quartiere)**
   - **Comando:** `/locate structure israel_simulator:synagogue`
   - **Expected:** Bimah centrale con leggio, banchi in legno, cassa dell'Arca Santa con loot religioso.
-- [ ] **3.4 `great_synagogue` (Grande Sinagoga)**
+- [x] **3.4 `great_synagogue` (Grande Sinagoga)**
   - **Comando:** `/locate structure israel_simulator:great_synagogue`
   - **Expected:** Scala monumentale (36x18x36), loggiato per le donne, Arca Santa dorata e Menorah illuminate.
-- [ ] **3.5 `historical_house` (Casa Storica)**
+- [x] **3.5 `historical_house` (Casa Storica)**
   - **Comando:** `/locate structure israel_simulator:historical_house`
   - **Expected:** Cortile interno con albero di olivo, soffitti a volta in Jerusalem Stone, focolare.
-- [ ] **3.6 `grand_market` (Gran Mercato Shuk)**
+- [x] **3.6 `grand_market` (Gran Mercato Shuk)**
   - **Comando:** `/locate structure israel_simulator:grand_market`
   - **Expected:** Banchi coperti da tende colorate, casse con datteri, agrumi, spezie e fontana centrale.
-- [ ] **3.7 `tel_aviv_city` (Metropoli di Tel Aviv)**
+- [x] **3.7 `tel_aviv_city` (Metropoli di Tel Aviv)**
   - **Comando:** `/locate structure israel_simulator:tel_aviv_city`
   - **Expected:** Griglia stradale moderna (48x18x48), edifici Bauhaus bianchi, negozi e uffici.
-- [ ] **3.8 `startup_office` (Hub Tecnologico High-Tech)**
+- [x] **3.8 `startup_office` (Hub Tecnologico High-Tech)**
   - **Comando:** `/locate structure israel_simulator:startup_office`
   - **Expected:** Open space con scrivanie, server rack luminosi, laptop e distributori di caffe.
-- [ ] **3.9 `government_building` (Palazzo Governativo / Knesset)**
+- [x] **3.9 `government_building` (Palazzo Governativo / Knesset)**
   - **Comando:** `/locate structure israel_simulator:government_building`
   - **Expected:** Colonne in quarzo, podio dell'assemblea con microfono, bandiera e archivi blindati.
-- [ ] **3.10 `jaffa_port` (Porto Antico di Jaffa)**
+- [x] **3.10 `jaffa_port` (Porto Antico di Jaffa)**
   - **Comando:** `/locate structure israel_simulator:jaffa_port`
   - **Expected:** Moli e banchine in pietra sul mare, lanterne, gru manuali e magazzini portuali.
-- [ ] **3.11 `mediterranean_village` (Borgo Costiero)**
+- [x] **3.11 `mediterranean_village` (Borgo Costiero)**
   - **Comando:** `/locate structure israel_simulator:mediterranean_village`
   - **Expected:** Case intonacate di bianco con dettagli azzurri, giardini terrazzati e vasi di fiori.
-- [ ] **3.12 `agricultural_farm` (Fattoria Kibbutz)**
+- [x] **3.12 `agricultural_farm` (Fattoria Kibbutz)**
   - **Comando:** `/locate structure israel_simulator:agricultural_farm`
   - **Expected:** Serre moderne (48x10x40), tralicci per viti, aranceti recintati e trattori/fienili.
-- [ ] **3.13 `dead_sea_resort` (Stabilimento Termale del Mar Morto)**
+- [x] **3.13 `dead_sea_resort` (Stabilimento Termale del Mar Morto)**
   - **Comando:** `/locate structure israel_simulator:dead_sea_resort`
   - **Expected:** Passerelle di legno, vasche fanghi curative, lettini e ombrelloni a bordo riva.
-- [ ] **3.14 `ein_gedi_oasis` (Oasi di Ein Gedi)**
+- [x] **3.14 `ein_gedi_oasis` (Oasi di Ein Gedi)**
   - **Comando:** `/locate structure israel_simulator:ein_gedi_oasis`
   - **Expected:** Bacino montano di acqua dolce incastonato nel canyon, canne e palme da dattero.
-- [ ] **3.15 `desert_ruins` (Rovine Fortificate del Deserto)**
+- [x] **3.15 `desert_ruins` (Rovine Fortificate del Deserto)**
   - **Comando:** `/locate structure israel_simulator:desert_ruins`
   - **Expected:** Bastioni di pietra scalfita dal vento, archi crollati e casse nascoste sotto la sabbia.
-- [ ] **3.16 `ancient_sanctuary` (Santuario del Deserto / Tabernacolo)**
+- [x] **3.16 `ancient_sanctuary` (Santuario del Deserto / Tabernacolo)**
   - **Comando:** `/locate structure israel_simulator:ancient_sanctuary`
   - **Expected:** Atrio recintato (30x12x34), Santo dei Santi protetto da velo, cassa rara (possibile drop Rabbi's Crown).
 
@@ -149,83 +148,70 @@ La transizione dei biomi segue una logica Ovest -> Est (Costa -> Urbano -> Campa
 
 ## 4. Checklist Western Wall (Muro del Pianto) & Preghiera
 
-- [ ] **4.1 Rifiuto a Testa Nuda:** Clicca con tasto destro su un blocco `western_wall_stone` senza copricapo.
+- [x] **4.1 Rifiuto a Testa Nuda:** Clicca con tasto destro su un blocco `western_wall_stone` senza copricapo.
   - **Risultato:** Messaggio rosso di rifiuto: *"You must wear a Kippah to pray at the Western Wall"*.
-- [ ] **4.2 Rifiuto Senza Prayer Note:** Indossa la Kippah ma non tenere una Prayer Note in mano. Clicca sul Muro.
+- [x] **4.2 Rifiuto Senza Prayer Note:** Indossa la Kippah ma non tenere una Prayer Note in mano. Clicca sul Muro.
   - **Risultato:** Messaggio di rifiuto che richiede una `prayer_note`.
-- [ ] **4.3 Preghiera Corretta & Animazione 3D:** Indossa la Kippah, tieni in mano `prayer_note` e clicca sul Muro.
+- [x] **4.3 Preghiera Corretta & Animazione 3D:** Indossa la Kippah, tieni in mano `prayer_note` e clicca sul Muro.
   - **Risultato:** Inizia la preghiera per 3 secondi (60 tick).
   - In F5 (terza persona) la testa del giocatore si china e le braccia si distendono verso il Muro.
-- [ ] **4.4 Ricompensa & Cooldown Server:** Attendi fermo per 3 secondi.
+- [x] **4.4 Ricompensa & Cooldown Server:** Attendi fermo per 3 secondi.
   - **Risultato:**
     - La Prayer Note viene consumata.
     - Ricevi esattamente **5 Diamanti** nell'inventario.
     - Particelle `VILLAGER_HAPPY` e suono di avanzamento.
     - Sblocco dell'avanzamento *"Five Diamonds"*.
     - Viene impostato il cooldown server di 24.000 tick (1 giorno di Minecraft).
-- [ ] **4.5 Rispetto del Cooldown:** Clicca di nuovo con un'altra Prayer Note immediatamente.
+- [x] **4.5 Rispetto del Cooldown:** Clicca di nuovo con un'altra Prayer Note immediatamente.
   - **Risultato:** Rifiuto della preghiera con messaggio di attesa del tempo rimanente.
-- [ ] **4.6 Annullamento per Movimento:** Avvia la preghiera e muoviti o salta prima dei 3 secondi.
+- [x] **4.6 Annullamento per Movimento:** Avvia la preghiera e muoviti o salta prima dei 3 secondi.
   - **Risultato:** La preghiera si annulla, nessun diamante concesso, Prayer Note intatta nell'inventario.
 
 ---
 
 ## 5. Checklist Oggetti Sacri, Culturali e Leggendari (Judaica)
 
-- [ ] **5.1 Kippah (Item di Riconoscimento):**
+- [x] **5.1 Kippah (Item di Riconoscimento):**
   - Equipaggia nello slot elmo (`HEAD`). Modello 3D aderente sul capo.
   - Sblocca l'avanzamento *"Shalom"*.
   - Protegge dal colpo di calore nel Deserto di Giuda.
-- [ ] **5.2 Talit (Scialle di Preghiera):**
+- [x] **5.2 Talit (Scialle di Preghiera):**
   - Equipaggia nello slot corazza (`CHEST`). Modello 3D con frange (tzitzit) e strisce blu.
   - Fornisce +4 punti armatura e resistenza agli elementi.
-- [ ] **5.3 Tefillin (Legacci Sacri Mattutini):**
+- [x] **5.3 Tefillin (Legacci Sacri Mattutini):**
   - Esegui `/time set 1000` (mattina). Tieni i `tefillin` in mano e premi tasto destro.
   - **Risultato:** Il rituale conferisce l'effetto *Blessed* per 60 secondi (1200 tick) e particelle sacre.
   - Esegui `/time set 18000` (mezzanotte) e riprova: il rituale viene rifiutato (consentito solo di mattina).
-- [ ] **5.4 Rabbi's Crown (Corona del Rabbino — MYTHIC):**
+- [x] **5.4 Rabbi's Crown (Corona del Rabbino — MYTHIC):**
   - Equipaggia nello slot testa.
   - **Risultato:**
     - Fornisce +20 punti armatura (barra piena).
     - Render 3D con cappello tradizionale, barba fluente e payot laterali.
     - Conferisce l'effetto permanente *Blessed Trader* (15% di sconto su tutti i mercanti).
     - Immunita a colpi fatali (salvataggio stile Totem con ricarica).
-- [ ] **5.5 First Amendment (Primo Emendamento — LEGENDARY):**
+- [x] **5.5 First Amendment (Primo Emendamento — LEGENDARY):**
   - Tieni in mano l'oggetto e premi tasto destro a Tel Aviv.
   - **Risultato:** Conferisce l'effetto *Freedom* (velocita + salto potenziato + resistenza) e sblocca l'avanzamento *"Freedom of Speech"*.
-- [ ] **5.6 Hava Nagila Music Disc (Disco Leggendario):**
+- [x] **5.6 Hava Nagila Music Disc (Disco Leggendario):**
   - Rilasciato dalla sconfitta del Bibi Boss.
   - Inseriscilo in un Jukebox: musica nitida, display toast *"Now Playing: Hava Nagila"*.
 
----
-
-## 6. Checklist Tel Aviv, Quartieri e Dinamiche Urbane
-
-- [ ] **6.1 Notifica Action Bar all'Ingresso Quartieri:**
-  - Cammina attraverso Tel Aviv:
-    - Entrando nel distretto tecnologico compare sopra la hotbar: `Entering Startup District - High-Tech Hub`.
-    - Spostandoti verso il lungomare: `Entering Tayelet Beach - Coastal Promenade`.
-    - Spostandoti verso Rothschild: `Entering Rothschild - Bauhaus & Boulevards`.
-    - Spostandoti verso Florentin: `Entering Florentin - Bohemian & Street Art`.
-    - Spostandoti verso Sarona: `Entering Sarona - Culinary Market`.
-    - Spostandoti verso White City: `Entering White City - Architectural Heritage`.
-- [ ] **6.2 Assenza di Spam Notifiche:** Rimanere all'interno dello stesso quartiere non deve spammare il messaggio ad ogni passo.
-- [ ] **6.3 Avanzamento Notturno:** Entra a Tel Aviv tra le 18:00 e le 06:00 del tempo di gioco per sbloccare l'avanzamento *"Tel Aviv Nights"*.
 
 ---
 
 ## 7. Checklist Agricoltura, Raccolti e Blocchi Botanici
 
-- [ ] **7.1 Foglie di Olivo (`olive_leaves`):**
+- [x] **7.1 Foglie di Olivo (`olive_leaves`):**
   - Rompendo o cliccando sulle foglie mature si ottengono le olive (`israel_simulator:olives`).
-- [ ] **7.2 Foglie di Palma da Dattero (`date_palm_leaves`):**
+- [x] **7.2 Foglie di Palma da Dattero (`date_palm_leaves`):**
   - Rilasciano i datteri della Giudea (`israel_simulator:dates`).
-- [ ] **7.3 Foglie di Agrumi (`citrus_leaves`):**
+- [x] **7.3 Foglie di Agrumi (`citrus_leaves`):**
   - Rilasciano agrumi freschi (`israel_simulator:citrus`).
-- [ ] **7.4 Vite Mediterranea (`grapevine`):**
+- [!] **7.4 Vite Mediterranea (`grapevine`):**
   - Piantabile su terra zappata. Cresce in 4 stadi con bone meal.
   - A maturita (stadio 3) il click destro rilascia l'uva (`israel_simulator:grapes`) resettando lo stadio senza distruggere la pianta.
-- [ ] **7.5 Erbe Mediterranee (`mediterranean_herbs`):**
+  -Da sistemare la texture.
+- [x] **7.5 Erbe Mediterranee (`mediterranean_herbs`):**
   - Generano nel bioma agricolo; rompendole rilasciano semi o foglioline profumate.
 
 ---
@@ -234,11 +220,11 @@ La transizione dei biomi segue una logica Ovest -> Est (Costa -> Urbano -> Campa
 
 Apri un Banco da Lavoro (`crafting_table`) e testa ciascuna delle ricette registrate:
 
-- [ ] **8.1 Tahini:** 2x Grano + 1x Ciotola (`minecraft:wheat`, `minecraft:bowl`) -> `israel_simulator:tahini`
-- [ ] **8.2 Hummus:** 1x Tahini + 1x Barbabietola + 1x Ciotola -> `israel_simulator:hummus`
-- [ ] **8.3 Falafel:** 1x Grano + 1x Barbabietola + 1x Semi di grano -> 3x `israel_simulator:falafel`
-- [ ] **8.4 Shakshuka:** 1x Uovo + 1x Barbabietola + 1x Ciotola -> `israel_simulator:shakshuka`
-- [ ] **8.5 Sabich:** 1x Grano + 1x Uovo + 1x Tahini -> `israel_simulator:sabich`
+- [x] **8.1 Tahini:** 2x Sesame seeds + 1x Ciotola  (`minecraft:wheat`, `minecraft:bowl`) -> `israel_simulator:tahini`
+- [x] **8.2 Hummus:** 1x Tahini + 1x Chickpeas + 1x Ciotola -> `israel_simulator:hummus`
+- [x] **8.3 Falafel:** 3x Grano + 1x Chickpeas + 1x Mediterranean herbs -> 3x `israel_simulator:falafel`
+- [x] **8.4 Shakshuka:** 1x Uovo + 1x Tomato + 1x Mediterranean herbs + 1x Ciotola -> `israel_simulator:shakshuka`
+- [x] **8.5 Sabich:** 1x Bread + 1x Uovo + 1x Eggplant + 1x Tahini -> `israel_simulator:sabich`
 - [ ] **8.6 Challah:** 3x Grano + 1x Uovo + 1x Zucchero -> `israel_simulator:challah`
 - [ ] **8.7 Matzo:** 2x Grano + 1x Secchio d'Acqua -> 4x `israel_simulator:matzo` (restituisce il secchio vuoto)
 - [ ] **8.8 Sufganiyah:** 1x Grano + 1x Zucchero + 1x Bacche dolci -> `israel_simulator:sufganiyah`
@@ -378,10 +364,10 @@ Apri un Banco da Lavoro (`crafting_table`) e testa ciascuna delle ricette regist
 
 ---
 
-## 15. Checklist Mappa d'Israele, Landmark & Reputazione
+## 15. Checklist Esplorazione Landmark & Reputazione
 
-- [ ] **15.1 Mappa d'Israele (`israel_map`):**
-  - Tieni la mappa durante l'esplorazione. Entrando entro 48 blocchi da un landmark storico:
+- [ ] **15.1 Scoperta Landmark (PlayerLandmarkTracker):**
+  - Entrando nella struttura di un landmark storico (es. Western Wall, Jaffa Clock Tower):
     - Risuona la fanfara di scoperta (`ui.landmark_discovered`).
     - Compare il toast dorato: `★ Landmark Discovered: <Nome Luogo>`.
     - Vengono accreditati +100 punti esperienza.
@@ -481,7 +467,7 @@ Esegui `/playsound <id> player @p` per verificare ogni canale:
 | **Valuta** | `shekel`, `agora` | - [ ] |
 | **Feste** | `matzo`, `sufganiyah`, `dreidel`, `hamantash`, `shofar` | - [ ] |
 | **Tecnologia** | `smartphone`, `laptop`, `drone_part` | - [ ] |
-| **Trasporti & Esplorazione** | `bicycle`, `rav_kav`, `walking_shoes`, `israel_map` | - [ ] |
+| **Trasporti & Esplorazione** | `bicycle`, `rav_kav`, `walking_shoes` | - [ ] |
 
 ---
 

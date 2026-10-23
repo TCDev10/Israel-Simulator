@@ -7,12 +7,10 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
 /**
- * Server-authoritative manager tracking player exploration, district notifications,
- * and district activity in Tel Aviv (GAME_DESIGN.md §7, §28).
+ * Server-authoritative manager tracking player exploration and district activity in Tel Aviv.
  */
 public final class TelAvivDistrictManager {
 
@@ -22,7 +20,7 @@ public final class TelAvivDistrictManager {
     private TelAvivDistrictManager() {}
 
     /**
-     * Checks a player's position, updates visited district state, and delivers actionbar feedback on transition.
+     * Checks a player's position and updates visited district state silently without HUD spam.
      */
     public static void checkPlayerDistrict(ServerPlayer player) {
         if (player == null || player.level().isClientSide()) {
@@ -47,13 +45,7 @@ public final class TelAvivDistrictManager {
         if (!district.id().equals(prevDistrict)) {
             CURRENT_DISTRICT.put(playerId, district.id());
             Set<String> visited = VISITED_DISTRICTS.computeIfAbsent(playerId, k -> ConcurrentHashMap.newKeySet());
-            boolean isFirstVisit = visited.add(district.id());
-
-            // Actionbar feedback: "Entering [District] - [Style]"
-            String feedback = isFirstVisit
-                    ? "§6[Tel Aviv] §eDiscovered §l" + district.displayName() + "§r §7(" + district.architecturalStyle() + ")"
-                    : "§6[Tel Aviv] §fEntering §b" + district.displayName() + "§r";
-            player.sendSystemMessage(Component.literal(feedback), true);
+            visited.add(district.id());
         }
     }
 

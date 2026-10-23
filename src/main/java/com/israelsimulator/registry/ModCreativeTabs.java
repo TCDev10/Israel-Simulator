@@ -100,7 +100,6 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.BICYCLE.get());
                         output.accept(ModItems.RAV_KAV.get());
                         output.accept(ModItems.WALKING_SHOES.get());
-                        output.accept(ModItems.ISRAEL_MAP.get());
                     })
                     .build());
 

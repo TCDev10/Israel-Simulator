@@ -35,23 +35,12 @@
           }
         ]
       }
-    },
-    "has_map": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": "israel_simulator:israel_map"
-          }
-        ]
-      }
     }
   },
   "requirements": [
     [
       "has_shoes",
-      "has_bicycle",
-      "has_map"
+      "has_bicycle"
     ]
   ]
 }

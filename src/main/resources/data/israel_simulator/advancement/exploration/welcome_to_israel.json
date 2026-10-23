@@ -2,7 +2,7 @@
   "display": {
     "background": "israel_simulator:gui/advancements/backgrounds/israel_flag",
     "icon": {
-      "id": "israel_simulator:israel_map"
+      "id": "israel_simulator:shekel"
     },
     "title": {
       "translate": "advancements.israel_simulator.welcome_to_israel.title"
@@ -16,16 +16,6 @@
     "hidden": false
   },
   "criteria": {
-    "has_map": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": "israel_simulator:israel_map"
-          }
-        ]
-      }
-    },
     "has_shekel": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
@@ -39,7 +29,6 @@
   },
   "requirements": [
     [
-      "has_map",
       "has_shekel"
     ]
   ]

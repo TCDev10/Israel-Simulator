@@ -4,7 +4,6 @@ import com.israelsimulator.festival.DreidelManager;
 import com.israelsimulator.item.cultural.FirstAmendmentItem;
 import com.israelsimulator.item.cultural.HavaNagilaDiscItem;
 import com.israelsimulator.transport.RavKavItem;
-import com.israelsimulator.world.map.IsraelMapItem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.junit.jupiter.api.DisplayName;
@@ -19,12 +18,11 @@ class ItemCooldownTest {
     private static final Path MAIN = Path.of("src/main/java/com/israelsimulator");
 
     @Test
-    @DisplayName("Cooldown values: Dreidel 10 s, First Amendment 120 s, Hava Nagila 5 s, Map and Rav-Kav 2 s")
+    @DisplayName("Cooldown values: Dreidel 10 s, First Amendment 120 s, Hava Nagila 5 s, Rav-Kav 2 s")
     void cooldownValues() {
         assertEquals(200, DreidelManager.COOLDOWN_TICKS);
         assertEquals(2400, FirstAmendmentItem.COOLDOWN_TICKS);
         assertEquals(100, HavaNagilaDiscItem.COOLDOWN_TICKS);
-        assertEquals(40, IsraelMapItem.COOLDOWN_TICKS);
         assertEquals(40, RavKavItem.COOLDOWN_TICKS);
     }
 
@@ -40,7 +38,7 @@ class ItemCooldownTest {
     @DisplayName("Each item calls getCooldowns().addCooldown(..., COOLDOWN_TICKS) inside use()")
     void cooldownAppliedInUse() throws Exception {
         for (String f : new String[] {"item/festival/DreidelItem.java", "item/cultural/FirstAmendmentItem.java",
-                "item/cultural/HavaNagilaDiscItem.java", "transport/RavKavItem.java", "world/map/IsraelMapItem.java"}) {
+                "item/cultural/HavaNagilaDiscItem.java", "transport/RavKavItem.java"}) {
             String use = useBody(read(f));
             assertTrue(use.contains("getCooldowns().addCooldown("), f + " must add an item cooldown");
             assertTrue(use.contains("COOLDOWN_TICKS)"), f);

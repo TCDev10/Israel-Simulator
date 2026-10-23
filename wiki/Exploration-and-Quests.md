@@ -4,13 +4,12 @@ Girando trovi luoghi da scoprire, oggetti rari e casse nascoste tra il deserto e
 
 ---
 
-## 1. La Mappa d'Israele (`israel_map`)
+## 1. Esplorazione e Landmark (`PlayerLandmarkTracker`)
 
-La Mappa d'Israele (`israel_simulator:israel_map`) tiene il conto di quello che hai scoperto:
-- **Tasto destro** per vedere in chat il resoconto, salvato sul server (`PlayerLandmarkTracker`):
-  - **Regioni**: la regione di ogni luogo che hai scoperto (Gerusalemme, Giaffa, Tel Aviv).
-  - **Luoghi**: un luogo si scopre entrando nella struttura che lo contiene. Sono il Muro del Pianto (`western_wall`), la Torre dell'Orologio e il mercato delle pulci di Giaffa (pezzi di `jaffa_port`) e il lungomare (Tayelet) di Tel Aviv (pezzo di `tel_aviv_city`).
-- **Master Explorer**: quando li hai scoperti tutti, la mappa te lo dice.
+Il server traccia in tempo reale le regioni e i luoghi storici scoperti dal giocatore:
+- **Regioni**: la regione di ogni luogo scoperto (Gerusalemme, Giaffa, Tel Aviv, ecc.).
+- **Luoghi**: un luogo si scopre entrando nella struttura che lo contiene. Sono il Muro del Pianto (`western_wall`), la Torre dell'Orologio e il mercato delle pulci di Giaffa (pezzi di `jaffa_port`) e il lungomare (Tayelet) di Tel Aviv (pezzo di `tel_aviv_city`).
+- **Suono e Notifica**: appena scoperto un landmark risuona una fanfara dedicata.
 
 ---
 

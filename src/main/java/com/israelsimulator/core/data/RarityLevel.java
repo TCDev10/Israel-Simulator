@@ -88,7 +88,7 @@ public enum RarityLevel {
         }
         if (item == ModItems.SMARTPHONE.get() || item == ModItems.DEAD_SEA_MUD.get()
                 || item == ModItems.SHOFAR.get() || item == ModItems.DREIDEL.get()
-                || item == ModItems.ISRAEL_MAP.get() || item == ModItems.WALKING_SHOES.get()
+                || item == ModItems.WALKING_SHOES.get()
                 || item == ModItems.RAV_KAV.get() || item == ModItems.BICYCLE.get()) {
             return RARE;
         }

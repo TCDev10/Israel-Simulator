@@ -85,7 +85,6 @@ public final class ModItems {
     public static final DeferredHolder<Item, com.israelsimulator.transport.WalkingShoesItem> WALKING_SHOES = ITEMS.registerItem("walking_shoes", p -> new com.israelsimulator.transport.WalkingShoesItem(p.stacksTo(1)));
 
     // Map & Exploration items (§48)
-    public static final DeferredHolder<Item, com.israelsimulator.world.map.IsraelMapItem> ISRAEL_MAP = ITEMS.registerItem("israel_map", p -> new com.israelsimulator.world.map.IsraelMapItem(p.stacksTo(1)));
 
     // Combat items (§41–44)
     public static final DeferredHolder<Item, com.israelsimulator.item.combat.SecurityPistolItem> PISTOL = ITEMS.registerItem("pistol", p -> new com.israelsimulator.item.combat.SecurityPistolItem(p.stacksTo(1)));

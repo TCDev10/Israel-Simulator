@@ -93,8 +93,5 @@ class MapAndExplorationTest {
         InputStream explorer = getClass().getClassLoader().getResourceAsStream("data/israel_simulator/advancement/exploration/master_explorer.json");
         assertNotNull(explorer, "master_explorer.json advancement must exist in classpath");
 
-        ClassLoader cl = MapAndExplorationTest.class.getClassLoader();
-        Class<?> itemClass = Class.forName("com.israelsimulator.registry.ModItems", false, cl);
-        assertNotNull(itemClass.getField("ISRAEL_MAP"), "ISRAEL_MAP item must be registered");
     }
 }
