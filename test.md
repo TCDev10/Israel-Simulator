@@ -925,3 +925,8 @@ Non provato dall'utente in gioco.
 - Problema riscontrato: nella roadmap di `TODO.md` le voci R2–R6 (Shuk, feste nel mondo, Mar Morto, startup, Shabbat) risultavano ancora da fare, anche se le PR 74–80 sono già su main. Anche il titolo della sezione sul Grand Market in questo file diceva ancora "IN CORSO", ma la PR 75 e la PR 78 l'hanno chiusa.
 - Funzionamento atteso: `TODO.md` e `test.md` dicono lo stesso stato del codice su main.
 - Soluzione: R2–R6 segnate come fatte, con il numero della PR, e titolo della sezione Grand Market aggiornato. Solo documentazione.
+
+## File di prova `menorah_test.json` rimasto nei blockstate
+- Problema riscontrato: in `assets/israel_simulator/blockstates/` c'era `menorah_test.json` con solo `{"test":"ok"}`. Non è un blockstate valido e non esiste nessun blocco `menorah_test`.
+- Funzionamento atteso: nei blockstate ci sono solo i file dei blocchi registrati.
+- Soluzione: file cancellato, con l'ok di Riccardo.
