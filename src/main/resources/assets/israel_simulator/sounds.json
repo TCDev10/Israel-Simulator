@@ -10,7 +10,7 @@
   "music.cultural.klezmer": {
     "sounds": [
       {
-        "name": "minecraft:music/game/creative1",
+        "name": "minecraft:music/game/creative/biome_fest",
         "stream": true
       }
     ]
@@ -18,14 +18,14 @@
   "music.cultural.shabbat_shalom": {
     "sounds": [
       {
-        "name": "minecraft:music/game/calm2",
+        "name": "minecraft:music/game/clark",
         "stream": true
       }
     ]
   },
   "ambient.city.tel_aviv": {
     "sounds": [
-      "minecraft:ambient/underwater/loop"
+      "minecraft:ambient/underwater/underwater_ambience"
     ]
   },
   "ambient.city.jerusalem": {
@@ -35,17 +35,17 @@
   },
   "ambient.city.jaffa": {
     "sounds": [
-      "minecraft:block/bell/use"
+      "minecraft:block/bell/bell_use01"
     ]
   },
   "ambient.event.speech_crowd": {
     "sounds": [
-      "minecraft:entity/villager/ambient"
+      "minecraft:mob/villager/idle1"
     ]
   },
   "ambient.event.market_bustle": {
     "sounds": [
-      "minecraft:entity/villager/trade"
+      "minecraft:mob/villager/haggle1"
     ]
   },
   "audio.festival.hanukkah_chime": {
@@ -55,7 +55,7 @@
   },
   "audio.festival.shabbat_candle": {
     "sounds": [
-      "minecraft:block/amethyst_block/chime"
+      "minecraft:block/amethyst/shimmer"
     ]
   },
   "entity.bibi_boss.ambient": {
@@ -77,12 +77,12 @@
   },
   "entity.bibi_boss.speech": {
     "sounds": [
-      "minecraft:mob/evoker/prepare_attack"
+      "minecraft:mob/evocation_illager/prepare_attack1"
     ]
   },
   "entity.bibi_boss.enrage": {
     "sounds": [
-      "minecraft:entity/wither/ambient"
+      "minecraft:mob/wither/idle1"
     ]
   },
   "music.boss.bibi_theme": {
@@ -103,22 +103,22 @@
   },
   "entity.bicycle.bell": {
     "sounds": [
-      "minecraft:block/bell/use"
+      "minecraft:block/bell/bell_use01"
     ]
   },
   "entity.bus.horn": {
     "sounds": [
-      "minecraft:item/goat_horn/sound0"
+      "minecraft:item/goat_horn/call0"
     ]
   },
   "entity.train.whistle": {
     "sounds": [
-      "minecraft:item/goat_horn/sound1"
+      "minecraft:item/goat_horn/call1"
     ]
   },
   "entity.transport.travel": {
     "sounds": [
-      "minecraft:entity/enderman/teleport"
+      "minecraft:mob/endermen/portal"
     ]
   },
   "ui.landmark_discovered": {
@@ -129,14 +129,14 @@
   "event.air_raid_siren": {
     "sounds": [
       "minecraft:block/bell/resonate",
-      "minecraft:entity/warden/sonic_boom",
-      "minecraft:block/sculk_shrieker/shriek"
+      "minecraft:mob/warden/sonic_boom1",
+      "minecraft:block/sculk_shrieker/shriek1"
     ]
   },
   "event.plane_jet": {
     "sounds": [
-      "minecraft:entity/ender_dragon/growl",
-      "minecraft:ambient/underwater/loop"
+      "minecraft:mob/enderdragon/growl1",
+      "minecraft:ambient/underwater/underwater_ambience"
     ]
   }
 }

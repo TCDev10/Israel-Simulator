@@ -930,3 +930,12 @@ Non provato dall'utente in gioco.
 - Problema riscontrato: in `assets/israel_simulator/blockstates/` c'era `menorah_test.json` con solo `{"test":"ok"}`. Non è un blockstate valido e non esiste nessun blocco `menorah_test`.
 - Funzionamento atteso: nei blockstate ci sono solo i file dei blocchi registrati.
 - Soluzione: file cancellato, con l'ok di Riccardo.
+
+## Suoni vanilla con percorsi sbagliati: 13 eventi della mod muti
+- Problema riscontrato: in gioco (seed 777, client NeoForge 26.2) il log mostrava 17 avvisi `File minecraft:sounds/... does not exist`. `sounds.json` usava nomi di file vanilla che non esistono, per esempio `entity/villager/trade`, `block/bell/use`, `music/game/calm2` e `item/goat_horn/sound0`. Così erano muti o incompleti: musica klezmer e Shabbat Shalom, ambiente di Tel Aviv, Giaffa e mercato, folla, candela dello Shabbat, voce e rabbia del boss, campanello della bici, clacson del bus, fischio del treno, viaggio in trasporto, sirena antiaerea e jet dell'aereo sulle Torri Gemelle.
+- Funzionamento atteso: ogni evento sonoro suona davvero e nel log non ci sono avvisi di file mancanti.
+- Soluzione: ogni nome è stato sostituito con il file vanilla vero, controllato sull'indice degli asset 26.2. Per esempio `mob/villager/haggle1`, `block/bell/bell_use01`, `music/game/clark`, `item/goat_horn/call0`, `mob/endermen/portal` e `block/amethyst/shimmer`. Il nuovo test `testVanillaSoundFilesExist` controlla che `sounds.json` usi solo file vanilla verificati.
+
+## Betatesting in gioco del 2 novembre 2026 (seed 777, build CI di main 532fbe5)
+- Superati: Welcome to Israel, Tel Aviv, Tel Aviv di notte, Gerusalemme e Muro del Pianto, preghiera al Kotel (5 diamanti, biglietto consumato), Kippah al gatto, Dead Sea Tourist (galleggiare e fango), Blessed Trader (scambio con la Corona del Rabbino), hummus che lascia la ciotola, sabich che lascia nella griglia la ciotola della tahini, Menorah (modello, candele 1 e 2 accese con l'acciarino, spenta con shift + click), aereo sulle Torri Gemelle (arriva entro un minuto, impatto, "Brace for Impact"), Shabbat (annuncio, rigenerazione a riposo, "Shabbat Shalom", avviso quando si lavora e niente bonus).
+- Nota: i bioma sono in celle 4×4×4. Il fango messo a mano in una cella di bioma diversa dal Mar Morto non conta. Non è un bug: nel terreno vero il fango è nella cella del Mar Morto.
