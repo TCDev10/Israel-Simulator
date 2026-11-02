@@ -959,3 +959,5 @@ Non provato dall'utente in gioco.
 - Causa: le foglie ricalcolano lo stato `distance` subito dopo il piazzamento. Il ripristino confrontava lo stato completo del blocco, quindi trattava quelle foglie come una modifica del giocatore e le lasciava lì.
 - Funzionamento atteso: alla fine del combattimento sparisce tutto quello che l'arena ha piazzato. Restano solo i blocchi che un giocatore ha davvero sostituito.
 - Soluzione: in gioco il ripristino confronta solo il tipo di blocco (`current.is(placed.getBlock())`). Il nuovo test `planIgnoresStateOnlyChangesWithBlockCheck` lo verifica. La correzione vale anche per il palco del Public Speech, che usa gli stessi snapshot.
+
+- [x] Testi meme (it/en): riscritti 77 testi di boss, Oratore, advancement e Mossad in stile meme (validati: chiavi, %s, config invariati).
