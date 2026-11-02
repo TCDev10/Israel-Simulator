@@ -953,3 +953,9 @@ Non provato dall'utente in gioco.
 - Problema riscontrato: quando si evoca Bibi con la Stella di Davide la chat mostra "%s used the Star of David. Bibi is here!". Il nome del giocatore non c'è.
 - Funzionamento atteso: "Dev used the Star of David. Bibi is here!" (in italiano "Dev ha usato la Stella di Davide...").
 - Soluzione: `StarOfDavidItem` passa a `Component.translatable` il nome del giocatore come argomento. Il nuovo test `testTranslatablePlaceholdersHaveArguments` cerca nel codice i messaggi tradotti che contengono `%s` ma vengono creati senza argomenti.
+
+## Arena di Epstein: foglie del padiglione rimaste dopo il ripristino
+- Problema riscontrato: dopo la morte di Epstein il terreno viene ripristinato, ma restano sospese in aria le chiome delle palme del padiglione. Nel log, a ogni combattimento, 82–106 blocchi risultano "left as changed by players" anche se nessun giocatore li ha toccati.
+- Causa: le foglie ricalcolano lo stato `distance` subito dopo il piazzamento. Il ripristino confrontava lo stato completo del blocco, quindi trattava quelle foglie come una modifica del giocatore e le lasciava lì.
+- Funzionamento atteso: alla fine del combattimento sparisce tutto quello che l'arena ha piazzato. Restano solo i blocchi che un giocatore ha davvero sostituito.
+- Soluzione: in gioco il ripristino confronta solo il tipo di blocco (`current.is(placed.getBlock())`). Il nuovo test `planIgnoresStateOnlyChangesWithBlockCheck` lo verifica. La correzione vale anche per il palco del Public Speech, che usa gli stessi snapshot.

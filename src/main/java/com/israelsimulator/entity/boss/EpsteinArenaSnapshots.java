@@ -127,7 +127,8 @@ public final class EpsteinArenaSnapshots extends SavedData {
         if (!level.hasChunksAt(min, max)) return false;
 
         List<ArenaRestoreRules.Entry<BlockState>> entries = arena.entries();
-        ArenaRestoreRules.Plan<BlockState> plan = ArenaRestoreRules.plan(entries, p -> level.getBlockState(BlockPos.of(p)));
+        ArenaRestoreRules.Plan<BlockState> plan = ArenaRestoreRules.plan(entries, p -> level.getBlockState(BlockPos.of(p)),
+                (current, placed) -> current.is(placed.getBlock()));
 
         // 1) empty pavilion containers so nothing spills into the world
         for (ArenaRestoreRules.Entry<BlockState> e : plan.restore()) {

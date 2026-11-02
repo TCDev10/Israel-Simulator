@@ -124,4 +124,28 @@ class EpsteinArenaRestoreTest {
         String events = Files.readString(Path.of("src/main/java/com/israelsimulator/event/ModGameEvents.java"));
         assertTrue(events.contains("EpsteinArenaSnapshots.tickOrphans(level)"));
     }
+
+    @Test
+    @DisplayName("Block-state updates after placement (leaf distance) are not player changes")
+    void planIgnoresStateOnlyChangesWithBlockCheck() {
+        List<ArenaRestoreRules.Entry<String>> entries = List.of(
+                new ArenaRestoreRules.Entry<>(1L, "air", "oak_leaves[distance=7]"),
+                new ArenaRestoreRules.Entry<>(2L, "air", "glass"),
+                new ArenaRestoreRules.Entry<>(3L, "air", "oak_leaves[distance=7]"));
+        Map<Long, String> world = new HashMap<>(Map.of(
+                1L, "oak_leaves[distance=2]", 2L, "glass", 3L, "cobblestone"));
+        java.util.function.BiPredicate<String, String> sameBlock =
+                (current, placed) -> current.split("\\[")[0].equals(placed.split("\\[")[0]);
+
+        ArenaRestoreRules.Plan<String> plan = ArenaRestoreRules.plan(entries, world::get, sameBlock);
+        assertEquals(List.of(1L, 2L), plan.restore().stream().map(ArenaRestoreRules.Entry::pos).toList());
+        assertEquals(List.of(3L), plan.skipped().stream().map(ArenaRestoreRules.Entry::pos).toList());
+        String snap = assertDoesNotThrowRead();
+        assertTrue(snap.contains("current.is(placed.getBlock())"), "in game the restore compares block types");
+    }
+
+    private static String assertDoesNotThrowRead() {
+        return assertDoesNotThrow(() -> Files.readString(Path.of(
+                "src/main/java/com/israelsimulator/entity/boss/EpsteinArenaSnapshots.java")));
+    }
 }
