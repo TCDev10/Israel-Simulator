@@ -948,3 +948,8 @@ Non provato dall'utente in gioco.
   - Musica stereo: `music/klezmer` (59 s, bulgar originale in modo freygish) e `music/shabbat_shalom` (56 s, brano calmo in re maggiore).
   - Il nuovo test `testCustomSoundFilesExist` fallisce se un suono custom di `sounds.json` non ha il suo file Ogg o se il file è vuoto.
 - Da sapere: `kirk_boss_theme.ogg` è identico byte per byte a `bibi_boss_theme.ogg`, cioè i due boss hanno la stessa musica.
+
+## Messaggio della Stella di Davide con "%s" al posto del nome
+- Problema riscontrato: quando si evoca Bibi con la Stella di Davide la chat mostra "%s used the Star of David. Bibi is here!". Il nome del giocatore non c'è.
+- Funzionamento atteso: "Dev used the Star of David. Bibi is here!" (in italiano "Dev ha usato la Stella di Davide...").
+- Soluzione: `StarOfDavidItem` passa a `Component.translatable` il nome del giocatore come argomento. Il nuovo test `testTranslatablePlaceholdersHaveArguments` cerca nel codice i messaggi tradotti che contengono `%s` ma vengono creati senza argomenti.

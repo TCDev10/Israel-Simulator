@@ -490,4 +490,29 @@ public class DataAndResourceValidationTest {
             }
         }
     }
+
+    @Test
+    @DisplayName("Translatable messages with %s placeholders receive arguments")
+    void testTranslatablePlaceholdersHaveArguments() throws IOException {
+        JsonObject lang;
+        try (FileReader reader = new FileReader(RESOURCES_PATH.resolve(Paths.get(
+                "assets", IsraelSimulator.MOD_ID, "lang", "en_us.json")).toFile())) {
+            lang = GSON.fromJson(reader, JsonObject.class);
+        }
+        Pattern noArgs = Pattern.compile("translatable\\(\\s*\"([^\"]+)\"\\s*\\)");
+        List<String> problems = new ArrayList<>();
+        try (Stream<Path> files = Files.walk(Path.of("src/main/java"))) {
+            for (Path file : files.filter(p -> p.toString().endsWith(".java")).toList()) {
+                Matcher m = noArgs.matcher(Files.readString(file));
+                while (m.find()) {
+                    JsonElement value = lang.get(m.group(1));
+                    if (value != null && value.getAsString().contains("%")) {
+                        problems.add(file.getFileName() + ": " + m.group(1));
+                    }
+                }
+            }
+        }
+        assertTrue(problems.isEmpty(), "Placeholders without arguments: " + problems);
+    }
+
 }
