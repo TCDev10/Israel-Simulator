@@ -60,7 +60,7 @@ public class StarOfDavidItem extends Item {
                         40, 0.8, 1.2, 0.8, 0.2);
 
                 // Broadcast summoning message to all nearby players
-                Component summonMsg = Component.translatable("message.israel_simulator.bibi_summoned_by_star")
+                Component summonMsg = Component.translatable("message.israel_simulator.bibi_summoned_by_star", player.getDisplayName())
                         .withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD);
                 AABB broadcastArea = player.getBoundingBox().inflate(96.0);
                 for (Player p : serverLevel.getEntitiesOfClass(Player.class, broadcastArea)) {
