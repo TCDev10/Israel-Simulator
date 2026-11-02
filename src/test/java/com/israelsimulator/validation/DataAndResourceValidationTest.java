@@ -1,5 +1,7 @@
 package com.israelsimulator.validation;
 
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -173,6 +175,15 @@ public class DataAndResourceValidationTest {
         assertTrue(provider.contains("ModItems.HAMANTASH.get()"));
         assertTrue(provider.contains("requires(ModItems.DATES.get())"));
         assertTrue(provider.contains("requires(ModItems.CHICKPEAS.get())"));
+
+        // Bowl foods give the bowl back when eaten; tahini also gives it back when crafted into hummus or sabich.
+        String items = Files.readString(Path.of("src/main/java/com/israelsimulator/registry/ModItems.java"));
+        for (String food : List.of("TAHINI", "HUMMUS", "SHAKSHUKA")) {
+            Matcher line = Pattern.compile("\\(\"" + food.toLowerCase() + "\"[^\\n]*").matcher(items);
+            assertTrue(line.find(), food + " not registered");
+            assertTrue(line.group().contains("usingConvertsTo(Items.BOWL)"), food + " must return the bowl when eaten");
+        }
+        assertTrue(items.contains("TAHINI).usingConvertsTo(Items.BOWL).craftRemainder(Items.BOWL)"), "tahini must leave its bowl in the crafting grid");
         assertTrue(provider.contains("requires(ModItems.TOMATO.get())"));
         assertTrue(provider.contains("requires(ModItems.EGGPLANT.get())"));
         assertFalse(provider.contains("Items.BEETROOT"), "food recipes must not use beetroot as a chickpea/tomato stand-in");
