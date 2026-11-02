@@ -961,3 +961,16 @@ Non provato dall'utente in gioco.
 - Soluzione: in gioco il ripristino confronta solo il tipo di blocco (`current.is(placed.getBlock())`). Il nuovo test `planIgnoresStateOnlyChangesWithBlockCheck` lo verifica. La correzione vale anche per il palco del Public Speech, che usa gli stessi snapshot.
 
 - [x] Testi meme (it/en): riscritti 77 testi di boss, Oratore, advancement e Mossad in stile meme (validati: chiavi, %s, config invariati).
+
+## Betatesting in gioco del 2 novembre 2026, secondo giro (seed 777, build CI di main 4986d5e)
+- Superati:
+  - Boss Bibi: evocato con la Stella di Davide (advancement "He's Back"), 4 guardie, immune a fuoco e lava, colpo massimo limitato. Al 66% arriva Trump, che lo protegge finché è vivo. Al 33% arriva Epstein con i suoi minion. Il veleno arriva solo dopo la morte di Epstein (sfera, nube, Poison sul giocatore). Alla morte lascia il disco di Hava Nagila e la Corona del Rabbino.
+  - Epstein: cupola e padiglione al 50%. Al 33% diventa "Palm Beach Pete". Alla morte, sia con `/damage` sia con `/kill`, il terreno torna com'era, fatta eccezione per le foglie (corrette in #94).
+  - `/israelsim event speech start`: Charlie Kirk muore dopo circa un minuto e lascia il First Amendment. Quest "Civic Voice" completata, palco ripristinato senza blocchi rimasti.
+  - Mob: tutti si evocano. Il Mossad Agent attacca e uccide. L'Handler propone 3 missioni. "Rogue Cell" completata con 16 shekel, l'Uzi e le munizioni.
+  - Armi: SMG (2,5 danni, un colpo ogni 4 tick, ricarica con shift + click), sniper (mirino, 20 danni), pistola, granata e missile con cooldown, Palantrio Drone (cerca il mostro ostile ed esplode, advancement "Eye in the Sky").
+  - Cooldown degli oggetti: Shofar, First Amendment, fango del Mar Morto, Dreidel (vincita netta corretta).
+  - Strutture: `/locate` trova tutte le 19 strutture e i 7 biomi. Ho controllato con il predicato `location_check` le 33 coppie più vicine (a meno di 160 blocchi) e nessuna si sovrappone. L'isola tropicale è a posto.
+  - Coltivazioni: olivo ed erbe si raccolgono con il click destro e ricrescono. La vite torna all'età 3. Pomodoro e ceci crescono e lasciano il raccolto.
+  - Commerci: il Money Changer e lo Shuk Vendor hanno scambi validi.
+- Nota: il Goy appena evocato non ha una professione, quindi non ha scambi (come un villager vanilla disoccupato).
