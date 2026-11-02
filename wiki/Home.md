@@ -16,5 +16,5 @@ Israel-Simulator è una mod per Minecraft Java Edition 26.2 (NeoForge 26.2) che 
 - [Mar Morto e pericoli](Dead-Sea-and-Hazards): galleggiamento, fango, sale e il sole del deserto.
 - [Boss](Boss-Fights): lo scontro con Bibi, Trump ed Epstein.
 - [Feste e tradizioni](Holidays-and-Traditions): Shabbat, Hanukkah, Purim, Pesach, Yom Kippur e le altre.
-- [Esplorazione](Exploration-and-Quests): Mappa d'Israele, rotoli del Mar Morto e collezionabili.
+- [Esplorazione](Exploration-and-Quests): luoghi da scoprire, rotoli del Mar Morto e collezionabili.
 - [Comandi e configurazione](Commands-and-Configuration): i comandi della mod e il file di config.
