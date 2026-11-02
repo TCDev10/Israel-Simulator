@@ -68,9 +68,9 @@ class TranslationKeysInCodeTest {
     @Test
     @DisplayName("Bibi's Epstein shield message is translated")
     void bibiShieldMessage() throws Exception {
-        assertEquals("Bibi is shielded by Epstein! Defeat him first.",
+        assertEquals("Epstein's lawyers got Bibi an injunction. Beat Epstein first.",
                 lang("en_us").get("message.israel_simulator.bibi_shielded_by_epstein").getAsString());
-        assertEquals("Bibi è protetto da Epstein! Sconfiggilo prima.",
+        assertEquals("Bibi ha un'ingiunzione firmata Epstein. Prima batti lui.",
                 lang("it_it").get("message.israel_simulator.bibi_shielded_by_epstein").getAsString());
     }
 

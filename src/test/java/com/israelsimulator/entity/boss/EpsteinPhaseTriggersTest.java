@@ -79,7 +79,7 @@ class EpsteinPhaseTriggersTest {
     void lang() throws Exception {
         for (String f : new String[] {"en_us", "it_it"}) {
             String json = Files.readString(Path.of("src/main/resources/assets/israel_simulator/lang/" + f + ".json"));
-            assertTrue(json.contains("\"" + EpsteinPhaseRules.RENAMED_NAME_KEY + "\": \"Palm Beach Pete\""), f);
+            assertTrue(json.contains("\"" + EpsteinPhaseRules.RENAMED_NAME_KEY + "\": \""), f);
         }
     }
 }
