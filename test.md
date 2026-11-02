@@ -905,3 +905,12 @@ Non provato dall'utente in gioco.
   - mostrare la Kippah a un gatto;
   - fare uno scambio con la Corona del rabbino in testa.
 - Verifica: solo la CI di GitHub, nessun test in gioco. Non provato dall'utente in gioco.
+
+## Avanzamenti "Welcome to Israel" e "Master Explorer" tornati alla versione buggata dopo il merge
+- Problema riscontrato: col merge `93e95a6` (rimozione della Mappa d'Israele) i conflitti sono stati risolti tenendo i JSON vecchi di due avanzamenti.
+  - "Welcome to Israel" (la radice) si sbloccava di nuovo con uno Shekel in inventario, invece che entrando in un bioma d'Israele.
+  - "Master Explorer" chiedeva di nuovo le scarpe da camminata o la bicicletta, che in sopravvivenza non si ottengono, quindi era impossibile.
+  - Lo script `gen_advancements.py` usava ancora `israel_map` come icona della radice, ma l'oggetto non esiste più: rigenerando, l'icona sarebbe stata un oggetto inesistente.
+- Funzionamento atteso: la radice si sblocca entrando in un bioma `#israel_simulator:is_israel_region`. "Master Explorer" chiede solo di visitare le 17 strutture.
+- Soluzione: icona della radice cambiata in `shekel` nello script, poi rigenerati gli avanzamenti con `gen_advancements.py`. Cambiano solo `welcome_to_israel.json` e `master_explorer.json`, le traduzioni restano uguali. Tolti anche gli ultimi rimandi alla mappa in `wiki/Home.md` e nell'indice di `TESTING_GUIDE.md` (il link puntava a una sezione rinominata). Nuovo test `rootAndExplorerUsePlaces` in `AchievementsAndProgressionTest`: fallisce se la radice non usa `minecraft:location` sui biomi d'Israele o se "Master Explorer" ha un criterio che non è un luogo.
+- Verifica: validazione JSON con Python e CI di GitHub, nessun test in gioco. Non provato dall'utente in gioco.

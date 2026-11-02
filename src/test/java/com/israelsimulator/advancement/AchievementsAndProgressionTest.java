@@ -77,6 +77,21 @@ public class AchievementsAndProgressionTest {
     }
 
     @Test
+    @DisplayName("Root and Master Explorer are about places, not items (regression: merge reverted them)")
+    void rootAndExplorerUsePlaces() {
+        JsonObject root = ADVANCEMENTS.get(NS + "exploration/welcome_to_israel").getAsJsonObject("criteria");
+        assertEquals(1, root.size(), "root must have one criterion");
+        JsonObject c = root.entrySet().iterator().next().getValue().getAsJsonObject();
+        assertEquals("minecraft:location", c.get("trigger").getAsString(), "root must trigger on entering Israel");
+        assertTrue(c.toString().contains("#israel_simulator:is_israel_region"), "root must check the Israeli biomes");
+        JsonObject explorer = ADVANCEMENTS.get(NS + "exploration/master_explorer").getAsJsonObject("criteria");
+        for (Map.Entry<String, JsonElement> e : explorer.entrySet()) {
+            assertEquals("minecraft:location", e.getValue().getAsJsonObject().get("trigger").getAsString(),
+                    "master_explorer criterion " + e.getKey() + " must be a place");
+        }
+    }
+
+    @Test
     @DisplayName("One root; every parent exists; no cycles")
     void treeIsConnected() {
         List<String> roots = new ArrayList<>();

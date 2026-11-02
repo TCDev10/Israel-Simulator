@@ -22,7 +22,7 @@
 12. [Checklist Mar Morto & Pericoli del Deserto di Giuda](#12-checklist-mar-morto--pericoli-del-deserto-di-giuda)
 13. [Checklist Boss Endgame: Bibi Boss & Coalition Guards](#13-checklist-boss-endgame-bibi-boss--coalition-guards)
 14. [Checklist Feste Ebraiche & Tradizioni (Dreidel, Shofar, Menorah)](#14-checklist-feste-ebraiche--tradizioni-dreidel-shofar-menorah)
-15. [Checklist Mappa d'Israele, Landmark & Reputazione](#15-checklist-mappa-disraele-landmark--reputazione)
+15. [Checklist Esplorazione Landmark & Reputazione](#15-checklist-esplorazione-landmark--reputazione)
 16. [Checklist Effetti di Stato & Icone Texture (Mob Effects)](#16-checklist-effetti-di-stato--icone-texture-mob-effects)
 17. [Checklist Sound Events & Audio (17 Canali Sonori & Dischi)](#17-checklist-sound-events--audio-17-canali-sonori--dischi)
 18. [Checklist Tutti i 13 Avanzamenti (Advancements)](#18-checklist-tutti-i-13-avanzamenti-advancements)

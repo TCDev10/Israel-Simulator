@@ -16,12 +16,18 @@
     "hidden": false
   },
   "criteria": {
-    "has_shekel": {
-      "trigger": "minecraft:inventory_changed",
+    "in_israel": {
+      "trigger": "minecraft:location",
       "conditions": {
-        "items": [
+        "player": [
           {
-            "items": "israel_simulator:shekel"
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "biomes": "#israel_simulator:is_israel_region"
+              }
+            }
           }
         ]
       }
@@ -29,7 +35,7 @@
   },
   "requirements": [
     [
-      "has_shekel"
+      "in_israel"
     ]
   ]
 }
