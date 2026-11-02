@@ -1,0 +1,223 @@
+{
+  "parent": "israel_simulator:food/hummus_connoisseur",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:sabich"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.taste_of_israel.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.taste_of_israel.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "tahini": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "israel_simulator:tahini"
+        }
+      }
+    },
+    "dates": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "israel_simulator:dates"
+        }
+      }
+    },
+    "grapes": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "israel_simulator:grapes"
+        }
+      }
+    },
+    "olives": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "israel_simulator:olives"
+        }
+      }
+    },
+    "citrus": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "israel_simulator:citrus"
+        }
+      }
+    },
+    "chickpeas": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "israel_simulator:chickpeas"
+        }
+      }
+    },
+    "tomato": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "israel_simulator:tomato"
+        }
+      }
+    },
+    "eggplant": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "israel_simulator:eggplant"
+        }
+      }
+    },
+    "sesame_seeds": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "israel_simulator:sesame_seeds"
+        }
+      }
+    },
+    "challah": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "israel_simulator:challah"
+        }
+      }
+    },
+    "rugelach": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "israel_simulator:rugelach"
+        }
+      }
+    },
+    "falafel": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "israel_simulator:falafel"
+        }
+      }
+    },
+    "hummus": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "israel_simulator:hummus"
+        }
+      }
+    },
+    "shakshuka": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "israel_simulator:shakshuka"
+        }
+      }
+    },
+    "sabich": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "israel_simulator:sabich"
+        }
+      }
+    },
+    "matzo": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "israel_simulator:matzo"
+        }
+      }
+    },
+    "sufganiyah": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "israel_simulator:sufganiyah"
+        }
+      }
+    },
+    "hamantash": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "israel_simulator:hamantash"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "tahini"
+    ],
+    [
+      "dates"
+    ],
+    [
+      "grapes"
+    ],
+    [
+      "olives"
+    ],
+    [
+      "citrus"
+    ],
+    [
+      "chickpeas"
+    ],
+    [
+      "tomato"
+    ],
+    [
+      "eggplant"
+    ],
+    [
+      "sesame_seeds"
+    ],
+    [
+      "challah"
+    ],
+    [
+      "rugelach"
+    ],
+    [
+      "falafel"
+    ],
+    [
+      "hummus"
+    ],
+    [
+      "shakshuka"
+    ],
+    [
+      "sabich"
+    ],
+    [
+      "matzo"
+    ],
+    [
+      "sufganiyah"
+    ],
+    [
+      "hamantash"
+    ]
+  ],
+  "rewards": {
+    "experience": 300
+  }
+}

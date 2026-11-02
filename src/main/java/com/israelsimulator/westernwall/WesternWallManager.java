@@ -232,6 +232,7 @@ public final class WesternWallManager {
                 40, 0.6, 0.6, 0.6, 0.2);
 
         player.sendSystemMessage(Component.translatable("message.israel_simulator.western_wall_blessed"));
+        com.israelsimulator.advancement.IsraelAdvancements.award(player, com.israelsimulator.advancement.AdvancementEvents.WESTERN_WALL_PRAYER);
         player.sendOverlayMessage(Component.empty());
     }
 

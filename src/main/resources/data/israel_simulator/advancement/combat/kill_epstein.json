@@ -1,0 +1,42 @@
+{
+  "parent": "israel_simulator:combat/summon_bibi",
+  "display": {
+    "icon": {
+      "id": "minecraft:paper"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.kill_epstein.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.kill_epstein.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "epstein": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "israel_simulator:jeffrey_epstein"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "epstein"
+    ]
+  ],
+  "rewards": {
+    "experience": 300
+  }
+}

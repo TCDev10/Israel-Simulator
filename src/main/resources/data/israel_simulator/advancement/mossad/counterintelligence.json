@@ -1,0 +1,39 @@
+{
+  "parent": "israel_simulator:mossad/mossad_recruit",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:pistol"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.counterintelligence.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.counterintelligence.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "agent": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "israel_simulator:mossad_agent"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "agent"
+    ]
+  ]
+}

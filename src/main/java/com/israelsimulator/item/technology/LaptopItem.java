@@ -30,6 +30,7 @@ public class LaptopItem extends Item {
         if (player.getCooldowns().isOnCooldown(stack)) return InteractionResult.FAIL;
         if (WorkPlaces.isShabbat(level)) {
             if (!level.isClientSide()) {
+                com.israelsimulator.advancement.IsraelAdvancements.award(player, com.israelsimulator.advancement.AdvancementEvents.SHABBAT_WORK_BLOCKED);
                 player.sendSystemMessage(Component.translatable("message.israel_simulator.work.shabbat").withStyle(ChatFormatting.YELLOW));
             }
             return InteractionResult.FAIL;
@@ -60,10 +61,12 @@ public class LaptopItem extends Item {
                 ItemStack money = new ItemStack(ModItems.SHEKEL.get(), pay);
                 if (!player.getInventory().add(money)) player.drop(money, false);
                 player.causeFoodExhaustion(StartupWork.WORK_EXHAUSTION);
+                com.israelsimulator.advancement.IsraelAdvancements.award(player, com.israelsimulator.advancement.AdvancementEvents.WORK_SESSION);
                 player.sendSystemMessage(Component.translatable(hub ? "message.israel_simulator.work.session_hub"
                         : "message.israel_simulator.work.session",
                         StartupWork.isExit(sessions) ? pay - StartupWork.EXIT_BONUS : pay, sessions).withStyle(ChatFormatting.GREEN));
                 if (StartupWork.isExit(sessions)) {
+                    com.israelsimulator.advancement.IsraelAdvancements.award(player, com.israelsimulator.advancement.AdvancementEvents.STARTUP_EXIT);
                     player.sendSystemMessage(Component.translatable("message.israel_simulator.work.exit", StartupWork.EXIT_BONUS)
                             .withStyle(ChatFormatting.GOLD));
                     level.playSound(null, player.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 1.0F, 1.0F);

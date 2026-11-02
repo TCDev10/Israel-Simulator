@@ -1,0 +1,48 @@
+{
+  "parent": "israel_simulator:exploration/dead_sea_tourist",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:salt_block"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.dead_sea_souvenirs.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.dead_sea_souvenirs.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "mud": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "israel_simulator:dead_sea_mud"
+          }
+        ]
+      }
+    },
+    "salt": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "israel_simulator:salt_block"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "mud"
+    ],
+    [
+      "salt"
+    ]
+  ]
+}

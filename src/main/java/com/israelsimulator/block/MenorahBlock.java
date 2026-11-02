@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
@@ -29,7 +30,16 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class MenorahBlock extends Block {
 
     public static final IntegerProperty CANDLES = IntegerProperty.create("candles", 0, 8);
-    protected static final VoxelShape SHAPE = Block.box(2.0, 0.0, 6.0, 14.0, 15.0, 10.0);
+    /** Base, arms with candles, raised shamash candle (matches models/block/menorah.json). */
+    protected static final VoxelShape SHAPE = Shapes.or(
+            Block.box(4.0, 0.0, 6.0, 12.0, 3.0, 10.0),
+            Block.box(1.0, 3.0, 7.0, 15.0, 13.5, 9.0),
+            Block.box(7.0, 13.5, 7.0, 9.0, 15.0, 9.0));
+
+    /** X centres (in 1/16 block) of the 8 branch candles, west to east; see scripts/models/gen_menorah.py. */
+    private static final double[] FLAME_X = {1.5, 3.0, 4.5, 6.0, 10.0, 11.5, 13.0, 14.5};
+    private static final double FLAME_Y = 14.0;
+    private static final double SHAMASH_FLAME_Y = 15.5;
 
     public MenorahBlock(Properties properties) {
         super(properties);
@@ -112,20 +122,19 @@ public class MenorahBlock extends Block {
             return;
         }
 
-        // Emit particles above lit branches
-        double startX = pos.getX() + 0.2;
-        double endX = pos.getX() + 0.8;
-        double step = (endX - startX) / 8.0;
-        double y = pos.getY() + 0.95;
+        // Flames sit on the shamash and on the last `candles` branches (east side first), like the lit models.
         double z = pos.getZ() + 0.5;
+        flame(level, random, pos.getX() + 0.5, pos.getY() + SHAMASH_FLAME_Y / 16.0, z);
+        for (int i = FLAME_X.length - candles; i < FLAME_X.length; i++) {
+            flame(level, random, pos.getX() + FLAME_X[i] / 16.0, pos.getY() + FLAME_Y / 16.0, z);
+        }
+    }
 
-        for (int i = 0; i < candles; i++) {
-            if (random.nextFloat() < 0.4F) {
-                double x = startX + (i * step);
-                level.addParticle(ParticleTypes.SMALL_FLAME, x, y, z, 0.0, 0.005, 0.0);
-                if (random.nextFloat() < 0.2F) {
-                    level.addParticle(ParticleTypes.SMOKE, x, y + 0.05, z, 0.0, 0.005, 0.0);
-                }
+    private static void flame(Level level, RandomSource random, double x, double y, double z) {
+        if (random.nextFloat() < 0.4F) {
+            level.addParticle(ParticleTypes.SMALL_FLAME, x, y, z, 0.0, 0.005, 0.0);
+            if (random.nextFloat() < 0.2F) {
+                level.addParticle(ParticleTypes.SMOKE, x, y + 0.05, z, 0.0, 0.005, 0.0);
             }
         }
     }

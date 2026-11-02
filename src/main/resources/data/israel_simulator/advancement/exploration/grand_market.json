@@ -1,0 +1,41 @@
+{
+  "parent": "israel_simulator:exploration/visit_jerusalem",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:olives"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.grand_market.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.grand_market.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "grand_market": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "israel_simulator:grand_market"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "grand_market"
+    ]
+  ]
+}

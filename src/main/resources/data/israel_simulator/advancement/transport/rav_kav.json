@@ -1,0 +1,31 @@
+{
+  "parent": "israel_simulator:transport/first_train",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:rav_kav"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.rav_kav.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.rav_kav.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "rav_kav_ride": {
+      "trigger": "israel_simulator:mod_event",
+      "conditions": {
+        "event": "train_ride_rav_kav"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "rav_kav_ride"
+    ]
+  ]
+}

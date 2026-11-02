@@ -60,6 +60,7 @@ public class ShofarItem extends Item {
                 player.getX(), player.getY() + 1.0, player.getZ(),
                 20, 0.4, 0.4, 0.4, 0.2);
 
+        com.israelsimulator.advancement.IsraelAdvancements.award(player, com.israelsimulator.advancement.AdvancementEvents.SHOFAR_BLOW);
         player.sendSystemMessage(Component.translatable("message.israel_simulator.shofar_blast")
                 .withStyle(ChatFormatting.GOLD));
 

@@ -1,0 +1,41 @@
+{
+  "parent": "israel_simulator:exploration/judean_desert",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:date_palm_leaves"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.ein_gedi.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.ein_gedi.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "ein_gedi": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "israel_simulator:ein_gedi_oasis"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "ein_gedi"
+    ]
+  ]
+}

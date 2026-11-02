@@ -1,0 +1,41 @@
+{
+  "parent": "israel_simulator:exploration/tel_aviv",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:first_amendment"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.government_building.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.government_building.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "government": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "israel_simulator:government_building"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "government"
+    ]
+  ]
+}

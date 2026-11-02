@@ -1,0 +1,41 @@
+{
+  "parent": "israel_simulator:exploration/welcome_to_israel",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:smartphone"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.tel_aviv.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.tel_aviv.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "tel_aviv": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "structures": "israel_simulator:tel_aviv_city"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "tel_aviv"
+    ]
+  ]
+}

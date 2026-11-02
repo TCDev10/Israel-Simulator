@@ -67,6 +67,8 @@ public class StarOfDavidItem extends Item {
                     p.sendSystemMessage(summonMsg);
                 }
 
+                com.israelsimulator.advancement.IsraelAdvancements.award(player, com.israelsimulator.advancement.AdvancementEvents.BIBI_SUMMON);
+
                 // Consume Star of David in Survival mode
                 if (!player.getAbilities().instabuild) {
                     held.shrink(1);

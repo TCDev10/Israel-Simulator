@@ -1,0 +1,31 @@
+{
+  "parent": "israel_simulator:exploration/twin_towers",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:missile"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.plane_crash.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.plane_crash.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "witnessed": {
+      "trigger": "israel_simulator:mod_event",
+      "conditions": {
+        "event": "plane_crash"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "witnessed"
+    ]
+  ]
+}

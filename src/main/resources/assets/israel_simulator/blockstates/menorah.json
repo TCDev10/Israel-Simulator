@@ -1,1 +1,31 @@
-{"variants":{"candles=0":{"model":"israel_simulator:block/menorah"},"candles=1":{"model":"israel_simulator:block/menorah"},"candles=2":{"model":"israel_simulator:block/menorah"},"candles=3":{"model":"israel_simulator:block/menorah"},"candles=4":{"model":"israel_simulator:block/menorah"},"candles=5":{"model":"israel_simulator:block/menorah"},"candles=6":{"model":"israel_simulator:block/menorah"},"candles=7":{"model":"israel_simulator:block/menorah"},"candles=8":{"model":"israel_simulator:block/menorah"}}}
+{
+  "variants": {
+    "candles=0": {
+      "model": "israel_simulator:block/menorah"
+    },
+    "candles=1": {
+      "model": "israel_simulator:block/menorah_lit_1"
+    },
+    "candles=2": {
+      "model": "israel_simulator:block/menorah_lit_2"
+    },
+    "candles=3": {
+      "model": "israel_simulator:block/menorah_lit_3"
+    },
+    "candles=4": {
+      "model": "israel_simulator:block/menorah_lit_4"
+    },
+    "candles=5": {
+      "model": "israel_simulator:block/menorah_lit_5"
+    },
+    "candles=6": {
+      "model": "israel_simulator:block/menorah_lit_6"
+    },
+    "candles=7": {
+      "model": "israel_simulator:block/menorah_lit_7"
+    },
+    "candles=8": {
+      "model": "israel_simulator:block/menorah_lit_8"
+    }
+  }
+}

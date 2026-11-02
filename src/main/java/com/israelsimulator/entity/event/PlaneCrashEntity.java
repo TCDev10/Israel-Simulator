@@ -273,10 +273,18 @@ public class PlaneCrashEntity extends Entity {
         return this.position().add(dir.scale(21.0));
     }
 
+    /** Players this close to the impact see the crash ("Brace for Impact" advancement). */
+    static final double PLANE_WITNESS_RANGE = 160.0;
+
     private void detonatePlaneCrash(ServerLevel serverLevel) {
         if (isEmbedded()) return;
 
         this.entityData.set(DATA_EMBEDDED, true);
+        for (net.minecraft.server.level.ServerPlayer witness : serverLevel.players()) {
+            if (witness.isAlive() && !witness.isSpectator() && witness.distanceToSqr(this) <= PLANE_WITNESS_RANGE * PLANE_WITNESS_RANGE) {
+                com.israelsimulator.advancement.IsraelAdvancements.award(witness, com.israelsimulator.advancement.AdvancementEvents.PLANE_CRASH);
+            }
+        }
         this.flightVelocity = Vec3.ZERO;
         this.setDeltaMovement(Vec3.ZERO);
         this.entityData.set(DATA_VEL_X, 0.0F);

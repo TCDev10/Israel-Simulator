@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SGS",
+    "SPS",
+    "SSS"
+  ],
+  "key": {
+    "S": "israel_simulator:shekel",
+    "G": "minecraft:gold_ingot",
+    "P": "minecraft:paper"
+  },
+  "result": {
+    "count": 1,
+    "id": "israel_simulator:rav_kav"
+  }
+}

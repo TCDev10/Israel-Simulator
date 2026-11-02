@@ -1,0 +1,31 @@
+{
+  "parent": "israel_simulator:technology/startup_office",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:palantrio_drone"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.drone_launch.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.drone_launch.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "launched": {
+      "trigger": "israel_simulator:mod_event",
+      "conditions": {
+        "event": "drone_launch"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "launched"
+    ]
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "parent": "israel_simulator:exploration/welcome_to_israel",
+  "parent": "israel_simulator:exploration/judean_desert",
   "display": {
     "icon": {
       "id": "israel_simulator:dead_sea_mud"
@@ -10,37 +10,31 @@
     "description": {
       "translate": "advancements.israel_simulator.dead_sea_tourist.description"
     },
-    "frame": "task",
+    "frame": "goal",
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false
   },
   "criteria": {
-    "has_dead_sea_mud": {
-      "trigger": "minecraft:inventory_changed",
+    "floated": {
+      "trigger": "israel_simulator:mod_event",
       "conditions": {
-        "items": [
-          {
-            "items": "israel_simulator:dead_sea_mud"
-          }
-        ]
+        "event": "dead_sea_float"
       }
     },
-    "has_salt_block": {
-      "trigger": "minecraft:inventory_changed",
+    "mud_bath": {
+      "trigger": "israel_simulator:mod_event",
       "conditions": {
-        "items": [
-          {
-            "items": "israel_simulator:salt_block"
-          }
-        ]
+        "event": "mud_bath"
       }
     }
   },
   "requirements": [
     [
-      "has_dead_sea_mud",
-      "has_salt_block"
+      "floated"
+    ],
+    [
+      "mud_bath"
     ]
   ]
 }

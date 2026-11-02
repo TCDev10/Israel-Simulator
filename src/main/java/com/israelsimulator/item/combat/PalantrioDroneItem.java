@@ -39,6 +39,7 @@ public class PalantrioDroneItem extends Item {
             drone.snapTo(pos.x, pos.y, pos.z, player.getYRot(), 0.0F);
             drone.setOwner(player);
             server.addFreshEntity(drone);
+            com.israelsimulator.advancement.IsraelAdvancements.award(player, com.israelsimulator.advancement.AdvancementEvents.DRONE_LAUNCH);
             server.playSound(null, pos.x, pos.y, pos.z, SoundEvents.BEEHIVE_EXIT, SoundSource.PLAYERS, 1.0F, 1.5F);
         }
         player.getCooldowns().addCooldown(stack, COOLDOWN_TICKS);

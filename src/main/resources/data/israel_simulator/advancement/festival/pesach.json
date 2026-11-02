@@ -1,0 +1,42 @@
+{
+  "parent": "israel_simulator:festival/shabbat_shalom",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:matzo"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.pesach.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.pesach.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "pesach": {
+      "trigger": "israel_simulator:mod_event",
+      "conditions": {
+        "event": "festival_pesach"
+      }
+    },
+    "matzo": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "israel_simulator:matzo"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "pesach"
+    ],
+    [
+      "matzo"
+    ]
+  ]
+}

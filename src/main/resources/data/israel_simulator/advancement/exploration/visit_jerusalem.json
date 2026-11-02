@@ -2,7 +2,7 @@
   "parent": "israel_simulator:exploration/welcome_to_israel",
   "display": {
     "icon": {
-      "id": "israel_simulator:western_wall_stone"
+      "id": "israel_simulator:jerusalem_stone"
     },
     "title": {
       "translate": "advancements.israel_simulator.visit_jerusalem.title"
@@ -10,28 +10,24 @@
     "description": {
       "translate": "advancements.israel_simulator.visit_jerusalem.description"
     },
-    "frame": "goal",
+    "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false
   },
   "criteria": {
-    "has_stone": {
-      "trigger": "minecraft:inventory_changed",
+    "jerusalem": {
+      "trigger": "minecraft:location",
       "conditions": {
-        "items": [
+        "player": [
           {
-            "items": "israel_simulator:western_wall_stone"
-          }
-        ]
-      }
-    },
-    "has_jerusalem_stone": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": "israel_simulator:jerusalem_stone"
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "biomes": "israel_simulator:jerusalem"
+              }
+            }
           }
         ]
       }
@@ -39,8 +35,7 @@
   },
   "requirements": [
     [
-      "has_stone",
-      "has_jerusalem_stone"
+      "jerusalem"
     ]
   ]
 }

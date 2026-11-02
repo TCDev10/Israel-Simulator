@@ -1,0 +1,88 @@
+{
+  "parent": "israel_simulator:festival/hanukkah",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:shofar"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.all_festivals.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.all_festivals.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "shabbat": {
+      "trigger": "israel_simulator:mod_event",
+      "conditions": {
+        "event": "festival_shabbat"
+      }
+    },
+    "rosh_hashanah": {
+      "trigger": "israel_simulator:mod_event",
+      "conditions": {
+        "event": "festival_rosh_hashanah"
+      }
+    },
+    "yom_kippur": {
+      "trigger": "israel_simulator:mod_event",
+      "conditions": {
+        "event": "festival_yom_kippur"
+      }
+    },
+    "sukkot": {
+      "trigger": "israel_simulator:mod_event",
+      "conditions": {
+        "event": "festival_sukkot"
+      }
+    },
+    "hanukkah": {
+      "trigger": "israel_simulator:mod_event",
+      "conditions": {
+        "event": "festival_hanukkah"
+      }
+    },
+    "purim": {
+      "trigger": "israel_simulator:mod_event",
+      "conditions": {
+        "event": "festival_purim"
+      }
+    },
+    "pesach": {
+      "trigger": "israel_simulator:mod_event",
+      "conditions": {
+        "event": "festival_pesach"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "shabbat"
+    ],
+    [
+      "rosh_hashanah"
+    ],
+    [
+      "yom_kippur"
+    ],
+    [
+      "sukkot"
+    ],
+    [
+      "hanukkah"
+    ],
+    [
+      "purim"
+    ],
+    [
+      "pesach"
+    ]
+  ],
+  "rewards": {
+    "experience": 300
+  }
+}

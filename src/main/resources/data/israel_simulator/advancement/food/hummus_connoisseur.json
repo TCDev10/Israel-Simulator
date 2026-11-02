@@ -1,0 +1,66 @@
+{
+  "parent": "israel_simulator:food/harvest",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:hummus"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.hummus_connoisseur.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.hummus_connoisseur.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "hummus": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "israel_simulator:hummus"
+        }
+      }
+    },
+    "falafel": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "israel_simulator:falafel"
+        }
+      }
+    },
+    "shakshuka": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "israel_simulator:shakshuka"
+        }
+      }
+    },
+    "sabich": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "israel_simulator:sabich"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "hummus"
+    ],
+    [
+      "falafel"
+    ],
+    [
+      "shakshuka"
+    ],
+    [
+      "sabich"
+    ]
+  ]
+}

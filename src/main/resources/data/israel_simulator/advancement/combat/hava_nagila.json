@@ -1,5 +1,5 @@
 {
-  "parent": "israel_simulator:exploration/welcome_to_israel",
+  "parent": "israel_simulator:combat/summon_bibi",
   "display": {
     "icon": {
       "id": "israel_simulator:hava_nagila_disc"
@@ -43,8 +43,13 @@
   },
   "requirements": [
     [
-      "kill_bibi_boss",
+      "kill_bibi_boss"
+    ],
+    [
       "has_disc"
     ]
-  ]
+  ],
+  "rewards": {
+    "experience": 500
+  }
 }

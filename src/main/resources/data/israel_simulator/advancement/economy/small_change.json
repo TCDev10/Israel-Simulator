@@ -1,0 +1,35 @@
+{
+  "parent": "israel_simulator:economy/first_shekel",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:agora"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.small_change.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.small_change.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "agora": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "israel_simulator:agora"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "agora"
+    ]
+  ]
+}

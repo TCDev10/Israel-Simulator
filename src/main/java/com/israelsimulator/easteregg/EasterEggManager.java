@@ -107,6 +107,7 @@ public final class EasterEggManager {
                 return false;
             }
             recordInteraction(cooldowns, player.getUUID(), now);
+            com.israelsimulator.advancement.IsraelAdvancements.award(player, com.israelsimulator.advancement.AdvancementEvents.KIPPAH_CAT);
 
             player.sendSystemMessage(Component.literal("The cat squints approvingly at your Kippah and purrs in holy serenity.")
                     .withStyle(ChatFormatting.AQUA));

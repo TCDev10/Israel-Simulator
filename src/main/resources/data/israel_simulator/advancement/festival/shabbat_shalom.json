@@ -1,0 +1,31 @@
+{
+  "parent": "israel_simulator:exploration/welcome_to_israel",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:challah"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.shabbat_shalom.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.shabbat_shalom.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "rested": {
+      "trigger": "israel_simulator:mod_event",
+      "conditions": {
+        "event": "shabbat_rest"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "rested"
+    ]
+  ]
+}

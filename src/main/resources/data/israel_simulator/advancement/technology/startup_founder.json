@@ -1,5 +1,5 @@
 {
-  "parent": "israel_simulator:exploration/welcome_to_israel",
+  "parent": "israel_simulator:technology/startup_office",
   "display": {
     "icon": {
       "id": "israel_simulator:laptop"
@@ -16,42 +16,23 @@
     "hidden": false
   },
   "criteria": {
-    "has_laptop": {
-      "trigger": "minecraft:inventory_changed",
+    "work_session": {
+      "trigger": "israel_simulator:mod_event",
       "conditions": {
-        "items": [
-          {
-            "items": "israel_simulator:laptop"
-          }
-        ]
+        "event": "work_session"
       }
     },
-    "has_smartphone": {
-      "trigger": "minecraft:inventory_changed",
+    "delivery_gig": {
+      "trigger": "israel_simulator:mod_event",
       "conditions": {
-        "items": [
-          {
-            "items": "israel_simulator:smartphone"
-          }
-        ]
-      }
-    },
-    "has_drone_part": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": "israel_simulator:drone_part"
-          }
-        ]
+        "event": "delivery_gig"
       }
     }
   },
   "requirements": [
     [
-      "has_laptop",
-      "has_smartphone",
-      "has_drone_part"
+      "work_session",
+      "delivery_gig"
     ]
   ]
 }

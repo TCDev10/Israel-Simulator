@@ -1,0 +1,34 @@
+{
+  "parent": "israel_simulator:technology/startup_founder",
+  "display": {
+    "icon": {
+      "id": "israel_simulator:laptop"
+    },
+    "title": {
+      "translate": "advancements.israel_simulator.startup_exit.title"
+    },
+    "description": {
+      "translate": "advancements.israel_simulator.startup_exit.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "exit": {
+      "trigger": "israel_simulator:mod_event",
+      "conditions": {
+        "event": "startup_exit"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "exit"
+    ]
+  ],
+  "rewards": {
+    "experience": 300
+  }
+}
