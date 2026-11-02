@@ -50,11 +50,11 @@
 ## Roadmap (approved 2026-10-18, one verified PR each)
 
 * [x] R1. Tel Aviv – Jerusalem train on the Rav-Kav transit stops: stations are the stop blocks in the world (`TransitStations`), `TrainLine` links the two ends, fallback to the generated city. No rail vehicle yet.
-* [ ] R2. Shuk: vendors with prices and goods that change by time of day and holiday.
-* [ ] R3. Calendar holidays in the world (Hanukkah, Purim, Pesach): events, foods, decorations (§32–35: calendar code exists, nothing runs in the world).
-* [-] R4. Dead Sea: floating (buoyancy already applied in `ModGameEvents` via `DeadSeaMechanics`), mud and salt.
-* [ ] R5. Startup/work with laptop and smartphone paying Shekels.
-* [ ] R6. Shabbat on Friday evening: villagers rest, shops close, rest bonus (§27, §33: `NpcSchedule.isShabbat` exists, not wired).
+* [x] R2. Shuk: vendors with prices and goods that change by time of day and holiday. (Shuk vendors in the Grand Market; holiday decorations PR 79)
+* [x] R3. Calendar holidays in the world (Hanukkah, Purim, Pesach): announcements, greeting, festive vendors (PR 74), decorations (PR 79).
+* [x] R4. Dead Sea: floating, mud baths, mud and salt gathering (PR 76).
+* [x] R5. Startup/work with laptop and smartphone paying Shekels (PR 77).
+* [x] R6. Shabbat on Friday evening: villagers rest, rest bonus (PR 80).
 
 # 1. NeoForge / Minecraft Baseline
 
