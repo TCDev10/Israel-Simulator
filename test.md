@@ -734,7 +734,7 @@ Provato in gioco: `runServer` e `runClient` sul seed 777, con un venditore della
 
 Ancora mancante (roadmap 11): durante lo Shabbat gli altri NPC non si riposano e non c'è un bonus di riposo. Le decorazioni nelle strutture non ci sono: solo la Menorah. Non provato dall'utente in gioco.
 
-## Grand Market: negozi generati sotto terra (seed 777) — IN CORSO, non risolto del tutto
+## Grand Market: negozi generati sotto terra (seed 777) — risolto (PR 75 e PR 78)
 
 Problema riscontrato: nel seed 777, intorno a 1776 -2208, sei edifici del mercato finiscono 20–35 blocchi sotto la superficie. Ho trovato due cause.
 1. **Pezzi impilati.** Le stradine seguono il terreno. Su un fianco di collina una stradina può scendere più di 30 blocchi sotto un'altra, e siccome i box dei pezzi erano bassi, il jigsaw metteva dei negozi *sotto* altri pezzi del mercato (per esempio un fruit_shop sotto la porta).
@@ -920,3 +920,8 @@ Non provato dall'utente in gioco.
 - Funzionamento atteso: come le zuppe vanilla, dopo aver mangiato resta la ciotola vuota. Se la tahini finisce in una ricetta, la sua ciotola resta nella griglia di crafting.
 - Soluzione: in `ModItems` tahini, hummus e shakshuka hanno `usingConvertsTo(Items.BOWL)`, e la tahini ha anche `craftRemainder(Items.BOWL)`. Ricette e valori nutritivi sono gli stessi. `DataAndResourceValidationTest` ora controlla le due proprietà.
 - Verifica: CI di GitHub, nessun test in gioco. Da provare in gioco: mangiare un hummus (resta la ciotola) e craftare un sabich (la ciotola della tahini resta nella griglia).
+
+## TODO.md non allineato alla roadmap già fatta
+- Problema riscontrato: nella roadmap di `TODO.md` le voci R2–R6 (Shuk, feste nel mondo, Mar Morto, startup, Shabbat) risultavano ancora da fare, anche se le PR 74–80 sono già su main. Anche il titolo della sezione sul Grand Market in questo file diceva ancora "IN CORSO", ma la PR 75 e la PR 78 l'hanno chiusa.
+- Funzionamento atteso: `TODO.md` e `test.md` dicono lo stesso stato del codice su main.
+- Soluzione: R2–R6 segnate come fatte, con il numero della PR, e titolo della sezione Grand Market aggiornato. Solo documentazione.
