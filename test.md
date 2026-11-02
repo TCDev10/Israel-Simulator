@@ -914,3 +914,9 @@ Non provato dall'utente in gioco.
 - Funzionamento atteso: la radice si sblocca entrando in un bioma `#israel_simulator:is_israel_region`. "Master Explorer" chiede solo di visitare le 17 strutture.
 - Soluzione: icona della radice cambiata in `shekel` nello script, poi rigenerati gli avanzamenti con `gen_advancements.py`. Cambiano solo `welcome_to_israel.json` e `master_explorer.json`, le traduzioni restano uguali. Tolti anche gli ultimi rimandi alla mappa in `wiki/Home.md` e nell'indice di `TESTING_GUIDE.md` (il link puntava a una sezione rinominata). Nuovo test `rootAndExplorerUsePlaces` in `AchievementsAndProgressionTest`: fallisce se la radice non usa `minecraft:location` sui biomi d'Israele o se "Master Explorer" ha un criterio che non è un luogo.
 - Verifica: validazione JSON con Python e CI di GitHub, nessun test in gioco. Non provato dall'utente in gioco.
+
+## Tahini, hummus e shakshuka si mangiavano anche la ciotola
+- Problema riscontrato: le tre ricette chiedono una ciotola, ma mangiando tahini, hummus o shakshuka la ciotola spariva (le zuppe vanilla invece la restituiscono). In più la tahini, usata per fare hummus o sabich, si portava via la sua ciotola: per un hummus se ne consumavano due.
+- Funzionamento atteso: come le zuppe vanilla, dopo aver mangiato resta la ciotola vuota. Se la tahini finisce in una ricetta, la sua ciotola resta nella griglia di crafting.
+- Soluzione: in `ModItems` tahini, hummus e shakshuka hanno `usingConvertsTo(Items.BOWL)`, e la tahini ha anche `craftRemainder(Items.BOWL)`. Ricette e valori nutritivi sono gli stessi. `DataAndResourceValidationTest` ora controlla le due proprietà.
+- Verifica: CI di GitHub, nessun test in gioco. Da provare in gioco: mangiare un hummus (resta la ciotola) e craftare un sabich (la ciotola della tahini resta nella griglia).

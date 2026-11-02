@@ -15,6 +15,7 @@ import com.israelsimulator.item.cultural.FirstAmendmentItem;
 import com.israelsimulator.item.cultural.HavaNagilaDiscItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SpawnEggItem;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -37,7 +38,7 @@ public final class ModItems {
     public static final DeferredHolder<Item, HavaNagilaDiscItem> HAVA_NAGILA_DISC = ITEMS.registerItem("hava_nagila_disc", p -> new HavaNagilaDiscItem(CulturalItems.havaNagilaDisc(p)));
 
     // Food items - ingredients
-    public static final DeferredHolder<Item, Item> TAHINI = ITEMS.registerSimpleItem("tahini", p -> p.food(IsraelFoodProperties.TAHINI));
+    public static final DeferredHolder<Item, Item> TAHINI = ITEMS.registerSimpleItem("tahini", p -> p.food(IsraelFoodProperties.TAHINI).usingConvertsTo(Items.BOWL).craftRemainder(Items.BOWL));
     public static final DeferredHolder<Item, Item> DATES = ITEMS.registerSimpleItem("dates", p -> p.food(IsraelFoodProperties.DATES));
     public static final DeferredItem<BlockItem> GRAPES = ITEMS.registerSimpleBlockItem("grapes", () -> ModBlocks.GRAPEVINE.get(), p -> p.food(IsraelFoodProperties.GRAPES).useItemDescriptionPrefix());
     public static final DeferredHolder<Item, Item> OLIVES = ITEMS.registerSimpleItem("olives", p -> p.food(IsraelFoodProperties.OLIVES));
@@ -51,8 +52,8 @@ public final class ModItems {
 
     // Food items - prepared foods with optional gameplay effects (§17)
     public static final DeferredHolder<Item, Item> FALAFEL = ITEMS.registerSimpleItem("falafel", p -> p.food(IsraelFoodProperties.FALAFEL, IsraelFoodProperties.FALAFEL_CONSUMABLE));
-    public static final DeferredHolder<Item, Item> HUMMUS = ITEMS.registerSimpleItem("hummus", p -> p.food(IsraelFoodProperties.HUMMUS, IsraelFoodProperties.HUMMUS_CONSUMABLE));
-    public static final DeferredHolder<Item, Item> SHAKSHUKA = ITEMS.registerSimpleItem("shakshuka", p -> p.food(IsraelFoodProperties.SHAKSHUKA, IsraelFoodProperties.SHAKSHUKA_CONSUMABLE));
+    public static final DeferredHolder<Item, Item> HUMMUS = ITEMS.registerSimpleItem("hummus", p -> p.food(IsraelFoodProperties.HUMMUS, IsraelFoodProperties.HUMMUS_CONSUMABLE).usingConvertsTo(Items.BOWL));
+    public static final DeferredHolder<Item, Item> SHAKSHUKA = ITEMS.registerSimpleItem("shakshuka", p -> p.food(IsraelFoodProperties.SHAKSHUKA, IsraelFoodProperties.SHAKSHUKA_CONSUMABLE).usingConvertsTo(Items.BOWL));
     public static final DeferredHolder<Item, Item> SABICH = ITEMS.registerSimpleItem("sabich", p -> p.food(IsraelFoodProperties.SABICH, IsraelFoodProperties.SABICH_CONSUMABLE));
 
     // Collectible items
