@@ -104,7 +104,7 @@ def adv(path, parent, icon, frame, criteria, mode, en, it, hidden=False, xp=0):
 
 
 # Root
-adv("exploration/welcome_to_israel", None, "israel_map", "task",
+adv("exploration/welcome_to_israel", None, "shekel", "task",
     {"in_israel": {"trigger": "minecraft:location", "conditions": {"player": player_pred(
         {"minecraft:location": {"biomes": f"#{NS}:is_israel_region"}})}}}, OR,
     ("Welcome to Israel", "Set foot in one of Israel's biomes"),
