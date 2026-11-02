@@ -75,7 +75,7 @@ class EpsteinPhaseTriggersTest {
     }
 
     @Test
-    @DisplayName("Palm Beach Pete is translated in en_us and it_it")
+    @DisplayName("Epstein phase-2 name is translated in en_us and it_it")
     void lang() throws Exception {
         for (String f : new String[] {"en_us", "it_it"}) {
             String json = Files.readString(Path.of("src/main/resources/assets/israel_simulator/lang/" + f + ".json"));

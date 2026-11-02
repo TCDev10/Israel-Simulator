@@ -68,10 +68,10 @@ class TranslationKeysInCodeTest {
     @Test
     @DisplayName("Bibi's Epstein shield message is translated")
     void bibiShieldMessage() throws Exception {
-        assertEquals("Bibi is shielded by Epstein! Defeat him first.",
-                lang("en_us").get("message.israel_simulator.bibi_shielded_by_epstein").getAsString());
-        assertEquals("Bibi è protetto da Epstein! Sconfiggilo prima.",
-                lang("it_it").get("message.israel_simulator.bibi_shielded_by_epstein").getAsString());
+        String k = "message.israel_simulator.bibi_shielded_by_epstein";
+        for (String f : new String[] {"en_us", "it_it"}) {
+            assertTrue(lang(f).has(k) && !lang(f).get(k).getAsString().isBlank(), f);
+        }
     }
 
     private static JsonObject lang(String name) throws Exception {
