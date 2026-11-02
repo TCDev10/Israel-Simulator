@@ -939,3 +939,12 @@ Non provato dall'utente in gioco.
 ## Betatesting in gioco del 2 novembre 2026 (seed 777, build CI di main 532fbe5)
 - Superati: Welcome to Israel, Tel Aviv, Tel Aviv di notte, Gerusalemme e Muro del Pianto, preghiera al Kotel (5 diamanti, biglietto consumato), Kippah al gatto, Dead Sea Tourist (galleggiare e fango), Blessed Trader (scambio con la Corona del Rabbino), hummus che lascia la ciotola, sabich che lascia nella griglia la ciotola della tahini, Menorah (modello, candele 1 e 2 accese con l'acciarino, spenta con shift + click), aereo sulle Torri Gemelle (arriva entro un minuto, impatto, "Brace for Impact"), Shabbat (annuncio, rigenerazione a riposo, "Shabbat Shalom", avviso quando si lavora e niente bonus).
 - Nota: i bioma sono in celle 4×4×4. Il fango messo a mano in una cella di bioma diversa dal Mar Morto non conta. Non è un bug: nel terreno vero il fango è nella cella del Mar Morto.
+
+## Suoni custom mancanti: 21 eventi usavano suoni vanilla di ripiego
+- Problema riscontrato: in `sounds.json` mancava un suono proprio per 21 eventi della mod. Usavano suoni vanilla di ripiego, per esempio un villager per il boss Bibi, un corno di capra per bus e treno, un warden per la sirena e le musiche vanilla per klezmer e Shabbat. I file custom esistenti (Hava Nagila, temi dei boss) c'erano già.
+- Funzionamento atteso: ogni evento della mod ha un suo file `.ogg` in `assets/israel_simulator/sounds/`.
+- Soluzione: 23 file originali generati al computer con `scripts/sounds/gen_sounds.py` (numpy/scipy, Ogg Vorbis). Non ci sono registrazioni né melodie prese da altri.
+  - Effetti mono: Bibi (2 versi d'ambiente, 2 di dolore, morte, discorso, furia), campanello della bici, clacson del bus, fischio del treno, viaggio, sirena antiaerea, jet dell'aereo, fanfara del luogo scoperto, campanelli di Hanukkah, candela dello Shabbat. Gli ambienti di Tel Aviv, Gerusalemme, Giaffa, la folla e il mercato durano 5–6 s.
+  - Musica stereo: `music/klezmer` (59 s, bulgar originale in modo freygish) e `music/shabbat_shalom` (56 s, brano calmo in re maggiore).
+  - Il nuovo test `testCustomSoundFilesExist` fallisce se un suono custom di `sounds.json` non ha il suo file Ogg o se il file è vuoto.
+- Da sapere: `kirk_boss_theme.ogg` è identico byte per byte a `bibi_boss_theme.ogg`, cioè i due boss hanno la stessa musica.
