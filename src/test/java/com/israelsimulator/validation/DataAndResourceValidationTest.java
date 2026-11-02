@@ -306,6 +306,55 @@ public class DataAndResourceValidationTest {
         }
     }
 
+    /**
+     * Vanilla sound files referenced by sounds.json, checked one by one against the 26.2 asset index.
+     * A name missing from the index is silently dropped by the client ("File ... does not exist").
+     * Add a name here only after checking it exists in the asset index.
+     */
+    private static final java.util.Set<String> VERIFIED_VANILLA_SOUND_FILES = java.util.Set.of(
+            "ambient/cave/cave1",
+            "ambient/underwater/underwater_ambience",
+            "block/amethyst/shimmer",
+            "block/bell/bell_use01",
+            "block/bell/resonate",
+            "block/sculk_shrieker/shriek1",
+            "item/goat_horn/call0",
+            "item/goat_horn/call1",
+            "mob/enderdragon/growl1",
+            "mob/endermen/portal",
+            "mob/evocation_illager/prepare_attack1",
+            "mob/villager/death",
+            "mob/villager/haggle1",
+            "mob/villager/hit1",
+            "mob/villager/hit2",
+            "mob/villager/idle1",
+            "mob/villager/idle2",
+            "mob/warden/sonic_boom1",
+            "mob/wither/idle1",
+            "music/game/clark",
+            "music/game/creative/biome_fest",
+            "ui/toast/challenge_complete");
+
+    @Test
+    @DisplayName("sounds.json only references vanilla sound files that exist in 26.2")
+    void testVanillaSoundFilesExist() throws IOException {
+        Path soundsJsonPath = RESOURCES_PATH.resolve(Paths.get("assets", IsraelSimulator.MOD_ID, "sounds.json"));
+        try (FileReader reader = new FileReader(soundsJsonPath.toFile())) {
+            JsonObject soundsJson = GSON.fromJson(reader, JsonObject.class);
+            for (Map.Entry<String, JsonElement> event : soundsJson.entrySet()) {
+                for (JsonElement entry : event.getValue().getAsJsonObject().getAsJsonArray("sounds")) {
+                    String name = entry.isJsonObject()
+                            ? entry.getAsJsonObject().get("name").getAsString()
+                            : entry.getAsString();
+                    if (!name.startsWith("minecraft:")) continue;
+                    String file = name.substring("minecraft:".length());
+                    assertTrue(VERIFIED_VANILLA_SOUND_FILES.contains(file),
+                            event.getKey() + " references a vanilla sound file that does not exist: " + name);
+                }
+            }
+        }
+    }
+
     @Test
     @DisplayName("Hava Nagila disc sound is a non-empty bundled ogg, not a vanilla fallback")
     void testHavaNagilaDiscOggPresent() throws IOException {
