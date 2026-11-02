@@ -356,6 +356,42 @@ public class DataAndResourceValidationTest {
     }
 
     @Test
+    @DisplayName("Every custom sound in sounds.json has a bundled, non-empty Ogg file")
+    void testCustomSoundFilesExist() throws IOException {
+        Path soundsJsonPath = RESOURCES_PATH.resolve(Paths.get("assets", IsraelSimulator.MOD_ID, "sounds.json"));
+        Path soundsDir = RESOURCES_PATH.resolve(Paths.get("assets", IsraelSimulator.MOD_ID, "sounds"));
+        List<String> missing = new ArrayList<>();
+        try (FileReader reader = new FileReader(soundsJsonPath.toFile())) {
+            JsonObject soundsJson = GSON.fromJson(reader, JsonObject.class);
+            for (Map.Entry<String, JsonElement> event : soundsJson.entrySet()) {
+                var sounds = event.getValue().getAsJsonObject().getAsJsonArray("sounds");
+                assertFalse(sounds.isEmpty(), event.getKey() + " has no sounds");
+                for (JsonElement entry : sounds) {
+                    String name = entry.isJsonObject()
+                            ? entry.getAsJsonObject().get("name").getAsString()
+                            : entry.getAsString();
+                    if (name.startsWith("minecraft:")) continue;
+                    if (entry.isJsonObject() && entry.getAsJsonObject().has("type")
+                            && "event".equals(entry.getAsJsonObject().get("type").getAsString())) continue;
+                    String relative = name.contains(":") ? name.substring(name.indexOf(':') + 1) : name;
+                    Path ogg = soundsDir.resolve(relative + ".ogg");
+                    if (!Files.exists(ogg) || Files.size(ogg) < 64) {
+                        missing.add(event.getKey() + " -> " + ogg);
+                        continue;
+                    }
+                    byte[] head = new byte[4];
+                    try (var in = Files.newInputStream(ogg)) {
+                        assertEquals(4, in.read(head), "Cannot read " + ogg);
+                    }
+                    assertEquals("OggS", new String(head, java.nio.charset.StandardCharsets.US_ASCII),
+                            ogg + " is not an Ogg file");
+                }
+            }
+        }
+        assertTrue(missing.isEmpty(), "Custom sound files missing or empty: " + missing);
+    }
+
+    @Test
     @DisplayName("Hava Nagila disc sound is a non-empty bundled ogg, not a vanilla fallback")
     void testHavaNagilaDiscOggPresent() throws IOException {
         Path soundsJsonPath = RESOURCES_PATH.resolve(Paths.get("assets", IsraelSimulator.MOD_ID, "sounds.json"));

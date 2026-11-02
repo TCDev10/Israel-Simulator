@@ -10,7 +10,7 @@
   "music.cultural.klezmer": {
     "sounds": [
       {
-        "name": "minecraft:music/game/creative/biome_fest",
+        "name": "israel_simulator:music/klezmer",
         "stream": true
       }
     ]
@@ -18,71 +18,71 @@
   "music.cultural.shabbat_shalom": {
     "sounds": [
       {
-        "name": "minecraft:music/game/clark",
+        "name": "israel_simulator:music/shabbat_shalom",
         "stream": true
       }
     ]
   },
   "ambient.city.tel_aviv": {
     "sounds": [
-      "minecraft:ambient/underwater/underwater_ambience"
+      "israel_simulator:ambient/tel_aviv"
     ]
   },
   "ambient.city.jerusalem": {
     "sounds": [
-      "minecraft:ambient/cave/cave1"
+      "israel_simulator:ambient/jerusalem"
     ]
   },
   "ambient.city.jaffa": {
     "sounds": [
-      "minecraft:block/bell/bell_use01"
+      "israel_simulator:ambient/jaffa"
     ]
   },
   "ambient.event.speech_crowd": {
     "sounds": [
-      "minecraft:mob/villager/idle1"
+      "israel_simulator:ambient/speech_crowd"
     ]
   },
   "ambient.event.market_bustle": {
     "sounds": [
-      "minecraft:mob/villager/haggle1"
+      "israel_simulator:ambient/market_bustle"
     ]
   },
   "audio.festival.hanukkah_chime": {
     "sounds": [
-      "minecraft:block/bell/resonate"
+      "israel_simulator:festival/hanukkah_chime"
     ]
   },
   "audio.festival.shabbat_candle": {
     "sounds": [
-      "minecraft:block/amethyst/shimmer"
+      "israel_simulator:festival/shabbat_candle"
     ]
   },
   "entity.bibi_boss.ambient": {
     "sounds": [
-      "minecraft:mob/villager/idle1",
-      "minecraft:mob/villager/idle2"
+      "israel_simulator:entity/bibi/ambient1",
+      "israel_simulator:entity/bibi/ambient2"
     ]
   },
   "entity.bibi_boss.hurt": {
     "sounds": [
-      "minecraft:mob/villager/hit1",
-      "minecraft:mob/villager/hit2"
+      "israel_simulator:entity/bibi/hurt1",
+      "israel_simulator:entity/bibi/hurt2"
     ]
   },
   "entity.bibi_boss.death": {
     "sounds": [
-      "minecraft:mob/villager/death"
+      "israel_simulator:entity/bibi/death"
     ]
   },
   "entity.bibi_boss.speech": {
     "sounds": [
-      "minecraft:mob/evocation_illager/prepare_attack1"
+      "israel_simulator:entity/bibi/speech"
     ]
   },
   "entity.bibi_boss.enrage": {
     "sounds": [
-      "minecraft:mob/wither/idle1"
+      "israel_simulator:entity/bibi/enrage"
     ]
   },
   "music.boss.bibi_theme": {
@@ -103,40 +103,37 @@
   },
   "entity.bicycle.bell": {
     "sounds": [
-      "minecraft:block/bell/bell_use01"
+      "israel_simulator:transport/bicycle_bell"
     ]
   },
   "entity.bus.horn": {
     "sounds": [
-      "minecraft:item/goat_horn/call0"
+      "israel_simulator:transport/bus_horn"
     ]
   },
   "entity.train.whistle": {
     "sounds": [
-      "minecraft:item/goat_horn/call1"
+      "israel_simulator:transport/train_whistle"
     ]
   },
   "entity.transport.travel": {
     "sounds": [
-      "minecraft:mob/endermen/portal"
+      "israel_simulator:transport/travel"
     ]
   },
   "ui.landmark_discovered": {
     "sounds": [
-      "minecraft:ui/toast/challenge_complete"
+      "israel_simulator:ui/landmark_discovered"
     ]
   },
   "event.air_raid_siren": {
     "sounds": [
-      "minecraft:block/bell/resonate",
-      "minecraft:mob/warden/sonic_boom1",
-      "minecraft:block/sculk_shrieker/shriek1"
+      "israel_simulator:event/air_raid_siren"
     ]
   },
   "event.plane_jet": {
     "sounds": [
-      "minecraft:mob/enderdragon/growl1",
-      "minecraft:ambient/underwater/underwater_ambience"
+      "israel_simulator:event/plane_jet"
     ]
   }
 }
