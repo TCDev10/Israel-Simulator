@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiPredicate;
 import java.util.function.LongFunction;
 
 /**
@@ -45,10 +46,20 @@ public final class ArenaRestoreRules {
 
     /** Splits entries into the ones to restore and the ones a player has changed since. */
     public static <S> Plan<S> plan(List<Entry<S>> entries, LongFunction<S> currentState) {
+        return plan(entries, currentState, ArenaRestoreRules::shouldRestore);
+    }
+
+    /**
+     * Same as {@link #plan(List, LongFunction)} with a custom "still what the arena placed" check.
+     * In game this compares the block type only: leaves recompute their distance, water and
+     * redstone settle after placement, and those state changes are not player edits.
+     */
+    public static <S> Plan<S> plan(List<Entry<S>> entries, LongFunction<S> currentState,
+                                   BiPredicate<S, S> stillPlaced) {
         List<Entry<S>> restore = new ArrayList<>();
         List<Entry<S>> skipped = new ArrayList<>();
         for (Entry<S> e : entries) {
-            if (shouldRestore(currentState.apply(e.pos()), e.placed())) {
+            if (stillPlaced.test(currentState.apply(e.pos()), e.placed())) {
                 restore.add(e);
             } else {
                 skipped.add(e);
