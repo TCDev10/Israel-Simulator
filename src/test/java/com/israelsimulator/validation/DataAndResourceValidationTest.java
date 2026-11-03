@@ -57,7 +57,7 @@ public class DataAndResourceValidationTest {
             "ambient.event.speech_crowd", "ambient.event.market_bustle", "audio.festival.hanukkah_chime",
             "audio.festival.shabbat_candle", "entity.bibi_boss.ambient", "entity.bibi_boss.hurt",
             "entity.bibi_boss.death", "entity.bibi_boss.speech", "entity.bibi_boss.enrage",
-            "music.boss.bibi_theme", "entity.bicycle.bell", "entity.bus.horn",
+            "music.boss.bibi_theme", "music.boss.orator_theme", "entity.bicycle.bell", "entity.bus.horn",
             "entity.train.whistle", "entity.transport.travel", "ui.landmark_discovered"
     );
 
@@ -355,6 +355,14 @@ public class DataAndResourceValidationTest {
         }
     }
 
+    /**
+     * Custom sounds whose Ogg the owner adds by hand (copyrighted songs, not shipped in the repo).
+     * A missing file only makes the client log a warning; the sound event stays registered.
+     */
+    public static final java.util.Set<String> USER_PROVIDED_SOUND_FILES = java.util.Set.of(
+            "music/orator_boss_theme"
+    );
+
     @Test
     @DisplayName("Every custom sound in sounds.json has a bundled, non-empty Ogg file")
     void testCustomSoundFilesExist() throws IOException {
@@ -375,6 +383,7 @@ public class DataAndResourceValidationTest {
                             && "event".equals(entry.getAsJsonObject().get("type").getAsString())) continue;
                     String relative = name.contains(":") ? name.substring(name.indexOf(':') + 1) : name;
                     Path ogg = soundsDir.resolve(relative + ".ogg");
+                    if (USER_PROVIDED_SOUND_FILES.contains(relative) && !Files.exists(ogg)) continue;
                     if (!Files.exists(ogg) || Files.size(ogg) < 64) {
                         missing.add(event.getKey() + " -> " + ogg);
                         continue;

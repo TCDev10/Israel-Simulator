@@ -25,17 +25,30 @@ class KirkBossMusicTest {
     }
 
     @Test
-    void soundEventStreamsBundledOgg() throws Exception {
+    void oratorHasOwnStreamedTheme() throws Exception {
         String json = Files.readString(Path.of("src/main/resources/assets/israel_simulator/sounds.json"));
-        int i = json.indexOf("\"music.boss.kirk_theme\"");
-        assertTrue(i != -1, "music.boss.kirk_theme must be in sounds.json");
+        int i = json.indexOf("\"music.boss.orator_theme\"");
+        assertTrue(i != -1, "music.boss.orator_theme must be in sounds.json");
         String block = json.substring(i, json.indexOf("}", i) + 1);
-        assertTrue(block.contains("israel_simulator:music/kirk_boss_theme"));
+        assertTrue(block.contains("israel_simulator:music/orator_boss_theme"));
         assertTrue(block.contains("\"stream\": true"));
-        Path ogg = Path.of("src/main/resources/assets/israel_simulator/sounds/music/kirk_boss_theme.ogg");
-        assertTrue(Files.exists(ogg), "kirk_boss_theme.ogg must exist");
-        byte[] head = Files.readAllBytes(ogg);
-        assertEquals("OggS", new String(head, 0, 4));
+        assertFalse(json.contains("music/kirk_boss_theme"), "the old copy of Bibi's theme must be gone");
+        String inst = Files.readString(Path.of("src/main/java/com/israelsimulator/client/music/KirkBossMusicInstance.java"));
+        assertTrue(inst.contains("ModSoundEvents.ORATOR_THEME"), "the Orator must not reuse Bibi's theme");
+        assertFalse(inst.contains("BIBI_THEME"));
+        // The Ogg is optional (owner adds it); if present it must be a real Ogg.
+        Path ogg = Path.of("src/main/resources/assets/israel_simulator/sounds/music/orator_boss_theme.ogg");
+        if (Files.exists(ogg)) {
+            byte[] head = Files.readAllBytes(ogg);
+            assertEquals("OggS", new String(head, 0, 4));
+        }
+    }
+
+    @Test
+    void missingOggDoesNotSilenceVanillaMusicForever() throws Exception {
+        String ev = Files.readString(Path.of("src/main/java/com/israelsimulator/client/music/KirkBossMusicClientEvents.java"));
+        assertTrue(ev.contains("getSoundManager().isActive(current)"));
+        assertTrue(ev.contains("current = null;"));
     }
 
     @Test

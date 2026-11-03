@@ -17,7 +17,7 @@ public final class KirkBossMusicInstance extends AbstractTickableSoundInstance {
     private int fadeTicks;
 
     public KirkBossMusicInstance(OratorEntity orator) {
-        super(ModSoundEvents.KIRK_THEME.get(), SoundSource.MUSIC, RandomSource.create());
+        super(ModSoundEvents.ORATOR_THEME.get(), SoundSource.MUSIC, RandomSource.create());
         this.orator = orator;
         this.looping = false;
         this.delay = 0;

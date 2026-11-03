@@ -963,6 +963,7 @@ Events:
 * [x] Microphone. (Acoustic rostrum podium fixture)
 * [x] Speakers. (Public address acoustic amplifiers)
 * [x] Speaker NPC. (Fictional orator addressing civic assembly)
+* [ ] Musica dell'Oratore: aggiungere a mano `src/main/resources/assets/israel_simulator/sounds/music/orator_boss_theme.ogg` (Ogg Vorbis; brano scelto da Riccardo, coperto da copyright e quindi non nel repo). Evento `music.boss.orator_theme` già registrato; senza file il client registra solo un warning.
 * [x] Crowd NPCs. (Civic crowd participants in forum area)
 * [x] Signs. (Civic banner proclamations on free expression)
 * [x] Chairs. (Forum seating arrangements)
