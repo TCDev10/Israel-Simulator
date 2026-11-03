@@ -974,3 +974,8 @@ Non provato dall'utente in gioco.
   - Coltivazioni: olivo ed erbe si raccolgono con il click destro e ricrescono. La vite torna all'età 3. Pomodoro e ceci crescono e lasciano il raccolto.
   - Commerci: il Money Changer e lo Shuk Vendor hanno scambi validi.
 - Nota: il Goy appena evocato non ha una professione, quindi non ha scambi (come un villager vanilla disoccupato).
+
+## Oratore con la musica di Bibi e scagnozzi di Epstein chiamati "Avvocato di Epstein"
+- Problema riscontrato: durante il discorso l'Oratore suonava `kirk_boss_theme.ogg`, che era una copia byte per byte di `bibi_boss_theme.ogg`, quindi i due boss avevano la stessa musica. Gli scagnozzi di Epstein (`child_zombie_minion`) si chiamavano "Avvocato di Epstein" / "Epstein's Lawyer".
+- Funzionamento atteso: l'Oratore ha un tema suo (`music.boss.orator_theme` → `music/orator_boss_theme`, in streaming) e il nome resta quello di prima. Gli scagnozzi non hanno più quel nome: il tipo di entità mostra solo un nome generico ("Scagnozzo" / "Henchman"), nessun nome custom.
+- Soluzione: nuovo evento `ORATOR_THEME` in `ModSoundEvents` e in `sounds.json`, usato da `KirkBossMusicInstance` al posto della vecchia copia; tolti `music.boss.kirk_theme` e `kirk_boss_theme.ogg`. Il file `orator_boss_theme.ogg` lo aggiunge Riccardo (brano con copyright): finché manca, Minecraft scrive solo un warning e `KirkBossMusicClientEvents` rilascia l'istanza quando l'Oratore sparisce, così la musica vanilla torna. `testCustomSoundFilesExist` salta solo i file in `USER_PROVIDED_SOUND_FILES`; `KirkBossMusicTest` verifica il nuovo evento, che l'Oratore non usi il tema di Bibi e il rilascio senza file. Lang: `entity.israel_simulator.child_zombie_minion` = "Scagnozzo" / "Henchman".

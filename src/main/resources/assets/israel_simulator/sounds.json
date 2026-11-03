@@ -93,10 +93,10 @@
       }
     ]
   },
-  "music.boss.kirk_theme": {
+  "music.boss.orator_theme": {
     "sounds": [
       {
-        "name": "israel_simulator:music/kirk_boss_theme",
+        "name": "israel_simulator:music/orator_boss_theme",
         "stream": true
       }
     ]

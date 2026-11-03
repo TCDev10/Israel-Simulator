@@ -37,7 +37,14 @@ public final class KirkBossMusicClientEvents {
             current = null;
         }
         if (current != null && !current.isFading()) {
-            return;
+            OratorEntity orator = current.orator();
+            // Without orator_boss_theme.ogg the sound never starts (Minecraft only logs a warning), so
+            // tick() never runs: drop the instance once the Orator is gone so vanilla music comes back.
+            if (mc.getSoundManager().isActive(current)
+                    || KirkBossMusicRules.shouldPlay(orator.isAlive(), orator.isRemoved(), orator.distanceToSqr(mc.player))) {
+                return;
+            }
+            current = null;
         }
         if (--scanCooldown > 0) {
             return;
